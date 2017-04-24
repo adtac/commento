@@ -35,7 +35,7 @@ post_root = function() {
         "name": document.getElementById("root_name").value,
         "parent": -1
     };
-    post("http://0.0.0.0:8080/create", data, function(reply) {
+    post(COMMENTO_SERVER + "/create", data, function(reply) {
         reply = JSON.parse(reply.response);
         getcomments();
     })
@@ -45,7 +45,7 @@ getcomments = function() {
     data = {
         "url": document.location,
     };
-    post("http://0.0.0.0:8080/get", data, function(reply) {
+    post(COMMENTO_SERVER + "/get", data, function(reply) {
         reply = JSON.parse(reply.response);
         comments = reply.comments;
         redraw();
@@ -69,7 +69,7 @@ submit_reply = function(id) {
         "parent": id,
         "url": document.location,
     };
-    post("http://0.0.0.0:8080/create", data, function(reply) {
+    post(COMMENTO_SERVER + "/create", data, function(reply) {
         reply = JSON.parse(reply.response);
         getcomments();
     })
@@ -239,7 +239,8 @@ function loadCSS(file) {
     document.body.appendChild(link);
 }
 
-window.onload = function() {
+init_commento = function(server) {
+    COMMENTO_SERVER = server;
     loadJS("https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js", function() {
         loadCSS("https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css");
         loadCSS("https://cdn.rawgit.com/adtac/commento/0.0.2/vendor/commento.min.css");
