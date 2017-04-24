@@ -252,7 +252,7 @@ init_commento = function(server) {
         div.classList.add("commento-comments");
 
         var textarea = document.createElement("textarea");
-        textarea.setAttribute("id", "root-comment");
+        textarea.setAttribute("id", "root_comment");
         textarea.classList.add("form-input");
 
         var sub_area  = document.createElement("div");
