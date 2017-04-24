@@ -240,9 +240,9 @@ function loadCSS(file) {
 }
 
 window.onload = function() {
-    loadJS("https://cdn.rawgit.com/showdownjs/showdown/master/dist/showdown.min.js", function() {
+    loadJS("https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js", function() {
         loadCSS("https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css");
-        loadCSS("https://cdn.rawgit.com/adtac/commento/master/vendor/commento.min.css");
+        loadCSS("https://cdn.rawgit.com/adtac/commento/0.0.1/vendor/commento.min.css");
         converter = new showdown.Converter();
 
         var commento = document.getElementById("commento");
