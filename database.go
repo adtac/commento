@@ -18,7 +18,7 @@ func createTables() error {
 	return err
 }
 
-func loadDatabase(dbFile string) (error) {
+func loadDatabase(dbFile string) error {
 	var err error
 	db, err = sql.Open("sqlite3", dbFile)
 	if err != nil {

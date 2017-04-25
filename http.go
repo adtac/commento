@@ -1,9 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 	"strconv"
 )
 
@@ -14,7 +14,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	type resultContainer struct {
-		Success bool `json:"success"`
+		Success bool   `json:"success"`
 		Message string `json:"message"`
 	}
 
@@ -44,16 +44,16 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 		goto end
 	}
 
-	end:
-    json, _ := json.Marshal(result)
+end:
+	json, _ := json.Marshal(result)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-    fmt.Fprintf(w, "%s", string(json))
+	fmt.Fprintf(w, "%s", string(json))
 }
 
 func getCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	type resultContainer struct {
-		Success bool       `json:"success"`
-		Message string     `json:"message"`
+		Success  bool      `json:"success"`
+		Message  string    `json:"message"`
 		Comments []Comment `json:"comments"`
 	}
 
@@ -72,9 +72,9 @@ func getCommentsHandler(w http.ResponseWriter, r *http.Request) {
 		emit(err)
 	}
 
-	end:
+end:
 	result.Comments = comments
-    json, _ := json.Marshal(result)
+	json, _ := json.Marshal(result)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-    fmt.Fprintf(w, "%s", string(json))
+	fmt.Fprintf(w, "%s", string(json))
 }

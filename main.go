@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
+	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
-	"database/sql"
+	"net/http"
 )
 
 var logger = logging.MustGetLogger("commento")
@@ -20,5 +20,5 @@ func main() {
 	http.HandleFunc("/create", createCommentHandler)
 	http.HandleFunc("/get", getCommentsHandler)
 
-    http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", nil)
 }
