@@ -20,6 +20,9 @@ func main() {
 		die(err)
 	}
 
+	fs := http.FileServer(http.Dir("vendor"))
+
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/create", createCommentHandler)
 	http.HandleFunc("/get", getCommentsHandler)
