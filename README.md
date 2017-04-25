@@ -35,7 +35,7 @@ and build the project using a `go build .` to get a binary. Internally, I've use
 
 ### Why?
 
-[Disqus](https://disqus.com/) is one of the most popular commenting services. However, over the years it has become quite bloated - one [blog post](http://donw.io/post/github-comments/http://donw.io/post/github-comments/) has a detailed analysis. In short, a Disqus-free page makes about 16 HTTP requests while the same page makes 105 requests when Disqus is enabled! This is mostly due to various tracking services that record every action you take on any website that has Disqus embedded.
+[Disqus](https://disqus.com/) is one of the most popular commenting services. However, over the years it has become quite bloated - one [blog post](http://donw.io/post/github-comments/) has a detailed analysis. In short, a Disqus-free page makes about 16 HTTP requests while the same page makes 105 requests when Disqus is enabled! This is mostly due to various tracking services that record every action you take on any website that has Disqus embedded.
 
 I ran a quick test: [go to this codepen](https://codepen.io/ryanbelisle/full/AwLgu/) and open your developer tools. You'll see that the sum total of all network requests related to Disqus comes to about ~250 kB! And there aren't even any comments!
 
