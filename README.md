@@ -27,6 +27,8 @@ It's really simple to embed a Commento section to your webpage. A trivial page w
 
 And that's it! Source the script from CDN, add a `div` called `commento` (which will contain the comments) and initialize Commento with your server.
 
+The client-side script accepts an optional second argument `options`, in the form of a plain object. Currently, the only option is `(boolean) honeypot`, which adds a hidden input field to fool spammers. If anything is input into this field, the submission is silently ignored. This option defaults to `false` if the options param is not set explicitly.
+
 To get the server running, run:
 
 ```bash

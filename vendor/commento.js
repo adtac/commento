@@ -35,6 +35,9 @@ post_root = function() {
         "name": document.getElementById("root_name").value,
         "parent": -1
     };
+    if (COMMENTO_OPTIONS.honeypot) {
+        data.gotcha = document.getElementById("root__gotcha").value
+    }
     post(COMMENTO_SERVER + "/create", data, function(reply) {
         reply = JSON.parse(reply.response);
         getcomments();
@@ -69,6 +72,9 @@ submit_reply = function(id) {
         "parent": id,
         "url": document.location,
     };
+    if (COMMENTO_OPTIONS.honeypot) {
+        data.gotcha = document.getElementById("__gotcha_"+id).value
+    }
     post(COMMENTO_SERVER + "/create", data, function(reply) {
         reply = JSON.parse(reply.response);
         getcomments();
@@ -119,6 +125,13 @@ show_reply = function(id) {
     button_holder.classList.add("button-holder");
     button_holder.setAttribute("style", "display: flex; width: 100%; margin: 2px;");
     button_holder.appendChild(name);
+    if (COMMENTO_OPTIONS.honeypot) {
+        var honeypot = document.createElement("input");
+        honeypot.classList.add("hidden");
+        honeypot.id = "__gotcha_" + id;
+
+        button_holder.appendChild(honeypot)
+    }
     button_holder.appendChild(cancel);
     button_holder.appendChild(submit);
 
@@ -239,7 +252,10 @@ function loadCSS(file) {
     document.body.appendChild(link);
 }
 
-init_commento = function(server) {
+init_commento = function(server, options) {
+    COMMENTO_OPTIONS = options || {
+        honeypot: false
+        };
     COMMENTO_SERVER = server;
     loadJS("https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js", function() {
         loadCSS("https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css");
@@ -277,6 +293,13 @@ init_commento = function(server) {
         sub_area.appendChild(input);
         sub_area.appendChild(button);
         div.appendChild(textarea);
+        if (options.honeypot) {
+            var honeypot = document.createElement("input");
+            honeypot.classList.add("hidden");
+            honeypot.id = "root__gotcha";
+
+            div.appendChild(honeypot)
+        }
         div.appendChild(sub_area);
         div.appendChild(comselem);
         commento.appendChild(div);
