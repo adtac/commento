@@ -2,9 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"net/http"
+	"os"
+
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
-	"net/http"
 )
 
 var logger = logging.MustGetLogger("commento")
@@ -20,5 +22,16 @@ func main() {
 	http.HandleFunc("/create", createCommentHandler)
 	http.HandleFunc("/get", getCommentsHandler)
 
-	http.ListenAndServe(":8080", nil)
+	var port string
+
+	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
+		port = ":" + fromEnv
+	} else {
+		port = ":8080"
+	}
+
+	err = http.ListenAndServe(port, nil)
+	if err != nil {
+		logger.Fatalf("http.ListenAndServe: %v", err)
+	}
 }
