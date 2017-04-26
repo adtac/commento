@@ -13,7 +13,7 @@ It's really simple to embed a Commento section to your webpage. A trivial page w
 ```html
 <html>
     <body>
-        <script src="https://cdn.rawgit.com/adtac/commento/0.0.4/vendor/commento.min.js"></script>
+        <script src="http://0.0.0.0:8080/assets/commento.min.js"></script>
     </body>
 
     <script>
@@ -25,7 +25,7 @@ It's really simple to embed a Commento section to your webpage. A trivial page w
 </html>
 ```
 
-And that's it! Source the script from CDN, add a `div` called `commento` (which will contain the comments) and initialize Commento with your server.
+And that's it! Source the client-side script, add a `div` called `commento` (which will contain the comments) and initialize Commento with your server. The client-side script does all the hard work of building the markup and loading the CSS. The assets themselves (JavaScript and CSS) as served by the go application.
 
 To get the server running, run:
 
