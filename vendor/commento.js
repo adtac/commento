@@ -37,6 +37,7 @@ post_root = function() {
     };
     post(COMMENTO_SERVER + "/create", data, function(reply) {
         reply = JSON.parse(reply.response);
+        document.getElementById("root_comment").value = "";
         getcomments();
     })
 }
