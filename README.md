@@ -6,6 +6,8 @@ An open source, lightweight, and tracking-free comment engine.
 
 ### Installation
 
+**[I've hosted a live demo here. Check it out!](https://adtac.github.io/commento/comment.html)**
+
 It's really simple to embed a Commento section to your webpage. A trivial page would look like:
 
 ```html
