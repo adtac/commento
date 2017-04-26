@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
