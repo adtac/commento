@@ -39,6 +39,12 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	name = alphaNumericOnly(r.PostFormValue("name"))
 
+	if r.PostFormValue("gotcha") != "" {
+		// If a value has been set, we just silently ignore the submission and return a success message. This prevents
+		// spammers from cottoning-on that the submission did not work.
+		goto end
+	}
+
 	err = createComment(r.PostFormValue("url"), name, r.PostFormValue("comment"), parent)
 	if err != nil {
 		emit(err)
