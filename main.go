@@ -20,7 +20,7 @@ func main() {
 		die(err)
 	}
 
-	fs := http.FileServer(http.Dir("vendor"))
+	fs := http.FileServer(http.Dir("assets"))
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.HandleFunc("/", indexHandler)
