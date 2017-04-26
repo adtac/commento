@@ -207,7 +207,7 @@ make_cards = function(coms, cur) {
 redraw = function() {
     document.getElementById("coms").innerHTML = "";
     coms = {}
-    for(var i = comments.length-1; i >= 0; i--) {
+    for(var i = 0; i < comments.length; i++) {
         if(!(comments[i].parent in coms))
             coms[comments[i].parent] = new Array();
         coms[comments[i].parent].push(comments[i]);
