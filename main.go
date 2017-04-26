@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"net/http"
 	"os"
+	"time"
+	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
@@ -30,8 +32,20 @@ func main() {
 		port = ":8080"
 	}
 
+	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
+		fmt.Println("clearing")
+		go func() {
+			for true {
+				cleanupOldComments()
+				time.Sleep(60 * time.Second)
+				fmt.Println("deleting")
+			}
+		}()
+	}
+
 	err = http.ListenAndServe(port, nil)
 	if err != nil {
 		logger.Fatalf("http.ListenAndServe: %v", err)
 	}
+
 }

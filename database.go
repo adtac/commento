@@ -41,3 +41,12 @@ func loadDatabase(dbFile string) error {
 
 	return nil
 }
+
+func cleanupOldComments() error {
+	statement := `
+		DELETE FROM comments
+		WHERE time < date('now', '-30 minute');
+	`
+	_, err := db.Exec(statement)
+	return err
+}
