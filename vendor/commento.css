@@ -50,3 +50,6 @@ h5 {
     border-right-color: #cccccc !important;
 }
 
+.hidden {
+    display: none;
+}
