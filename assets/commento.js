@@ -1,311 +1,398 @@
-serialize = function(obj) {
-    var str = [];
-    for(var p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+(function(global, document) {
+    'use strict';
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function append(root, el) {
+        root.appendChild(el);
+    }
+
+    function addClass(el, cls) {
+        el.classList.add(cls);
+    }
+
+    function removeClass(el, cls) {
+        el.classList.remove(cls);
+    }
+
+    function create(el) {
+        return document.createElement(el);
+    }
+
+    function serialize(obj) {
+        var str = [];
+        for(var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
         }
-    return str.join("&");
-}
 
-function post(url, data, callback) {
-    var xmlDoc = new XMLHttpRequest();
-    xmlDoc.open('POST', url, true);
-    xmlDoc.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlDoc.onreadystatechange = function() {
-        if (xmlDoc.readyState === 4 && xmlDoc.status === 200)
-            callback(xmlDoc);
+        return str.join("&");
     }
-    xmlDoc.send(serialize(data));
-}
 
-post_root = function() {
-    document.getElementById("root_comment").classList.remove("is-error");
-    document.getElementById("root_name").classList.remove("is-error");
-    if(document.getElementById("root_comment").value.length == 0) {
-        document.getElementById("root_comment").classList.add("is-error");
-        return;
+    function setAttr(node, attr, value) {
+        node.setAttribute(attr, value);
     }
-    if(document.getElementById("root_name").value.length == 0) {
-        document.getElementById("root_name").classList.add("is-error");
-        return;
+
+    function post(url, data, callback) {
+        var xmlDoc = new XMLHttpRequest();
+        xmlDoc.open('POST', url, true);
+        xmlDoc.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlDoc.onreadystatechange = function() {
+            if (xmlDoc.readyState === 4 && xmlDoc.status === 200) {
+                callback(xmlDoc);
+            }
+        };
+        xmlDoc.send(serialize(data));
     }
-    data = {
-        "url": document.location,
-        "comment": document.getElementById("root_comment").value,
-        "name": document.getElementById("root_name").value,
-        "parent": -1
-    };
-    if (COMMENTO_OPTIONS.honeypot) {
-        data.gotcha = document.getElementById("root__gotcha").value
+
+    function loadJS(file, ready) {
+        var script = document.createElement("script");
+        var loaded = false;
+
+        script.type = "application/javascript";
+        script.src = file;
+        script.async = true;
+        script.onreadystatechange = script.onload = function() {
+            if(!loaded &&
+                (!this.readyState ||
+                    this.readyState === "loaded" ||
+                    this.readyState === "complete"))
+            {
+                ready();
+            }
+
+            loaded = true;
+            script.onload = script.onreadystatechange = null;
+        };
+
+        append(document.body, script);
     }
-    post(COMMENTO_SERVER + "/create", data, function(reply) {
-        reply = JSON.parse(reply.response);
-        document.getElementById("root_comment").value = "";
-        getcomments();
-    })
-}
 
-getcomments = function() {
-    data = {
-        "url": document.location,
-    };
-    post(COMMENTO_SERVER + "/get", data, function(reply) {
-        reply = JSON.parse(reply.response);
-        comments = reply.comments;
-        redraw();
-    })
-}
+    function loadCSS(file) {
+        var link = document.createElement("link");
+        var head = document.getElementsByTagName('head')[0];
 
-submit_reply = function(id) {
-    document.getElementById("reply_textarea_"+id).classList.remove("is-error");
-    document.getElementById("name_input_"+id).classList.remove("is-error");
-    if(document.getElementById("reply_textarea_"+id).value.length == 0) {
-        document.getElementById("reply_textarea_"+id).classList.add("is-error");
-        return;
+        link.type = "text/css";
+        link.setAttribute("href", file);
+        link.setAttribute("rel", "stylesheet");
+
+        append(head, link);
     }
-    if(document.getElementById("name_input_"+id).value.length == 0) {
-        document.getElementById("name_input_"+id).classList.add("is-error");
-        return;
-    }
-    data = {
-        "comment": document.getElementById("reply_textarea_"+ id).value,
-        "name": document.getElementById("name_input_"+ id).value,
-        "parent": id,
-        "url": document.location,
-    };
-    if (COMMENTO_OPTIONS.honeypot) {
-        data.gotcha = document.getElementById("__gotcha_"+id).value
-    }
-    post(COMMENTO_SERVER + "/create", data, function(reply) {
-        reply = JSON.parse(reply.response);
-        getcomments();
-    })
-}
 
-cancel_reply = function(id) {
-    document.getElementById("reply_textarea_" + id).remove();
-    document.getElementById("submit_button_" + id).remove();
-    document.getElementById("cancel_button_" + id).remove();
-    document.getElementById("name_input_" + id).remove();
-    document.getElementById("reply_button_" + id).setAttribute("style", "display: initial");
-}
+    function timeDifference(current, previous) { // thanks stackoverflow
+        var msPerMinute = 60000;
+        var msPerHour = 3600000;
+        var msPerDay = 86400000;
+        var msPerMonth = 2592000000;
+        var msPerYear = 946080000000;
 
-show_reply = function(id) {
-    var button = document.getElementById("reply_button_" + id);
-    button.setAttribute("style", "display: none");
+        var elapsed = current - previous;
 
-    var body = document.getElementById("body_" + id);
-
-    var textarea = document.createElement("textarea");
-    textarea.classList.add("form-input");
-    textarea.id = "reply_textarea_" + id;
-    body.appendChild(textarea);
-
-    var name = document.createElement("input");
-    name.classList.add("form-input");
-    name.setAttribute("placeholder", "Name");
-    name.setAttribute("style", "margin: 1px; width: 33%;");
-    name.id = "name_input_" + id;
-
-    var cancel = document.createElement("button");
-    cancel.innerHTML = "Cancel";
-    cancel.classList.add("btn");
-    cancel.setAttribute("onclick", "cancel_reply(" + id + ")");
-    cancel.setAttribute("style", "margin: 1px; width: 33%;");
-    cancel.id = "cancel_button_" + id;
-
-    var submit = document.createElement("button");
-    submit.innerHTML = "Reply";
-    submit.classList.add("btn");
-    submit.classList.add("btn-primary");
-    submit.setAttribute("onclick", "submit_reply(" + id + ")");
-    submit.setAttribute("style", "margin: 1px; width: 33%;");
-    submit.id = "submit_button_" + id;
-
-    var button_holder = document.createElement("div");
-    button_holder.classList.add("button-holder");
-    button_holder.setAttribute("style", "display: flex; width: 100%; margin: 2px;");
-    button_holder.appendChild(name);
-    if (COMMENTO_OPTIONS.honeypot) {
-        var honeypot = document.createElement("input");
-        honeypot.classList.add("hidden");
-        honeypot.id = "__gotcha_" + id;
-
-        button_holder.appendChild(honeypot)
-    }
-    button_holder.appendChild(cancel);
-    button_holder.appendChild(submit);
-
-    body.appendChild(button_holder);
-}
-
-function timeDifference(current, previous) { // thanks stackoverflow
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
-
-    var elapsed = current - previous;
-
-    if (elapsed < msPerMinute) {
-         return Math.round(elapsed/1000) + ' seconds ago';   
-    }
-    else if (elapsed < msPerHour) {
-         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
-    }
-    else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' hours ago';   
-    }
-    else if (elapsed < msPerMonth) {
-        return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';   
-    }
-    else if (elapsed < msPerYear) {
-        return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';   
-    }
-    else {
-        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
-    }
-}
-
-make_cards = function(coms, cur) {
-    if(!(cur in coms) || coms[cur].length == 0)
-        return null;
-
-    var cards = document.createElement("div");
-    for(var i = 0; i < coms[cur].length; i++) {
-        var card = document.createElement("div");
-        card.classList.add("card");
-
-        var title = document.createElement("div");
-        title.classList.add("card-header");
-
-        var h5 = document.createElement("h5");
-        h5.innerHTML = coms[cur][i].name;
-
-        var subtitle = document.createElement("div");
-        subtitle.classList.add("card-subtitle");
-        subtitle.innerHTML = timeDifference(Date.now(), Date.parse(coms[cur][i].timestamp));
-        subtitle.setAttribute("style", "margin-left: 15px;");
-        title.appendChild(h5);
-        title.appendChild(subtitle);
-        card.appendChild(title);
-
-        var body = document.createElement("div");
-        body.id = "body_" + coms[cur][i].id;
-        body.classList.add("card-body");
-        body.innerHTML = converter.makeHtml(coms[cur][i].comment);
-        var res = make_cards(coms, coms[cur][i].id);
-        card.appendChild(body);
-
-        var footer = document.createElement("div");
-        footer.classList.add("card-header");
-        var button = document.createElement("button");
-        button.id = "reply_button_" + coms[cur][i].id;
-        button.classList.add("btn");
-        button.innerHTML = "Reply";
-        button.setAttribute("onclick", "show_reply(" + coms[cur][i].id + ")")
-        footer.appendChild(button);
-
-        card.appendChild(footer);
-        if(res != null) {
-            res.classList.add("card-body");
-            card.appendChild(res);
+        if (elapsed < msPerMinute) {
+            return Math.round(elapsed/1000) + ' seconds ago';
         }
-        cards.appendChild(card);
-    }
-
-    return cards;
-}
-
-redraw = function() {
-    document.getElementById("coms").innerHTML = "";
-    coms = {}
-    for(var i = 0; i < comments.length; i++) {
-        if(!(comments[i].parent in coms))
-            coms[comments[i].parent] = new Array();
-        coms[comments[i].parent].push(comments[i]);
-    }
-
-    cards = make_cards(coms, -1);
-    if(cards != null)
-        document.getElementById("coms").append(cards)
-}
-
-function loadJS(file, callback) {
-    var script = document.createElement("script");
-    script.type = "application/javascript";
-    script.src = file;
-    loaded = false;
-    script.onreadystatechange = script.onload = function() {
-        if(!loaded)
-            callback();
-        loaded = true;
-    }
-    document.body.appendChild(script);
-}
-
-function loadCSS(file) {
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.setAttribute("href", file);
-    link.setAttribute("rel", "stylesheet");
-    document.body.appendChild(link);
-}
-
-init_commento = function(server, options) {
-    COMMENTO_OPTIONS = options || {
-        honeypot: false
-    };
-    COMMENTO_SERVER = server;
-    loadJS("https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js", function() {
-        loadCSS("https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css");
-        loadCSS("https://cdn.rawgit.com/adtac/commento/0.1.2/vendor/commento.min.css");
-        loadCSS(server + "/assets/commento.min.css");
-        converter = new showdown.Converter();
-
-        var commento = document.getElementById("commento");
-
-        var div = document.createElement("div");
-        div.classList.add("commento-comments");
-
-        var textarea = document.createElement("textarea");
-        textarea.setAttribute("id", "root_comment");
-        textarea.classList.add("form-input");
-
-        var sub_area  = document.createElement("div");
-        sub_area.classList.add("submit_area");
-
-        var input = document.createElement("input");
-        input.classList.add("form-input");
-        input.classList.add("root-elem");
-        input.id = "root_name";
-        input.setAttribute("placeholder", "Name");
-
-        var button = document.createElement("button");
-        button.innerHTML = "Post comment";
-        button.classList.add("root-elem");
-        button.classList.add("btn");
-        button.classList.add("btn-primary");
-        button.setAttribute("onclick", "post_root()");
-
-        var comselem = document.createElement("div");
-        comselem.id = "coms";
-
-        sub_area.appendChild(input);
-        sub_area.appendChild(button);
-        div.appendChild(textarea);
-        if (options.honeypot) {
-            var honeypot = document.createElement("input");
-            honeypot.classList.add("hidden");
-            honeypot.id = "root__gotcha";
-
-            div.appendChild(honeypot)
+        else if (elapsed < msPerHour) {
+            return Math.round(elapsed/msPerMinute) + ' minutes ago';
         }
-        div.appendChild(sub_area);
-        div.appendChild(comselem);
-        commento.appendChild(div);
+        else if (elapsed < msPerDay ) {
+            return Math.round(elapsed/msPerHour ) + ' hours ago';
+        }
+        else if (elapsed < msPerMonth) {
+            return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';
+        }
+        else if (elapsed < msPerYear) {
+            return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';
+        }
+        else {
+            return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';
+        }
+    }
 
-        getcomments();
-    });
-}
+    var _showdownUrl = "/assets/showdown.min.js";
+    var _spectreUrl = "/assets/spectre.min.css";
+    var _commentoCssUrl = "/assets/commento.min.css";
+    var _serverUrl = '';
+    var _honeypot = false;
+    var API = {};
+
+    var _showdownConverter;
+
+    //Initialise commento in case is not initialised yet
+    var Commento = global.Commento || {};
+
+    Commento.version = '0.2.0';
+
+    var _getComments = function() {
+        var data = {
+            "url": document.location
+        };
+        post(API.get, data, function(reply) {
+            _redraw(JSON.parse(reply.response).comments);
+        });
+    };
+
+    var _makeCards = function(parentMap, cur) {
+        var currentParent = parentMap[cur];
+        if(!currentParent || !currentParent.length) {
+            return null;
+        }
+
+        var cards = create("div");
+        currentParent.forEach(function(comment) {
+            var card = create("div");
+            var title = create("div");
+            var h5 = create("h5");
+            var subtitle = create("div");
+            var body = create("div");
+            var footer = create("div");
+            var button = create("button");
+            var children = _makeCards(parentMap, comment.id);
+
+            addClass(card, "card");
+
+            addClass(title, "card-header");
+
+            h5.innerHTML = comment.name;
+
+            subtitle.innerHTML = timeDifference(Date.now(), Date.parse(comment.timestamp));
+            addClass(subtitle, "card-subtitle");
+            setAttr(subtitle, "style", "margin-left: 15px;");
+
+            body.id = "body_" + comment.id;
+            body.innerHTML = _showdownConverter.makeHtml(comment.comment);
+
+            addClass(body, "card-body");
+            addClass(footer, "card-header");
+
+            button.id = "reply_button_" + comment.id;
+            button.innerHTML = "Reply";
+            addClass(button, "btn");
+            setAttr(button, "onclick", "Commento.showReply(" + comment.id + ")");
+
+            footer.appendChild(button);
+            title.appendChild(h5);
+            title.appendChild(subtitle);
+            card.appendChild(title);
+            card.appendChild(body);
+            card.appendChild(footer);
+            if(children) {
+                children.classList.add("card-body");
+                card.appendChild(children);
+            }
+            cards.appendChild(card);
+        });
+
+        return cards;
+    };
+
+    var _redraw = function(comments) {
+        var $coms = $("coms");
+        var parentMap = {};
+        var parent;
+
+        $coms.innerHTML = "";
+
+        comments.forEach(function(comment) {
+            parent = comment.parent;
+            if(!(parent in parentMap)) {
+                parentMap[parent] = [];
+            }
+            parentMap[parent].push(comment);
+        });
+
+        var cards = _makeCards(parentMap, -1);
+        if(cards) {
+            append($coms, cards);
+        }
+    };
+
+    Commento.postRoot = function() {
+        var $rootComment = $("root_comment");
+        var $rootName = $("root_name");
+        var rootCommentValue = $rootComment.value;
+        var rootNameValue = $rootName.value;
+        var data;
+
+        removeClass($rootComment, "is-error");
+        removeClass($rootName, "is-error");
+
+        if(!rootCommentValue || !rootCommentValue.length) {
+            addClass($rootComment, "is-error");
+            return;
+        }
+
+        if(!rootNameValue || !rootNameValue.length) {
+            addClass($rootName, "is-error");
+            return;
+        }
+
+        data = {
+            url: document.location,
+            comment: $rootComment.value,
+            name: $rootName.value,
+            parent: -1
+        };
+
+        if(_honeypot)
+            data.gotcha = $("root_gotcha").value;
+
+        post(API.create, data, function() {
+            $rootComment.value = "";
+            _getComments();
+        });
+    };
+
+    Commento.submitReply = function(id) {
+        var $replyTextArea = $("reply_textarea_" + id);
+        var $nameInput = $("name_input_" + id);
+        var textAreaValue = $replyTextArea.value;
+        var nameInputValue = $nameInput.value;
+
+        removeClass($replyTextArea, "is-error");
+        removeClass($nameInput, "is-error");
+
+        if(!textAreaValue || !textAreaValue.length) {
+            addClass($replyTextArea, "is-error");
+            return;
+        }
+        if(!nameInputValue || !nameInputValue.length) {
+            $nameInput.classList.add("is-error");
+            return;
+        }
+
+        var data = {
+            comment: textAreaValue,
+            name: nameInputValue,
+            parent: id,
+            url: document.location
+        };
+
+        if(_honeypot)
+            data.gotcha = $("gotcha_" + id).value;
+
+        post(API.create, data, _getComments);
+    };
+
+    Commento.cancelReply = function(id) {
+        $("reply_textarea_" + id).remove();
+        $("submit_button_" + id).remove();
+        $("cancel_button_" + id).remove();
+        $("name_input_" + id).remove();
+        $("reply_button_" + id).setAttribute("style", "display: initial");
+    };
+
+    Commento.showReply = function(id) {
+        setAttr($("reply_button_" + id), "style", "display: none");
+
+        var $body = $("body_" + id);
+        var textArea = create("textarea");
+        var name = create("input");
+        var honeypot = create("input");
+        var cancel = create("button");
+        var submit = create("button");
+        var buttonHolder = create("div");
+
+        textArea.id = "reply_textarea_" + id;
+        addClass(textArea, "form-input");
+        append($body, textArea);
+
+        addClass(name, "form-input");
+        name.id = "name_input_" + id;
+        setAttr(name, "placeholder", "Name");
+        setAttr(name, "style", "margin: 1px; width: 33%;");
+
+        addClass(honeypot, "hidden");
+        honeypot.id = "gotcha_" + id;
+
+        cancel.id = "cancel_button_" + id;
+        cancel.innerHTML = "Cancel";
+        addClass(cancel, "btn");
+        setAttr(cancel, "onclick", "Commento.cancelReply(" + id + ")");
+        setAttr(cancel, "style", "margin: 1px; width: 33%;");
+
+        submit.id = "submit_button_" + id;
+        submit.innerHTML = "Reply";
+        addClass(submit, "btn");
+        addClass(submit, "btn-primary");
+        setAttr(submit, "onclick", "Commento.submitReply(" + id + ")");
+        setAttr(submit, "style", "margin: 1px; width: 33%;");
+
+        addClass(buttonHolder, "button-holder");
+        append(buttonHolder, name);
+        if(_honeypot) {
+            append(buttonHolder, honeypot);
+        }
+        append(buttonHolder, cancel);
+        append(buttonHolder, submit);
+        setAttr(buttonHolder, "style", "display: flex; width: 100%; margin: 2px;");
+
+        append($body, buttonHolder);
+    };
+
+    Commento.init = function(configuration) {
+        _serverUrl = configuration.serverUrl || _serverUrl;
+        _honeypot = configuration.honeypot || _honeypot;
+        _showdownUrl = configuration.showdownUrl || (_serverUrl + _showdownUrl);
+        _spectreUrl = configuration.spectreUrl || (_serverUrl + _spectreUrl);
+        _commentoCssUrl = _serverUrl + _commentoCssUrl;
+
+        API.get = _serverUrl + '/get';
+        API.create = _serverUrl + '/create';
+
+        loadCSS(_spectreUrl);
+        loadCSS(_commentoCssUrl);
+
+        loadJS(_showdownUrl, function() {
+            _showdownConverter = new showdown.Converter();
+
+            var commento = $("commento");
+            var div = create("div");
+            var textarea = create("textarea");
+            var subArea  = create("div");
+            var input = create("input");
+            var button = create("button");
+            var honeypot = create("input");
+            var commentEl = create("div");
+
+            addClass(div, "commento-comments");
+
+            textarea.setAttribute("id", "root_comment");
+            addClass(textarea, "form-input");
+
+            addClass(subArea, "submit_area");
+
+            addClass(input, "form-input");
+            addClass(input, "root-elem");
+            input.id = "root_name";
+            input.setAttribute("placeholder", "Name");
+
+            button.innerHTML = "Post comment";
+            addClass(button, "root-elem");
+            addClass(button, "btn");
+            addClass(button, "btn-primary");
+            button.setAttribute("onclick", "Commento.postRoot()");
+
+            commentEl.id = "coms";
+
+            addClass(honeypot, "hidden");
+            honeypot.id = "root_gotcha";
+
+            append(subArea, input);
+            append(subArea, button);
+            if(_honeypot)
+                append(subArea, honeypot);
+            append(div, textarea);
+            append(div, subArea);
+            append(div, commentEl);
+            append(commento, div);
+
+            _getComments();
+        });
+    };
+
+    global.Commento = Commento;
+
+}(window, document));
