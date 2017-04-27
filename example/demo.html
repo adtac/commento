@@ -1,12 +1,15 @@
 <html>
     <body>
         <title>Commento Demo</title>
-        <script src="https://cdn.rawgit.com/adtac/commento/0.1.2/vendor/commento.min.js"></script>
+        <script src="http://0.0.0.0:8080/assets/commento.js"></script>
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0">
     </body>
 
     <script>
-        init_commento("https://commento.now.sh");
+        Commento.init({
+            serverUrl: "http://0.0.0.0:8080",
+            honeypot: true
+        });
     </script>
 
     <style>
@@ -39,7 +42,7 @@
 
             <p>Vivamus nisl lacus, rhoncus a sollicitudin nec, accumsan at nulla. Etiam id mauris feugiat, ultrices massa elementum, viverra neque. Maecenas lacinia auctor leo, in scelerisque sapien facilisis non. Aliquam ullamcorper vulputate nisl ac bibendum. Integer bibendum nibh ut metus vestibulum, ut ultrices nunc ullamcorper. Vestibulum ornare, purus at placerat posuere, dolor arcu ultrices tellus, eget gravida odio velit non dui. Aliquam erat volutpat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam eleifend a nibh a cursus. Aenean elementum augue eu nisl convallis, ac auctor risus condimentum. Nam eget ligula non arcu eleifend aliquam et non ligula. Cras ut porttitor magna.</p>
 
-            <p><b>Note 1: comments are in chronological order. So you'll have to scroll all the way to the bottom so see your comment.</b></p>
+            <p><b>Note 1: Comments are in chronological order. So you'll have to scroll all the way to the bottom so see your comment.</b></p>
 
             <p><b>Note 2: Your comment will only be alive for 30 minutes. It'll be deleted after that. This is, of course, only for the demo.</b></p>
 
