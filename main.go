@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
@@ -36,13 +36,17 @@ func main() {
 		fmt.Println("clearing")
 		go func() {
 			for true {
-				cleanupOldComments()
+				err := cleanupOldComments()
+				if err != nil {
+					logger.Errorf("Error cleaning up old comments %s", err)
+				}
 				time.Sleep(60 * time.Second)
 				fmt.Println("deleting")
 			}
 		}()
 	}
 
+	logger.Infof("Running on port %s", port)
 	err = http.ListenAndServe(port, nil)
 	if err != nil {
 		logger.Fatalf("http.ListenAndServe: %v", err)
