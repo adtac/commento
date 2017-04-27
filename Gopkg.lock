@@ -1,0 +1,19 @@
+memo = "1fdc97aed7ba89cf900c8519c9a5ccf0c3ffbccbb8517f13f8f4b0f2074c4c13"
+
+[[projects]]
+  name = "github.com/mattn/go-sqlite3"
+  packages = ["."]
+  revision = "ca5e3819723d8eeaf170ad510e7da1d6d2e94a08"
+  version = "v1.2.0"
+
+[[projects]]
+  name = "github.com/op/go-logging"
+  packages = ["."]
+  revision = "b2cb9fa56473e98db8caba80237377e83fe44db5"
+  version = "v1"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "da118f7b8e5954f39d0d2130ab35d4bf0e3cb344"
