@@ -12,29 +12,44 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "")
 }
 
-func createCommentHandler(w http.ResponseWriter, r *http.Request) {
-	type resultContainer struct {
-		Success bool   `json:"success"`
-		Message string `json:"message"`
-	}
+type resultContainer struct {
+	Success  bool      `json:"success"`
+	Message  string    `json:"message"`
+	Comments []Comment `json:"comments,omitempty"`
+}
 
+func (res *resultContainer) render(w http.ResponseWriter) {
+	if res == nil {
+		res = &resultContainer{false, "Some internal error occurred", nil}
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	json, err := json.Marshal(res)
+	if err != nil {
+		w.Write([]byte(`{"Success":false,"Message":"Internal Server Error"}`))
+		return
+	}
+	w.Write(json)
+}
+
+func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	var parent int
 	var err error
 	var name string
 
-	result := resultContainer{Success: true}
+	result := &resultContainer{}
 	if r.Method != "POST" {
-		result.Success = false
 		result.Message = "This request must be a POST request."
-		goto end
+		result.render(w)
+		return
 	}
 
 	parent, err = strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
 		emit(err)
-		result.Success = false
 		result.Message = "Invalid parent ID."
-		goto end
+		result.render(w)
+		return
 	}
 
 	name = alphaNumericOnly(r.PostFormValue("name"))
@@ -42,42 +57,31 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	err = createComment(r.PostFormValue("url"), name, r.PostFormValue("comment"), parent)
 	if err != nil {
 		emit(err)
-		result.Success = false
 		result.Message = "Some internal error occurred."
-		goto end
+		result.render(w)
+		return
 	}
-
-end:
-	json, _ := json.Marshal(result)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "%s", string(json))
+	result.Success = true
+	result.Message = "Comment successfully created"
+	result.render(w)
 }
 
 func getCommentsHandler(w http.ResponseWriter, r *http.Request) {
-	type resultContainer struct {
-		Success  bool      `json:"success"`
-		Message  string    `json:"message"`
-		Comments []Comment `json:"comments"`
-	}
-
 	comments := []Comment{}
 	var err error
 
-	result := resultContainer{Success: true}
+	result := &resultContainer{Success: true}
 	if r.Method != "POST" {
 		result.Success = false
 		result.Message = "This request must be a POST request."
-		goto end
+		result.render(w)
+		return
 	}
 
 	comments, err = getComments(r.PostFormValue("url"))
 	if err != nil {
 		emit(err)
 	}
-
-end:
 	result.Comments = comments
-	json, _ := json.Marshal(result)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "%s", string(json))
+	result.render(w)
 }
