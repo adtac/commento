@@ -244,7 +244,7 @@ init_commento = function(server) {
     COMMENTO_SERVER = server;
     loadJS("https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js", function() {
         loadCSS("https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css");
-        loadCSS("https://cdn.rawgit.com/adtac/commento/0.0.2/vendor/commento.min.css");
+        loadCSS("https://cdn.rawgit.com/adtac/commento/0.1.2/vendor/commento.min.css");
         converter = new showdown.Converter();
 
         var commento = document.getElementById("commento");
