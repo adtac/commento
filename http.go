@@ -20,6 +20,7 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	var parent int
 	var err error
+	var name string
 
 	result := resultContainer{Success: true}
 	if r.Method != "POST" {
@@ -36,13 +37,9 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 		goto end
 	}
 
-	if !alphaOnly(r.PostFormValue("name")) {
-		result.Success = false
-		result.Message = "Only alphanumeric characters are allowed."
-		goto end
-	}
+	name = alphaNumericOnly(r.PostFormValue("name"))
 
-	err = createComment(r.PostFormValue("url"), r.PostFormValue("name"), r.PostFormValue("comment"), parent)
+	err = createComment(r.PostFormValue("url"), name, r.PostFormValue("comment"), parent)
 	if err != nil {
 		emit(err)
 		result.Success = false

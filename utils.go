@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func emit(err error) {
@@ -12,12 +13,13 @@ func die(err error) {
 	logger.Panic(fmt.Errorf("%s", err))
 }
 
-func alphaOnly(s string) bool {
-	alpha := "abcdefghijklmnopqrstuvwxyz0123456789"
+func alphaNumericOnly(s string) string {
+	alpha := "abcdefghijklmnopqrstuvwxyz0123456789 _-"
+	output := ""
 	for _, char := range s {
-		if !strings.Contains(alpha, strings.ToLower(string(char))) {
-			return false
+		if strings.Contains(alpha, strings.ToLower(string(char))) {
+			output += string(char)
 		}
 	}
-	return true
+	return output
 }
