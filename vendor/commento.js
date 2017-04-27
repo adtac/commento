@@ -1,287 +1,382 @@
-serialize = function(obj) {
-    var str = [];
-    for(var p in obj)
-        if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+(function(global, document){
+    'use strict';
+
+    function $(id){
+        return document.getElementById(id);
+    }
+
+    function append(root, el){
+        root.appendChild(el);
+    }
+
+    function addClass(el, cls){
+        el.classList.add(cls);
+    }
+
+    function removeClass(el, cls){
+        el.classList.remove(cls);
+    }
+
+    function create(el){
+        return document.createElement(el);
+    }
+
+    function serialize(obj) {
+        var str = [];
+        for(var p in obj){
+            if (obj.hasOwnProperty(p)) {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
         }
-    return str.join("&");
-}
 
-function post(url, data, callback) {
-    var xmlDoc = new XMLHttpRequest();
-    xmlDoc.open('POST', url, true);
-    xmlDoc.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlDoc.onreadystatechange = function() {
-        if (xmlDoc.readyState === 4 && xmlDoc.status === 200)
-            callback(xmlDoc);
+        return str.join("&");
     }
-    xmlDoc.send(serialize(data));
-}
 
-post_root = function() {
-    document.getElementById("root_comment").classList.remove("is-error");
-    document.getElementById("root_name").classList.remove("is-error");
-    if(document.getElementById("root_comment").value.length == 0) {
-        document.getElementById("root_comment").classList.add("is-error");
-        return;
+    function setAttr(node, attr, value){
+        node.setAttribute(attr, value);
     }
-    if(document.getElementById("root_name").value.length == 0) {
-        document.getElementById("root_name").classList.add("is-error");
-        return;
+
+    function post(url, data, callback) {
+        var xmlDoc = new XMLHttpRequest();
+        xmlDoc.open('POST', url, true);
+        xmlDoc.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlDoc.onreadystatechange = function() {
+            if (xmlDoc.readyState === 4 && xmlDoc.status === 200) {
+                callback(xmlDoc);
+            }
+        };
+        xmlDoc.send(serialize(data));
     }
-    data = {
-        "url": document.location,
-        "comment": document.getElementById("root_comment").value,
-        "name": document.getElementById("root_name").value,
-        "parent": -1
-    };
-    post(COMMENTO_SERVER + "/create", data, function(reply) {
-        reply = JSON.parse(reply.response);
-        document.getElementById("root_comment").value = "";
-        getcomments();
-    })
-}
 
-getcomments = function() {
-    data = {
-        "url": document.location,
-    };
-    post(COMMENTO_SERVER + "/get", data, function(reply) {
-        reply = JSON.parse(reply.response);
-        comments = reply.comments;
-        redraw();
-    })
-}
+    function loadJS(file, ready) {
+        var script = document.createElement("script");
+        var loaded = false;
 
-submit_reply = function(id) {
-    document.getElementById("reply_textarea_"+id).classList.remove("is-error");
-    document.getElementById("name_input_"+id).classList.remove("is-error");
-    if(document.getElementById("reply_textarea_"+id).value.length == 0) {
-        document.getElementById("reply_textarea_"+id).classList.add("is-error");
-        return;
+        script.type = "application/javascript";
+        script.src = file;
+        script.async = true;
+        script.onreadystatechange = script.onload = function() {
+            if(!loaded &&
+                (!this.readyState ||
+                    this.readyState === "loaded" ||
+                    this.readyState === "complete"))
+            {
+                ready();
+            }
+
+            loaded = true;
+            script.onload = script.onreadystatechange = null;
+        };
+
+        append(document.body, script);
     }
-    if(document.getElementById("name_input_"+id).value.length == 0) {
-        document.getElementById("name_input_"+id).classList.add("is-error");
-        return;
+
+    function loadCSS(file) {
+        var link = document.createElement("link");
+        var head = document.getElementsByTagName('head')[0];
+
+        link.type = "text/css";
+        link.setAttribute("href", file);
+        link.setAttribute("rel", "stylesheet");
+
+        append(head, link);
     }
-    data = {
-        "comment": document.getElementById("reply_textarea_"+ id).value,
-        "name": document.getElementById("name_input_"+ id).value,
-        "parent": id,
-        "url": document.location,
-    };
-    post(COMMENTO_SERVER + "/create", data, function(reply) {
-        reply = JSON.parse(reply.response);
-        getcomments();
-    })
-}
 
-cancel_reply = function(id) {
-    document.getElementById("reply_textarea_" + id).remove();
-    document.getElementById("submit_button_" + id).remove();
-    document.getElementById("cancel_button_" + id).remove();
-    document.getElementById("name_input_" + id).remove();
-    document.getElementById("reply_button_" + id).setAttribute("style", "display: initial");
-}
+    function timeDifference(current, previous) { // thanks stackoverflow
+        var msPerMinute = 60000;
+        var msPerHour = 3600000;
+        var msPerDay = 86400000;
+        var msPerMonth = 2592000000;
+        var msPerYear = 946080000000;
 
-show_reply = function(id) {
-    var button = document.getElementById("reply_button_" + id);
-    button.setAttribute("style", "display: none");
+        var elapsed = current - previous;
 
-    var body = document.getElementById("body_" + id);
-
-    var textarea = document.createElement("textarea");
-    textarea.classList.add("form-input");
-    textarea.id = "reply_textarea_" + id;
-    body.appendChild(textarea);
-
-    var name = document.createElement("input");
-    name.classList.add("form-input");
-    name.setAttribute("placeholder", "Name");
-    name.setAttribute("style", "margin: 1px; width: 33%;");
-    name.id = "name_input_" + id;
-
-    var cancel = document.createElement("button");
-    cancel.innerHTML = "Cancel";
-    cancel.classList.add("btn");
-    cancel.setAttribute("onclick", "cancel_reply(" + id + ")");
-    cancel.setAttribute("style", "margin: 1px; width: 33%;");
-    cancel.id = "cancel_button_" + id;
-
-    var submit = document.createElement("button");
-    submit.innerHTML = "Reply";
-    submit.classList.add("btn");
-    submit.classList.add("btn-primary");
-    submit.setAttribute("onclick", "submit_reply(" + id + ")");
-    submit.setAttribute("style", "margin: 1px; width: 33%;");
-    submit.id = "submit_button_" + id;
-
-    var button_holder = document.createElement("div");
-    button_holder.classList.add("button-holder");
-    button_holder.setAttribute("style", "display: flex; width: 100%; margin: 2px;");
-    button_holder.appendChild(name);
-    button_holder.appendChild(cancel);
-    button_holder.appendChild(submit);
-
-    body.appendChild(button_holder);
-}
-
-function timeDifference(current, previous) { // thanks stackoverflow
-    var msPerMinute = 60 * 1000;
-    var msPerHour = msPerMinute * 60;
-    var msPerDay = msPerHour * 24;
-    var msPerMonth = msPerDay * 30;
-    var msPerYear = msPerDay * 365;
-
-    var elapsed = current - previous;
-
-    if (elapsed < msPerMinute) {
-         return Math.round(elapsed/1000) + ' seconds ago';   
-    }
-    else if (elapsed < msPerHour) {
-         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
-    }
-    else if (elapsed < msPerDay ) {
-         return Math.round(elapsed/msPerHour ) + ' hours ago';   
-    }
-    else if (elapsed < msPerMonth) {
-        return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';   
-    }
-    else if (elapsed < msPerYear) {
-        return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';   
-    }
-    else {
-        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
-    }
-}
-
-make_cards = function(coms, cur) {
-    if(!(cur in coms) || coms[cur].length == 0)
-        return null;
-
-    var cards = document.createElement("div");
-    for(var i = 0; i < coms[cur].length; i++) {
-        var card = document.createElement("div");
-        card.classList.add("card");
-
-        var title = document.createElement("div");
-        title.classList.add("card-header");
-
-        var h5 = document.createElement("h5");
-        h5.innerHTML = coms[cur][i].name;
-
-        var subtitle = document.createElement("div");
-        subtitle.classList.add("card-subtitle");
-        subtitle.innerHTML = timeDifference(Date.now(), Date.parse(coms[cur][i].timestamp));
-        subtitle.setAttribute("style", "margin-left: 15px;");
-        title.appendChild(h5);
-        title.appendChild(subtitle);
-        card.appendChild(title);
-
-        var body = document.createElement("div");
-        body.id = "body_" + coms[cur][i].id;
-        body.classList.add("card-body");
-        body.innerHTML = converter.makeHtml(coms[cur][i].comment);
-        var res = make_cards(coms, coms[cur][i].id);
-        card.appendChild(body);
-
-        var footer = document.createElement("div");
-        footer.classList.add("card-header");
-        var button = document.createElement("button");
-        button.id = "reply_button_" + coms[cur][i].id;
-        button.classList.add("btn");
-        button.innerHTML = "Reply";
-        button.setAttribute("onclick", "show_reply(" + coms[cur][i].id + ")")
-        footer.appendChild(button);
-
-        card.appendChild(footer);
-        if(res != null) {
-            res.classList.add("card-body");
-            card.appendChild(res);
+        if (elapsed < msPerMinute) {
+            return Math.round(elapsed/1000) + ' seconds ago';
         }
-        cards.appendChild(card);
+        else if (elapsed < msPerHour) {
+            return Math.round(elapsed/msPerMinute) + ' minutes ago';
+        }
+        else if (elapsed < msPerDay ) {
+            return Math.round(elapsed/msPerHour ) + ' hours ago';
+        }
+        else if (elapsed < msPerMonth) {
+            return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';
+        }
+        else if (elapsed < msPerYear) {
+            return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';
+        }
+        else {
+            return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';
+        }
     }
 
-    return cards;
-}
+    var _showdownUrl = "https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js";
+    var _spectreUrl = "https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css";
+    var _commentoCssUrl = "https://cdn.rawgit.com/adtac/commento/0.0.2/vendor/commento.min.css";
+    var _serverUrl = '';
+    var API = {};
 
-redraw = function() {
-    document.getElementById("coms").innerHTML = "";
-    coms = {}
-    for(var i = 0; i < comments.length; i++) {
-        if(!(comments[i].parent in coms))
-            coms[comments[i].parent] = new Array();
-        coms[comments[i].parent].push(comments[i]);
-    }
+    var _showdownConverter;
+    var _comments = [];
 
-    cards = make_cards(coms, -1);
-    if(cards != null)
-        document.getElementById("coms").append(cards)
-}
+    //Initialise commento in case is not initialised yet
+    var Commento = global.Commento || {};
 
-function loadJS(file, callback) {
-    var script = document.createElement("script");
-    script.type = "application/javascript";
-    script.src = file;
-    loaded = false;
-    script.onreadystatechange = script.onload = function() {
-        if(!loaded)
-            callback();
-        loaded = true;
-    }
-    document.body.appendChild(script);
-}
+    Commento.version = '0.0.4';
 
-function loadCSS(file) {
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.setAttribute("href", file);
-    link.setAttribute("rel", "stylesheet");
-    document.body.appendChild(link);
-}
+    var _getComments = function() {
+        var data = {
+            "url": document.location
+        };
+        post(API.get, data, function(reply) {
+            var parsedReply = JSON.parse(reply.response);
+            _comments = parsedReply.comments;
+            _redraw();
+        });
+    };
 
-init_commento = function(server) {
-    COMMENTO_SERVER = server;
-    loadJS("https://cdn.rawgit.com/showdownjs/showdown/1.6.3/dist/showdown.min.js", function() {
-        loadCSS("https://cdn.rawgit.com/picturepan2/spectre/master/docs/dist/spectre.min.css");
-        loadCSS("https://cdn.rawgit.com/adtac/commento/0.0.2/vendor/commento.min.css");
-        converter = new showdown.Converter();
+    var _makeCards = function(coms, cur) {
+        var currentParent = coms[cur];
+        if(!currentParent || !currentParent.length){
+            return null;
+        }
 
-        var commento = document.getElementById("commento");
+        var cards = create("div");
+        currentParent.forEach(function(comment){
+            var card = create("div");
+            var title = create("div");
+            var h5 = create("h5");
+            var subtitle = create("div");
+            var body = create("div");
+            var footer = create("div");
+            var button = create("button");
+            var res = _makeCards(coms, comment.id);
 
-        var div = document.createElement("div");
-        div.classList.add("commento-comments");
+            addClass(card,"card");
+            addClass(title, "card-header");
 
-        var textarea = document.createElement("textarea");
-        textarea.setAttribute("id", "root_comment");
-        textarea.classList.add("form-input");
+            h5.innerHTML = comment.name;
 
-        var sub_area  = document.createElement("div");
-        sub_area.classList.add("submit_area");
+            subtitle.innerHTML = timeDifference(Date.now(), Date.parse(comment.timestamp));
+            addClass(subtitle, "card-subtitle");
+            setAttr(subtitle, "style", "margin-left: 15px;");
 
-        var input = document.createElement("input");
-        input.classList.add("form-input");
-        input.classList.add("root-elem");
-        input.id = "root_name";
-        input.setAttribute("placeholder", "Name");
+            body.id = "body_" + comment.id;
+            body.innerHTML = _showdownConverter.makeHtml(comment.comment);
 
-        var button = document.createElement("button");
-        button.innerHTML = "Post comment";
-        button.classList.add("root-elem");
-        button.classList.add("btn");
-        button.classList.add("btn-primary");
-        button.setAttribute("onclick", "post_root()");
+            addClass(body, "card-body");
+            addClass(footer, "card-header");
 
-        var comselem = document.createElement("div");
-        comselem.id = "coms";
+            button.id = "reply_button_" + comment.id;
+            button.innerHTML = "Reply";
+            addClass(button, "btn");
+            setAttr(button, "onclick", "Commento.showReply(" + comment.id + ")");
 
-        sub_area.appendChild(input);
-        sub_area.appendChild(button);
-        div.appendChild(textarea);
-        div.appendChild(sub_area);
-        div.appendChild(comselem);
-        commento.appendChild(div);
+            footer.appendChild(button);
+            title.appendChild(h5);
+            title.appendChild(subtitle);
+            card.appendChild(title);
+            card.appendChild(body);
+            card.appendChild(footer);
+            if(res) {
+                res.classList.add("card-body");
+                card.appendChild(res);
+            }
+            cards.appendChild(card);
+        });
 
-        getcomments();
-    });
-}
+        return cards;
+    };
+
+    var _redraw = function() {
+        var $coms = $("coms");
+        var coms = {};
+        var parent;
+
+        $coms.innerHTML = "";
+
+        _comments.forEach(function(comment){
+            parent = comment.parent;
+            if(!(parent in coms)){
+                coms[parent] = [];
+            }
+            coms[parent].push(comment);
+        });
+
+        var cards = _makeCards(coms, -1);
+        if(cards){
+            append($coms, cards);
+        }
+    };
+
+    Commento.postRoot = function() {
+        var $rootComment = $("root_comment");
+        var $rootName = $("root_name");
+        var rootCommentValue = $rootComment.value;
+        var rootNameValue = $rootName.value;
+        var data;
+
+        removeClass($rootComment, "is-error");
+        removeClass($rootName, "is-error");
+
+        if( !rootCommentValue || !rootCommentValue.length)
+        {
+            addClass($rootComment, "is-error");
+            return;
+        }
+
+        if( !rootNameValue || !rootNameValue.length){
+            addClass($rootName, "is-error");
+            return;
+        }
+
+        data = {
+            url: document.location,
+            comment: $rootComment.value,
+            name: $rootName.value,
+            parent: -1
+        };
+
+        post(API.create, data, function() {
+            $rootComment.value = "";
+            _getComments();
+        })
+    };
+
+    Commento.submitReply = function(id) {
+        var $replyTextArea = $("reply_textarea_" + id);
+        var $nameInput = $("name_input_" + id);
+        var textAreaValue = $replyTextArea.value;
+        var nameInputValue = $nameInput.value;
+
+        removeClass($replyTextArea, "is-error");
+        removeClass($nameInput, "is-error");
+
+        if(!textAreaValue.length) {
+            addClass($replyTextArea, "is-error");
+            return;
+        }
+        if(!nameInputValue.length) {
+            $nameInput.classList.add("is-error");
+            return;
+        }
+        var data = {
+            comment: textAreaValue,
+            name: nameInputValue,
+            parent: id,
+            url: document.location
+        };
+
+        post(API.create, data, _getComments);
+    };
+
+    Commento.cancelReply = function(id) {
+        $("reply_textarea_" + id).remove();
+        $("submit_button_" + id).remove();
+        $("cancel_button_" + id).remove();
+        $("name_input_" + id).remove();
+        $("reply_button_" + id).setAttribute("style", "display: initial");
+    };
+
+    Commento.showReply = function(id) {
+        setAttr($("reply_button_" + id), "style", "display: none");
+
+        var $body = $("body_" + id);
+        var textArea = create("textarea");
+        var name = create("input");
+        var cancel = create("button");
+        var submit = create("button");
+        var buttonHolder = create("div");
+
+        textArea.id = "reply_textarea_" + id;
+        addClass(textArea, "form-input");
+        append($body, textArea);
+
+        addClass(name, "form-input");
+        name.id = "name_input_" + id;
+        setAttr(name, "placeholder", "Name");
+        setAttr(name, "style", "margin: 1px; width: 33%;");
+
+
+        cancel.id = "cancel_button_" + id;
+        cancel.innerHTML = "Cancel";
+        addClass(cancel, "btn");
+        setAttr(cancel, "onclick", "Commento.cancelReply(" + id + ")");
+        setAttr(cancel, "style", "margin: 1px; width: 33%;");
+
+
+        submit.id = "submit_button_" + id;
+        submit.innerHTML = "Reply";
+        addClass(submit, "btn");
+        addClass(submit, "btn-primary");
+        setAttr(submit, "onclick", "Commento.submitReply(" + id + ")");
+        setAttr(submit, "style", "margin: 1px; width: 33%;");
+
+        addClass(buttonHolder, "button-holder");
+        append(buttonHolder, name);
+        append(buttonHolder, cancel);
+        append(buttonHolder, submit);
+        setAttr(buttonHolder, "style", "display: flex; width: 100%; margin: 2px;");
+
+        append($body, buttonHolder);
+    };
+
+    Commento.init = function(configuration) {
+        _serverUrl = configuration.serverUrl || _serverUrl;
+        _showdownUrl = configuration.showdownUrl || _showdownUrl;
+        _spectreUrl = configuration.spectreUrl || _spectreUrl;
+        _commentoCssUrl = configuration.commentoCssUrl || _commentoCssUrl;
+
+
+        API.get = _serverUrl + '/get';
+        API.create = _serverUrl + '/create';
+
+        loadCSS(_spectreUrl);
+        loadCSS(_commentoCssUrl);
+
+        loadJS(_showdownUrl, function() {
+            _showdownConverter = new showdown.Converter();
+
+            var commento = $("commento");
+            var div = create("div");
+            var textarea = create("textarea");
+            var subArea  = create("div");
+            var input = create("input");
+            var button = create("button");
+            var commentEl = create("div");
+
+            addClass(div, "commento-comments");
+
+            textarea.setAttribute("id", "root_comment");
+            addClass(textarea, "form-input");
+
+            addClass(subArea, "submit_area");
+
+            addClass(input, "form-input");
+            addClass(input, "root-elem");
+            input.id = "root_name";
+            input.setAttribute("placeholder", "Name");
+
+            button.innerHTML = "Post comment";
+            addClass(button, "root-elem");
+            addClass(button, "btn");
+            addClass(button, "btn-primary");
+            button.setAttribute("onclick", "Commento.postRoot()");
+
+            commentEl.id = "coms";
+
+            append(subArea, input);
+            append(subArea, button);
+            append(div, textarea);
+            append(div, subArea);
+            append(div, commentEl);
+            append(commento, div);
+
+            _getComments();
+        });
+    };
+
+    global.Commento = Commento;
+
+}(window, document));

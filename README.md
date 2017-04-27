@@ -49,6 +49,17 @@ With Commento, you wouldn't need to worry about shady ad companies getting your 
 
 Commento is extremely simplistic in comparison to Disqus. It does not have voting, moderation, and some of the more advanced stuff. Patches are more than welcome! But do keep in mind the whole purpose of this project - a lightweight comment engine with zero user tracking.
 
+#### Development
+
+To run the server
+
+```bash
+$ docker build . -t adtac/commento:VERSION
+$ docker run -d -p 8080:8080 adtac/commento:VERSION
+```
+
+For the front end any static server will do, you can grab any from this list https://gist.github.com/willurd/5720255
+
 ### License
 
 MIT License. See the [LICENSE](LICENSE) file for more information.
