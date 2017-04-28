@@ -79,13 +79,6 @@ func getCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	result := &resultContainer{Success: true}
-	if r.Method != "POST" {
-		result.Success = false
-		result.Message = "This request must be a POST request."
-		result.render(w)
-		return
-	}
-
 	comments, err = getComments(r.PostFormValue("url"))
 	if err != nil {
 		emit(err)
