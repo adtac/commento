@@ -1,0 +1,33 @@
+name: commento
+version: 'master'
+summary: A lightweight, open source, tracking-free comment engine alternative to Disqus
+description: |
+  An open source, lightweight, and tracking-free comment engine.
+
+grade: stable
+confinement: strict
+
+apps:
+  commento: 
+    command: launch_commento
+    plugs:
+      - network
+      - network-bind
+
+parts:
+  scripts:
+    plugin: dump
+    source: snap/scripts
+    organize:
+      'launch': bin/
+  assets:
+    plugin: dump
+    source: assets
+    organize:
+      '*': assets/
+  commento:
+    plugin: go
+    source: .
+    go-importpath: github.com/adtac/commento
+    build-packages:
+      - build-essential
