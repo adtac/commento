@@ -12,9 +12,9 @@ func loadDatabase(dbFile string) error {
 	}
 	statement := `
 		CREATE TABLE IF NOT EXISTS comments (
-			url text not null,
-			name text not null,
-			comment text not null,
+			url varchar(2083) not null,
+			name varchar(200) not null,
+			comment varchar(10000) not null,
 			time timestamp not null,
 			parent int
 		);
