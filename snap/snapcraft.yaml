@@ -1,0 +1,35 @@
+name: commento
+version: git
+summary: An open source, lightweight, privacy-focused comment engine.
+description: |
+  An open source, lightweight, privacy-focused comment engine alternative to Disqus.
+
+grade: stable
+confinement: strict
+
+apps:
+  commento: 
+    command: launch_commento
+    plugs:
+      - network
+      - network-bind
+
+parts:
+  scripts:
+    plugin: dump
+    source: snap/scripts
+    organize:
+      'launch': bin/
+  assets:
+    plugin: nodejs
+    source: .
+    npm-run:
+      - build
+    build:
+      cp -r assets $SNAPCRAFT_PART_INSTALL
+  commento:
+    plugin: go
+    source: .
+    go-importpath: github.com/adtac/commento
+    build-packages:
+      - build-essential
