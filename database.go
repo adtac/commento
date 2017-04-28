@@ -15,6 +15,7 @@ func loadDatabase(dbFile string) error {
 			url varchar(2083) not null,
 			name varchar(200) not null,
 			comment varchar(3000) not null,
+			depth int not null,
 			time timestamp not null,
 			parent int
 		);

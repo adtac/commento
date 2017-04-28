@@ -51,7 +51,6 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	name := template.HTMLEscapeString(r.PostFormValue("name"))
 	comment := template.HTMLEscapeString(r.PostFormValue("comment"))
-	fmt.Println(comment)
 
 	if r.PostFormValue("gotcha") != "" {
 		// If a value has been set, we just silently ignore the submission and return
