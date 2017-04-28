@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ ! -f $SNAP_USER_DATA/assets ]; then
+  printf "Copying assets..."
+  mkdir -p $SNAP_USER_DATA/assets
+  cp -r $SNAP/assets/* $SNAP_USER_DATA/assets/
+fi
+
+cd $SNAP_USER_DATA
+
+exec $SNAP/bin/commento
