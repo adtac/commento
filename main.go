@@ -49,8 +49,13 @@ func main() {
 		}()
 	}
 
+	svr := &http.Server{
+		Addr:         port,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
 	logger.Infof("Running on port %s", port)
-	err = http.ListenAndServe(port, nil)
+	err = svr.ListenAndServe()
 	if err != nil {
 		logger.Fatalf("http.ListenAndServe: %v", err)
 	}
