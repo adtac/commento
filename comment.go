@@ -14,20 +14,11 @@ type Comment struct {
 }
 
 func createComment(url string, name string, comment string, parent int) error {
-	tx, err := db.Begin()
-	if err != nil {
-		return err
-	}
-
 	statement := `
 		INSERT INTO comments(url, name, comment, time, parent) VALUES(?, ?, ?, ?, ?);
 	`
-	_, err = db.Exec(statement, url, name, comment, time.Now(), parent)
-	if err != nil {
-		return err
-	}
-
-	return tx.Commit()
+	_, err := db.Exec(statement, url, name, comment, time.Now(), parent)
+	return err
 }
 
 func getComments(url string) ([]Comment, error) {
