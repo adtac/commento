@@ -1,4 +1,16 @@
-memo = "1fdc97aed7ba89cf900c8519c9a5ccf0c3ffbccbb8517f13f8f4b0f2074c4c13"
+memo = "1628557502d4bbe8015252f530e9b7101fb29d0bd6527d8096ce3a6e2da20576"
+
+[[projects]]
+  name = "github.com/julienschmidt/httprouter"
+  packages = ["."]
+  revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
+  version = "v1.1"
+
+[[projects]]
+  name = "github.com/justinas/alice"
+  packages = ["."]
+  revision = "052b8b6c18edb9db317af86806d8e00ebaa94160"
+  version = "1.0.0"
 
 [[projects]]
   name = "github.com/mattn/go-sqlite3"
