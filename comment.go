@@ -1,7 +1,6 @@
 package main
 
 import (
-	. "fmt"
 	"time"
 )
 
@@ -49,13 +48,11 @@ func getComments(url string) ([]Comment, error) {
 	`
 	rows, err := db.Query(statement, url)
 	if err != nil {
-		Println(err.Error())
 		return nil, err
 	}
 	defer rows.Close()
 
 	comments := []Comment{}
-	Println("Comments:", comments)
 	for rows.Next() {
 
 		var id int
