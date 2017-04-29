@@ -14,7 +14,8 @@ func loadDatabase(dbFile string) error {
 		CREATE TABLE IF NOT EXISTS comments (
 			url varchar(2083) not null,
 			name varchar(200) not null,
-			comment varchar(10000) not null,
+			comment varchar(3000) not null,
+			depth int not null,
 			time timestamp not null,
 			parent int
 		);

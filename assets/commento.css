@@ -18,6 +18,12 @@ h5 {
     justify-content: flex-end;
 }
 
+.card-body {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
 .submit_area {
     width: 100%;
     padding-top: 5px;

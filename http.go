@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"html/template"
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,10 +32,6 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 }
 
 func createCommentHandler(w http.ResponseWriter, r *http.Request) {
-	var parent int
-	var err error
-	var name string
-
 	result := &resultContainer{}
 	parent, err = strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
@@ -44,7 +41,8 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name = alphaNumericOnly(r.PostFormValue("name"))
+	name := template.HTMLEscapeString(r.PostFormValue("name"))
+	comment := template.HTMLEscapeString(r.PostFormValue("comment"))
 
 	if r.PostFormValue("gotcha") != "" {
 		// If a value has been set, we just silently ignore the submission and return
@@ -54,7 +52,7 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = createComment(r.PostFormValue("url"), name, r.PostFormValue("comment"), parent)
+	err = createComment(r.PostFormValue("url"), name, comment, parent)
 	if err != nil {
 		emit(err)
 		result.Message = "Some internal error occurred."

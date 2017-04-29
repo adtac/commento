@@ -15,9 +15,29 @@ type Comment struct {
 
 func createComment(url string, name string, comment string, parent int) error {
 	statement := `
-		INSERT INTO comments(url, name, comment, time, parent) VALUES(?, ?, ?, ?, ?);
+		SELECT depth, parent FROM comments WHERE rowid=?;
 	`
-	_, err := db.Exec(statement, url, name, comment, time.Now(), parent)
+	rows, err := db.Query(statement, parent)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	depth := 0
+
+	for rows.Next() {
+		var pParent int
+		if err := rows.Scan(&depth, &pParent); err == nil {
+			if depth+1 > 5 {
+				parent = pParent;
+			}
+		}
+	}
+
+	statement = `
+		INSERT INTO comments(url, name, comment, time, depth, parent) VALUES(?, ?, ?, ?, ?, ?);
+	`
+	_, err = db.Exec(statement, url, name, comment, time.Now(), depth+1, parent)
 	return err
 }
 
