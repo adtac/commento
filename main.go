@@ -2,36 +2,36 @@ package main
 
 import (
 	"database/sql"
+	"flag"
+	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
 )
 
+const (
+	portDefault = "8080"
+)
+
 var logger = logging.MustGetLogger("commento")
 var db *sql.DB
 
 func main() {
-	err := loadDatabase("sqlite3.db")
-	if err != nil {
+	if err := loadDatabase("sqlite3.db"); err != nil {
 		die(err)
 	}
 
-	fs := http.FileServer(http.Dir("assets"))
+	// Parse command line options
+	var port = flag.String("port", portDefault, "port for commento service")
+	flag.Parse()
 
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/create", createCommentHandler)
-	http.HandleFunc("/get", getCommentsHandler)
-
-	var port string
-
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = ":" + fromEnv
-	} else {
-		port = ":8080"
+        // Check that we get a valid port value
+	if _, err := strconv.ParseInt(*port, 10, 32); err != nil {
+		die(err)
 	}
 
 	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
@@ -48,14 +48,16 @@ func main() {
 		}()
 	}
 
+	router := NewRouter()
 	svr := &http.Server{
-		Addr:         port,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		Addr:          ":" + *port,
+		Handler:       router,
+		ReadTimeout:   5 * time.Second,
+		WriteTimeout:  10 * time.Second,
 	}
-	logger.Infof("Running on port %s", port)
-	err = svr.ListenAndServe()
-	if err != nil {
+
+	logger.Infof("Running on port %s", *port)
+	if err := svr.ListenAndServe(); err != nil {
 		logger.Fatalf("http.ListenAndServe: %v", err)
 	}
 
