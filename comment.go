@@ -36,7 +36,9 @@ func getComments(url string) ([]Comment, error) {
 	defer rows.Close()
 
 	comments := []Comment{}
+	Println("Comments:", comments)
 	for rows.Next() {
+		Println("next")
 		var id int
 		var url string
 		var comment string
