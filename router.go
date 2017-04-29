@@ -18,6 +18,7 @@ func NewRouter() *Router {
 	router := Router{
 		*baseRouter,
 	}
+
 	router.initializeRoutes()
 
 	return &router
