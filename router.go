@@ -1,8 +1,6 @@
 package main
 
 import (
-	. "fmt"
-
 	"context"
 	"net/http"
 
@@ -16,17 +14,10 @@ type Router struct {
 func NewRouter() *Router {
 
 	baseRouter := httprouter.New()
-	baseRouter.HandleMethodNotAllowed = true
-	baseRouter.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		Println("Fuck")
-		Println("Method:", r.Method)
-	})
-	// baseRouter.HandleOPTIONS = true
 
 	router := Router{
 		*baseRouter,
 	}
-
 	router.initializeRoutes()
 
 	return &router
@@ -54,8 +45,9 @@ func (router *Router) Options(path string, handler http.Handler) {
 
 func wrapHandler(h http.Handler) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		if runEnv == "dev" {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+		}
 
 		ctx := context.WithValue(r.Context(), "params", ps)
 		h.ServeHTTP(w, r.WithContext(ctx))
