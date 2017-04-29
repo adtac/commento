@@ -8,8 +8,6 @@ import (
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Foosh")
-	// w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintf(w, "")
 }
 
@@ -23,7 +21,6 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 	if res == nil {
 		res = &resultContainer{false, "Some internal error occurred", nil}
 	}
-	// w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	json, err := json.Marshal(res)
 	if err != nil {
@@ -39,12 +36,6 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	var name string
 
 	result := &resultContainer{}
-
-	fmt.Println("parent:", 	r.PostFormValue("parent"))
-	fmt.Println("name:", 	r.PostFormValue("name"))
-	fmt.Println("url:", 	r.PostFormValue("url"))
-	fmt.Println("comment:", r.PostFormValue("comment"))
-
 	parent, err = strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
 		emit(err)
@@ -76,58 +67,16 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getCommentsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getCommentsHandler")
-	// // JwtHandler validates the signature of a JWT and decodes the claims
-	// func (mw Middlewares) JwtHandler(next http.Handler) http.Handler {
-
-	// 	fn := func(w http.ResponseWriter, r *http.Request) {
-
-	// 		var jwtString string
-
-	// 		// There was an error getting the JWT from the cookie
-
-	// 		// Getting the JWT from the cookie
-	// 		if jwtCookie, err := r.Cookie("TSIJwt"); err == nil {
-	// 			jwtString = jwtCookie.Value
-	// 			// Could not get the JWT from the cookie
-	// 		} else
-
-	fmt.Println("here1")
-	// w.Header().Set("Access-Control-Allow-Origin", "GET")
-	// origin := r.Header.Get("Origin")
-	// fmt.Println("Origin:", origin)
-	// w.Header().Set("Access-Control-Allow-Credentials", "true")
-	// w.Header().Set("Access-Control-Allow-Origin", origin)
 
 	result := &resultContainer{}
 
-	fmt.Println("here1")
-
-	for _, cookie := range r.Cookies() {
-		fmt.Fprint(w, cookie.Name)
-	}
-
-
-	var userID string
-	if userIDCookie, err := r.Cookie("userID"); err != nil {
-		emit(err)
-		result.Message = "Cookie was not set"
-		result.render(w)
-		return
-	} else {
-		userID = userIDCookie.Value
-	}
-	fmt.Println("here1")
-	comments := []Comment{}
 	result.Success = true
-	// comments, err = getComments(r.PostFormValue("url"))
-	fmt.Println("here1")
-	comments, err := getComments(userID)
-	if err != nil {
+	if comments, err := getComments(r.PostFormValue("url")); err != nil {
 		emit(err)
+		result.Message = "Some internal error occurred."
+		result.render(w)
+	} else {
+		result.Comments = comments
+		result.render(w)
 	}
-	result.Comments = comments
-	fmt.Println("result:", result)
-
-	result.render(w)
 }

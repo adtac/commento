@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -19,6 +20,9 @@ const (
 
 var logger = logging.MustGetLogger("commento")
 var db *sql.DB
+
+// The run environment for the application. Either dev, staging, or prod
+var runEnv string
 
 func main() {
 	if err := loadDatabase("sqlite3.db"); err != nil {
@@ -34,8 +38,22 @@ func main() {
 		die(err)
 	}
 
+	// Check for the run environment, default to dev
+	runEnv = strings.ToLower(os.Getenv("RUN_ENV"))
+	switch runEnv {
+	case "": // When the run environment is not set it is assumed to be dev mode
+		runEnv = "dev"
+	case "dev":
+	case "staging":
+	case "prod":
+	default:
+		logger.Errorf("Unrecognized run environment: %s", runEnv)
+		panic("Bad run environment")
+	}
+
+	logger.Infof("Run environment: %s", runEnv)
+
 	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
-		fmt.Println("clearing")
 		go func() {
 			for true {
 				err := cleanupOldComments()

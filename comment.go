@@ -36,9 +36,7 @@ func getComments(url string) ([]Comment, error) {
 	defer rows.Close()
 
 	comments := []Comment{}
-	Println("Comments:", comments)
 	for rows.Next() {
-		Println("next")
 		var id int
 		var url string
 		var comment string
@@ -48,7 +46,7 @@ func getComments(url string) ([]Comment, error) {
 		if err = rows.Scan(&id, &url, &comment, &name, &timestamp, &parent); err != nil {
 			return nil, err
 		}
-		Println("Name:", name)
+
 		comments = append(comments, Comment{ID: id, URL: url, Comment: comment, Name: name, Timestamp: timestamp, Parent: parent})
 	}
 
