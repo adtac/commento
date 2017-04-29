@@ -42,6 +42,11 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("url:", 	r.PostFormValue("url"))
 	fmt.Println("comment:", r.PostFormValue("comment"))
 
+	fmt.Println("parent:", 	r.PostFormValue("parent"))
+	fmt.Println("name:", 	r.PostFormValue("name"))
+	fmt.Println("url:", 	r.PostFormValue("url"))
+	fmt.Println("comment:", r.PostFormValue("comment"))
+
 	parent, err := strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
 		emit(err)
