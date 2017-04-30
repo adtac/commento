@@ -1,10 +1,10 @@
-textarea {
+textarea.textarea {
     overflow: hidden;
     min-height: 100px;
     width: 100%;
 }
 
-h5 {
+h5.h5 {
     margin-bottom: 0 !important;
 }
 
@@ -13,25 +13,20 @@ h5 {
     align-items: center;
 }
 
-.card-footer {
-    display: flex;
-    justify-content: flex-end;
-}
-
 .card-body {
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
 }
 
-.submit_area {
+.submit-area {
     width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
     display: flex;
 }
 
-.commento-comments {
+.comments {
     padding: 10px;
 }
 
@@ -43,19 +38,32 @@ h5 {
 .card {
     margin-top: 3px;
     margin-bottom: 3px;
+    border-color: #cccccc !important;
 }
 
-#coms {
+#commento-coms {
     margin-top: 45px;
-}
-
-.card {
-    border-bottom-color: #cccccc !important;
-    border-top-color: #cccccc !important;
-    border-left-color: #cccccc !important;
-    border-right-color: #cccccc !important;
 }
 
 .hidden {
     display: none;
+}
+
+.initial {
+    display: initial;
+}
+
+.extra-margin {
+    margin-left: 15px;
+}
+
+.margin {
+    margin: 1px;
+    width: 33%;
+}
+
+.button-holder {
+    display: flex;
+    width: 100%;
+    margin: 2px;
 }
