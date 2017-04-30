@@ -40,8 +40,7 @@ func main() {
 				if err != nil {
 					Logger.Errorf("Error cleaning up old comments %s", err)
 				}
-				time.Sleep(60 * time.Second)
-				fmt.Println("deleting")
+				time.Sleep(t)
 			}
 		}()
 	}
