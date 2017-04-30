@@ -41,7 +41,7 @@ func main() {
 			for true {
 				err := cleanupOldComments()
 				if err != nil {
-					logger.Errorf("Error cleaning up old comments %s", err)
+					logger.Errorf("Error cleaning up old comments %v", err)
 				}
 				time.Sleep(60 * time.Second)
 				fmt.Println("deleting")

@@ -5,9 +5,9 @@ import (
 )
 
 func emit(err error) {
-	fmt.Printf("%s", fmt.Errorf("%s", err))
+	fmt.Println(err)
 }
 
 func die(err error) {
-	logger.Panic(fmt.Errorf("%s", err))
+	logger.Panic(err)
 }
