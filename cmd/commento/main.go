@@ -33,15 +33,15 @@ func main() {
 	}
 	
 	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
-		fmt.Println("clearing")
+		t := time.Second * 60
+		logger.Infof("Demo Env: Cleaning old comments every %s", t)
 		go func() {
 			for true {
 				err := CleanupOldComments()
 				if err != nil {
 					Logger.Errorf("Error cleaning up old comments %s", err)
 				}
-				time.Sleep(60 * time.Second)
-				fmt.Println("deleting")
+				time.Sleep(t)
 			}
 		}()
 	}
