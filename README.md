@@ -49,6 +49,21 @@ So I thought I'd quickly write a simple comment engine in Go. I've been learning
 
 With Commento, you wouldn't need to worry about shady ad companies getting your data through hundreds of tracking services. You wouldn't need to worry about your page being slowed down - **Commento uses just 22 kB total**. And it's all open source.
 
+### Options
+
+You can configure options when run the Commento. To see which options are available, run:
+
+```
+go build
+./commento -h
+```
+
+You will see a screen like this with available options:
+
+[Imgur](http://i.imgur.com/ZZUwXei.png)
+
+> If you change the default http port to run the app, you also need to change URL in `src` attribute in `script` attribute in `html` file.
+
 ### Contributing
 
 Commento is extremely simplistic in comparison to Disqus. It does not have voting, moderation, and some of the more advanced stuff. Patches are more than welcome! But do keep in mind the whole purpose of this project - a lightweight comment engine with zero user tracking.
