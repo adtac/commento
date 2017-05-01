@@ -14,10 +14,6 @@ import (
 	"github.com/op/go-logging"
 )
 
-const (
-	portDefault = "8080"
-)
-
 var logger = logging.MustGetLogger("commento")
 var db *sql.DB
 
