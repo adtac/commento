@@ -14,10 +14,6 @@ import (
 	"github.com/op/go-logging"
 )
 
-const (
-	portDefault = "8080"
-)
-
 var logger = logging.MustGetLogger("commento")
 var db *sql.DB
 
@@ -30,7 +26,7 @@ func main() {
 	}
 
 	// Parse command line options
-	var port = flag.String("port", portDefault, "port for commento service")
+	var port = flag.String("port", "8080", "port for commento service")
 	flag.Parse()
 
         // Check that we get a valid port value
