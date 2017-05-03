@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 	
 	. "github.com/adtac/commento/lib"
@@ -17,6 +17,10 @@ func main() {
 		Die(err)
 	}
 	
+	if err := godotenv.Load(); err != nil {
+		Die(err)
+	}
+
 	fs := http.FileServer(http.Dir("assets"))
 	
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
@@ -34,7 +38,7 @@ func main() {
 	
 	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
 		t := time.Second * 60
-		logger.Infof("Demo Env: Cleaning old comments every %s", t)
+		Logger.Infof("Demo Env: Cleaning old comments every %s", t)
 		go func() {
 			for true {
 				err := CleanupOldComments()
