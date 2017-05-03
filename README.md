@@ -1,69 +1,86 @@
-# Commento
+<h1 align="center">Commento</h1>
 
-An open source, lightweight, and tracking-free comment engine.
+<p align="center">A lightweight, open source, tracking-free comment engine alternative to Disqus.</p>
 
-![Example](https://cloud.githubusercontent.com/assets/7521600/25356132/d00013e0-2956-11e7-8dba-772a8040ae0c.png)
+<p align="center"><a href="https://adtac.github.io/commento/example/demo.html">
+Check out a live demo of Commento here.
+</a></p>
+
+<p align="center"><img src="https://cloud.githubusercontent.com/assets/7521600/25660780/6a15a546-302b-11e7-8b55-f200ff856797.png" alt="Example"></p>
 
 ### Installation
 
-**[I've hosted a live demo here. Check it out!](https://adtac.github.io/commento/example/demo.html)**
-
-It's really simple to embed a Commento section to your webpage. A trivial page would look like:
-
-```html
-<html>
-    <body>
-        <script src="http://0.0.0.0:8080/assets/commento.min.js"></script>
-    </body>
-
-    <script>
-        Commento.init({
-            serverUrl: "http://0.0.0.0:8080"
-        })
-    </script>
-
-    <div id="commento">
-    </div>
-</html>
-```
-
-And that's it! Source the client-side script, add a `div` called `commento` (which will contain the comments) and initialize Commento with your server. The client-side script does all the hard work of building the markup and loading the CSS. The assets themselves (JavaScript and CSS) as served by the go application.
-
-The client-side script accepts an optional second argument `options`, in the form of a plain object. Currently, the only option is `(boolean) honeypot`, which adds a hidden input field to fool spammers. If anything is input into this field, the submission is silently ignored. This option defaults to `false` if the options param is not set explicitly.
-
-To get the server running, run:
+You need to have an instance of Commento running in your server. Commento is written in Go so you'll need to [install Go first](https://golang.org/dl/). Once that's done, you can build the server. First get the source:
 
 ```bash
 $ go get -v github.com/adtac/commento
 ```
 
-and build the project using a `go build .` to get a binary. Internally, I've used sqlite3 as the database. Take a look at the code for more details.
+Then go to the directory and run:
+
+```bash
+$ go build .
+```
+
+To start the server, run `./commento` from the build directory. By default the server will started on port 8080. If you want to change this, you can provide a environment variable. For example, if you want the server running on port `1234`:
+
+```bash
+$ PORT=1234 ./commento
+```
+
+Now you can embed Commento on your webpage. A trivial page would look like:
+
+```html
+<html>
+    <head>
+        <script src="http://127.0.0.1:8080/assets/commento.min.js"></script>
+    </head>
+
+    <script>
+        Commento.init({
+            serverUrl: "http://127.0.0.1:8080"
+        })
+    </script>
+
+    <div id="commento">
+        <!-- Commento will populate this div with comments -->
+    </div>
+</html>
+```
+
+You can run the server inside a Docker container too. To do this, run:
+
+```bash
+$ docker build . -t adtac/commento
+$ docker run -d -p 8080:8080 adtac/commento
+```
+
+and you should have the server available on port `8080`.
+
+### Options
+
+The `Commento.init` function takes an object of parameters. This is documented below:
+
+| Option    | Description                                                                                                                                                                                         |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| serverUrl | A server URL of the form `https://example.com` without a trailing slash. This will be used for all API requests and all the data will be stored on this server. Default: same server as the webpage |
+| honeypot  | A boolean that determines whether you want a honeypot field. This is a spam-protection technique where all comment posts with a non-empty `honeypot` field are rejected silently. Default: `false`  |
 
 ### Why?
 
-[Disqus](https://disqus.com/) is one of the most popular commenting services. However, over the years it has become quite bloated - one [blog post](http://donw.io/post/github-comments/) has a detailed analysis. In short, a Disqus-free page makes about 16 HTTP requests while the same page makes 105 requests when Disqus is enabled! This is mostly due to various tracking services that record every action you take on any website that has Disqus embedded.
+Let's take a look at a couple of options (and why each is non-ideal) if you want to embed comments on your blog:
 
-I ran a quick test: [go to this codepen](https://codepen.io/ryanbelisle/full/AwLgu/) and open your developer tools. You'll see that the sum total of all network requests related to Disqus comes to about ~250 kB! And there aren't even any comments!
+ - **Disqus**: Disqus is probably the biggest commenting system. In 2011 Disqus had about 500 million unique visitors every month<sup>[[1]](https://blog.disqus.com/the-numbers-of-disqus)</sup>. However, a recent blog post<sup>[[2]](http://donw.io/post/github-comments/)</sup> revealed that every embedded Disqus frame made about 90 network requests increasing the load time by a full 4 seconds. To make matters worse, it was discovered that they used tens of third-party tracking services on all pages. This is an obvious violation of user privacy: a simple commenting system should never need that many requests, handing over user data to that many third-party tracking services.
 
-So I thought I'd quickly write a simple comment engine in Go. I've been learning Go for the past month or so and it has been fantastic.
+ - **Facebook comments**: Facebook is one of the biggest data collecting companies in the world - every Share button and every Facebook comments box tracks every move you do. I just opened a random website with embedded Facebook comments and requests to `facebook.com` accounted for 1.5 MB of the 2.4 MB transferred to load the whole page. This included 87 network requests and 35 Javascript files -- and this didn't even load all the comments!
 
-With Commento, you wouldn't need to worry about shady ad companies getting your data through hundreds of tracking services. You wouldn't need to worry about your page being slowed down - **Commento uses just 22 kB total**. And it's all open source.
+While some open source solutions exist, I didn't find any attractive enough -- either they were discontinued or development was virtually non-existant. Open source is about choice so I figured I'd write my own software.
 
 ### Contributing
 
-Commento is extremely simplistic in comparison to Disqus. It does not have voting, moderation, and some of the more advanced stuff. Patches are more than welcome! But do keep in mind the whole purpose of this project - a lightweight comment engine with zero user tracking.
-
-#### Development
-
-To run the server
-
-```bash
-$ docker build . -t adtac/commento:VERSION
-$ docker run -d -p 8080:8080 adtac/commento:VERSION
-```
-
-For the front end any static server will do, you can grab any from [this list](https://gist.github.com/willurd/5720255).
+Please read [The Commento Manifesto](https://github.com/adtac/commento/blob/master/manifesto.md) to understand what the project is and what it isn't. Commento is extremely simplistic in comparison to Disqus. It does not have voting, spam-protection, moderation, and some of the more advanced stuff. Patches are more than welcome!
 
 ### License
 
 MIT License. See the [LICENSE](LICENSE) file for more information.
+
