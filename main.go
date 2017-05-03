@@ -73,5 +73,4 @@ func main() {
 	if err := svr.ListenAndServe(); err != nil {
 		logger.Fatalf("http.ListenAndServe: %v", err)
 	}
-
 }
