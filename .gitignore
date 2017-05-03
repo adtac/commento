@@ -1,4 +1,4 @@
 vendor/
-commento
+cmd/commento/commento
 *.db
 .idea
