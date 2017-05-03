@@ -1,10 +1,12 @@
-package main
+package lib
 
 import (
 	"database/sql"
 )
 
-func loadDatabase(dbFile string) error {
+var db *sql.DB
+
+func LoadDatabase(dbFile string) error {
 	var err error
 	db, err = sql.Open("sqlite3", dbFile)
 	if err != nil {
@@ -25,7 +27,7 @@ func loadDatabase(dbFile string) error {
 
 }
 
-func cleanupOldComments() error {
+func CleanupOldComments() error {
 	statement := `
 		DELETE FROM comments
 		WHERE time < date('now', '-30 minute');
