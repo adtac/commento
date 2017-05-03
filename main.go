@@ -2,8 +2,12 @@ package main
 
 import (
 	"database/sql"
+	"flag"
+	"fmt"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -13,30 +17,39 @@ import (
 var logger = logging.MustGetLogger("commento")
 var db *sql.DB
 
+// The run environment for the application. Either dev, staging, or prod
+var runEnv string
+
 func main() {
-	err := loadDatabase("sqlite3.db")
-	if err != nil {
+	if err := loadDatabase("sqlite3.db"); err != nil {
 		die(err)
 	}
 
-	fs := http.FileServer(http.Dir("assets"))
+	// Parse command line options
+	var port = flag.String("port", "8080", "port for commento service")
+	flag.Parse()
 
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/create", createCommentHandler)
-	http.HandleFunc("/get", getCommentsHandler)
-
-	var port string
-
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = ":" + fromEnv
-	} else {
-		port = ":8080"
+        // Check that we get a valid port value
+	if _, err := strconv.ParseInt(*port, 10, 32); err != nil {
+		die(err)
 	}
 
+	// Check for the run environment, default to dev
+	runEnv = strings.ToLower(os.Getenv("RUN_ENV"))
+	switch runEnv {
+	case "": // When the run environment is not set it is assumed to be dev mode
+		runEnv = "dev"
+	case "dev":
+	case "staging":
+	case "prod":
+	default:
+		logger.Errorf("Unrecognized run environment: %s", runEnv)
+		panic("Bad run environment")
+	}
+
+	logger.Infof("Run environment: %s", runEnv)
+
 	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
-		t := time.Second * 60
-		logger.Infof("Demo Env: Cleaning old comments every %s", t)
 		go func() {
 			for {
 				err := cleanupOldComments()
@@ -48,15 +61,16 @@ func main() {
 		}()
 	}
 
+	router := NewRouter()
 	svr := &http.Server{
-		Addr:         port,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-	}
-	logger.Infof("Running on port %s", port)
-	err = svr.ListenAndServe()
-	if err != nil {
-		logger.Fatalf("http.ListenAndServe: %v", err)
+		Addr:          ":" + *port,
+		Handler:       router,
+		ReadTimeout:   5 * time.Second,
+		WriteTimeout:  10 * time.Second,
 	}
 
+	logger.Infof("Running on port %s", *port)
+	if err := svr.ListenAndServe(); err != nil {
+		logger.Fatalf("http.ListenAndServe: %v", err)
+	}
 }

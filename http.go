@@ -9,21 +9,20 @@ import (
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	fmt.Fprintf(w, "")
 }
 
 type resultContainer struct {
 	Success  bool      `json:"success"`
 	Message  string    `json:"message"`
-	Comments []Comment `json:"comments,omitempty"`
+	Comments []Comment `json:"comments"`
 }
 
 func (res *resultContainer) render(w http.ResponseWriter) {
 	if res == nil {
 		res = &resultContainer{false, "Some internal error occurred", nil}
 	}
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	json, err := json.Marshal(res)
 	if err != nil {
@@ -35,13 +34,8 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 
 func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	result := &resultContainer{}
-	if r.Method != "POST" {
-		result.Message = "This request must be a POST request."
-		result.render(w)
-		return
-	}
 
-	parent, err := strconv.Atoi(r.PostFormValue("parent"))
+	parent, err = strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
 		emit(err)
 		result.Message = "Invalid parent ID."
@@ -73,14 +67,16 @@ func createCommentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getCommentsHandler(w http.ResponseWriter, r *http.Request) {
-	comments := []Comment{}
-	var err error
 
-	result := &resultContainer{Success: true}
-	comments, err = getComments(r.PostFormValue("url"))
-	if err != nil {
+	result := &resultContainer{}
+
+	result.Success = true
+	if comments, err := getComments(r.PostFormValue("url")); err != nil {
 		emit(err)
+		result.Message = "Some internal error occurred."
+		result.render(w)
+	} else {
+		result.Comments = comments
+		result.render(w)
 	}
-	result.Comments = comments
-	result.render(w)
 }

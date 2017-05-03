@@ -42,6 +42,7 @@ func createComment(url string, name string, comment string, parent int) error {
 }
 
 func getComments(url string) ([]Comment, error) {
+
 	statement := `
 		SELECT rowid, url, comment, name, time, parent FROM comments WHERE url=?;
 	`
@@ -53,6 +54,7 @@ func getComments(url string) ([]Comment, error) {
 
 	comments := []Comment{}
 	for rows.Next() {
+
 		var id int
 		var url string
 		var comment string
@@ -62,6 +64,7 @@ func getComments(url string) ([]Comment, error) {
 		if err = rows.Scan(&id, &url, &comment, &name, &timestamp, &parent); err != nil {
 			return nil, err
 		}
+
 		comments = append(comments, Comment{ID: id, URL: url, Comment: comment, Name: name, Timestamp: timestamp, Parent: parent})
 	}
 
