@@ -55,14 +55,27 @@ Commento is extremely simplistic in comparison to Disqus. It does not have votin
 
 #### Development
 
+##### Dependencies:
+
+* Install Node.js. You can follow [this instructions](https://github.com/creationix/nvm#install-script)
+* install project dependencies
+
+```bash
+npm install
+```
+
+* Run the front end build
+
+```bash
+npm run build
+```
+
 To run the server
 
 ```bash
 $ docker build . -t adtac/commento:VERSION
 $ docker run -d -p 8080:8080 adtac/commento:VERSION
 ```
-
-For the front end any static server will do, you can grab any from [this list](https://gist.github.com/willurd/5720255).
 
 ### License
 

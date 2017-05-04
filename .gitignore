@@ -2,3 +2,6 @@ vendor/
 cmd/commento/commento
 *.db
 .idea
+node_modules
+assets/js/*.min.js
+assets/style/*.min.css
