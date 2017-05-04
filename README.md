@@ -31,13 +31,21 @@ And that's it! Source the client-side script, add a `div` called `commento` (whi
 
 The client-side script accepts an optional second argument `options`, in the form of a plain object. Currently, the only option is `(boolean) honeypot`, which adds a hidden input field to fool spammers. If anything is input into this field, the submission is silently ignored. This option defaults to `false` if the options param is not set explicitly.
 
-To get the server running, run:
+To get the server running first you should install [dep](https://github.com/golang/dep), Golangs official dependency management tool.
+
+Once `dep` is installed you can get the dependencies needed by commento by entering `dep ensure`
+
+To build the Commento binary you enter the ./cmd/commento directory and build the project using a `go build` to get a binary. 
+
+The commands to get to a working binary are summarized here:
 
 ```bash
-$ go get -v github.com/adtac/commento
+$ dep ensure
+$ cd cmd/commento
+$ go build
 ```
 
-and build the project using a `go build .` to get a binary. Internally, I've used sqlite3 as the database. Take a look at the code for more details.
+Internally, I've used sqlite3 as the database. Take a look at the code for more details.
 
 ### Why?
 
