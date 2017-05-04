@@ -1,59 +1,48 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"net/http"
+	"log"
 	"os"
 	"time"
 
+	"github.com/adtac/commento"
 	_ "github.com/mattn/go-sqlite3"
-	
-	. "github.com/adtac/commento/lib"
+)
+
+var (
+	dir  = flag.String("dir", "../..", "commento working directory")
+	port = flag.Int("port", 8080, "commento http port")
 )
 
 func main() {
-	err := LoadDatabase("sqlite3.db")
-	if err != nil {
-		Die(err)
+	flag.Parse()
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	if err := os.Chdir(*dir); err != nil {
+		log.Fatalf("unable to change to commento directory: %v", err)
 	}
-	
-	fs := http.FileServer(http.Dir("assets"))
-	
-	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-	http.HandleFunc("/", IndexHandler)
-	http.HandleFunc("/create", CreateCommentHandler)
-	http.HandleFunc("/get", GetCommentsHandler)
-	
-	var port string
-	
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = ":" + fromEnv
-	} else {
-		port = ":8080"
+
+	if err := commento.LoadDatabase("sqlite3.db"); err != nil {
+		log.Fatalf("failed to load database: %v", err)
 	}
-	
-	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
-		t := time.Second * 60
-		logger.Infof("Demo Env: Cleaning old comments every %s", t)
+
+	if os.Getenv("DEMO") == "true" {
 		go func() {
-			for true {
-				err := CleanupOldComments()
-				if err != nil {
-					Logger.Errorf("Error cleaning up old comments %s", err)
+			log.Print("Demo Env: cleaning up old comments")
+			for {
+				if err := commento.CleanupOldComments(); err != nil {
+					log.Printf("Error cleaning up old comments: %v", err)
 				}
-				time.Sleep(t)
+				time.Sleep(time.Minute)
 			}
 		}()
 	}
-	
-	svr := &http.Server{
-		Addr:         port,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+
+	listenAddr := fmt.Sprintf(":%d", *port)
+	if err := commento.Serve(listenAddr); err != nil {
+		log.Fatal(err)
 	}
-	Logger.Infof("Running on port %s", port)
-	err = svr.ListenAndServe()
-	if err != nil {
-		Logger.Fatalf("http.ListenAndServe: %v", err)
-	}
+
 }

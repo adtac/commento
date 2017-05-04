@@ -1,12 +1,31 @@
-package lib
+package commento
 
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
-	"html/template"
+	"time"
 )
+
+// Serve launches the commento http server on the specified listen address
+func Serve(listenAddr string) error {
+	fs := http.FileServer(http.Dir("assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	http.HandleFunc("/", IndexHandler)
+	http.HandleFunc("/create", CreateCommentHandler)
+	http.HandleFunc("/get", GetCommentsHandler)
+
+	svr := &http.Server{
+		Addr:         listenAddr,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+	log.Printf("launching http server on %s", listenAddr)
+	return svr.ListenAndServe()
+}
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")

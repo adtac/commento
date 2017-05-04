@@ -1,4 +1,4 @@
-package lib
+package commento
 
 import (
 	"time"
@@ -29,7 +29,7 @@ func createComment(url string, name string, comment string, parent int) error {
 		var pParent int
 		if err := rows.Scan(&depth, &pParent); err == nil {
 			if depth+1 > 5 {
-				parent = pParent;
+				parent = pParent
 			}
 		}
 	}
