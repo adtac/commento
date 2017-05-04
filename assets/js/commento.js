@@ -130,6 +130,10 @@
         }
     }
 
+    function addEvent(el, event, fn){
+        el.addEventListener(event, fn);
+    }
+
     function makeEvent(cls, key, fn){
         return function onEvent(event){
             var cur = event.target;
@@ -142,7 +146,6 @@
 
             fn(id);
         };
-
     }
 
     /**
@@ -204,7 +207,7 @@
 
     var _showdownUrl = "/assets/showdown.min.js";
     var _spectreUrl = "/assets/spectre.min.css";
-    var _commentoCssUrl = "/assets/commento.min.css";
+    var _commentoCssUrl = "/assets/style/commento.min.css";
     var _serverUrl = '';
     var _honeypot = false;
     var _api = {};
@@ -216,7 +219,15 @@
             "url": document.location
         };
         post(_api.get, data, function(reply) {
-            _redraw(JSON.parse(reply.response).comments);
+            var response = {
+                comments: []
+            };
+
+            try {
+                response = JSON.parse(reply.response)
+            } catch (e){}
+
+            _redraw(response.comments);
         });
     };
 
@@ -476,14 +487,10 @@
 
             setAttr(input, "placeholder", "Name");
 
-            button.addEventListener('click', _postRoot);
-            // commento.addEventListener('click', _showReply);
-            // commento.addEventListener('click', _cancelReply);
-            // commento.addEventListener('click', _submitReply);
-
-            commento.addEventListener('click', makeEvent(SHOW_REPLY_JS, COMMENT_ID_DATA, _showReply));
-            commento.addEventListener('click', makeEvent(CANCEL_JS, COMMENT_ID_DATA, _cancelReply));
-            commento.addEventListener('click', makeEvent(SUBMIT_JS, COMMENT_ID_DATA, _submitReply));
+            addEvent(button, 'click', _postRoot);
+            addEvent(commento, 'click', makeEvent(SHOW_REPLY_JS, COMMENT_ID_DATA, _showReply));
+            addEvent(commento, 'click', makeEvent(CANCEL_JS, COMMENT_ID_DATA, _cancelReply));
+            addEvent(commento, 'click', makeEvent(SUBMIT_JS, COMMENT_ID_DATA, _submitReply));
 
             append(subArea, input);
             append(subArea, button);
