@@ -1,4 +1,4 @@
-package lib
+package commento
 
 import (
 	"database/sql"
