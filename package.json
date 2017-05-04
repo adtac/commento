@@ -1,0 +1,34 @@
+{
+  "name": "commento",
+  "version": "0.2.0",
+  "description": "A lightweight, open source, tracking-free comment engine alternative to Disqus",
+  "main": "assets/commento.min.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "build": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adtac/commento.git"
+  },
+  "keywords": [
+    "comment system",
+    "no tracking"
+  ],
+  "author": "adtac",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/adtac/commento/issues"
+  },
+  "homepage": "https://github.com/adtac/commento#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.2",
+    "uglify-js": "^2.8.22"
+  }
+}
