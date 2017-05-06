@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"log"
 	"time"
 )
 
@@ -29,9 +30,12 @@ func createComment(url string, name string, comment string, parent int) error {
 		var pParent int
 		if err := rows.Scan(&depth, &pParent); err == nil {
 			if depth+1 > 5 {
-				parent = pParent;
+				parent = pParent
 			}
 		}
+	}
+	if err := rows.Err(); err != nil {
+		log.Println(err)
 	}
 
 	statement = `
@@ -63,6 +67,9 @@ func getComments(url string) ([]Comment, error) {
 			return nil, err
 		}
 		comments = append(comments, Comment{ID: id, URL: url, Comment: comment, Name: name, Timestamp: timestamp, Parent: parent})
+	}
+	if err := rows.Err(); err != nil {
+		log.Println(err)
 	}
 
 	return comments, nil
