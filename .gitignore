@@ -1,3 +1,4 @@
+.DS_Store
 vendor/
 commento
 *.db
@@ -5,3 +6,5 @@ commento
 node_modules
 assets/js/*.min.js
 assets/style/*.min.css
+.env.*
+!.env.development
