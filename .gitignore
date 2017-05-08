@@ -5,3 +5,5 @@ cmd/commento/commento
 node_modules
 assets/js/*.min.js
 assets/style/*.min.css
+.env.*
+!.env.development
