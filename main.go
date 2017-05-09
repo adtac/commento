@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/joho/godotenv"
-	
+
 	. "github.com/adtac/commento/lib"
 )
 
@@ -26,12 +26,12 @@ func main() {
 	}
 
 	fs := http.FileServer(http.Dir("assets"))
-	
+
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/create", CreateCommentHandler)
 	http.HandleFunc("/get", GetCommentsHandler)
-	
+
 	if os.Getenv("COMMENTO_DEMO") == "true" {
 		t := time.Second * 60
 		Logger.Infof("Demo Env: Cleaning old comments every %s", t)
@@ -45,7 +45,7 @@ func main() {
 			}
 		}()
 	}
-	
+
 	port := os.Getenv("COMMENTO_PORT")
 
 	svr := &http.Server{
