@@ -205,8 +205,8 @@
      * This section is for internal use. This hold Commento internals that shouldn't be accessible from the outside
      */
 
-    var _showdownUrl = "/assets/showdown.min.js";
-    var _spectreUrl = "/assets/spectre.min.css";
+    var _showdownUrl = "/assets/vendor/showdown.min.js";
+    var _spectreUrl = "/assets/vendor/spectre.min.css";
     var _commentoCssUrl = "/assets/style/commento.min.css";
     var _serverUrl = '';
     var _honeypot = false;
