@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+
 	err := LoadDatabase("sqlite3.db")
 	if err != nil {
 		Die(err)
