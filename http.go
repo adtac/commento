@@ -73,7 +73,12 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = createComment(r.PostFormValue("url"), name, comment, parent)
+	err = db.CreateComment(&Comment{
+		URL: r.PostFormValue("url"),
+		Name: name,
+		Comment: comment,
+		Parent: parent,
+	})
 	if err != nil {
 		Emit(err)
 		result.Status = http.StatusInternalServerError
@@ -91,7 +96,7 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	result := &resultContainer{Success: true}
-	comments, err = getComments(r.PostFormValue("url"))
+	comments, err = db.GetComments(r.PostFormValue("url"))
 	if err != nil {
 		Emit(err)
 	}
