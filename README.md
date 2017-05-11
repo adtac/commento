@@ -47,7 +47,7 @@ Now you can embed Commento on your webpage. A trivial page would look like:
 ```html
 <html>
     <head>
-        <script src="http://127.0.0.1:8080/assets/commento.min.js"></script>
+        <script src="http://127.0.0.1:8080/assets/js/commento.js"></script>
     </head>
 
     <script>
