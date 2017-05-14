@@ -1,5 +1,5 @@
 vendor/
-cmd/commento/commento
+commento
 *.db
 .idea
 node_modules
