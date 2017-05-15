@@ -67,6 +67,17 @@
         xmlDoc.send(serialize(data));
     }
 
+    function get(url, callback) {
+        var xmlDoc = new XMLHttpRequest();
+        xmlDoc.open('GET', url, true);
+        xmlDoc.onreadystatechange = function() {
+            if (xmlDoc.readyState === 4 && xmlDoc.status === 200) {
+                callback(xmlDoc);
+            }
+        };
+        xmlDoc.send()
+    }
+
     function loadJS(file, ready) {
         var script = document.createElement("script");
         var loaded = false;
@@ -215,10 +226,7 @@
 
 
     var _getComments = function() {
-        var data = {
-            "url": document.location
-        };
-        post(_api.get, data, function(reply) {
+        get(_api.get + '?url=' + document.location, function(reply) {
             var response = {
                 comments: []
             };
