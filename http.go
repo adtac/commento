@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
-	"html/template"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -77,7 +77,16 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	result := &resultContainer{Success: true}
-	comments, err = getComments(r.PostFormValue("url"))
+
+	url := r.URL.Query().Get("url")
+	if url == "" {
+		result.Success = false
+		result.Message = "No URL provided."
+		result.render(w)
+		return
+	}
+
+	comments, err = getComments(url)
 	if err != nil {
 		Emit(err)
 	}
