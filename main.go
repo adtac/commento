@@ -20,6 +20,7 @@ func main() {
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/create", CreateCommentHandler)
 	http.HandleFunc("/get", GetCommentsHandler)
+	http.HandleFunc("/count", CountCommentsHandler)
 	
 	var port string
 	

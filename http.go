@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
-	"html/template"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -17,11 +17,12 @@ type resultContainer struct {
 	Success  bool      `json:"success"`
 	Message  string    `json:"message"`
 	Comments []Comment `json:"comments,omitempty"`
+	Count    *int       `json:"count,omitempty"`
 }
 
 func (res *resultContainer) render(w http.ResponseWriter) {
 	if res == nil {
-		res = &resultContainer{false, "Some internal error occurred", nil}
+		res = &resultContainer{false, "Some internal error occurred", nil, nil}
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -82,5 +83,34 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 		Emit(err)
 	}
 	result.Comments = comments
+	count := int(len(comments))
+	result.Count = &count
+	result.render(w)
+}
+
+func CountCommentsHandler(w http.ResponseWriter, r *http.Request) {
+	result := &resultContainer{}
+
+	url := r.URL.Query().Get("url")
+	if url == "" {
+		result.Success = false
+		result.Message = "No URL provided."
+		result.render(w)
+		return
+	}
+
+	var count int
+	var err error
+	count, err = countComments(url)
+	if err != nil {
+		result.Success = false
+		result.Message = "Some internal error occurred."
+		Emit(err)
+		return
+	}
+
+	result.Success = true
+	count = int(count)
+	result.Count = &count
 	result.render(w)
 }
