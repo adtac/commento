@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"time"
+	"database/sql"
 )
 
 type Comment struct {
@@ -73,4 +74,21 @@ func getComments(url string) ([]Comment, error) {
 	}
 
 	return comments, nil
+}
+
+func countComments(url string) (int, error) {
+	var count int
+
+	statement := `
+		SELECT COUNT(*) FROM comments WHERE url=?
+	`
+	err := db.QueryRow(statement, url).Scan(&count)
+	switch {
+	case err == sql.ErrNoRows:
+		count = 0
+	case err != nil:
+		log.Println(err)
+	}
+
+	return count, nil
 }
