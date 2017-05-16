@@ -207,7 +207,7 @@
 
     var _showdownUrl = "/assets/vendor/showdown.min.js";
     var _spectreUrl = "/assets/vendor/spectre.min.css";
-    var _commentoCssUrl = "/assets/style/commento.min.css";
+    var _commentoCssUrl = "/assets/style/commento.css";
     var _serverUrl = '';
     var _honeypot = false;
     var _api = {};
