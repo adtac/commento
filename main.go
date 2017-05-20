@@ -20,7 +20,7 @@ func main() {
 	// Load configuration from the environment.
 	// Values in earlier files will take precedence over later values
 	//    Ex. A COMMENTO_PORT value in .env.development.local will be used
-	//        even if COMMENTO_PORT is exists in a .env.development file
+	//        even if COMMENTO_PORT exists in a .env.development file
 	for _, envFile := range []string{".env.development.local", ".env.test.local", ".env.production.local", ".env.local", ".env.development", ".env.test", ".env.production", ".env"} {
 		godotenv.Load(envFile)
 	}
