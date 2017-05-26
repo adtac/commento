@@ -6,6 +6,7 @@ import (
 
 var db *sql.DB
 
+// LoadDatabase connects to the commento database
 func LoadDatabase(dbFile string) error {
 	var err error
 	db, err = sql.Open("sqlite3", dbFile)
@@ -27,6 +28,7 @@ func LoadDatabase(dbFile string) error {
 
 }
 
+// CleanupOldComments deletes old comments, useful in demo environments
 func CleanupOldComments() error {
 	statement := `
 		DELETE FROM comments
