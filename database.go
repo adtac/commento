@@ -2,13 +2,14 @@ package main
 
 import (
 	"database/sql"
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
 
-func LoadDatabase(dbFile string) error {
+func LoadDatabase(dbString string) error {
 	var err error
-	db, err = sql.Open("sqlite3", dbFile)
+	db, err := sql.Open("postgres", dbString)
 	if err != nil {
 		return err
 	}
