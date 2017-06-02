@@ -1,0 +1,4 @@
+package: github.com/adtac/commento
+import:
+- package: github.com/mattn/go-sqlite3
+- package: github.com/op/go-logging
