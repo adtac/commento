@@ -5,10 +5,8 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/joho/godotenv"
-
-	. "github.com/adtac/commento/lib"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
