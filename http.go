@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// IndexHandler handles requests to http index '/'
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintf(w, "")
@@ -44,6 +45,7 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 	w.Write(json)
 }
 
+// CreateCommentHandler handles adding of new comments
 func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	result := &resultContainer{}
 	if r.Method != "POST" {
@@ -55,9 +57,8 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	parent, err := strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
-		Emit(err)
 		result.Status = http.StatusBadRequest
-		result.Message = "Invalid parent ID."
+		result.Message = "Invalid parent ID, must be a number."
 		result.render(w)
 		return
 	}
@@ -75,6 +76,12 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = createComment(r.PostFormValue("url"), name, comment, parent)
 	if err != nil {
+		if err == ErrInvalidComment {
+			result.Status = http.StatusBadRequest
+			result.Message = ErrInvalidComment.Error()
+			result.render(w)
+			return
+		}
 		Emit(err)
 		result.Status = http.StatusInternalServerError
 		result.Message = "Some internal error occurred."
@@ -86,6 +93,7 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	result.render(w)
 }
 
+// GetCommentsHandler handles fetching of comments for a specific url
 func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	comments := []Comment{}
 	var err error
