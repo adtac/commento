@@ -14,6 +14,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type resultContainer struct {
+	Status   int       `json:"-"`
 	Success  bool      `json:"success"`
 	Message  string    `json:"message"`
 	Comments []Comment `json:"comments,omitempty"`
@@ -21,12 +22,22 @@ type resultContainer struct {
 
 func (res *resultContainer) render(w http.ResponseWriter) {
 	if res == nil {
-		res = &resultContainer{false, "Some internal error occurred", nil}
+		res = &resultContainer{
+			Status:   http.StatusInternalServerError,
+			Success:  false,
+			Message:  "Some internal error occurred",
+			Comments: nil,
+		}
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	if res.Status == 0 {
+		res.Status = 200
+	}
+	w.WriteHeader(res.Status)
 
 	json, err := json.Marshal(res)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"Success":false,"Message":"Internal Server Error"}`))
 		return
 	}
@@ -36,6 +47,7 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	result := &resultContainer{}
 	if r.Method != "POST" {
+		result.Status = http.StatusMethodNotAllowed
 		result.Message = "This request must be a POST request."
 		result.render(w)
 		return
@@ -44,6 +56,7 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	parent, err := strconv.Atoi(r.PostFormValue("parent"))
 	if err != nil {
 		Emit(err)
+		result.Status = http.StatusBadRequest
 		result.Message = "Invalid parent ID."
 		result.render(w)
 		return
@@ -63,6 +76,7 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	err = createComment(r.PostFormValue("url"), name, comment, parent)
 	if err != nil {
 		Emit(err)
+		result.Status = http.StatusInternalServerError
 		result.Message = "Some internal error occurred."
 		result.render(w)
 		return
