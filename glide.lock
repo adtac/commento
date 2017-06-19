@@ -1,6 +1,8 @@
 hash: 791aaf9a24179856621317e12f08cf40a722596868353ecaa13f190a18daa7c3
-updated: 2017-06-02T11:40:25.159381864-04:00
+updated: 2017-06-19T13:38:27.158846568-04:00
 imports:
+- name: github.com/joho/godotenv
+  version: 325433c502d409f3c3dc820098fb0cfe38d98dc7
 - name: github.com/mattn/go-sqlite3
   version: cf7286f069c3ef596efcc87781a4653a2e7607bd
 - name: github.com/op/go-logging
