@@ -31,16 +31,6 @@ func main() {
 	http.HandleFunc("/get", GetCommentsHandler)
 	http.HandleFunc("/count", CountCommentsHandler)
 
-	var port string
-
-	if fromEnv := os.Getenv("PORT"); fromEnv != "" {
-		port = ":" + fromEnv
-	} else {
-		port = ":8080"
-	}
-
-	if demoEnv := os.Getenv("DEMO"); demoEnv == "true" {
-
 	if os.Getenv("COMMENTO_DEMO") == "true" {
 		t := time.Second * 60
 		Logger.Infof("Demo Env: Cleaning old comments every %s", t)
