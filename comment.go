@@ -87,6 +87,7 @@ func countComments(url string) (int, error) {
 		count = 0
 	} else if err != nil {
 		log.Println(err)
+		return 0, err
 	}
 
 	return count, nil
