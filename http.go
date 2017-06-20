@@ -82,7 +82,20 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 		result.render(w)
 		return
 	}
+
 	result.Message = "Comment successfully created"
+	result.Success = true
+
+	var count int
+	var countErr error
+	count, countErr = countComments(r.PostFormValue("url"))
+	if countErr != nil {
+		result.Message = "Comment successfully created, however could not retrieve updated comment count."
+		Emit(err)
+	} else {
+		result.Count = count
+	}
+
 	result.render(w)
 }
 
