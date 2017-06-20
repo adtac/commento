@@ -18,7 +18,7 @@ type resultContainer struct {
 	Success  bool      `json:"success"`
 	Message  string    `json:"message"`
 	Comments []Comment `json:"comments,omitempty"`
-	Count    *int      `json:"count,omitempty"`
+	Count    int       `json:"count"`
 }
 
 func (res *resultContainer) render(w http.ResponseWriter) {
@@ -82,7 +82,6 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 		result.render(w)
 		return
 	}
-	result.Success = true
 	result.Message = "Comment successfully created"
 	result.render(w)
 }
@@ -97,8 +96,7 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 		Emit(err)
 	}
 	result.Comments = comments
-	count := int(len(comments))
-	result.Count = &count
+	result.Count = len(comments)
 	result.render(w)
 }
 
@@ -124,7 +122,6 @@ func CountCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result.Success = true
-	count = int(count)
-	result.Count = &count
+	result.Count = count
 	result.render(w)
 }
