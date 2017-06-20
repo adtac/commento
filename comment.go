@@ -1,9 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"time"
-	"database/sql"
 )
 
 type Comment struct {
@@ -83,10 +83,9 @@ func countComments(url string) (int, error) {
 		SELECT COUNT(*) FROM comments WHERE url=?
 	`
 	err := db.QueryRow(statement, url).Scan(&count)
-	switch {
-	case err == sql.ErrNoRows:
+	if err == sql.ErrNoRows {
 		count = 0
-	case err != nil:
+	} else if err != nil {
 		log.Println(err)
 	}
 
