@@ -1,4 +1,10 @@
-memo = "1fdc97aed7ba89cf900c8519c9a5ccf0c3ffbccbb8517f13f8f4b0f2074c4c13"
+memo = "d3e6ffa1255eef675e1bf01563e3879df85c6e2aa33f536d218b5f0b8b0b9c59"
+
+[[projects]]
+  name = "github.com/joho/godotenv"
+  packages = ["."]
+  revision = "726cc8b906e3d31c70a9671c90a13716a8d3f50d"
+  version = "v1.1"
 
 [[projects]]
   name = "github.com/mattn/go-sqlite3"
