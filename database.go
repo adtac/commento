@@ -1,34 +1,38 @@
 package main
 
 import (
-	"errors"
-	"fmt"
 	"strings"
-)
-
-var (
-	ErrDBConnStrParseNoSep = errors.New("Missing ':' in connection string")
-	ErrDBConnStrParseNotImplemented = func(dbName string) error {
-		return errors.New(fmt.Sprintf("The database '%s' is not implemented", dbName))
-	}
 )
 
 type Database interface {
 	CommentService
 }
 
+// parseConnectionStr will parse a string which designates the type of database to connect to
+// which are currently SQLite, Postgres and Mongo but, also the database parameters needed for
+// the database to operate. Naturally, these depend on the database but if not parameters are
+// specified then default values used for that database.
+// A connection string is of the form
+//    database:key1=value1;key2=value2
+//
+// For sqlite this would look like
+//    sqlite:file=sqlite3.db
+// but since sqlite3.db is the default database name we can use instead
+//    sqlite:
 func parseConnectionStr(connectionStr string) (dbName string, dbParams map[string]interface{}, err error) {
 
-	// Derive the database name dbName (sqlite, postgres, mongo etc.)
+	// Derive the database name dbName
+	//    Ex. sqlite, postgres, mongo etc.
 	dbNameSep := strings.Index(connectionStr, ":")
 	if dbNameSep == -1 {
-		err = ErrDBConnStrParseNoSep
+		err = Error("err.conn.parse.no.separator")
 		return
 	}
 
 	dbName = strings.TrimSpace(connectionStr[:dbNameSep])
 
 	// Get the parameters to initialize the database
+	//    Ex. filename=myDatabase;host=localhost:1234;
 	dbParams = make(map[string]interface{})
 	for _, param := range strings.Split(connectionStr[dbNameSep+1:], ";") {
 		paramSep := strings.Index(param, "=")
@@ -44,6 +48,9 @@ func parseConnectionStr(connectionStr string) (dbName string, dbParams map[strin
 				} else {
 					dbParams[key] = strings.TrimSpace(values[0])
 				}
+			} else {
+				err = Error("err.conn.parse.key.missing")
+				return
 			}
 		}
 	}
@@ -62,18 +69,18 @@ func NewDatabase(connectionStr string) (Database, error) {
 	case "sqlite":
 		return sqliteInit(dbParams)
 	case "postgres":
-		return nil, ErrDBConnStrParseNotImplemented("postgres")
+		return nil, Error("err.conn.parse.db.not.implemented", "postgres")
 	case "mongo":
-		return nil, ErrDBConnStrParseNotImplemented("mongo")
+		return nil, Error("err.conn.parse.db.not.implemented", "mongo")
 	default:
-		return nil, ErrDBConnStrParseNotImplemented(dbName)
+		return nil, Error("err.conn.parse.db.not.implemented", dbName)
 	}
 }
 
 var db Database
-func LoadDatabase(dbFile string) error {
+func LoadDatabase(dbConnectionStr string) error {
 
 	var err error
-	db, err = NewDatabase("sqlite:file=sqlite3.db")
+	db, err = NewDatabase(dbConnectionStr)
 	return err
 }

@@ -15,7 +15,7 @@ func sqliteInit(dbParams map[string]interface{}) (*SqliteDatabase, error) {
 
 	dbFilename, ok := dbParams["file"].(string)
 	if !ok {
-		dbFilename = "sqlite3.db"
+		return nil, Error("err.conn.parse.sqlite.file.missing")
 	}
 
 	db, err := sql.Open("sqlite3", dbFilename)
