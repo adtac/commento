@@ -36,25 +36,6 @@ func sqliteInit(dbParams map[string]interface{}) (*SqliteDatabase, error) {
 	if _, err = db.Exec(statement); err != nil {
 		return nil, err
 	} else {
-
-		if os.Getenv("DEMO") == "true" {
-			t := time.Second * 60
-			Logger.Infof("Demo Env: Cleaning old comments every %s", t)
-			go func() {
-				for {
-					statement := `
-		                              DELETE FROM comments
-                                              WHERE time < date('now', '-30 minute');
-                                        `
-					_, err := db.Exec(statement)
-					if err != nil {
-						Logger.Errorf("Error cleaning up old comments %s", err)
-					}
-					time.Sleep(t)
-				}
-			}()
-		}
-
 		return &SqliteDatabase{db}, nil
 	}
 }
