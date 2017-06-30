@@ -11,7 +11,7 @@ import (
 
 func main() {
 
-	err := LoadDatabase("sqlite3.db")
+	err := LoadDatabase("sqlite:file=sqlite3.db")
 	if err != nil {
 		Die(err)
 	}
@@ -30,20 +30,6 @@ func main() {
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/create", CreateCommentHandler)
 	http.HandleFunc("/get", GetCommentsHandler)
-
-	if os.Getenv("COMMENTO_DEMO") == "true" {
-		t := time.Second * 60
-		Logger.Infof("Demo Env: Cleaning old comments every %s", t)
-		go func() {
-			for true {
-				err := CleanupOldComments()
-				if err != nil {
-					Logger.Errorf("Error cleaning up old comments %s", err)
-				}
-				time.Sleep(t)
-			}
-		}()
-	}
 
 	port := os.Getenv("COMMENTO_PORT")
 
