@@ -3,6 +3,7 @@ vendor/
 commento
 *.db
 .idea
+Taskfile.yml
 node_modules
 assets/js/*.min.js
 assets/style/*.min.css
