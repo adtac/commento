@@ -2,38 +2,24 @@ package main
 
 import (
 	"errors"
-	. "fmt"
 )
 
-// This is the type of the error function you will create when
-// you want to return a new error. Example shown below
-type ErrFunc func(vs ...string) error
+var errorList = map[string]error{
+	"err.internal": errors.New("Some internal error occurred"),
 
-var errValues = map[string]interface{} {
+	"err.request.method.invalid": errors.New("Invalid request method"),
 
-	"err.conn.parse.no.separator" : func() error {
-		return errors.New("Missing ':' in connection string")
-	},
+	"err.request.field.missing": errors.New("Missing one or more required fields"),
 
-	"err.conn.parse.db.not.implemented" : func(dbName string) error {
-		return errors.New(Sprintf("The database '%s' is not implemented", dbName))
-	},
+	"err.request.field.invalid": errors.New("One or more fields is invalid"),
 
-	"err.conn.parse.key.missing" : func() error {
-		return errors.New("Configuration string has an empty key")
-	},
+	"err.db.unimplemented": errors.New("Database type not implemented"),
 
-	"err.conn.parse.sqlite.file.missing" : func() error {
-		return errors.New("Add filename with 'file=[filename].db when using sqlite")
-	},
+	"err.db.conf.separator.missing": errors.New("Missing separator in connection string"),
 
-	// Add new errors like follows:
-	// "err.generic": func(someValue string) error {
-	// 	return errors.New(Sprintf("This value '%s' has caused an error", someValue))
-	// },
-}
+	"err.db.conf.key.missing": errors.New("Missing DB configuration key"),
 
-// Gets the actual 'error' value
-func Error(errName string, vs ...string) error {
-	return errValues[errName].(ErrFunc)(vs...)
+	"err.db.conf.value.missing": errors.New("Missing DB configuration value"),
+
+	"err.db.conf.sqlite.filename.missing": errors.New("sqlite: Filename missing"),
 }

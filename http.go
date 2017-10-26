@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -8,11 +9,7 @@ import (
 	"strconv"
 )
 
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "")
-}
-
+// resultContainer stores the results of a request
 type resultContainer struct {
 	Status   int       `json:"-"`
 	Success  bool      `json:"success"`
@@ -20,6 +17,13 @@ type resultContainer struct {
 	Comments []Comment `json:"comments,omitempty"`
 }
 
+// IndexHandler handles GET requests to the root path '/'
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, "")
+}
+
+// render writes a resultContainer to a response stream
 func (res *resultContainer) render(w http.ResponseWriter) {
 	if res == nil {
 		res = &resultContainer{
@@ -44,62 +48,103 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 	w.Write(json)
 }
 
+// CreateCommentHandler handles the '/create' endpoint that is used to create a
+// new comment. It requires the following POST request body values:
+//	   - name: the name of the comment author
+//	   - parent: ID of the parent comment
+//     - comment: the comment text itself
+//     - url: the URL associated with this comment
 func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	result := &resultContainer{}
+	var err error
+
 	if r.Method != "POST" {
 		result.Status = http.StatusMethodNotAllowed
-		result.Message = "This request must be a POST request."
+		result.Message = errorList["err.request.method.invalid"].Error()
 		result.render(w)
 		return
 	}
 
-	parent, err := strconv.Atoi(r.PostFormValue("parent"))
-	if err != nil {
-		Emit(err)
-		result.Status = http.StatusBadRequest
-		result.Message = "Invalid parent ID."
-		result.render(w)
-		return
+	requiredFields := []string{"name", "parent", "comment", "url"}
+	for _, field := range requiredFields {
+		if strings.TrimSpace(r.PostFormValue(field)) == "" {
+			result.Status = http.StatusBadRequest
+			result.Message = errorList["err.request.field.missing"].Error()
+			result.render(w)
+			return
+		}
 	}
-
-	name := template.HTMLEscapeString(r.PostFormValue("name"))
-	comment := template.HTMLEscapeString(r.PostFormValue("comment"))
 
 	if r.PostFormValue("gotcha") != "" {
-		// If a value has been set, we just silently ignore the submission and return
-		// a success message. This prevents spammers from cottoning-on that the submission
-		// did not work.
+		result.Success = true
+		result.Message = "Comment successfully created"
 		result.render(w)
 		return
 	}
 
-	err = db.CreateComment(&Comment{
-		URL: r.PostFormValue("url"),
-		Name: name,
-		Comment: comment,
-		Parent: parent,
-	})
-	if err != nil {
-		Emit(err)
-		result.Status = http.StatusInternalServerError
-		result.Message = "Some internal error occurred."
+	comment := Comment{}
+
+	comment.Name = template.HTMLEscapeString(r.PostFormValue("name"))
+
+	comment.Comment = template.HTMLEscapeString(r.PostFormValue("comment"))
+
+	comment.URL = r.PostFormValue("url")
+
+	comment.Parent, err = strconv.Atoi(r.PostFormValue("parent"))
+	if err != nil || comment.Parent < 0 {
+		result.Status = http.StatusBadRequest
+		result.Message = errorList["err.request.field.invalid"].Error()
 		result.render(w)
 		return
 	}
+
+	err = db.CreateComment(&comment)
+	if err != nil {
+		result.Status = http.StatusInternalServerError
+		result.Message = errorList["err.internal"].Error()
+		result.render(w)
+		return
+	}
+
 	result.Success = true
 	result.Message = "Comment successfully created"
 	result.render(w)
 }
 
+// GetCommentsHandler handles the '/get' endpoint that is used to retrieve
+// all the comments for a particular URL. It takes one value:
+//     - url: the URL associated with this comment
 func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
+	result := &resultContainer{}
 	comments := []Comment{}
 	var err error
 
-	result := &resultContainer{Success: true}
+	if r.Method != "POST" {
+		result.Status = http.StatusMethodNotAllowed
+		result.Message = errorList["err.request.method.invalid"].Error()
+		result.render(w)
+		return
+	}
+
+	requiredFields := []string{"url"}
+	for _, field := range requiredFields {
+		if strings.TrimSpace(r.PostFormValue(field)) == "" {
+			result.Status = http.StatusBadRequest
+			result.Message = errorList["err.request.field.missing"].Error()
+			result.render(w)
+			return
+		}
+	}
+
 	comments, err = db.GetComments(r.PostFormValue("url"))
 	if err != nil {
-		Emit(err)
+		result.Status = http.StatusInternalServerError
+		result.Message = errorList["err.internal"].Error()
+		result.render(w)
+		return
 	}
+
+	result.Success = true
 	result.Comments = comments
 	result.render(w)
 }
