@@ -10,14 +10,13 @@ type SqliteDatabase struct {
 	*sql.DB
 }
 
-func sqliteInit(dbParams map[string]interface{}) (*SqliteDatabase, error) {
-
-	dbFilename, ok := dbParams["file"].(string)
+func sqliteInit(params map[string]string) (*SqliteDatabase, error) {
+	filename, ok := params["file"]
 	if !ok {
-		return nil, Error("err.conn.parse.sqlite.file.missing")
+		return nil, errorList["err.db.conf.sqlite.filename.missing"]
 	}
 
-	db, err := sql.Open("sqlite3", dbFilename)
+	db, err := sql.Open("sqlite3", filename)
 	if err != nil {
 		return nil, err
 	}
@@ -39,39 +38,35 @@ func sqliteInit(dbParams map[string]interface{}) (*SqliteDatabase, error) {
 	}
 }
 
-func (db *SqliteDatabase) CreateComment(comment *Comment) error {
-	url := comment.URL
-	name := comment.Name
-	text := comment.Comment
-	parent := comment.Parent
-
+func (db *SqliteDatabase) CreateComment(c *Comment) error {
 	statement := `
 		SELECT depth, parent FROM comments WHERE rowid=?;
 	`
-	rows, err := db.Query(statement, parent)
+	rows, err := db.Query(statement, c.Parent)
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
 
 	depth := 0
-
 	for rows.Next() {
 		var pParent int
 		if err := rows.Scan(&depth, &pParent); err == nil {
 			if depth+1 > 5 {
-				parent = pParent
+				c.Parent = pParent
 			}
 		}
 	}
+
 	if err := rows.Err(); err != nil {
 		log.Println(err)
+		return err
 	}
 
 	statement = `
-		INSERT INTO comments(url, name, text, time, depth, parent) VALUES(?, ?, ?, ?, ?, ?);
+		INSERT INTO comments(url, name, comment, time, depth, parent) VALUES(?, ?, ?, ?, ?, ?);
 	`
-	_, err = db.Exec(statement, url, name, text, time.Now(), depth+1, parent)
+	_, err = db.Exec(statement, c.URL, c.Name, c.Comment, time.Now(), depth+1, c.Parent)
 	return err
 }
 
@@ -87,20 +82,12 @@ func (db *SqliteDatabase) GetComments(url string) ([]Comment, error) {
 
 	comments := []Comment{}
 	for rows.Next() {
-		var id int
-		var url string
-		var comment string
-		var name string
-		var parent int
-		var timestamp time.Time
-		if err = rows.Scan(&id, &url, &comment, &name, &timestamp, &parent); err != nil {
+		c := Comment{}
+		if err = rows.Scan(&c.ID, &c.URL, &c.Comment, &c.Name, &c.Timestamp, &c.Parent); err != nil {
 			return nil, err
 		}
-		comments = append(comments, Comment{ID: id, URL: url, Comment: comment, Name: name, Timestamp: timestamp, Parent: parent})
-	}
-	if err := rows.Err(); err != nil {
-		log.Println(err)
+		comments = append(comments, c)
 	}
 
-	return comments, nil
+	return comments, rows.Err()
 }
