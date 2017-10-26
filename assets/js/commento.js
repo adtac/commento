@@ -488,6 +488,7 @@
             setAttr(input, "placeholder", "Name");
 
             addEvent(button, 'click', _postRoot);
+            addEvent(input, 'keypress', function(e) { if (e.keyCode === 13) _postRoot() });
             addEvent(commento, 'click', makeEvent(SHOW_REPLY_JS, COMMENT_ID_DATA, _showReply));
             addEvent(commento, 'click', makeEvent(CANCEL_JS, COMMENT_ID_DATA, _cancelReply));
             addEvent(commento, 'click', makeEvent(SUBMIT_JS, COMMENT_ID_DATA, _submitReply));
