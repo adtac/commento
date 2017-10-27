@@ -2,7 +2,7 @@
 
 <p align="center">A lightweight, open source, tracking-free comment engine alternative to Disqus.</p>
 
-<p align="center"><a href="https://adtac.pw:8002/">
+<p align="center"><a href="http://adtac.pw:8002/">
 Check out a live demo of Commento here.
 </a></p>
 
