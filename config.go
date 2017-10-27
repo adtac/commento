@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"os"
 	"github.com/joho/godotenv"
 )
@@ -20,6 +21,8 @@ func loadConfig() error {
 		newEnv, err := godotenv.Read(file)
 		if err == nil {
 			for key, value := range newEnv {
+				key = strings.TrimSpace(key)
+				value = strings.TrimSpace(value)
 				env[key] = value
 			}
 		}
