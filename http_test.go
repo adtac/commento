@@ -157,7 +157,7 @@ func testCreateCommentHandler(t *testing.T) {
 		},
 
 		testCase{
-			"Negative 'parent' should be rejected",
+			"Negative 'parent' (except -1) should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
 				"parent": "-12",

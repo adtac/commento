@@ -91,7 +91,7 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	comment.URL = r.PostFormValue("url")
 
 	comment.Parent, err = strconv.Atoi(r.PostFormValue("parent"))
-	if err != nil || comment.Parent < 0 {
+	if err != nil || comment.Parent < -1 {
 		result.Status = http.StatusBadRequest
 		result.Message = errorList["err.request.field.invalid"].Error()
 		result.render(w)
