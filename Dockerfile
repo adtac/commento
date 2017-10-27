@@ -1,22 +1,33 @@
-# golang1.8.1 base image
-FROM golang:1.8.1
+# Build backend
+FROM golang:1.8.1 as backend-build
 
-# copy source
 COPY . /go/src/commento
 WORKDIR /go/src/commento
 
-# build backend
 RUN go get -v .
-RUN go install .
+RUN go build -ldflags '-linkmode external -extldflags -static -w'
 
-# build frontend
-RUN git clone https://github.com/creationix/nvm.git /tmp/nvm
-RUN /bin/bash -c "source /tmp/nvm/nvm.sh && nvm install node"
-RUN /bin/bash -c "source /tmp/nvm/nvm.sh && npm install"
-RUN /bin/bash -c "source /tmp/nvm/nvm.sh && npm run-script build"
-RUN cp /go/src/commento/assets /go/bin/assets -vr
 
-RUN mkdir /data/
+# Build frontend
+FROM node:8.8-alpine as frontend-build
 
-# set entrypoint
-ENTRYPOINT /go/bin/commento
+COPY ./package.json /commento/package.json
+WORKDIR /commento/
+
+RUN npm install
+
+COPY ./assets/ /commento/assets/
+
+RUN npm build
+
+
+# Build final image
+FROM alpine:3.6
+
+COPY --from=backend-build /go/src/commento/commento /commento/
+COPY --from=frontend-build /commento/assets/ /commento/assets/
+
+RUN mkdir /commento-data/
+ENV COMMENTO_DATABASE_FILE /commento-data/sqlite3.db
+
+ENTRYPOINT /commento/commento

@@ -1,0 +1,7 @@
+*.db
+*.md
+.dockerfile
+.editorconfig
+.gitignore
+Dockerfile
+example/
