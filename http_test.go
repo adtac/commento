@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-type testCase struct {
+type testCaseHTTP struct {
 	name         string
 	handler      func(w http.ResponseWriter, r *http.Request)
 	method       string
@@ -27,29 +27,29 @@ func TestHTTP(t *testing.T) {
 		testGetCommentsHandler,
 	}
 
-	cleanupHTTP(t)
+	cleanupHTTPTest(t)
 	for _, test := range tests {
-		setupHTTP(t)
+		setupHTTPTest(t)
 		test(t)
-		cleanupHTTP(t)
+		cleanupHTTPTest(t)
 	}
 }
 
-func setupHTTP(t *testing.T) {
+func setupHTTPTest(t *testing.T) {
 	err := LoadDatabase("sqlite:file=sqlite3.db")
 	if err != nil {
 		t.Errorf("Unable to create test sqlite DB: %v", err)
 	}
 }
 
-func cleanupHTTP(t *testing.T) {
+func cleanupHTTPTest(t *testing.T) {
 	err := os.Remove("sqlite3.db")
 	if err != nil && !os.IsNotExist(err) {
 		t.Logf("Unable to remove the test sqlite file: %v", err)
 	}
 }
 
-func (tc testCase) Test(t *testing.T, funcName string) {
+func (tc testCaseHTTP) Test(t *testing.T, funcName string) {
 	form := url.Values{}
 	for key, value := range tc.postBody {
 		form.Add(key, value)
@@ -84,15 +84,15 @@ func (tc testCase) Test(t *testing.T, funcName string) {
 	}
 }
 
-func runTestCases(t *testing.T, funcName string, testCases []testCase) {
-	for _, tc := range testCases {
+func runTestCasesHTTP(t *testing.T, funcName string, testCasesHTTP []testCaseHTTP) {
+	for _, tc := range testCasesHTTP {
 		tc.Test(t, funcName)
 	}
 }
 
 func testIndexHandler(t *testing.T) {
-	testCases := []testCase{
-		testCase{
+	testCasesHTTP := []testCaseHTTP{
+		testCaseHTTP{
 			"Index should return 200 OK",
 			IndexHandler, "GET", "/",
 			nil,
@@ -100,19 +100,19 @@ func testIndexHandler(t *testing.T) {
 		},
 	}
 
-	runTestCases(t, "IndexHandler", testCases)
+	runTestCasesHTTP(t, "IndexHandler", testCasesHTTP)
 }
 
 func testCreateCommentHandler(t *testing.T) {
-	testCases := []testCase{
-		testCase{
+	testCasesHTTP := []testCaseHTTP{
+		testCaseHTTP{
 			"non-POST requests should be rejected",
 			CreateCommentHandler, "GET", "/create",
 			nil,
 			http.StatusMethodNotAllowed, errorList["err.request.method.invalid"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"POST request with no body should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			nil,
@@ -120,7 +120,7 @@ func testCreateCommentHandler(t *testing.T) {
 		},
 
 		// this case is sufficient to test all missing fields scenarios
-		testCase{
+		testCaseHTTP{
 			"Empty 'parent' should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -132,7 +132,7 @@ func testCreateCommentHandler(t *testing.T) {
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Whitespace fields should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -144,7 +144,7 @@ func testCreateCommentHandler(t *testing.T) {
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Non-integral 'parent' should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -156,7 +156,7 @@ func testCreateCommentHandler(t *testing.T) {
 			http.StatusBadRequest, errorList["err.request.field.invalid"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Negative 'parent' (except -1) should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -168,7 +168,7 @@ func testCreateCommentHandler(t *testing.T) {
 			http.StatusBadRequest, errorList["err.request.field.invalid"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"A good message should be accepted",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -180,7 +180,7 @@ func testCreateCommentHandler(t *testing.T) {
 			http.StatusOK, "",
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Comments with honeypot filled should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -193,7 +193,7 @@ func testCreateCommentHandler(t *testing.T) {
 			http.StatusOK, "",
 		},
 
-		testCase{
+		testCaseHTTP{
 			"The previous comment should not be present",
 			GetCommentsHandler, "POST", "/get",
 			map[string]string{
@@ -203,26 +203,26 @@ func testCreateCommentHandler(t *testing.T) {
 		},
 	}
 
-	runTestCases(t, "CreateCommentHandler", testCases)
+	runTestCasesHTTP(t, "CreateCommentHandler", testCasesHTTP)
 }
 
 func testGetCommentsHandler(t *testing.T) {
-	testCases := []testCase{
-		testCase{
+	testCasesHTTP := []testCaseHTTP{
+		testCaseHTTP{
 			"non-POST requests should be rejected",
 			GetCommentsHandler, "GET", "/get",
 			nil,
 			http.StatusMethodNotAllowed, errorList["err.request.method.invalid"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"POST request with no body should be rejected",
 			GetCommentsHandler, "POST", "/get",
 			nil,
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Empty 'url' should be rejected",
 			GetCommentsHandler, "POST", "/get",
 			map[string]string{
@@ -231,7 +231,7 @@ func testGetCommentsHandler(t *testing.T) {
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Whitespace fields should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -240,7 +240,7 @@ func testGetCommentsHandler(t *testing.T) {
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Seed comment for retrieval",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
@@ -252,7 +252,7 @@ func testGetCommentsHandler(t *testing.T) {
 			http.StatusOK, "",
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Comment retrieval should return all comments",
 			GetCommentsHandler, "POST", "/get",
 			map[string]string{
@@ -261,7 +261,7 @@ func testGetCommentsHandler(t *testing.T) {
 			http.StatusOK, "some unique comment",
 		},
 
-		testCase{
+		testCaseHTTP{
 			"Retrieval for a non-existant URL should return no comments",
 			GetCommentsHandler, "POST", "/get",
 			map[string]string{
@@ -271,5 +271,5 @@ func testGetCommentsHandler(t *testing.T) {
 		},
 	}
 
-	runTestCases(t, "GetCommentHandler", testCases)
+	runTestCasesHTTP(t, "GetCommentHandler", testCasesHTTP)
 }
