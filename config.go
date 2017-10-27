@@ -1,15 +1,16 @@
 package main
 
 import (
-	"strings"
-	"os"
 	"github.com/joho/godotenv"
+	"os"
+	"strings"
 )
 
 func loadConfig() error {
 	// Default value for each environment variable.
 	env := map[string]string{
-		"COMMENTO_PORT": "8080",
+		"COMMENTO_DATABASE_FILE": "sqlite3.db",
+		"COMMENTO_PORT":          "8080",
 	}
 
 	// Load configuration from the environment. Final value is governed by the

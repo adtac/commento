@@ -11,12 +11,13 @@ import (
 func main() {
 	var err error
 
-	err = LoadDatabase("sqlite:file=sqlite3.db")
+	err = loadConfig()
 	if err != nil {
 		Die(err)
 	}
 
-	err = loadConfig()
+	fp := os.Getenv("COMMENTO_DATABASE_FILE")
+	err = LoadDatabase("sqlite:file=" + fp)
 	if err != nil {
 		Die(err)
 	}
@@ -29,7 +30,6 @@ func main() {
 	http.HandleFunc("/get", GetCommentsHandler)
 
 	port := os.Getenv("COMMENTO_PORT")
-
 	svr := &http.Server{
 		Addr:         ":" + port,
 		ReadTimeout:  5 * time.Second,

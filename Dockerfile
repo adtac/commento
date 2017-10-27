@@ -16,5 +16,7 @@ RUN /bin/bash -c "source /tmp/nvm/nvm.sh && npm install"
 RUN /bin/bash -c "source /tmp/nvm/nvm.sh && npm run-script build"
 RUN cp /go/src/commento/assets /go/bin/assets -vr
 
+RUN mkdir /data/
+
 # set entrypoint
 ENTRYPOINT /go/bin/commento
