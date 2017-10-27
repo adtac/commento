@@ -67,6 +67,20 @@
         xmlDoc.send(serialize(data));
     }
 
+    function startSpinner(id) {
+        var button = $(id);
+
+        button.disabled = true;
+        addClass(button, "loading");
+    }
+
+    function clearSpinner(id) {
+        var button = $(id);
+
+        button.disabled = false;
+        removeClass(button, "loading");
+    }
+
     function loadJS(file, ready) {
         var script = document.createElement("script");
         var loaded = false;
@@ -163,6 +177,7 @@
 
     var ROOT_COMMENT_ID = "commento-root-comment";
     var ROOT_NAME_ID = "commento-root-name";
+    var ROOT_BUTTON_ID = "commento-root-post"
     var COMS_ID = "commento-coms";
     var HONEYPOT_ID = "commento-root-gotcha";
     var REPLY_ID = "commento-reply-textarea-";
@@ -214,7 +229,7 @@
     var _showdownConverter;
 
 
-    var _getComments = function() {
+    var _getComments = function(callback) {
         var data = {
             "url": document.location
         };
@@ -228,6 +243,9 @@
             } catch (e){}
 
             _redraw(response.comments);
+
+            if (typeof(callback) == "function")
+                callback();
         });
     };
 
@@ -339,9 +357,12 @@
             data.gotcha = $(HONEYPOT_ID).value;
         }
 
+        startSpinner(ROOT_BUTTON_ID);
         post(_api.create, data, function() {
-            $rootComment.value = "";
-            _getComments();
+            _getComments(function() {
+                $rootComment.value = "";
+                clearSpinner(ROOT_BUTTON_ID);
+            });
         });
     };
 
@@ -374,7 +395,12 @@
             data.gotcha = $(GOTCHA_ID + id).value;
         }
 
-        post(_api.create, data, _getComments);
+        startSpinner(SUBMIT_BTN_ID + id);
+        post(_api.create, data, function() {
+            _getComments(function() {
+                clearSpinner(ROOT_BUTTON_ID);
+            });
+        });
     };
 
     var _cancelReply = function(id){
@@ -472,6 +498,7 @@
             input.id = ROOT_NAME_ID;
             commentEl.id = COMS_ID;
             honeypot.id = HONEYPOT_ID;
+            button.id = ROOT_BUTTON_ID;
 
             button.innerHTML = "Post comment";
 
