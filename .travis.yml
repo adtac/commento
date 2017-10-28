@@ -1,0 +1,15 @@
+language: go
+
+go:
+  - 1.8.1
+
+before_install:
+  - go get -v
+
+script:
+  - go test -v -coverprofile=/dev/stdout
+
+notification:
+  email:
+    on_success: never
+    on_failure: never
