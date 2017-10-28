@@ -9,3 +9,4 @@ assets/js/*.min.js
 assets/style/*.min.css
 .env.*
 !.env.development
+cover.out
