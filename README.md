@@ -94,6 +94,13 @@ While some open source solutions exist, I didn't find any attractive enough -- e
 
 Please read [The Commento Manifesto](https://github.com/adtac/commento/blob/master/manifesto.md) to understand what the project is and what it isn't. Commento is extremely simplistic in comparison to Disqus. It does not have voting, spam-protection, moderation, and some of the more advanced stuff. Patches are more than welcome!
 
+### Known Issues
+
+ - On go1.8 on macOS 10.12.4 (possibly other macOS versions too), Commento will
+   crash with a segmentation fault. This is a [known
+   issue](https://github.com/golang/go/issues/19734) in the Go compiler. Please
+   use a later version (1.8.1 or higher) to fix this.
+
 ### License
 
 MIT License. See the [LICENSE](LICENSE) file for more information.
