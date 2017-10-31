@@ -6,6 +6,11 @@
 Check out a live demo of Commento here.
 </a></p>
 
+<p align="center">
+  <a href="https://travis-ci.org/adtac/commento"><img src="https://travis-ci.org/adtac/commento.svg?branch=master"></a>
+  <a href="https://gitter.im/commento-dev/commento"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
+</p>
+
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/7521600/25660780/6a15a546-302b-11e7-8b55-f200ff856797.png" alt="Example"></p>
 
 ### Installation
