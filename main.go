@@ -6,20 +6,26 @@ import (
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/op/go-logging"
 )
+
+var Logger = logging.MustGetLogger("commento")
 
 func main() {
 	var err error
 
 	err = loadConfig()
 	if err != nil {
-		Die(err)
+		Logger.Errorf("fatal error: cannot load config: %v\n", err)
+		return
 	}
 
-	fp := os.Getenv("COMMENTO_DATABASE_FILE")
-	err = LoadDatabase("sqlite:file=" + fp)
+	connectionStr := "sqlite:file=" + os.Getenv("COMMENTO_DATABASE_FILE")
+
+	err = LoadDatabase(connectionStr)
 	if err != nil {
-		Die(err)
+		Logger.Errorf("fatal error: cannot load %s: %v\n", connectionStr, err)
+		return
 	}
 
 	fs := http.FileServer(http.Dir("assets"))
@@ -36,9 +42,10 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	Logger.Infof("Running on port %s", port)
+	Logger.Infof("Starting the server on port %s", port)
 	err = svr.ListenAndServe()
 	if err != nil {
-		Die(err)
+		Logger.Errorf("fatal error: cannot start the server: %v\n", err)
+		return
 	}
 }
