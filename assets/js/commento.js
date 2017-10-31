@@ -116,6 +116,7 @@
     }
 
     function timeDifference(current, previous) { // thanks stackoverflow
+        var msJustNow = 5000;
         var msPerMinute = 60000;
         var msPerHour = 3600000;
         var msPerDay = 86400000;
@@ -124,7 +125,10 @@
 
         var elapsed = current - previous;
 
-        if (elapsed < msPerMinute) {
+        if (elapsed < msJustNow) {
+          return 'just now';
+        }
+        else if (elapsed < msPerMinute) {
             return Math.round(elapsed/1000) + ' seconds ago';
         }
         else if (elapsed < msPerHour) {
