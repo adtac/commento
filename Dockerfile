@@ -30,4 +30,5 @@ COPY --from=frontend-build /commento/assets/ /commento/assets/
 RUN mkdir /commento-data/
 ENV COMMENTO_DATABASE_FILE /commento-data/sqlite3.db
 
+WORKDIR /commento
 ENTRYPOINT /commento/commento
