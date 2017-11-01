@@ -15,10 +15,9 @@ COPY ./package.json /commento/package.json
 WORKDIR /commento/
 
 RUN npm install
+RUN npm build .
 
 COPY ./assets/ /commento/assets/
-
-RUN npm build
 
 
 # Build final image
