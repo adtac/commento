@@ -12,13 +12,14 @@ RUN go build -ldflags '-linkmode external -extldflags -static -w'
 FROM node:8.8-alpine as frontend-build
 
 COPY ./package.json /commento/package.json
+COPY ./Gulpfile.js /commento/Gulpfile.js
 WORKDIR /commento/
 
 RUN npm install
 
 COPY ./assets/ /commento/assets/
 
-RUN npm build
+RUN npm run-script build
 
 
 # Build final image
