@@ -106,16 +106,6 @@ Please read [The Commento Manifesto](https://github.com/adtac/commento/blob/mast
    issue](https://github.com/golang/go/issues/19734) in the Go compiler. Please
    use a later version (1.8.1 or higher) to fix this.
 
-### Sponsors
-
-Commento development is sponsored by [Mozilla](https://www.mozilla.org/en-US/) and [DigitalOcean](https://www.digitalocean.com/) independently.
-
-<p align="center">
-<a href="https://www.mozilla.org/en-US/"><img src="https://user-images.githubusercontent.com/7521600/32265838-d05b2d08-bf0a-11e7-92e1-2cb183eae616.png" title="Mozilla" height="40"></a>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-<a href="https://www.digitalocean.com"><img src="https://user-images.githubusercontent.com/7521600/32265839-d093c7da-bf0a-11e7-8d99-96a940041d06.png" title="DigitalOcean" height="40"></a>
-</p>
-
 ### License
 
 MIT License. See the [LICENSE](LICENSE) file for more information.
