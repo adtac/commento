@@ -1,11 +1,11 @@
 package main
 
 import (
-	"os"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"strings"
 	"testing"
 )
@@ -124,9 +124,9 @@ func testCreateCommentHandler(t *testing.T) {
 			"Empty 'parent' should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "",
-				"name": "name",
-				"url": "url",
+				"parent":  "",
+				"name":    "name",
+				"url":     "url",
 				"comment": "comment",
 			},
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
@@ -136,9 +136,9 @@ func testCreateCommentHandler(t *testing.T) {
 			"Whitespace fields should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "1",
-				"name": " \t",
-				"url": "url",
+				"parent":  "1",
+				"name":    " \t",
+				"url":     "url",
 				"comment": "comment",
 			},
 			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
@@ -148,9 +148,9 @@ func testCreateCommentHandler(t *testing.T) {
 			"Non-integral 'parent' should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "abcd",
-				"name": "name",
-				"url": "url",
+				"parent":  "abcd",
+				"name":    "name",
+				"url":     "url",
 				"comment": "comment",
 			},
 			http.StatusBadRequest, errorList["err.request.field.invalid"].Error(),
@@ -160,9 +160,9 @@ func testCreateCommentHandler(t *testing.T) {
 			"Negative 'parent' (except -1) should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "-12",
-				"name": "name",
-				"url": "url",
+				"parent":  "-12",
+				"name":    "name",
+				"url":     "url",
 				"comment": "comment",
 			},
 			http.StatusBadRequest, errorList["err.request.field.invalid"].Error(),
@@ -172,9 +172,9 @@ func testCreateCommentHandler(t *testing.T) {
 			"A good message should be accepted",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "2",
-				"name": "name",
-				"url": "url",
+				"parent":  "2",
+				"name":    "name",
+				"url":     "url",
 				"comment": "comment",
 			},
 			http.StatusOK, "",
@@ -184,11 +184,11 @@ func testCreateCommentHandler(t *testing.T) {
 			"Comments with honeypot filled should be rejected",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "2",
-				"name": "name",
-				"url": "url2",
+				"parent":  "2",
+				"name":    "name",
+				"url":     "url2",
 				"comment": "comment from a spammer",
-				"gotcha": "random autofilled text",
+				"gotcha":  "random autofilled text",
 			},
 			http.StatusOK, "",
 		},
@@ -244,9 +244,9 @@ func testGetCommentsHandler(t *testing.T) {
 			"Seed comment for retrieval",
 			CreateCommentHandler, "POST", "/create",
 			map[string]string{
-				"parent": "2",
-				"name": "name",
-				"url": "url1",
+				"parent":  "2",
+				"name":    "name",
+				"url":     "url1",
 				"comment": "some unique comment",
 			},
 			http.StatusOK, "",
