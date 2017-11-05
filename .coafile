@@ -1,0 +1,7 @@
+[all]
+bears = LineLengthBear
+max_line_length = 80
+
+[all.go]
+bears = GofmtBear, GoVetBear
+files = **.go
