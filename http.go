@@ -1,12 +1,12 @@
 package main
 
 import (
-	"strings"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // resultContainer stores the results of a request
