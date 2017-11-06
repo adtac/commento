@@ -33,6 +33,7 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/create", CreateCommentHandler)
+	http.HandleFunc("/delete", DeleteCommentHandler)
 	http.HandleFunc("/get", GetCommentsHandler)
 
 	port := os.Getenv("COMMENTO_PORT")

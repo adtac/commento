@@ -25,6 +25,7 @@ func TestHTTP(t *testing.T) {
 		testIndexHandler,
 		testCreateCommentHandler,
 		testGetCommentsHandler,
+		testDeleteCommentHandler,
 	}
 
 	cleanupHTTPTest(t)
@@ -272,4 +273,99 @@ func testGetCommentsHandler(t *testing.T) {
 	}
 
 	runTestCasesHTTP(t, "GetCommentHandler", testCasesHTTP)
+}
+
+func testDeleteCommentHandler(t *testing.T) {
+	testCasesHTTP := []testCaseHTTP{
+		testCaseHTTP{
+			"non-POST requests should be rejected",
+			DeleteCommentHandler, "GET", "/delete",
+			nil,
+			http.StatusMethodNotAllowed, errorList["err.request.method.invalid"].Error(),
+		},
+
+		testCaseHTTP{
+			"POST request with no body should be rejected",
+			DeleteCommentHandler, "POST", "/delete",
+			nil,
+			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
+		},
+
+		testCaseHTTP{
+			"empty 'comment_id' should be rejected",
+			DeleteCommentHandler, "POST", "/delete",
+			map[string]string{
+				"comment_id": "",
+			},
+			http.StatusBadRequest, errorList["err.request.field.missing"].Error(),
+		},
+
+		testCaseHTTP{
+			"'comment_id' < 0 should be rejected",
+			DeleteCommentHandler, "POST", "/delete",
+			map[string]string{
+				"comment_id": "-2",
+			},
+			http.StatusBadRequest, errorList["err.request.field.invalid"].Error(),
+		},
+
+		testCaseHTTP{
+			"non integral 'comment_id' should be rejected",
+			DeleteCommentHandler, "POST", "/delete",
+			map[string]string{
+				"comment_id": "Darthvader",
+			},
+			http.StatusBadRequest, errorList["err.request.field.invalid"].Error(),
+		},
+
+		testCaseHTTP{
+			"Seed comment for retrieval",
+			CreateCommentHandler, "POST", "/create",
+			map[string]string{
+				"parent":  "1",
+				"name":    "Luke Skywalker",
+				"url":     "the/force/awakens",
+				"comment": "The Last Hope",
+			},
+			http.StatusOK, "",
+		},
+
+		testCaseHTTP{
+			"Non matching 'comment_id' will not be affected",
+			DeleteCommentHandler, "POST", "/delete",
+			map[string]string{
+				"comment_id": "100",
+			},
+			http.StatusOK, "",
+		},
+
+		testCaseHTTP{
+			"Check list of comments to ensure no deletion",
+			GetCommentsHandler, "POST", "/get",
+			map[string]string{
+				"url": "the/force/awakens",
+			},
+			http.StatusOK, "The Last Hope",
+		},
+
+		testCaseHTTP{
+			"Succesful deletion with matching 'comment_id'",
+			DeleteCommentHandler, "POST", "/delete",
+			map[string]string{
+				"comment_id": "1",
+			},
+			http.StatusOK, "",
+		},
+
+		testCaseHTTP{
+			"Check list of comments to ensure that previous one was deleted",
+			GetCommentsHandler, "POST", "/get",
+			map[string]string{
+				"url": "the/force/awakens",
+			},
+			http.StatusOK, `{"success":true,"message":""}`,
+		},
+	}
+
+	runTestCasesHTTP(t, "DeleteCommentHandler", testCasesHTTP)
 }

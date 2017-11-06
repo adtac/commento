@@ -111,6 +111,51 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 	result.render(w)
 }
 
+// DeleteCommentHandler handles the '/delete' endpoint that is
+// used to delete an existing comment. It takes one value:
+//     - comment_id: the unique identifier of a comment
+func DeleteCommentHandler(w http.ResponseWriter, r *http.Request) {
+	result := &resultContainer{}
+	var err error
+
+	if r.Method != "POST" {
+		result.Status = http.StatusMethodNotAllowed
+		result.Message = errorList["err.request.method.invalid"].Error()
+		result.render(w)
+		return
+	}
+
+	requiredFields := []string{"comment_id"}
+	for _, field := range requiredFields {
+		if strings.TrimSpace(r.PostFormValue(field)) == "" {
+			result.Status = http.StatusBadRequest
+			result.Message = errorList["err.request.field.missing"].Error()
+			result.render(w)
+			return
+		}
+	}
+
+	commentID, err := strconv.Atoi(r.PostFormValue("comment_id"))
+	if err != nil || commentID < 0 {
+		result.Status = http.StatusBadRequest
+		result.Message = errorList["err.request.field.invalid"].Error()
+		result.render(w)
+		return
+	}
+
+	err = db.DeleteComment(commentID)
+	if err != nil {
+		result.Status = http.StatusInternalServerError
+		result.Message = errorList["err.internal"].Error()
+		result.render(w)
+		return
+	}
+
+	result.Success = true
+	result.Message = "Comment succesfully deleted"
+	result.render(w)
+}
+
 // GetCommentsHandler handles the '/get' endpoint that is used to retrieve
 // all the comments for a particular URL. It takes one value:
 //     - url: the URL associated with this comment

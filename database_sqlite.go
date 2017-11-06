@@ -70,6 +70,14 @@ func (db *SqliteDatabase) CreateComment(c *Comment) error {
 	return err
 }
 
+func (db *SqliteDatabase) DeleteComment(commentID int) error {
+	statement := `
+		DELETE FROM comments WHERE rowid=?
+	`
+	_, err := db.Exec(statement, commentID)
+	return err
+}
+
 func (db *SqliteDatabase) GetComments(url string) ([]Comment, error) {
 	statement := `
 		SELECT rowid, url, comment, name, time, parent FROM comments WHERE url=?;
