@@ -21,6 +21,12 @@ You need to have an instance of Commento running in your server. Commento is wri
 $ go get -v github.com/adtac/commento
 ```
 
+The dependencies for Commento are not included with the source. To install them please use the [glide vendoring tool](https://github.com/Masterminds/glide#install) and enter:
+
+```bash
+$ glide install
+```
+
 Then go to the directory and run:
 
 ```bash
@@ -28,6 +34,12 @@ $ go build .
 ```
 
 This should generate a `commento` binary.
+
+When working on the golang back-end occasionally a new dependency will be added to the code base. To include it permanently please enter:
+
+```bash
+$ glide update
+```
 
 To build the frontend you need to [install Node.js and `npm`](https://docs.npmjs.com/getting-started/installing-node). To install the build dependencies, run:
 
@@ -44,7 +56,7 @@ $ npm run build
 To start the server, run `./commento` from the build directory. By default the server will started on port 8080. If you want to change this, you can provide a environment variable. For example, if you want the server running on port `1234`:
 
 ```bash
-$ PORT=1234 ./commento
+$ COMMENTO_PORT=1234 ./commento
 ```
 
 Now you can embed Commento on your webpage. A trivial page would look like:
