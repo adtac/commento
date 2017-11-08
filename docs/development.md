@@ -96,3 +96,27 @@ Coverage is a trendy metric to quantitatively measure tests. However, I don't
 think 100% coverage is a useful thing at all. While I'd still like to measure
 coverage every now and then, I don't believe that rabidly adding unit tests to
 achieve the magical 100% number is constructive.
+
+#### Using Rebases
+
+Rebases help in maintaining a linear commit history. A linear commit history is
+much better and cleaner than a merges coming in from left, right, and center.
+It helps you follow the chain of commits easier when your looking at the history
+later on as well.
+
+For these reasons, always rebase before submitting a pull request. It's
+generally preferable to rebase before you start your work as well so that you
+wouldn't have to deal with the rare conflict, but that's optional. To do a
+rebase before you push to your branch, first add the upstream repository as a
+remote and then pull in the new changes after you make your commits:
+
+```bash
+$ git remote add upstream https://github.com/adtac/commento.git
+$ git pull --rebase upstream master
+```
+
+Now you can push to your fork's (`origin`) branch:
+
+```bash
+$ git push --set-upstream origin master
+```
