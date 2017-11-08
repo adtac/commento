@@ -1,9 +1,14 @@
+[[constraint]]
+  name = "github.com/joho/godotenv"
+  source = "https://github.com/joho/godotenv.git"
+  version = "~1.2.0"
 
-# Example:
-# [[dependencies]]
-# source = "https://github.com/myfork/package.git"
-# branch = "master"
-# name = "github.com/vendor/package"
-# Note: revision will depend on your repository type, i.e git, svc, bzr etc...
-# revision = "abc123"
-# version = "1.0.0"
+[[constraint]]
+  name = "github.com/mattn/go-sqlite3"
+  source = "https://github.com/mattn/go-sqlite3.git"
+  version = "~1.3.0"
+
+[[constraint]]
+  name = "github.com/op/go-logging"
+  source = "https://github.com/op/go-logging.git"
+  version = "~v1"
