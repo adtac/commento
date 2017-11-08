@@ -10,3 +10,4 @@ assets/style/*.min.css
 .env.*
 !.env.development
 cover.out
+dist
