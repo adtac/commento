@@ -1,112 +1,121 @@
-<h1 align="center">Commento</h1>
-
-<p align="center">A lightweight, open source, tracking-free comment engine alternative to Disqus.</p>
-
-<p align="center"><a href="http://adtac.pw:8002/">
-Check out a live demo of Commento here.
-</a></p>
-
 <p align="center">
-  <a href="https://travis-ci.org/adtac/commento"><img src="https://travis-ci.org/adtac/commento.svg?branch=master"></a>
-  <a href="https://gitter.im/commento-dev/commento"><img src="https://badges.gitter.im/Join%20Chat.svg"></a>
+<img src="https://user-images.githubusercontent.com/7521600/32532651-bc79334a-c471-11e7-823c-222782000ff4.png" height="300">
 </p>
 
-<p align="center"><img src="https://cloud.githubusercontent.com/assets/7521600/25660780/6a15a546-302b-11e7-8b55-f200ff856797.png" alt="Example"></p>
+<p align="center">A lightweight, open-source, privacy-focused comment engine alternative to Disqus.</p>
 
-### Installation
+<p align="center"><a href="https://www.patreon.com/adtac"><b>Support me on Patreon.</b></a></p>
 
-You need to have an instance of Commento running in your server. Commento is written in Go so you'll need to [install Go first](https://golang.org/dl/). Once that's done, you can build the server. First get the source:
+<h2 align="center"></h2>
 
-```bash
-$ go get -v github.com/adtac/commento
-```
+### Introduction
 
-Then go to the directory and run:
+Commento is a comment engine. You can embed it on your blog, news articles, and any place where you want your readers to add comments. It's free software, meaning you are allowed to modify and redistribute the source code. It's lightweight and simple, allowing for lightning fast page loads. It's privacy-focused because that's the way comment engines should be. Embedding comments on your blog on why Vim is the greatest editor shouldn't inject tons of ads and tracking scripts into your reader's browser.
 
-```bash
-$ go build .
-```
+<p align="center"><a href="http://adtac.pw:8002/"><b>Check out a live demo of Commento.</b></a></p>
 
-This should generate a `commento` binary.
+##### Principles and What Commento Isn't
 
-To build the frontend you need to [install Node.js and `npm`](https://docs.npmjs.com/getting-started/installing-node). To install the build dependencies, run:
+* Commento will be free software forever. You are free to fork your own copy, run it as a service and charge your users, run it behind a closed platform or anything else. I only ask that you include the copyright notice in all copies.
+* Commento will be simple, fast, and lightweight. Adding Commento to a page will cost you nothing more than a few kB.
+* There won't be an analytics dashboard with a hundred different pie charts telling you every which way the user interacted with the comments box. (There will be a moderation dashboard in the future, however.)
+* Commento is not a centralized multi-site commenting system. It's simply impossible to be that and not have some sort of tracking.
+* The project isn't a service either. Right now, you need to self-host an instance of Commento. However, I'm working on a service-based option where you can just plug a script into your site and be done with it without having to bother with setting and maintaining servers.
 
-```bash
-$ npm install
-```
+### Getting Started
 
-To build the frontend files, run:
+##### Hosting the Backend
 
-```bash
-$ npm run build
-```
-
-To start the server, run `./commento` from the build directory. By default the server will started on port 8080. If you want to change this, you can provide a environment variable. For example, if you want the server running on port `1234`:
+If you're going down the self-hosting route, using Docker to run Commento is recommended. A minimal Docker image is provided for this: [`adtac/commento`](https://hub.docker.com/r/adtac/commento/). You can get a container running by pulling the image and starting it:
 
 ```bash
-$ PORT=1234 ./commento
+$ docker pull adtac/commento
+$ docker run -it -d -p 80:8080 adtac/commento
 ```
 
-Now you can embed Commento on your webpage. A trivial page would look like:
+That's it. This will expose the server on your machine on port `80`; point your Commento frontend configuration to this.
+
+##### Embedding Commento in HTML
+
+Embedding Commento in your static website is easy. Simply add the the following script tag and call the `init` function when you please:
 
 ```html
-<html>
-    <head>
-        <script src="http://127.0.0.1:8080/assets/commento.min.js"></script>
-    </head>
-
-    <script>
-        Commento.init({
-            serverUrl: "http://127.0.0.1:8080"
-        })
-    </script>
-
-    <div id="commento">
-        <!-- Commento will populate this div with comments -->
-    </div>
-</html>
+<script src="http://127.0.0.1/assets/commento.min.js"></script>
+<script>
+window.onload = function() {
+    Commento.init({
+        serverUrl: "http://127.0.0.1",
+    });
+}
 ```
 
-You can run the entire server inside a Docker container too. To do this, run:
+### Configuration
+
+##### Configuring the Backend
+
+| Parameter | Default Value | Meaning |
+| --------- | ------------- | ------- |
+| `COMMENTO_PORT` | 8080 | The default port on which the server will listen. |
+| `COMMENTO_DATABASE_FILE` | `sqlite3.db` | The database file that Commento will use to store comments. |
+
+Commento uses environment variables as a way of configuring parameters. You can either use `.env` files or give the parameters through the command line. For example, an example `.env` file would be:
 
 ```bash
-$ docker build . -t adtac/commento
-$ docker run -d -p 8080:8080 adtac/commento
+COMMENTO_PORT=8001
+COMMENTO_DATABASE_FILE=/app/commento.db
 ```
 
-and you should have the server available on port `8080` on the IP address of the container.
+You can give the exact same parameters through command line when you're start the docker container:
 
-### Options
+```bash
+$ docker run -it -d -p 80:8001               \
+  -e COMMENTO_PORT=8001                      \
+  -e COMMENTO_DATABASE_FILE=/app/commento.db \
+  adtac/commento
+```
 
-The `Commento.init` function takes an object of parameters. This is documented below:
+##### Configuring the frontend
 
-| Option    | Description                                                                                                                                                                                         |
-|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| serverUrl | A server URL of the form `https://example.com` without a trailing slash. This will be used for all API requests and all the data will be stored on this server. Default: same server as the webpage |
-| honeypot  | A boolean that determines whether you want a honeypot field. This is a spam-protection technique where all comment posts with a non-empty `honeypot` field are rejected silently. Default: `false`  |
+| Parameter | Default Value | Meaning |
+| --------- | ------------- | ------- |
+| `serverUrl` | the same domain as the webpage | The backend server URL of the form `https://example.com` without a trailing slash. |
+| `honeypot` | `false` | Whether or not to use a honeypot to filter spammers. |
 
-### Why?
+### Purpose
 
-Let's take a look at a couple of options (and why each is non-ideal) if you want to embed comments on your blog:
+Let's take a look at the popular options if you want to embed comments on your blog:
 
- - **Disqus**: Disqus is probably the biggest commenting system. In 2011 Disqus had about 500 million unique visitors every month<sup>[[1]](https://blog.disqus.com/the-numbers-of-disqus)</sup>. However, a recent blog post<sup>[[2]](http://donw.io/post/github-comments/)</sup> revealed that every embedded Disqus frame made about 90 network requests increasing the load time by a full 4 seconds. To make matters worse, it was discovered that they used tens of third-party tracking services on all pages. This is an obvious violation of user privacy: a simple commenting system should never need that many requests, handing over user data to that many third-party tracking services.
+ - **Disqus**: Disqus is probably the biggest commenting system with 500 million unique visitors every month<sup>[[1]](https://blog.disqus.com/the-numbers-of-disqus)</sup>. However, a recent blog post<sup>[[2]](http://donw.io/post/github-comments/)</sup> revealed that every embedded Disqus frame made about 90 network requests increasing the load time by a full 4 seconds. It was discovered that they used tens of third-party tracking services on all pages. A simple commenting system should neither need that many requests nor hand over so much information to so many third-partt tracking agents.
 
- - **Facebook comments**: Facebook is one of the biggest data collecting companies in the world - every Share button and every Facebook comments box tracks every move you do. I just opened a random website with embedded Facebook comments and requests to `facebook.com` accounted for 1.5 MB of the 2.4 MB transferred to load the whole page. This included 87 network requests and 35 Javascript files -- and this didn't even load all the comments!
+ - **Facebook comments**: Facebook comments is equally worse. I just opened a random website with embedded Facebook comments and requests to `facebook.com` accounted for 1.5 MB of the 2.4 MB transferred to load the whole page. This included 87 network requests and 35 Javascript files. And this didn't even load all the comments -- I had to click a "Load more comments" button!
 
 While some open source solutions exist, I didn't find any attractive enough -- either they were discontinued or development was virtually non-existant. Open source is about choice so I figured I'd write my own software.
 
 ### Contributing
 
-Please read [The Commento Manifesto](https://github.com/adtac/commento/blob/master/manifesto.md) to understand what the project is and what it isn't. Commento is extremely simplistic in comparison to Disqus. It does not have voting, spam-protection, moderation, and some of the more advanced stuff. Patches are more than welcome!
+Everybody is welcome to contribute to the project. The project is still in beta stage and lacks some nice features such as spam protection, moderation, and live comments and I'd be thankful for any contribution – small or big.
 
-### Known Issues
-
- - On go1.8 on macOS 10.12.4 (possibly other macOS versions too), Commento will
-   crash with a segmentation fault. This is a [known
-   issue](https://github.com/golang/go/issues/19734) in the Go compiler. Please
-   use a later version (1.8.1 or higher) to fix this.
+While I eventually plan to make some revenue through the project in the form of a service, I also want everyone to have the option to self-host. That's the single reason why I will keep Commento open-source forever. Besides, I have seen and used some incredible programs and tools that were only possible because several people came together to make it.
 
 ### License
 
-MIT License. See the [LICENSE](LICENSE) file for more information.
+```
+Copyright 2017 Adhityaa Chandrasekar
 
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
