@@ -93,7 +93,7 @@ While some open source solutions exist, I didn't find any attractive enough -- e
 
 ### Contributing
 
-Everybody is welcome to contribute to the project. The project is still in beta stage and lacks some nice features such as spam protection, moderation, and live comments and I'd be thankful for any contribution – small or big. Please go through the [development guidelines](docs/development.md) before you start.
+Everybody is welcome to contribute to the project. The project is still in beta stage and lacks some nice features such as spam protection, moderation, and live comments and I'd be thankful for any contribution – small or big. Please go through the [development guidelines](docs/development.md) before you start. You can join our [Gitter channel](https://gitter.im/commento-dev/commento) too.
 
 While I eventually plan to make some revenue through the project in the form of a service, I also want everyone to have the option to self-host. That's the single reason why I will keep Commento open-source forever. Besides, I have seen and used some incredible programs and tools that were only possible because several people came together to make it.
 
