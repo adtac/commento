@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/7521600/32532651-bc79334a-c471-11e7-823c-222782000ff4.png" height="300">
+<img src="https://user-images.githubusercontent.com/7521600/32532651-bc79334a-c471-11e7-823c-222782000ff4.png">
 </p>
 
 <p align="center">A lightweight, open-source, privacy-focused comment engine alternative to Disqus.</p>
