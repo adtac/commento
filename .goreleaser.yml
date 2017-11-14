@@ -12,5 +12,5 @@ archive:
   format: tar.gz
   files:
     - ./assets/js/**
-    - ./assets/css/**
+    - ./assets/style/**
     - ./assets/vendor/**
