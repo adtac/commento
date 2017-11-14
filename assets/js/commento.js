@@ -81,6 +81,29 @@
         removeClass(button, "loading");
     }
 
+    var c = 0;
+
+    function getColor(name) {
+        var colors = [
+            "#c10000",
+            "#c16a00",
+            "#005b0c",
+            "#009385",
+            "#006192",
+            "#3a00a8",
+            "#8e00a8",
+            "#e50076",
+            "#383838",
+        ];
+
+        var total = 0;
+        for (var i = 0; i < name.length; i++)
+            total += name.charCodeAt(i);
+        var color = colors[total % colors.length];
+
+        return color;
+    }
+
     function loadJS(file, ready) {
         var script = document.createElement("script");
         var loaded = false;
@@ -148,6 +171,13 @@
         }
     }
 
+    function autoExpander(el) {
+        return function() {
+            el.style.height = "";
+            el.style.height = Math.min(Math.max(el.scrollHeight, 75), 400) + "px";
+        }
+    };
+
     function addEvent(el, event, fn){
         el.addEventListener(event, fn);
     }
@@ -174,46 +204,51 @@
      * The convention is:
      *
      * _ID for any string that relates to a node.id
-     * _CLASS for any visual class that it's defined in a CSS file (spectre or Commento)
+     * _CLASS for any visual class that it's defined in a CSS file
      * _JS for any JavaScript hook used to delegate events or trigger actions.
      * _DATA for any data key we wish to identify in dataset
      */
 
     var ROOT_COMMENT_ID = "commento-root-comment";
     var ROOT_NAME_ID = "commento-root-name";
-    var ROOT_BUTTON_ID = "commento-root-post"
+    var ROOT_BTN_ID = "commento-root-post"
     var COMS_ID = "commento-coms";
     var HONEYPOT_ID = "commento-root-gotcha";
-    var REPLY_ID = "commento-reply-textarea-";
+    var TEXTAREA_ID = "commento-textarea-";
+    var CONTENTS_ID = "comment-contents-";
     var NAME_INPUT_ID = "commento-name-input-";
     var GOTCHA_ID = "commento-gotcha-";
     var CANCEL_BTN_ID = "commento-cancel-button-";
     var SUBMIT_BTN_ID = "commento-submit-button-";
     var BODY_ID = "commento-body-";
     var REPLY_BTN_ID = "commento-reply-button-";
+    var COLLAPSE_BTN_ID = "commento-collapse-button-";
     var COMMENTO_ID = "commento";
 
     var CANCEL_JS = 'commento-js-cancel';
     var SHOW_REPLY_JS = 'commento-show-reply-js';
+    var COLLAPSE_THREAD_JS = 'commento-collapse-thread-js';
+    var EXPAND_THREAD_JS = 'commento-expand-thread-js';
     var SUBMIT_JS = 'commento-submit-js';
 
-    var CARD_CLASS = 'card';
-    var CARD_HEADER_CLASS = 'card-header';
-    var CARD_FOOTER_CLASS = 'card-footer';
-    var CARD_SUBTITLE_CLASS = 'card-subtitle';
-    var H5_CLASS = 'h5';
-    var CARD_BODY_CLASS = 'card-body';
-    var EXTRA_MARGIN_CLASS = 'extra-margin';
+    var CARD_CLASS = 'commento-card';
+    var CARD_HEADER_CLASS = 'commento-card-header';
+    var CARD_AVATAR_CLASS = 'commento-card-avatar';
+    var CARD_NAME_CLASS = 'commento-name-header';
+    var CARD_OPTIONS_CLASS = 'commento-card-options';
+    var CARD_SUBTITLE_CLASS = 'commento-card-subtitle';
+    var CARD_BODY_CLASS = 'commento-card-body';
+    var OPTION_BTN_CLASS = 'commento-option-btn'
+    var POST_BTN_CLASS = 'commento-post-btn';
+    var POST_PRIMARY_BTN_CLASS = 'commento-post-primary-btn';
+    var POST_RED_BTN_CLASS = 'commento-post-red-btn';
     var HIDDEN_CLASS= 'hidden';
-    var BUTTON_HOLDER_CLASS = 'button-holder';
-    var MARGIN_CLASS = 'margin';
-    var COMMENTS_CLASS = 'comments';
-    var SUBMIT_AREA_CLASS = 'submit-area';
+    var OTHER_FIELDS_CLASS = 'commento-other-fields';
+    var OTHER_FIELDS_CONTAINER_CLASS = 'commento-other-fields-container';
     var ROOT_ELEMENT_CLASS = 'root-elem';
     var INITIAL_CLASS = 'initial';
-    var BUTTON_CLASS = 'btn';
-    var BUTTON_PRIMARY_CLASS = 'btn-primary';
-    var FORM_INPUT_CLASS = 'form-input';
+    var TEXTAREA_CLASS = "commento-textarea";
+    var INPUT_CLASS = "commento-input";
     var IS_ERROR_CLASS = 'is-error';
 
     var COMMENT_ID_DATA = 'commentId';
@@ -225,7 +260,6 @@
      */
 
     var _showdownUrl = "/assets/vendor/showdown.min.js";
-    var _spectreUrl = "/assets/vendor/spectre.min.css";
     var _commentoCssUrl = "/assets/style/commento.min.css";
     var _serverUrl = '';
     var _honeypot = false;
@@ -262,45 +296,63 @@
         var cards = create("div");
         currentParent.forEach(function(comment) {
             var card = create("div");
-            var title = create("div");
-            var h5 = create("h5");
+            var header = create("div");
+            var avatar = create("div");
+            var name = create("div");
             var subtitle = create("div");
             var body = create("div");
-            var footer = create("div");
-            var button = create("button");
+            var options = create("div");
+            var reply = create("button");
+            var collapse = create("button");
             var children = _makeCards(parentMap, comment.id);
+            var contents = create("div");
+            var color = getColor(comment.name);
 
             body.id = BODY_ID + comment.id;
-            button.id = REPLY_BTN_ID + comment.id;
+            reply.id = REPLY_BTN_ID + comment.id;
+            collapse.id = COLLAPSE_BTN_ID + comment.id;
+            contents.id = CONTENTS_ID + comment.id;
 
-            h5.innerHTML = comment.name;
+            card.style["borderLeft"] = "2px solid " + color;
+            name.innerHTML = comment.name;
+            avatar.style["background"] = color;
+            avatar.style["boxShadow"] = "0px 0px 0px 2px " + color;
+            avatar.innerHTML = comment.name[0].toUpperCase();
             body.innerHTML = _showdownConverter.makeHtml(comment.comment);
             subtitle.innerHTML = timeDifference(Date.now(), Date.parse(comment.timestamp));
-            button.innerHTML = "Reply";
+            reply.innerHTML = "Reply";
+            collapse.innerHTML = "Collapse";
 
-            setData(button, COMMENT_ID_DATA, comment.id);
+            setData(reply, COMMENT_ID_DATA, comment.id);
+            setData(collapse, COMMENT_ID_DATA, comment.id);
 
             addClass(card, CARD_CLASS);
-            addClass(title, CARD_HEADER_CLASS);
-            addClass(h5, H5_CLASS);
+            addClass(header, CARD_HEADER_CLASS);
+            addClass(avatar, CARD_AVATAR_CLASS);
+            addClass(name, CARD_NAME_CLASS);
             addClass(subtitle, CARD_SUBTITLE_CLASS);
-            addClass(subtitle, EXTRA_MARGIN_CLASS);
             addClass(body, CARD_BODY_CLASS);
-            addClass(footer, CARD_FOOTER_CLASS);
-            addClass(button, BUTTON_CLASS);
-            addClass(button, SHOW_REPLY_JS);
+            addClass(options, CARD_OPTIONS_CLASS);
+            addClass(reply, OPTION_BTN_CLASS);
+            addClass(reply, SHOW_REPLY_JS);
+            addClass(collapse, OPTION_BTN_CLASS);
+            addClass(collapse, COLLAPSE_THREAD_JS);
 
-            append(footer, button);
-            append(title, h5);
-            append(title, subtitle);
-            append(card, title);
-            append(card, body);
-            append(card, footer);
+            append(options, reply);
+            append(options, collapse);
+            append(header, options);
+            append(header, avatar);
+            append(header, name);
+            append(header, subtitle);
+            append(contents, body);
 
             if(children) {
                 addClass(children, CARD_BODY_CLASS);
-                append(card, children);
+                append(contents, children);
             }
+
+            append(card, header);
+            append(card, contents);
             append(cards, card);
         });
 
@@ -361,25 +413,25 @@
             data.gotcha = $(HONEYPOT_ID).value;
         }
 
-        startSpinner(ROOT_BUTTON_ID);
+        startSpinner(ROOT_BTN_ID);
         post(_api.create, data, function() {
             _getComments(function() {
                 $rootComment.value = "";
-                clearSpinner(ROOT_BUTTON_ID);
+                clearSpinner(ROOT_BTN_ID);
             });
         });
     };
 
     var _submitReply = function(id) {
-        var $replyTextArea = $(REPLY_ID + id);
+        var $replyTextArea = $(TEXTAREA_ID + id);
         var $nameInput = $(NAME_INPUT_ID + id);
-        var textAreaValue = $replyTextArea.value;
+        var textareaValue = $replyTextArea.value;
         var nameInputValue = $nameInput.value;
 
         removeClass($replyTextArea, IS_ERROR_CLASS);
         removeClass($nameInput, IS_ERROR_CLASS);
 
-        if(!textAreaValue || !textAreaValue.length) {
+        if(!textareaValue || !textareaValue.length) {
             addClass($replyTextArea, IS_ERROR_CLASS);
             return;
         }
@@ -389,7 +441,7 @@
         }
 
         var data = {
-            comment: textAreaValue,
+            comment: textareaValue,
             name: nameInputValue,
             parent: id,
             url: document.location
@@ -402,13 +454,13 @@
         startSpinner(SUBMIT_BTN_ID + id);
         post(_api.create, data, function() {
             _getComments(function() {
-                clearSpinner(ROOT_BUTTON_ID);
+                clearSpinner(ROOT_BTN_ID);
             });
         });
     };
 
     var _cancelReply = function(id){
-        $(REPLY_ID + id).remove();
+        $(TEXTAREA_ID + id).remove();
         $(SUBMIT_BTN_ID + id).remove();
         $(CANCEL_BTN_ID + id).remove();
         $(NAME_INPUT_ID + id).remove();
@@ -417,14 +469,15 @@
 
     var _showReply = function(id) {
         var $body = $(BODY_ID + id);
-        var textArea = create("textarea");
+        var textarea = create("textarea");
+        var otherFields = create("div");
+        var otherFieldsContainer = create("div");
         var name = create("input");
         var honeypot = create("input");
         var cancel = create("button");
         var submit = create("button");
-        var buttonHolder = create("div");
 
-        textArea.id = REPLY_ID + id;
+        textarea.id = TEXTAREA_ID + id;
         name.id = NAME_INPUT_ID + id;
         honeypot.id = GOTCHA_ID + id;
         cancel.id = CANCEL_BTN_ID + id;
@@ -437,31 +490,60 @@
         setData(submit, COMMENT_ID_DATA, id);
 
         addClass($(REPLY_BTN_ID + id), HIDDEN_CLASS);
-        addClass(textArea, FORM_INPUT_CLASS);
-        addClass(name, MARGIN_CLASS);
-        addClass(name, FORM_INPUT_CLASS);
+        addClass(textarea, TEXTAREA_CLASS);
+        addClass(otherFieldsContainer, OTHER_FIELDS_CONTAINER_CLASS);
+        addClass(otherFields, OTHER_FIELDS_CLASS);
+        addClass(name, INPUT_CLASS);
         addClass(honeypot, HIDDEN_CLASS);
         addClass(cancel, CANCEL_JS);
-        addClass(cancel, MARGIN_CLASS);
-        addClass(cancel, BUTTON_CLASS);
-        addClass(submit, MARGIN_CLASS);
-        addClass(submit, BUTTON_CLASS);
-        addClass(submit, BUTTON_PRIMARY_CLASS);
+        addClass(cancel, POST_BTN_CLASS);
+        addClass(cancel, POST_RED_BTN_CLASS);
+        addClass(submit, POST_BTN_CLASS);
+        addClass(submit, POST_PRIMARY_BTN_CLASS);
         addClass(submit, SUBMIT_JS);
-        addClass(buttonHolder, BUTTON_HOLDER_CLASS);
+
+        textarea.oninput = autoExpander(textarea);
 
         setAttr(name, "placeholder", "Name");
 
-        append($body, textArea);
-        append(buttonHolder, name);
+        append($body, textarea);
+        append(otherFields, name);
         if(_honeypot) {
-            append(buttonHolder, honeypot);
+            append(otherFields, honeypot);
         }
-        append(buttonHolder, cancel);
-        append(buttonHolder, submit);
+        append(otherFields, submit);
+        append(otherFields, cancel);
+        append(otherFieldsContainer, otherFields);
 
-        append($body, buttonHolder);
+        append($body, otherFieldsContainer);
+        _expandThread(id);
     };
+
+    var _collapseThread = function(id) {
+        var $contents = $(CONTENTS_ID + id);
+        var $button = $(COLLAPSE_BTN_ID + id);
+
+        addClass($contents, "hidden");
+        $button.innerHTML = "Expand";
+
+        setTimeout(function() {
+            addClass($button, EXPAND_THREAD_JS);
+            removeClass($button, COLLAPSE_BTN_ID);
+        }, 0);
+    }
+
+    var _expandThread = function(id) {
+        var $contents = $(CONTENTS_ID + id);
+        var $button = $(COLLAPSE_BTN_ID + id);
+
+        removeClass($contents, "hidden");
+        $button.innerHTML = "Collapse";
+
+        setTimeout(function() {
+            addClass($button, COLLAPSE_BTN_ID);
+            removeClass($button, EXPAND_THREAD_JS);
+        }, 0);
+    }
 
     /**
      * Namespace definition and public members  ///////////////////////////////////////////
@@ -477,13 +559,11 @@
         _serverUrl = configuration.serverUrl || _serverUrl;
         _honeypot = configuration.honeypot || _honeypot;
         _showdownUrl = configuration.showdownUrl || (_serverUrl + _showdownUrl);
-        _spectreUrl = configuration.spectreUrl || (_serverUrl + _spectreUrl);
         _commentoCssUrl = configuration.commentoCssUrl || (_serverUrl + _commentoCssUrl);
 
         _api.get = _serverUrl + '/get';
         _api.create = _serverUrl + '/create';
 
-        loadCSS(_spectreUrl);
         loadCSS(_commentoCssUrl);
 
         loadJS(_showdownUrl, function() {
@@ -492,47 +572,53 @@
             var commento = $(COMMENTO_ID);
             var div = create("div");
             var textarea = create("textarea");
-            var subArea  = create("div");
-            var input = create("input");
+            var otherFieldsContainer = create("div");
+            var otherFields = create("div");
+            var name = create("input");
             var button = create("button");
             var honeypot = create("input");
             var commentEl = create("div");
 
             textarea.id = ROOT_COMMENT_ID;
-            input.id = ROOT_NAME_ID;
+            name.id = ROOT_NAME_ID;
             commentEl.id = COMS_ID;
             honeypot.id = HONEYPOT_ID;
-            button.id = ROOT_BUTTON_ID;
+            button.id = ROOT_BTN_ID;
 
             button.innerHTML = "Post comment";
 
-            addClass(div, COMMENTS_CLASS);
-            addClass(textarea, FORM_INPUT_CLASS);
-            addClass(subArea, SUBMIT_AREA_CLASS);
-            addClass(input, FORM_INPUT_CLASS);
-            addClass(input, ROOT_ELEMENT_CLASS);
+            addClass(textarea, TEXTAREA_CLASS);
+            addClass(otherFields, OTHER_FIELDS_CLASS);
+            addClass(otherFieldsContainer, OTHER_FIELDS_CONTAINER_CLASS);
+            addClass(name, INPUT_CLASS);
+            addClass(name, ROOT_ELEMENT_CLASS);
             addClass(button, ROOT_ELEMENT_CLASS);
-            addClass(button, BUTTON_CLASS);
-            addClass(button, BUTTON_PRIMARY_CLASS);
+            addClass(button, POST_BTN_CLASS);
+            addClass(button, POST_PRIMARY_BTN_CLASS);
             addClass(honeypot, HIDDEN_CLASS);
 
-            setAttr(input, "placeholder", "Name");
+            setAttr(name, "placeholder", "Name");
+
+            textarea.oninput = autoExpander(textarea);
 
             addEvent(button, 'click', _postRoot);
-            addEvent(input, 'keypress', function(e) { if (e.keyCode === 13) _postRoot() });
+            addEvent(name, 'keypress', function(e) { if (e.keyCode === 13) _postRoot() });
             addEvent(commento, 'click', makeEvent(SHOW_REPLY_JS, COMMENT_ID_DATA, _showReply));
+            addEvent(commento, 'click', makeEvent(COLLAPSE_THREAD_JS, COMMENT_ID_DATA, _collapseThread));
+            addEvent(commento, 'click', makeEvent(EXPAND_THREAD_JS, COMMENT_ID_DATA, _expandThread));
             addEvent(commento, 'click', makeEvent(CANCEL_JS, COMMENT_ID_DATA, _cancelReply));
             addEvent(commento, 'click', makeEvent(SUBMIT_JS, COMMENT_ID_DATA, _submitReply));
 
-            append(subArea, input);
-            append(subArea, button);
+            append(otherFields, name);
+            append(otherFields, button);
+            append(otherFieldsContainer, otherFields);
 
             if(_honeypot){
-                append(subArea, honeypot);
+                append(otherFields, honeypot);
             }
 
             append(div, textarea);
-            append(div, subArea);
+            append(div, otherFieldsContainer);
             append(div, commentEl);
             append(commento, div);
 
