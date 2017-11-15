@@ -130,13 +130,11 @@ a:focus {
 
 .commento-card .commento-card-options {
     float: right;
-    margin-bottom: 8px;
 }
 
 .commento-option-btn {
-    background: #fff;
+    background: #f8f8f8;
     border: none;
-    border-bottom: 2px solid #2c3e50;
     color: #2c3e50;
     padding: 7px;
     cursor: pointer;
