@@ -85,7 +85,7 @@ $ docker run -it -d -p 80:8001               \
 
 Let's take a look at the popular options if you want to embed comments on your blog:
 
- - **Disqus**: Disqus is probably the biggest commenting system with 500 million unique visitors every month<sup>[[1]](https://blog.disqus.com/the-numbers-of-disqus)</sup>. However, a recent blog post<sup>[[2]](http://donw.io/post/github-comments/)</sup> revealed that every embedded Disqus frame made about 90 network requests increasing the load time by a full 4 seconds. It was discovered that they used tens of third-party tracking services on all pages. A simple commenting system should neither need that many requests nor hand over so much information to so many third-partt tracking agents.
+ - **Disqus**: Disqus is probably the biggest commenting system with 500 million unique visitors every month<sup>[[1]](https://blog.disqus.com/the-numbers-of-disqus)</sup>. However, a recent blog post<sup>[[2]](http://donw.io/post/github-comments/)</sup> revealed that every embedded Disqus frame made about 90 network requests increasing the load time by a full 4 seconds. It was discovered that they used tens of third-party tracking services on all pages. A simple commenting system should neither need that many requests nor hand over so much information to so many third-party tracking agents.
 
  - **Facebook comments**: Facebook comments is equally worse. I just opened a random website with embedded Facebook comments and requests to `facebook.com` accounted for 1.5 MB of the 2.4 MB transferred to load the whole page. This included 87 network requests and 35 Javascript files. And this didn't even load all the comments -- I had to click a "Load more comments" button!
 
