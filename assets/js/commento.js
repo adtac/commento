@@ -313,7 +313,7 @@
             collapse.id = COLLAPSE_BTN_ID + comment.id;
             contents.id = CONTENTS_ID + comment.id;
 
-            card.style["borderLeft"] = "2px solid " + color;
+            card.style["borderLeft"] = "3px solid " + color;
             name.innerHTML = comment.name;
             avatar.style["background"] = color;
             avatar.style["boxShadow"] = "0px 0px 0px 2px " + color;
