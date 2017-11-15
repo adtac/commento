@@ -523,7 +523,7 @@
         var $contents = $(CONTENTS_ID + id);
         var $button = $(COLLAPSE_BTN_ID + id);
 
-        addClass($contents, "hidden");
+        addClass($contents, HIDDEN_CLASS);
         $button.innerHTML = "Expand";
 
         setTimeout(function() {
@@ -536,7 +536,7 @@
         var $contents = $(CONTENTS_ID + id);
         var $button = $(COLLAPSE_BTN_ID + id);
 
-        removeClass($contents, "hidden");
+        removeClass($contents, HIDDEN_CLASS);
         $button.innerHTML = "Collapse";
 
         setTimeout(function() {
