@@ -245,7 +245,6 @@
     var HIDDEN_CLASS= 'hidden';
     var OTHER_FIELDS_CLASS = 'other-fields';
     var OTHER_FIELDS_CONTAINER_CLASS = 'other-fields-container';
-    var ROOT_ELEMENT_CLASS = 'root-elem';
     var INITIAL_CLASS = 'initial';
     var TEXTAREA_CLASS = "textarea";
     var INPUT_CLASS = "input";
@@ -591,8 +590,6 @@
             addClass(otherFields, OTHER_FIELDS_CLASS);
             addClass(otherFieldsContainer, OTHER_FIELDS_CONTAINER_CLASS);
             addClass(name, INPUT_CLASS);
-            addClass(name, ROOT_ELEMENT_CLASS);
-            addClass(button, ROOT_ELEMENT_CLASS);
             addClass(button, POST_BTN_CLASS);
             addClass(button, POST_PRIMARY_BTN_CLASS);
             addClass(honeypot, HIDDEN_CLASS);
