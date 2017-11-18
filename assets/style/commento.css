@@ -1,42 +1,33 @@
-html {
-    box-sizing: border-box;
+#commento {
+    background: #fff;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    -webkit-tap-highlight-color: transparent;
-}
-
-code {
-    font-family: monospace;
-    font-size: 1em;
-    background: #fdf4f4;
-    border-radius: 1px;
-    color: #e06870;
-    font-size: 85%; 
-    line-height: 1.2;
-    padding: 4px;
-}
-
-body {
-    background: #fff;
     color: #50596c;
-    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    font-size: 14px;
     overflow-x: hidden;
     text-rendering: optimizeLegibility;
 }
 
-a {
+#commento code {
+    background: #fdf4f4;
+    font-family: monospace;
+    line-height: 1.5;
+    color: #e06870;
+    padding: 4px;
+}
+
+#commento a {
     color: #1f89ff;
     border-bottom: 1px solid #1f89ff;
     outline: none;
     text-decoration: none;
 }
 
-a:focus {
+#commento a:focus {
     box-shadow: 0 0 0 1px rgba(87, 85, 217, .2);
 }
 
-.commento-textarea {
+#commento .textarea {
     border: 1px solid #2c3e50;
     padding: 8px;
     outline: none;
@@ -45,8 +36,8 @@ a:focus {
     width: 100%;
 }
 
-.commento-input,
-.commento-post-btn {
+#commento .input,
+#commento .post-btn {
     background: #fff;
     display: block;
     border: 1px solid #2c3e50;
@@ -56,34 +47,34 @@ a:focus {
     margin-top: 4px;
 }
 
-.commento-post-btn {
+#commento .post-btn {
     cursor: pointer;
 }
 
-.commento-post-primary-btn {
+#commento .post-primary-btn {
     background: #2c3e50;
     color: #fff;
 }
 
-.commento-post-red-btn {
+#commento .post-red-btn {
     background: #950000;
     border: 1px solid #950000;
     color: #fff;
 }
 
-.commento-other-fields {
+#commento .other-fields {
     display: inline-block;
     padding-top: 5px;
     width: 50%;
 }
 
-.commento-other-fields-container {
+#commento .other-fields-container {
     width: 100%;
     display: inline-block;
     text-align: right;
 }
 
-.commento-card {
+#commento .card {
     background: #fff;
     padding: 12px 0px 0px 12px;
     margin-top: 0px;
@@ -91,11 +82,11 @@ a:focus {
     border-top: 1px solid #f0f0f0;
 }
 
-.commento-card-header {
+#commento .card-header {
     padding-bottom: 12px;
 }
 
-.commento-card .commento-card-avatar {
+#commento .card-avatar {
     width: 38px;
     height: 38px;
     border-radius: 50%;
@@ -110,29 +101,29 @@ a:focus {
     box-shadow: 0px 0px 0px 2px #f00;
 }
 
-.commento-card .commento-card-avatar::after {
+#commento .card-avatar::after {
     content:"";
     display:block;
 }
 
-.commento-card .commento-card-name {
+#commento .card-name {
     font-weight: bold;
 }
 
-.commento-card .commento-card-subtitle {
+#commento .card-subtitle {
     color: #777;
 }
 
-.commento-card .commento-card-body {
+#commento .card-body {
     margin-top: 16px;
     margin-bottom: 8px;
 }
 
-.commento-card .commento-card-options {
+#commento .card-options {
     float: right;
 }
 
-.commento-option-btn {
+#commento .option-btn {
     background: #f8f8f8;
     border: none;
     color: #2c3e50;
@@ -145,7 +136,7 @@ a:focus {
     height: 42px;
 }
 
-.commento-option-btn:focus {
+#commento .option-btn:focus {
     outline: none;
 }
 
@@ -153,26 +144,26 @@ a:focus {
     margin-top: 12px;
 }
 
-.hidden {
+#commento .hidden {
     display: none;
 }
 
-.initial {
+#commento .initial {
     display: initial;
 }
 
-.commento-input.is-error {
+#commento .input.is-error {
     border-color: #e85600;
 }
 
-.loading {
+#commento .loading {
     color: transparent !important;
     min-height: .8rem;
     pointer-events: none;
     position: relative;
 }
 
-.loading::after {
+#commento .loading::after {
     animation: loading 500ms infinite linear;
     border: .1rem solid #fff;
     border-radius: 50%;
@@ -200,7 +191,7 @@ a:focus {
 }
 
 @media only screen and (max-width: 550px) {
-    .commento-other-fields {
+    #commento .other-fields {
         width: 100%;
     }
 }
