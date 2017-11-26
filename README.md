@@ -97,6 +97,15 @@ Everybody is welcome to contribute to the project. The project is still in beta 
 
 While I eventually plan to make some revenue through the project in the form of a service, I also want everyone to have the option to self-host. That's the single reason why I will keep Commento open-source forever. Besides, I have seen and used some incredible programs and tools that were only possible because several people came together to make it.
 
+
+### Sponsors
+
+Commento development is sponsored by [DigitalOcean](https://www.digitalocean.com/).
+
+<p align="center">
+<a href="https://www.digitalocean.com"><img src="https://user-images.githubusercontent.com/7521600/32265839-d093c7da-bf0a-11e7-8d99-96a940041d06.png" title="DigitalOcean" height="40"></a>
+</p>
+
 ### License
 
 ```
