@@ -12,7 +12,7 @@
 
 Commento is a comment engine. You can embed it on your blog, news articles, and any place where you want your readers to add comments. It's free software, meaning you are allowed to modify and redistribute the source code. It's lightweight and simple, allowing for lightning fast page loads. It's privacy-focused because that's the way comment engines should be. Embedding comments on your blog on why Vim is the greatest editor shouldn't inject tons of ads and tracking scripts into your reader's browser.
 
-<p align="center"><a href="http://commento.adtac.pw/"><b>Check out a live demo of Commento.</b></a></p>
+<p align="center"><a href="https://commento.adtac.pw/"><b>Check out a live demo of Commento.</b></a></p>
 
 ##### Principles and What Commento Isn't
 
