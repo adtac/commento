@@ -1,18 +1,21 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/7521600/32532651-bc79334a-c471-11e7-823c-222782000ff4.png">
+<img src="https://user-images.githubusercontent.com/7521600/33375172-14b21f68-d52f-11e7-9b30-477682bccf8f.png">
 </p>
 
 <p align="center">A lightweight, open-source, privacy-focused comment engine alternative to Disqus.</p>
 
-<p align="center"><a href="https://www.patreon.com/adtac"><b>Support me on Patreon.</b></a></p>
+<p align="center">
+<a href="https://www.patreon.com/adtac"><img src="https://img.shields.io/badge/support-patreon-red.svg?style=for-the-badge&colorA=1e2127&colorB=e06c75&label=support"></a>
+<a href="https://commento.adtac.pw"><img src="https://img.shields.io/badge/demo-live-red.svg?style=for-the-badge&colorA=1e2127&colorB=98c379&label=demo"></a>
+<a href="https://gitter.im/commento-dev/commento"><img src="https://img.shields.io/badge/live-gitter-red.svg?style=for-the-badge&colorA=1e2127&colorB=c678dd&label=chat"></a>
+<a href="https://hub.docker.com/r/adtac/commento/"><img src="https://img.shields.io/badge/live-commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=56b6c2&label=docker"></a>
+</p>
 
 <h2 align="center"></h2>
 
 ### Introduction
 
 Commento is a comment engine. You can embed it on your blog, news articles, and any place where you want your readers to add comments. It's free software, meaning you are allowed to modify and redistribute the source code. It's lightweight and simple, allowing for lightning fast page loads. It's privacy-focused because that's the way comment engines should be. Embedding comments on your blog on why Vim is the greatest editor shouldn't inject tons of ads and tracking scripts into your reader's browser.
-
-<p align="center"><a href="https://commento.adtac.pw/"><b>Check out a live demo of Commento.</b></a></p>
 
 ##### Principles and What Commento Isn't
 
