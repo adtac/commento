@@ -8,7 +8,7 @@ slightly messy setup if the project is in pre-pre-alpha (whatever that means),
 but as the project matures, its documentation and guidelines should too.
 
 If you're a newcomer to open source and you haven't contributed to projects
-before, you should consult the [newcomer docs](newcomer.md) first.
+before, you should consult the [newcomer docs](newcomers.md) first.
 
 ### Getting Started
 
