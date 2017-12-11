@@ -27,7 +27,11 @@ Commento is a comment engine. You can embed it on your blog, news articles, and 
 
 ### Getting Started
 
-##### Hosting the Backend
+#### Hosting the Backend
+
+If you want to self-host Commento, you have three options:
+
+##### Using Docker
 
 If you're going down the self-hosting route, using Docker to run Commento is recommended. A minimal Docker image is provided for this: [`adtac/commento`](https://hub.docker.com/r/adtac/commento/). You can get a container running by pulling the image and starting it:
 
@@ -38,7 +42,15 @@ $ docker run -it -d -p 80:8080 adtac/commento
 
 That's it. This will expose the server on your machine on port `80`; point your Commento frontend configuration to this.
 
-##### Embedding Commento in HTML
+##### Using binary releases
+
+If you don't want to install the whole of Docker, you can simply use the latest release. Right now, binary releases are available for linux-amd64, but upon request, I can easily create and publish stable releases for other operating systems and architectures.
+
+##### Building from source
+
+Commento is written in Go. Building Commento from source is simply a matter of running `go build`. This will produce a binary `commento` for your machine that you can simply execute.
+
+#### Embedding Commento in HTML
 
 Embedding Commento in your static website is easy. Simply add the the following script tag and call the `init` function when you please:
 
@@ -54,7 +66,7 @@ window.onload = function() {
 
 ### Configuration
 
-##### Configuring the Backend
+#### Configuring the Backend
 
 | Parameter | Default Value | Meaning |
 | --------- | ------------- | ------- |
@@ -77,7 +89,7 @@ $ docker run -it -d -p 80:8001               \
   adtac/commento
 ```
 
-##### Configuring the frontend
+#### Configuring the frontend
 
 | Parameter | Default Value | Meaning |
 | --------- | ------------- | ------- |
