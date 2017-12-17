@@ -52,17 +52,29 @@ Commento is written in Go. Building Commento from source is simply a matter of r
 
 #### Embedding Commento in HTML
 
-Embedding Commento in your static website is easy. Simply add the the following script tag and call the `init` function when you please:
+Embedding Commento in your static website is easy. Simply load the Commento's js library, add a div tag with id="commento", then call the `init` function when you please:
 
 ```html
+<！-- Load Commento's js library -->
 <script src="http://127.0.0.1/assets/commento.min.js"></script>
+```
+
+```html
+<！-- Where textareas and buttons would go -->
+<div id="commento"></div>
+```
+
+```html
+<！-- Call init() function -->
 <script>
 window.onload = function() {
     Commento.init({
         serverUrl: "http://127.0.0.1",
     });
 }
+</script>
 ```
+
 
 ### Configuration
 
