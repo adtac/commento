@@ -196,6 +196,11 @@
         };
     }
 
+    function isInView(el) {
+        var rect = el.getBoundingClientRect();
+        return (rect.top >= 0) && (rect.bottom <= window.innerHeight);
+    }
+
     /**
      * Constants ///////////////////////////////////////////
      *
@@ -563,6 +568,15 @@
         _api.get = _serverUrl + '/get';
         _api.create = _serverUrl + '/create';
 
+        var interval = setInterval(function() {
+          if (isInView($(COMMENTO_ID))) {
+            Commento.load();
+            clearInterval(interval);
+          }
+        }, 300);
+    }
+
+    Commento.load = function() {
         loadCSS(_commentoCssUrl);
 
         loadJS(_showdownUrl, function() {
