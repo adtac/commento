@@ -56,7 +56,7 @@ Embedding Commento in your static website is easy. Simply load Commento's JS lib
 
 ```html
 <！-- Load Commento's js library -->
-<script src="http://127.0.0.1/assets/commento.min.js"></script>
+<script src="http://127.0.0.1/assets/js/commento.min.js"></script>
 ```
 
 ```html
