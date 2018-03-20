@@ -29,7 +29,7 @@ COPY --from=backend-build /go/src/commento/commento /commento/
 COPY --from=frontend-build /commento/assets/ /commento/assets/
 
 RUN mkdir /commento-data/
-ENV COMMENTO_DATABASE_FILE /commento-data/sqlite3.db
+ENV COMMENTO_DATABASE_FILE /commento-data/commento.sqlite3
 
 WORKDIR /commento
 ENTRYPOINT /commento/commento

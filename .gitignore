@@ -2,6 +2,7 @@
 vendor/
 commento
 *.db
+*.sqlite3
 .idea
 Taskfile.yml
 node_modules
