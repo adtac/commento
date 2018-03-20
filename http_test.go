@@ -36,14 +36,14 @@ func TestHTTP(t *testing.T) {
 }
 
 func setupHTTPTest(t *testing.T) {
-	err := LoadDatabase("sqlite:file=sqlite3.db")
+	err := LoadDatabase("sqlite:file=commento.sqlite3")
 	if err != nil {
 		t.Errorf("Unable to create test sqlite DB: %v", err)
 	}
 }
 
 func cleanupHTTPTest(t *testing.T) {
-	err := os.Remove("sqlite3.db")
+	err := os.Remove("commento.sqlite3")
 	if err != nil && !os.IsNotExist(err) {
 		t.Logf("Unable to remove the test sqlite file: %v", err)
 	}

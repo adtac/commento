@@ -82,8 +82,8 @@ Commento will simply fill the container it is placed in. Remember to change `ser
 
 | Parameter | Default Value | Meaning |
 | --------- | ------------- | ------- |
-| `COMMENTO_PORT` | 8080 | The default port on which the server will listen. |
-| `COMMENTO_DATABASE_FILE` | `sqlite3.db` | The database file that Commento will use to store comments. |
+| `COMMENTO_PORT` | 8080 | Default port on which the server will listen. |
+| `COMMENTO_DATABASE_FILE` | `commento.sqlite3` | Database file that Commento will use to store comments. |
 
 Commento uses environment variables to configure parameters. You can either use a `.env` file or give parameters through the command line. For example, a particular configuration can be achieved in three different ways:
 

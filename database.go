@@ -15,7 +15,7 @@ var db Database
 // that database. For example, in sqlite3, a filename is sufficient. This will
 // be encoded as:
 //
-//     connectionStr := "sqlite3:file=commento.db"
+//     connectionStr := "sqlite3:file=commento.sqlite3"
 //
 // Naturally, key=value pairs depend on the database in question. For MongoDB,
 // this could be a URL. Multiple key=value pairs can be separated by a
