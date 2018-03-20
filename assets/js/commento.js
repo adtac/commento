@@ -36,6 +36,10 @@
         el.classList.remove(cls);
     }
 
+    function getTags(tag) {
+        return document.getElementsByTagName(tag);
+    }
+
     function create(el) {
         return document.createElement(el);
     }
@@ -49,6 +53,14 @@
         }
 
         return str.join("&");
+    }
+
+    function stripPath(url) {
+        return url.substr(0, url.indexOf("/assets"));
+    }
+
+    function getAttr(node, attr) {
+        return node.attributes[attr].value;
     }
 
     function setAttr(node, attr, value) {
@@ -187,8 +199,8 @@
             var cur = event.target;
             var id;
 
-            if( !( contains(cur, cls) &&
-                ( id = getData(cur, key) ))){
+            if(!(contains(cur, cls) &&
+                 (id = getData(cur, key)))){
                 return;
             }
 
@@ -236,6 +248,7 @@
     var EXPAND_THREAD_JS = 'commento-expand-thread-js';
     var SUBMIT_JS = 'commento-submit-js';
 
+    var COMMENTO_CLASS = 'commento';
     var CARD_CLASS = 'card';
     var CARD_HEADER_CLASS = 'card-header';
     var CARD_AVATAR_CLASS = 'card-avatar';
@@ -263,6 +276,7 @@
      * This section is for internal use. This hold Commento internals that shouldn't be accessible from the outside
      */
 
+    var _divId = COMMENTO_ID;
     var _showdownUrl = "/assets/vendor/showdown.min.js";
     var _commentoCssUrl = "/assets/style/commento.min.css";
     var _serverUrl = '';
@@ -557,19 +571,22 @@
 
     var Commento = global.Commento || {};
 
-    Commento.version = '0.2.0';
+    Commento.version = '0.2.1';
 
     Commento.init = function(configuration) {
         _serverUrl = configuration.serverUrl || _serverUrl;
         _honeypot = configuration.honeypot || _honeypot;
         _showdownUrl = configuration.showdownUrl || (_serverUrl + _showdownUrl);
         _commentoCssUrl = configuration.commentoCssUrl || (_serverUrl + _commentoCssUrl);
+        _divId = configuration.divId || _divId;
+
+        console.log(configuration);
 
         _api.get = _serverUrl + '/get';
         _api.create = _serverUrl + '/create';
 
         var interval = setInterval(function() {
-          if (isInView($(COMMENTO_ID))) {
+          if (isInView($(_divId))) {
             Commento.load();
             clearInterval(interval);
           }
@@ -582,7 +599,7 @@
         loadJS(_showdownUrl, function() {
             _showdownConverter = new showdown.Converter();
 
-            var commento = $(COMMENTO_ID);
+            var commento = $(_divId);
             var div = create("div");
             var textarea = create("textarea");
             var otherFieldsContainer = create("div");
@@ -600,6 +617,7 @@
 
             button.innerHTML = "Post comment";
 
+            addClass(commento, COMMENTO_CLASS);
             addClass(textarea, TEXTAREA_CLASS);
             addClass(otherFields, OTHER_FIELDS_CLASS);
             addClass(otherFieldsContainer, OTHER_FIELDS_CONTAINER_CLASS);
@@ -636,6 +654,22 @@
             _getComments();
         });
     };
+
+    Commento.locateScriptTag = function() {
+        var scripts = getTags("script");
+
+        for (var i = 0; i < scripts.length; i++) {
+            if (scripts[i].src.match(/commento(?:\.min)?\.js$/)) {
+                Commento.init({
+                    serverUrl: stripPath(scripts[i].src),
+                    divId: getAttr(scripts[i], "data-div").substr(1),
+                });
+                break;
+            }
+        }
+    }
+
+    Commento.locateScriptTag();
 
     /**
      * Publish ///////////////////////////////////
