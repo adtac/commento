@@ -106,12 +106,12 @@ func testLoadConfig(t *testing.T) {
 		},
 
 		testCaseConfig{
-			".env should dominate .env.test",
+			".env.test should dominate .env",
 			map[string]string{
-				".env.test": `
+				".env": `
 					env1=val1
 					env2=val2`,
-				".env": `
+				".env.test": `
 					env2=val3
 					env3=val4`,
 			},

@@ -104,7 +104,7 @@ $ export COMMENTO_DATABASE_FILE=/app/commento.db
 $ ./commento
 ```
 
-If you're using Docker, you can pass environment variables too:
+Note that environment variables have precedence over `.env` values. If you're using Docker, you can pass environment variables too:
 
 ```bash
 $ docker run adtac/commento -it -d -p 9000:9000 \

@@ -7,17 +7,22 @@ import (
 )
 
 func loadConfig() error {
-	// Default value for each environment variable.
 	env := map[string]string{
 		"COMMENTO_DATABASE_FILE": "sqlite3.db",
 		"COMMENTO_PORT":          "8080",
 	}
 
-	// Load configuration from the environment. Final value is governed by the
-	// last config file setting the variable. For example, a COMMENTO_PORT
-	// value in .env.development.local will be used even if COMMENTO_PORT
-	// exists in a .env.development file
-	files := []string{".env.development.local", ".env.test.local", ".env.production.local", ".env.local", ".env.development", ".env.test", ".env.production", ".env"}
+	// Configuration precedence (highest to lowest):
+	//   Environment variables (overwrites everything below)
+	//   .env
+	//   .env.production
+	//   .env.test
+	//   .env.development
+	//   .env.local
+	//   .env.production.local
+	//   .env.test.local
+	//   .env.development.local
+	files := []string{".env", ".env.production", ".env.test", ".env.development", ".env.local", ".env.production.local", ".env.test.local", ".env.development.local"}
 	for _, file := range files {
 		newEnv, err := godotenv.Read(file)
 		if err == nil {
@@ -33,7 +38,9 @@ func loadConfig() error {
 	// loadConfig return a non-nil error.
 
 	for key, value := range env {
-		os.Setenv(key, value)
+		if os.Getenv(key) == "" {
+			os.Setenv(key, value)
+		}
 	}
 
 	return nil
