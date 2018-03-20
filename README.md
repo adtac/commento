@@ -20,9 +20,7 @@ Commento is a discussion platform. You can embed it on your blog, news articles,
 ##### Principles and What Commento Isn't
 
 * Commento will be free software forever. You are free to fork your own copy, run it as a service and charge your users, run it behind a closed platform or anything else. I only ask that you include the copyright notice in all copies.
-
-* No ads, injecting third party tracking scripts, silently injecting replacing DOM elements with affiliate links. Ever.
-
+* No ads, injecting third party tracking scripts, affiliate marketing. Ever.
 * Commento is not a centralized multi-site commenting system. If you self-host an instance of Commento for your blog, users of your blog will only exist for your blog.
 
 ### Getting Started
@@ -124,7 +122,7 @@ While some open source solutions existed, I didn't find any attractive enough at
 
 Commento is possible only because of its community. The project is still in beta and I'd be thankful for any contribution. Please go through the [development guidelines](docs/development.md) before you start. If you're a newcomer, you want to go through our [newcomer docs](docs/newcomers.md) first. Pick up any issue and hack away!
 
-If you have any questions, [ask away](https://gitter.im/commento-dev/commento)!
+If you have any questions, [please ask in our Gitter channel](https://gitter.im/commento-dev/commento).
 
 ### Sponsors
 
