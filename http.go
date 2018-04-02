@@ -98,6 +98,14 @@ func CreateCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if isSpam := checkSpam(r, comment.URL, comment.Name, comment.Comment); isSpam {
+		// Silently fail. Don't tell the spammer we detected their comment.
+		result.Success = true
+		result.Message = "Comment successfully created"
+		result.render(w)
+		return
+	}
+
 	err = db.CreateComment(&comment)
 	if err != nil {
 		result.Status = http.StatusInternalServerError
