@@ -17,6 +17,8 @@
 
 Commento is a discussion platform. You can embed it on your blog, news articles, and any place where you want your readers to add comments. It's free software, meaning you are allowed to modify and redistribute the source code. It's lightweight, allowing for fast page loads. It's privacy-focused because that's the way comment engines should be. Embedding comments on your blog on why Vim is the greatest editor shouldn't inject ads, third-party tracking scripts, and affiliate links into your reader's browser.
 
+Commento features a modern interface, [advanced spam filtering](docs/akismet.md), and uses just 17 KB of JavaScript and CSS. Moderation tools, emoji support, and other features will be built in the future as well.
+
 ##### Principles and What Commento Isn't
 
 * Commento will be free software forever. You are free to fork your own copy, run it as a service and charge your users, run it behind a closed platform or anything else. I only ask that you include the copyright notice in all copies.
@@ -58,7 +60,7 @@ $ go build -i -v -o commento
 $ ./commento
 ```
 
-If you're building the project for the first time, the `go build` command might take a few seconds since Commento's dependencies need to be pulled and compiled as well. However, subsequent builds will be fast.
+If you're building the project for the first time, `go build` might take a few seconds since Commento's dependencies need to be pulled and compiled as well. However, subsequent builds will be faster.
 
 #### Frontend Integration
 
@@ -72,7 +74,7 @@ To embed Commento in your website, paste the following HTML snippet wherever you
 </script>
 ```
 
-Commento will simply fill the container it is placed in. Remember to change `server.com` to point to the server where you're hosting the backend.
+Commento will simply fill the container it is placed in. Remember to change `server.com` to your server.
 
 ### Configuration
 
@@ -82,6 +84,7 @@ Commento will simply fill the container it is placed in. Remember to change `ser
 | --------- | ------------- | ------- |
 | `COMMENTO_PORT` | 8080 | Default port on which the server will listen. |
 | `COMMENTO_DATABASE_FILE` | `commento.sqlite3` | Database file that Commento will use to store comments. |
+| `AKISMET_KEY` | | Your Akismet key. Read [our docs](docs/akismet.md) for more details on how to obtain one. |
 
 Commento uses environment variables to configure parameters. You can either use a `.env` file or give parameters through the command line. For example, a particular configuration can be achieved in three different ways:
 
@@ -89,16 +92,18 @@ Commento uses environment variables to configure parameters. You can either use 
 $ cat .env
 COMMENTO_PORT=9000
 COMMENTO_DATABASE_FILE=/app/commento.db
+AKISMET_KEY=abcdef012345
 $ ./commento
 ```
 
 ```bash
-$ COMMENTO_PORT=9000 COMMENTO_DATABASE_FILE=/app/commento.db ./commento
+$ COMMENTO_PORT=9000 COMMENTO_DATABASE_FILE=/app/commento.db AKISMET_KEY=abcdef012345 ./commento
 ```
 
 ```bash
 $ export COMMENTO_PORT=9000
 $ export COMMENTO_DATABASE_FILE=/app/commento.db
+$ export AKISMET_KEY=abcdef012345
 $ ./commento
 ```
 
@@ -107,7 +112,8 @@ Note that environment variables have precedence over `.env` values. If you're us
 ```bash
 $ docker run adtac/commento -it -d -p 9000:9000 \
     -e COMMENTO_PORT=9000                       \
-    -e COMMENTO_DATABASE_FILE=/app/commento.db
+    -e COMMENTO_DATABASE_FILE=/app/commento.db  \
+    -e AKISMET_KEY=abcdef012345
 ```
 
 ### Purpose
