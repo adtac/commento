@@ -17,7 +17,7 @@
 
 Commento is a discussion platform. You can embed it on your blog, news articles, and any place where you want your readers to add comments. It's free software, meaning you are allowed to modify and redistribute the source code. It's lightweight, allowing for fast page loads. It's privacy-focused because that's the way comment engines should be. Embedding comments on your blog on why Vim is the greatest editor shouldn't inject ads, third-party tracking scripts, and affiliate links into your reader's browser.
 
-Commento features a modern interface, [advanced spam filtering](docs/akismet.md), and uses just 17 KB of JavaScript and CSS. Moderation tools, emoji support, and other features will be built in the future as well.
+Commento features a modern interface, [advanced spam filtering](docs/akismet.md), and uses **just 4.2 KB** of JavaScript and CSS (GZipped and minified). Moderation tools, emoji support, and other features will be built in the future as well.
 
 ##### Principles and What Commento Isn't
 
