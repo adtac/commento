@@ -152,6 +152,10 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for i, _ := range comments {
+		comments[i].Html = sanitisedHTML(comments[i].Comment)
+	}
+
 	result.Success = true
 	result.Comments = comments
 	result.render(w)

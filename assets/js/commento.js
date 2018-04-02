@@ -277,12 +277,10 @@
      */
 
     var _divId = COMMENTO_ID;
-    var _showdownUrl = "/assets/vendor/showdown.min.js";
     var _commentoCssUrl = "/assets/style/commento.min.css";
     var _serverUrl = '';
     var _honeypot = false;
     var _api = {};
-    var _showdownConverter;
 
 
     var _getComments = function(callback) {
@@ -336,7 +334,7 @@
             avatar.style["background"] = color;
             avatar.style["boxShadow"] = "0px 0px 0px 2px " + color;
             avatar.innerHTML = comment.name[0].toUpperCase();
-            body.innerHTML = _showdownConverter.makeHtml(comment.comment);
+            body.innerHTML = comment.html;
             subtitle.innerHTML = timeDifference(Date.now(), Date.parse(comment.timestamp));
             reply.innerHTML = "Reply";
             collapse.innerHTML = "Collapse";
@@ -576,11 +574,8 @@
     Commento.init = function(configuration) {
         _serverUrl = configuration.serverUrl || _serverUrl;
         _honeypot = configuration.honeypot || _honeypot;
-        _showdownUrl = configuration.showdownUrl || (_serverUrl + _showdownUrl);
         _commentoCssUrl = configuration.commentoCssUrl || (_serverUrl + _commentoCssUrl);
         _divId = configuration.divId || _divId;
-
-        console.log(configuration);
 
         _api.get = _serverUrl + '/get';
         _api.create = _serverUrl + '/create';
@@ -596,63 +591,59 @@
     Commento.load = function() {
         loadCSS(_commentoCssUrl);
 
-        loadJS(_showdownUrl, function() {
-            _showdownConverter = new showdown.Converter();
+        var commento = $(_divId);
+        var div = create("div");
+        var textarea = create("textarea");
+        var otherFieldsContainer = create("div");
+        var otherFields = create("div");
+        var name = create("input");
+        var button = create("button");
+        var honeypot = create("input");
+        var commentEl = create("div");
 
-            var commento = $(_divId);
-            var div = create("div");
-            var textarea = create("textarea");
-            var otherFieldsContainer = create("div");
-            var otherFields = create("div");
-            var name = create("input");
-            var button = create("button");
-            var honeypot = create("input");
-            var commentEl = create("div");
+        textarea.id = ROOT_COMMENT_ID;
+        name.id = ROOT_NAME_ID;
+        commentEl.id = COMS_ID;
+        honeypot.id = HONEYPOT_ID;
+        button.id = ROOT_BTN_ID;
 
-            textarea.id = ROOT_COMMENT_ID;
-            name.id = ROOT_NAME_ID;
-            commentEl.id = COMS_ID;
-            honeypot.id = HONEYPOT_ID;
-            button.id = ROOT_BTN_ID;
+        button.innerHTML = "Post comment";
 
-            button.innerHTML = "Post comment";
+        addClass(commento, COMMENTO_CLASS);
+        addClass(textarea, TEXTAREA_CLASS);
+        addClass(otherFields, OTHER_FIELDS_CLASS);
+        addClass(otherFieldsContainer, OTHER_FIELDS_CONTAINER_CLASS);
+        addClass(name, INPUT_CLASS);
+        addClass(button, POST_BTN_CLASS);
+        addClass(button, POST_PRIMARY_BTN_CLASS);
+        addClass(honeypot, HIDDEN_CLASS);
 
-            addClass(commento, COMMENTO_CLASS);
-            addClass(textarea, TEXTAREA_CLASS);
-            addClass(otherFields, OTHER_FIELDS_CLASS);
-            addClass(otherFieldsContainer, OTHER_FIELDS_CONTAINER_CLASS);
-            addClass(name, INPUT_CLASS);
-            addClass(button, POST_BTN_CLASS);
-            addClass(button, POST_PRIMARY_BTN_CLASS);
-            addClass(honeypot, HIDDEN_CLASS);
+        setAttr(name, "placeholder", "Name");
 
-            setAttr(name, "placeholder", "Name");
+        textarea.oninput = autoExpander(textarea);
 
-            textarea.oninput = autoExpander(textarea);
+        addEvent(button, 'click', _postRoot);
+        addEvent(name, 'keypress', function(e) { if (e.keyCode === 13) _postRoot() });
+        addEvent(commento, 'click', makeEvent(SHOW_REPLY_JS, COMMENT_ID_DATA, _showReply));
+        addEvent(commento, 'click', makeEvent(COLLAPSE_THREAD_JS, COMMENT_ID_DATA, _collapseThread));
+        addEvent(commento, 'click', makeEvent(EXPAND_THREAD_JS, COMMENT_ID_DATA, _expandThread));
+        addEvent(commento, 'click', makeEvent(CANCEL_JS, COMMENT_ID_DATA, _cancelReply));
+        addEvent(commento, 'click', makeEvent(SUBMIT_JS, COMMENT_ID_DATA, _submitReply));
 
-            addEvent(button, 'click', _postRoot);
-            addEvent(name, 'keypress', function(e) { if (e.keyCode === 13) _postRoot() });
-            addEvent(commento, 'click', makeEvent(SHOW_REPLY_JS, COMMENT_ID_DATA, _showReply));
-            addEvent(commento, 'click', makeEvent(COLLAPSE_THREAD_JS, COMMENT_ID_DATA, _collapseThread));
-            addEvent(commento, 'click', makeEvent(EXPAND_THREAD_JS, COMMENT_ID_DATA, _expandThread));
-            addEvent(commento, 'click', makeEvent(CANCEL_JS, COMMENT_ID_DATA, _cancelReply));
-            addEvent(commento, 'click', makeEvent(SUBMIT_JS, COMMENT_ID_DATA, _submitReply));
+        append(otherFields, name);
+        append(otherFields, button);
+        append(otherFieldsContainer, otherFields);
 
-            append(otherFields, name);
-            append(otherFields, button);
-            append(otherFieldsContainer, otherFields);
+        if(_honeypot){
+            append(otherFields, honeypot);
+        }
 
-            if(_honeypot){
-                append(otherFields, honeypot);
-            }
+        append(div, textarea);
+        append(div, otherFieldsContainer);
+        append(div, commentEl);
+        append(commento, div);
 
-            append(div, textarea);
-            append(div, otherFieldsContainer);
-            append(div, commentEl);
-            append(commento, div);
-
-            _getComments();
-        });
+        _getComments();
     };
 
     Commento.locateScriptTag = function() {
