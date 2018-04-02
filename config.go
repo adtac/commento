@@ -10,6 +10,7 @@ func loadConfig() error {
 	env := map[string]string{
 		"COMMENTO_DATABASE_FILE": "commento.sqlite3",
 		"COMMENTO_PORT":          "8080",
+		"AKISMET_KEY":            "",
 	}
 
 	// Configuration precedence (highest to lowest):
