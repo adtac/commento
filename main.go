@@ -20,6 +20,8 @@ func main() {
 		return
 	}
 
+	initRenderer()
+
 	connectionStr := "sqlite:file=" + os.Getenv("COMMENTO_DATABASE_FILE")
 
 	err = LoadDatabase(connectionStr)
