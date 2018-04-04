@@ -80,14 +80,19 @@ func LoadDatabase(connectionStr string) error {
 	db = nil
 	err = errorList["err.db.unimplemented"]
 
-	// FIXME: Throw an error here if the configured database is not registered.
-	//        Currently, a panic will happen for a nil reference.
+	var initfunc dbInit
+	var ok bool
 	switch dbName {
 	case "sqlite":
-		db, err = registeredDatabases[DB_SQLITE](params)
+		initfunc, ok = registeredDatabases[DB_SQLITE]
 	case "mysql":
-		db, err = registeredDatabases[DB_MYSQL](params)
+		initfunc, ok = registeredDatabases[DB_MYSQL]
 	}
+
+	if !ok {
+		return errorList["err.db.uncompiled"]
+	}
+	db, err = initfunc(params)
 
 	return err
 }

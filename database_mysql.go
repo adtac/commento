@@ -47,7 +47,7 @@ func mysqlInit(params map[string]string) (Database, error) {
 
 	// Connection string follows this format:
 	// [username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramN=valueN]
-    db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, server, port, database))
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", user, password, server, port, database))
 	if err != nil {
 		return nil, err
 	}

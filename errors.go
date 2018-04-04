@@ -15,6 +15,8 @@ var errorList = map[string]error{
 
 	"err.db.unimplemented": errors.New("Database type not implemented"),
 
+	"err.db.uncompiled": errors.New("Database type excluded at compile time"),
+
 	"err.db.conf.separator.missing": errors.New("Missing separator in connection string"),
 
 	"err.db.conf.key.missing": errors.New("Missing DB configuration key"),
