@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/op/go-logging"
 )
 
@@ -22,7 +21,12 @@ func main() {
 
 	initRenderer()
 
-	connectionStr := "sqlite:file=" + os.Getenv("COMMENTO_DATABASE_FILE")
+	var connectionStr string
+	if connstr := os.Getenv("COMMENTO_DATABASE"); len(connstr) != 0 {
+		connectionStr = connstr
+	} else {
+		connectionStr = "sqlite:file=" + os.Getenv("COMMENTO_DATABASE_FILE")
+	}
 
 	err = LoadDatabase(connectionStr)
 	if err != nil {

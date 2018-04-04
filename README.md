@@ -84,7 +84,10 @@ Commento will simply fill the container it is placed in. Remember to change `ser
 | --------- | ------------- | ------- |
 | `COMMENTO_PORT` | 8080 | Default port on which the server will listen. |
 | `COMMENTO_DATABASE_FILE` | `commento.sqlite3` | Database file that Commento will use to store comments. |
+| `COMMENTO_DATABASE` | | Connection string for a database server (if set, `COMMENTO_DATABASE_FILE` is ignored). |
 | `AKISMET_KEY` | | Your Akismet key. Read [our docs](docs/akismet.md) for more details on how to obtain one. |
+
+An example connection string for MySQL is `mysql:Server=server-address.com;Port=3306;Database=commento_database;Uid=db_username;Password=db_password;`.
 
 Commento uses environment variables to configure parameters. You can either use a `.env` file or give parameters through the command line. For example, a particular configuration can be achieved in three different ways:
 

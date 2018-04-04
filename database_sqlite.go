@@ -1,16 +1,24 @@
+// +build !no_sqlite
+
 package main
 
 import (
 	"database/sql"
 	"log"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type SqliteDatabase struct {
 	*sql.DB
 }
 
-func sqliteInit(params map[string]string) (*SqliteDatabase, error) {
+func init() {
+	registeredDatabases[DB_SQLITE] = sqliteInit
+}
+
+func sqliteInit(params map[string]string) (Database, error) {
 	filename, ok := params["file"]
 	if !ok {
 		return nil, errorList["err.db.conf.sqlite.filename.missing"]

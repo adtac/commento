@@ -10,6 +10,26 @@ type Database interface {
 
 var db Database
 
+type DatabaseServer int
+
+const (
+	DB_SQLITE DatabaseServer = iota
+	DB_MYSQL
+	DB_MSSQL
+	DB_POSTGRESQL
+)
+
+var DatabaseNames map[DatabaseServer]string = map[DatabaseServer]string{
+	DB_SQLITE:     "SQLite",
+	DB_MYSQL:      "MySQL",
+	DB_MSSQL:      "Microsoft SQL Server",
+	DB_POSTGRESQL: "PostgreSQL",
+}
+
+type dbInit func(map[string]string) (Database, error)
+
+var registeredDatabases map[DatabaseServer]dbInit = make(map[DatabaseServer]dbInit)
+
 // parseConnectionStr parses the given connectionStr and extracts two pieces
 // of information: which database to use and the connection parameters for
 // that database. For example, in sqlite3, a filename is sufficient. This will
@@ -59,9 +79,14 @@ func LoadDatabase(connectionStr string) error {
 
 	db = nil
 	err = errorList["err.db.unimplemented"]
+
+	// FIXME: Throw an error here if the configured database is not registered.
+	//        Currently, a panic will happen for a nil reference.
 	switch dbName {
 	case "sqlite":
-		db, err = sqliteInit(params)
+		db, err = registeredDatabases[DB_SQLITE](params)
+	case "mysql":
+		db, err = registeredDatabases[DB_MYSQL](params)
 	}
 
 	return err

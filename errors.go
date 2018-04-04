@@ -22,4 +22,12 @@ var errorList = map[string]error{
 	"err.db.conf.value.missing": errors.New("Missing DB configuration value"),
 
 	"err.db.conf.sqlite.filename.missing": errors.New("sqlite: Filename missing"),
+
+	"err.db.conf.mysql.server.missing": errors.New("MySQL: Server missing in connection string"),
+
+	"err.db.conf.mysql.uid.missing": errors.New("MySQL: Uid missing in connection string"),
+
+	"err.db.conf.mysql.password.missing": errors.New("MySQL: Password missing in connection string"),
+
+	"err.db.conf.mysql.database.missing": errors.New("MySQL: Database missing in connection string"),
 }

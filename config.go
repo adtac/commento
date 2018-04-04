@@ -11,6 +11,7 @@ func loadConfig() error {
 		"COMMENTO_DATABASE_FILE": "commento.sqlite3",
 		"COMMENTO_PORT":          "8080",
 		"AKISMET_KEY":            "",
+		"COMMENTO_DATABASE":      "",
 	}
 
 	// Configuration precedence (highest to lowest):
