@@ -1,13 +1,31 @@
 SHELL = bash
 
-implicit: devel
+BUILD_DIR              = build
+DEVEL_BUILD_DIR        = $(BUILD_DIR)/devel
+PROD_BUILD_DIR         = $(BUILD_DIR)/prod
 
-devel: build
+GO_SRC_DIR             = .
+GO_SRC_FILES           = $(wildcard $(GO_SRC_DIR)/*.go)
+GO_DEVEL_BUILD_DIR     = $(DEVEL_BUILD_DIR)
+GO_DEVEL_BUILD_BINARY  = $(GO_DEVEL_BUILD_DIR)/commento-ce
+GO_PROD_BUILD_DIR      = $(PROD_BUILD_DIR)
+GO_PROD_BUILD_BINARY   = $(GO_PROD_BUILD_DIR)/commento-ce
 
-prod: build
+devel: devel-go
 
-build:
-	go build -i -v -o build/commento-ce
+prod: prod-go
 
 clean:
-	rm -rf build
+	rm -rf $(BUILD_DIR)
+
+# There's really no difference between the prod and devel binaries in Go, but
+# for consistency sake, we'll use separate targets (maybe this will be useful
+# later down the line).
+
+devel-go:
+	go build -i -v -o $(GO_DEVEL_BUILD_BINARY)
+
+prod-go:
+	go build -i -v -o $(GO_PROD_BUILD_BINARY)
+
+$(shell mkdir -p $(GO_DEVEL_BUILD_DIR) $(GO_PROD_BUILD_DIR))
