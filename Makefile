@@ -16,6 +16,9 @@ devel: frontend api devel-copy
 
 prod: frontend api prod-copy
 
+# TODO: This can probably be written better: instead of explicitly defining
+# each target subdirectory, define them at the top and automatically do stuff.
+
 .PHONY: frontend
 frontend:
 	cd frontend && $(MAKE) $(MAKECMDGOALS)
