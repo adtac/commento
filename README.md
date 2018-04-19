@@ -33,7 +33,7 @@ If you want to self-host Commento, you have three options:
 
 ##### Run Binary
 
-Go makes deployment easy by produce a single binary. This is the recommended way, as it has the least amount of abstraction. Download the [latest release](https://github.com/adtac/commento/releases/latest) for your operating system and architecture, extract, and run. For example, if I'm on linux-amd64, I would do:
+Go makes deployment easy by producing a single binary. This is the recommended way, as it has the least amount of abstraction. Download the [latest release](https://github.com/adtac/commento/releases/latest) for your operating system and architecture, extract, and run. For example, if I'm on linux-amd64, I would do:
 
 ```bash
 $ tar xvf commento_0.2.1_linux_amd64.tar.gz
