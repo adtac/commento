@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/russross/blackfriday"
+	"gopkg.in/russross/blackfriday.v1"
 )
 
 var policy *bluemonday.Policy
