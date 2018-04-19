@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/adtac/go-akismet"
+  packages = ["akismet"]
+  revision = "f332a49c03313e67c622679086931d57e04683b5"
+
+[[projects]]
   name = "github.com/joho/godotenv"
   packages = ["."]
   revision = "a79fa1e548e2c689c241d10173efd51e5d689d5b"
@@ -16,6 +22,12 @@
   version = "v1.3.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/microcosm-cc/bluemonday"
+  packages = ["."]
+  revision = "995366fdf961d03629cd17361bddd32745718e2c"
+
+[[projects]]
   name = "github.com/op/go-logging"
   packages = ["."]
   revision = "b2cb9fa56473e98db8caba80237377e83fe44db5"
@@ -25,12 +37,22 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["context"]
+  packages = [
+    "context",
+    "html",
+    "html/atom"
+  ]
   revision = "a337091b0525af65de94df2eb7e98bd9962dcbe2"
+
+[[projects]]
+  name = "gopkg.in/russross/blackfriday.v1"
+  packages = ["."]
+  revision = "55d61fa8aa702f59229e6cff85793c22e580eaf5"
+  version = "v1.5.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b4a54d0c8c7c97173ec020036a1ba7bc2843dcb560a509b77ba7ed7eb02d793c"
+  inputs-digest = "09e7bf707a75d05bf8034b8586c57f32bd958824fb4ee02b57fb163bae047df5"
   solver-name = "gps-cdcl"
   solver-version = 1
