@@ -15,9 +15,9 @@ cache: pip
 
 before_install:
   - go get -v
-  - sudo -H pip3 install -U pip
-  - sudo -H pip3 install -U six>=1.9.0 # fix for coala breakage on trusty
-  - sudo -H pip3 install -U coala-bears
+  - sudo -H pip3 install --ignore-installed -U pip
+  - sudo -H pip3 install --ignore-installed -U six>=1.9.0 # fix for coala breakage on trusty
+  - sudo -H pip3 install --ignore-installed -U coala-bears
 
 script:
   - coala --ci
