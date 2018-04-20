@@ -281,11 +281,11 @@
     var _serverUrl = '';
     var _honeypot = false;
     var _api = {};
-
+    var _location = window.location.href.replace(window.location.hash, '');
 
     var _getComments = function(callback) {
         var data = {
-            "url": document.location
+            "url": _location
         };
         post(_api.get, data, function(reply) {
             var response = {
@@ -419,7 +419,7 @@
         }
 
         data = {
-            url: document.location,
+            url: _location,
             comment: $rootComment.value,
             name: $rootName.value,
             parent: -1
@@ -460,7 +460,7 @@
             comment: textareaValue,
             name: nameInputValue,
             parent: id,
-            url: document.location
+            url: _location
         };
 
         if(_honeypot){
