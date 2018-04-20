@@ -46,7 +46,7 @@ $ npm install
 Now you can build the frontend minified files. To do that, simply do:
 
 ```bash
-$ npm build
+$ npm run build
 ```
 
 ### Guidelines
