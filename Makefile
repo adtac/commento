@@ -12,9 +12,13 @@ API_BUILD_DIR            = api
 API_DEVEL_BUILD_DIR      = $(API_BUILD_DIR)/$(DEVEL_BUILD_DIR)
 API_PROD_BUILD_DIR       = $(API_BUILD_DIR)/$(PROD_BUILD_DIR)
 
-devel: frontend api devel-copy
+TMPL_BUILD_DIR           = templates
+TMPL_DEVEL_BUILD_DIR     = $(TMPL_BUILD_DIR)/$(DEVEL_BUILD_DIR)
+TMPL_PROD_BUILD_DIR      = $(TMPL_BUILD_DIR)/$(PROD_BUILD_DIR)
 
-prod: frontend api prod-copy
+devel: frontend api templates devel-copy
+
+prod: frontend api templates prod-copy
 
 # TODO: This can probably be written better: instead of explicitly defining
 # each target subdirectory, define them at the top and automatically do stuff.
@@ -27,9 +31,13 @@ frontend:
 api:
 	cd api && $(MAKE) $(MAKECMDGOALS)
 
-devel-copy: devel-copy-frontend devel-copy-api
+.PHONY: templates
+templates:
+	cd templates && $(MAKE) $(MAKECDMGOALS)
 
-prod-copy: prod-copy-frontend prod-copy-api
+devel-copy: devel-copy-frontend devel-copy-api devel-copy-templates
+
+prod-copy: prod-copy-frontend prod-copy-api prod-copy-templates
 
 devel-copy-frontend:
 	cp -r $(FRONTEND_DEVEL_BUILD_DIR)/* $(DEVEL_BUILD_DIR)
@@ -37,11 +45,17 @@ devel-copy-frontend:
 devel-copy-api:
 	cp -r $(API_DEVEL_BUILD_DIR)/* $(DEVEL_BUILD_DIR)
 
+devel-copy-templates:
+	cp -r $(TMPL_DEVEL_BUILD_DIR)/* $(DEVEL_BUILD_DIR)
+
 prod-copy-frontend:
 	cp -r $(FRONTEND_PROD_BUILD_DIR)/* $(PROD_BUILD_DIR)
 
 prod-copy-api:
 	cp -r $(API_PROD_BUILD_DIR)/* $(PROD_BUILD_DIR)
+
+prod-copy-templates:
+	cp -r $(TMPL_PROD_BUILD_DIR)/* $(PROD_BUILD_DIR)
 
 clean: clean-root clean-frontend clean-api
 
