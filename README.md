@@ -76,6 +76,22 @@ To embed Commento in your website, paste the following HTML snippet wherever you
 
 Commento will simply fill the container it is placed in. Remember to change `server.com` to your server.
 
+If `data-div` is not set then Commento will not automatically load, but you can manually initialize it with the options listed below:
+
+```html
+<div id="commento"></div>
+<script src="http://server.com/assets/js/commento.min.js">
+</script>
+<script>
+Commento.init({
+  serverUrl: 'http://server.com', // Your Commento server address. Required.
+  divId: 'commento', // Id of the element to load Commento into. Required.
+  honeypot: true, // Enable honeypot field for extra spam protection. Default: false.
+  commentoCssUrl: 'http://server.com/alternative-commento.css' // Url to custom css to load when Commento loads. Default: http://server.com/assets/css/commento.min.css
+});
+</script>
+```
+
 ### Configuration
 
 #### Configuring the Backend

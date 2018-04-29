@@ -60,7 +60,8 @@
     }
 
     function getAttr(node, attr) {
-        return node.attributes[attr].value;
+        var attribute = node.attributes[attr];
+        return attribute && attribute.value
     }
 
     function setAttr(node, attr, value) {
@@ -651,9 +652,11 @@
 
         for (var i = 0; i < scripts.length; i++) {
             if (scripts[i].src.match(/commento(?:\.min)?\.js$/)) {
+                var divId = getAttr(scripts[i], "data-div");
+                if (!divId) break;
                 Commento.init({
                     serverUrl: stripPath(scripts[i].src),
-                    divId: getAttr(scripts[i], "data-div").substr(1),
+                    divId: divId.substr(1),
                 });
                 break;
             }
