@@ -22,9 +22,15 @@ TEMPLATES_DEVEL_ROOT_DIR  = $(DEVEL_BUILD_DIR)/templates
 TEMPLATES_PROD_BUILD_DIR  = $(TEMPLATES_BUILD_DIR)/$(PROD_BUILD_DIR)
 TEMPLATES_PROD_ROOT_DIR   = $(PROD_BUILD_DIR)/templates
 
-devel: frontend api templates devel-copy
+DB_BUILD_DIR              = db
+DB_DEVEL_BUILD_DIR        = $(DB_BUILD_DIR)/$(DEVEL_BUILD_DIR)
+DB_DEVEL_ROOT_DIR         = $(DEVEL_BUILD_DIR)/db
+DB_PROD_BUILD_DIR         = $(DB_BUILD_DIR)/$(PROD_BUILD_DIR)
+DB_PROD_ROOT_DIR          = $(PROD_BUILD_DIR)/db
 
-prod: frontend api templates prod-copy
+devel: frontend api templates db devel-copy
+
+prod: frontend api templates db prod-copy
 
 # TODO: This can probably be written better: instead of explicitly defining
 # each target subdirectory, define them at the top and automatically do stuff.
@@ -41,9 +47,13 @@ api:
 templates:
 	cd templates && $(MAKE) $(MAKECDMGOALS)
 
-devel-copy: devel-copy-frontend devel-copy-api devel-copy-templates
+.PHONY: db
+db:
+	cd db && $(MAKE) $(MAKECDMGOALS)
 
-prod-copy: prod-copy-frontend prod-copy-api prod-copy-templates
+devel-copy: devel-copy-frontend devel-copy-api devel-copy-templates devel-copy-db
+
+prod-copy: prod-copy-frontend prod-copy-api prod-copy-templates prod-copy-db
 
 devel-copy-frontend:
 	cp -r $(FRONTEND_DEVEL_BUILD_DIR)/* $(FRONTEND_DEVEL_ROOT_DIR)
@@ -54,6 +64,9 @@ devel-copy-api:
 devel-copy-templates:
 	cp -r $(TEMPLATES_DEVEL_BUILD_DIR)/* $(TEMPLATES_DEVEL_ROOT_DIR)
 
+devel-copy-db:
+	cp -r $(DB_DEVEL_BUILD_DIR)/* $(DB_DEVEL_ROOT_DIR)
+
 prod-copy-frontend:
 	cp -r $(FRONTEND_PROD_BUILD_DIR)/* $(FRONTEND_PROD_ROOT_DIR)
 
@@ -63,7 +76,10 @@ prod-copy-api:
 prod-copy-templates:
 	cp -r $(TEMPLATES_PROD_BUILD_DIR)/* $(TEMPLATES_PROD_ROOT_DIR)
 
-clean: clean-root clean-frontend clean-api clean-templates
+prod-copy-db:
+	cp -r $(DB_PROD_BUILD_DIR)/* $(DB_PROD_ROOT_DIR)
+
+clean: clean-root clean-frontend clean-api clean-templates clean-db
 
 clean-root:
 	rm -rf build
@@ -76,5 +92,8 @@ clean-api:
 
 clean-templates:
 	cd templates && $(MAKE) $(MAKECMDGOALS)
+
+clean-db:
+	cd db && $(MAKE) $(MAKECMDGOALS)
 
 $(shell mkdir -p $(FRONTEND_DEVEL_ROOT_DIR) $(API_DEVEL_ROOT_DIR) $(TEMPLATES_DEVEL_ROOT_DIR) $(FRONTEND_PROD_ROOT_DIR) $(API_PROD_ROOT_DIR) $(TEMPLATES_DEVEL_ROOT_DIR))
