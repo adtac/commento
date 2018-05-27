@@ -1,0 +1,40 @@
+package main
+
+import (
+	"os"
+)
+
+func parseConfig() error {
+	defaults := map[string]string{
+		"POSTGRES": "postgres://postgres:postgres@0.0.0.0/commento?sslmode=disable",
+
+		"PORT":   "8080",
+		"ORIGIN": "",
+
+		"CDN_PREFIX": "",
+
+		"SMTP_USERNAME":     "",
+		"SMTP_PASSWORD":     "",
+		"SMTP_HOST":         "",
+		"SMTP_FROM_ADDRESS": "",
+
+		"OAUTH_GOOGLE_KEY":    "",
+		"OAUTH_GOOGLE_SECRET": "",
+	}
+
+	for key, value := range defaults {
+		if os.Getenv(key) == "" {
+			os.Setenv(key, value)
+		}
+	}
+
+	// Mandatory config parameters
+	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN"} {
+		if os.Getenv(env) == "" {
+			logger.Fatalf("missing %s environment variable", env)
+			return errorMissingConfig
+		}
+	}
+
+	return nil
+}
