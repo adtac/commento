@@ -72,23 +72,21 @@ func initStaticRouter(router *mux.Router) error {
 
 		t, err := template.New(page).Delims("<<<", ">>>").Parse(string(contents))
 		if err != nil {
-			logger.Errorf("cannot parse %s.html template: %v", page, err)
+			logger.Errorf("cannot parse /%s template: %v", page, err)
 			return err
 		}
 
 		var buf bytes.Buffer
 		t.Execute(&buf, &staticHtmlPlugs{CdnPrefix: os.Getenv("CDN_PREFIX")})
 
-		html[page] = buf.String()
+		html["/" + page] = buf.String()
 	}
 
 	for _, page := range pages {
-		router.HandleFunc("/"+page, func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprintf(w, html[page])
+		router.HandleFunc("/" + page, func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprint(w, html[r.URL.Path])
 		})
 	}
-
-	router.HandleFunc("/", redirectLogin).Methods("GET")
 
 	return nil
 }
