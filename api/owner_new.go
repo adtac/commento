@@ -79,5 +79,5 @@ func ownerNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeBody(w, response{"success": true})
+	writeBody(w, response{"success": true, "confirmEmail": smtpConfigured})
 }
