@@ -42,13 +42,13 @@ func initStaticRouter(router *mux.Router) error {
 				return err
 			}
 
+			prefix := ""
 			if dir == "js" {
-				asset[path] = "window.origin='" + os.Getenv("ORIGIN") + "';" + string(contents)
-			} else {
-				asset[path] = string(contents)
+				prefix = "window.origin='" + os.Getenv("ORIGIN") + "';"
 			}
 
-			logger.Debugf("routing %s", path)
+			asset[p] = prefix + string(contents);
+
 			router.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprint(w, asset[r.URL.Path])
 			})
