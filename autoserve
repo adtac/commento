@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+binary_name=commento-ce
+
+trap ctrl_c INT
+ctrl_c() {
+  kill -SIGTERM $(jobs -p)
+  wait $(jobs -p)
+  exit
+}
+
+binary_pid=
+if make; then
+  source devel.env
+  cd build/devel
+  ./$binary_name &
+  binary_pid=$!
+  cd ../../
+fi
+
+find_cmd() {
+  find . ! \( -path "*.git" -o -path "*.git/*" -o -path "*/build" -o -path "*/build/*" \) -type $1
+}
+
+while true; do
+  inotifywait -q --format '' -e close_write $(find_cmd f) &
+  write_pid=$!
+
+  inotifywait -q --format '' -e create $(find_cmd d) &
+  create_pid=$!
+
+  wait -n
+
+  if ps -p $write_pid >/dev/null && ps -p $create_pid >/dev/null; then
+    # The wait finished because the build was successful, but our binary exited
+    # prematurely. We need to back to waiting.
+    kill -SIGTERM $write_pid $create_pid 2>/dev/null
+    wait $write_pid $create_pid
+    printf "\033[1;31m ** $binary_name failed to execute properly\n\033[0m"
+    continue
+  fi
+
+  kill -SIGTERM $write_pid $create_pid 2>/dev/null
+  wait $write_pid $create_pid
+
+  # TODO: Is sending SIGKILL the best idea? Maybe our backend has some tasks
+  # to complete before terminating gracefully?
+  if [[ ! -z "$binary_pid" ]]; then
+    kill -SIGINT $binary_pid
+    wait $binary_pid
+  fi
+
+  if make; then
+    source devel.env
+    cd build/devel
+    ./$binary_name &
+    binary_pid=$!
+    cd ../../
+  else
+    binary_pid=
+  fi
+done
