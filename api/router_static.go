@@ -45,7 +45,7 @@ func initStaticRouter(router *mux.Router) error {
 			return err
 		}
 
-		t, err := template.New(page).Parse(string(contents))
+		t, err := template.New(page).Delims("<<<", ">>>").Parse(string(contents))
 		if err != nil {
 			logger.Errorf("cannot parse %s.html template: %v", page, err)
 			return err
