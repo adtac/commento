@@ -42,7 +42,7 @@ func domainModeratorDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	domain := stripDomain(*x.Domain)
-	authorised, err := domainOwnershipVerify(domain, o.Email)
+	authorised, err := domainOwnershipVerify(o.OwnerHex, domain)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return
