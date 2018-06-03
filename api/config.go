@@ -36,5 +36,9 @@ func parseConfig() error {
 		}
 	}
 
+	if os.Getenv("CDN_PREFIX") == "" {
+		os.Setenv("CDN_PREFIX", os.Getenv("ORIGIN"))
+	}
+
 	return nil
 }
