@@ -88,5 +88,7 @@ func initStaticRouter(router *mux.Router) error {
 		})
 	}
 
+	router.HandleFunc("/", redirectLogin)
+
 	return nil
 }
