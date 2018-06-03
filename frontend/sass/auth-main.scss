@@ -1,0 +1,147 @@
+@import "common-main.scss";
+
+body {
+  min-height: 100%;
+}
+
+.auth-form-container {
+  position: relative;
+  top: 100px;
+  width: 100%;
+  min-height: calc(100% - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100px;
+
+  .auth-form {
+    width: 400px;
+    background: white;
+    border-radius: 3px;
+    padding: 24px;
+    margin: 20px;
+
+    .form-title {
+      font-size: 28px;
+      font-weight: 300;
+      text-align: center;
+      padding: 12px;
+      padding-bottom: 36px;
+    }
+
+    .form-subtitle {
+      font-size: 15px;
+      text-align: center;
+      padding: 12px;
+      padding-bottom: 24px;
+    }
+
+  .row {
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid $gray-1;
+
+      input[type=text],
+      input[type=password] {
+        font-size: 15px;
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        color: #32325d;
+        border-bottom: 1px solid $gray-1;
+        margin-right: 20px;
+        background: $gray-0;
+        width: 100%;
+        color: #32325d;
+        border: none;
+        outline: none;
+        line-height: 28px;
+        background: $white;
+      }
+
+      input[type=text]::placeholder,
+      input[type=password]::placeholder {
+        color: $gray-3;
+      }
+
+      .label {
+        display: inline-block;
+        color: $gray-5;
+        width: 100%;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+    }
+
+    .button {
+      @extend .shadow;
+      border: 1px solid $blue-6;
+      border-radius: 3px;
+      line-height: 32px;
+      background: $blue-6;
+      color: white;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .button:hover {
+      background: $blue-5;
+      border: 1px solid $blue-5;
+    }
+
+    .button:disabled {
+      background: $blue-4;
+      border: 1px solid $blue-4;
+      cursor: unset;
+    }
+
+    .err, .msg, .link {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .link {
+      font-weight: normal;
+      color: $blue-6;
+      transition: all 0.3s;
+    }
+
+    .link:hover {
+      color: $blue-6;
+    }
+
+    .err {
+      color: $red-6;
+    }
+
+    .msg {
+      color: $green-6;
+    }
+  }
+
+  @media only screen and (max-width: 1000px) {
+    .auth-form {
+      width: 90%;
+    }
+  }
+}
+
+.cent {
+  font-size: 12px;
+  color: $gray-5;
+  text-align: center;
+
+  .gray {
+    color: $gray-5;
+    padding-left: 2px;
+    padding-right: 2px;
+    border-bottom: 1px solid $gray-3;
+  }
+}

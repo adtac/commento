@@ -1,0 +1,314 @@
+$white:         #ffffff;
+$black:         #000000;
+
+$gray-list: (
+  "0": #f8f9fa,
+  "1": #f1f3f5,
+  "2": #e9ecef,
+  "3": #dee2e6,
+  "4": #ced4da,
+  "5": #adb5bd,
+  "6": #868e96,
+  "7": #495057,
+  "8": #343a40,
+  "9": #212529
+);
+
+$gray-0: map-get($gray-list, "0");
+$gray-1: map-get($gray-list, "1");
+$gray-2: map-get($gray-list, "2");
+$gray-3: map-get($gray-list, "3");
+$gray-4: map-get($gray-list, "4");
+$gray-5: map-get($gray-list, "5");
+$gray-6: map-get($gray-list, "6");
+$gray-7: map-get($gray-list, "7");
+$gray-8: map-get($gray-list, "8");
+$gray-9: map-get($gray-list, "9");
+
+$red-list: (
+  "0": #fff5f5,
+  "1": #ffe3e3,
+  "2": #ffc9c9,
+  "3": #ffa8a8,
+  "4": #ff8787,
+  "5": #ff6b6b,
+  "6": #fa5252,
+  "7": #f03e3e,
+  "8": #e03131,
+  "9": #c92a2a
+);
+
+$red-0: map-get($red-list, "0");
+$red-1: map-get($red-list, "1");
+$red-2: map-get($red-list, "2");
+$red-3: map-get($red-list, "3");
+$red-4: map-get($red-list, "4");
+$red-5: map-get($red-list, "5");
+$red-6: map-get($red-list, "6");
+$red-7: map-get($red-list, "7");
+$red-8: map-get($red-list, "8");
+$red-9: map-get($red-list, "9");
+
+$pink-list: (
+  "0": #fff0f6,
+  "1": #ffdeeb,
+  "2": #fcc2d7,
+  "3": #faa2c1,
+  "4": #f783ac,
+  "5": #f06595,
+  "6": #e64980,
+  "7": #d6336c,
+  "8": #c2255c,
+  "9": #a61e4d
+);
+
+$pink-0: map-get($pink-list, "0");
+$pink-1: map-get($pink-list, "1");
+$pink-2: map-get($pink-list, "2");
+$pink-3: map-get($pink-list, "3");
+$pink-4: map-get($pink-list, "4");
+$pink-5: map-get($pink-list, "5");
+$pink-6: map-get($pink-list, "6");
+$pink-7: map-get($pink-list, "7");
+$pink-8: map-get($pink-list, "8");
+$pink-9: map-get($pink-list, "9");
+
+$grape-list: (
+  "0": #f8f0fc,
+  "1": #f3d9fa,
+  "2": #eebefa,
+  "3": #e599f7,
+  "4": #da77f2,
+  "5": #cc5de8,
+  "6": #be4bdb,
+  "7": #ae3ec9,
+  "8": #9c36b5,
+  "9": #862e9c
+);
+
+$grape-0: map-get($grape-list, "0");
+$grape-1: map-get($grape-list, "1");
+$grape-2: map-get($grape-list, "2");
+$grape-3: map-get($grape-list, "3");
+$grape-4: map-get($grape-list, "4");
+$grape-5: map-get($grape-list, "5");
+$grape-6: map-get($grape-list, "6");
+$grape-7: map-get($grape-list, "7");
+$grape-8: map-get($grape-list, "8");
+$grape-9: map-get($grape-list, "9");
+
+$violet-list: (
+  "0": #f3f0ff,
+  "1": #e5dbff,
+  "2": #d0bfff,
+  "3": #b197fc,
+  "4": #9775fa,
+  "5": #845ef7,
+  "6": #7950f2,
+  "7": #7048e8,
+  "8": #6741d9,
+  "9": #5f3dc4
+);
+
+$violet-0: map-get($violet-list, "0");
+$violet-1: map-get($violet-list, "1");
+$violet-2: map-get($violet-list, "2");
+$violet-3: map-get($violet-list, "3");
+$violet-4: map-get($violet-list, "4");
+$violet-5: map-get($violet-list, "5");
+$violet-6: map-get($violet-list, "6");
+$violet-7: map-get($violet-list, "7");
+$violet-8: map-get($violet-list, "8");
+$violet-9: map-get($violet-list, "9");
+
+$indigo-list: (
+  "0": #edf2ff,
+  "1": #dbe4ff,
+  "2": #bac8ff,
+  "3": #91a7ff,
+  "4": #748ffc,
+  "5": #5c7cfa,
+  "6": #4c6ef5,
+  "7": #4263eb,
+  "8": #3b5bdb,
+  "9": #364fc7
+);
+
+$indigo-0: map-get($indigo-list, "0");
+$indigo-1: map-get($indigo-list, "1");
+$indigo-2: map-get($indigo-list, "2");
+$indigo-3: map-get($indigo-list, "3");
+$indigo-4: map-get($indigo-list, "4");
+$indigo-5: map-get($indigo-list, "5");
+$indigo-6: map-get($indigo-list, "6");
+$indigo-7: map-get($indigo-list, "7");
+$indigo-8: map-get($indigo-list, "8");
+$indigo-9: map-get($indigo-list, "9");
+
+$blue-list: (
+  "0": #e7f5ff,
+  "1": #d0ebff,
+  "2": #a5d8ff,
+  "3": #74c0fc,
+  "4": #4dabf7,
+  "5": #339af0,
+  "6": #228be6,
+  "7": #1c7ed6,
+  "8": #1971c2,
+  "9": #1864ab
+);
+
+$blue-0: map-get($blue-list, "0");
+$blue-1: map-get($blue-list, "1");
+$blue-2: map-get($blue-list, "2");
+$blue-3: map-get($blue-list, "3");
+$blue-4: map-get($blue-list, "4");
+$blue-5: map-get($blue-list, "5");
+$blue-6: map-get($blue-list, "6");
+$blue-7: map-get($blue-list, "7");
+$blue-8: map-get($blue-list, "8");
+$blue-9: map-get($blue-list, "9");
+
+$cyan-list: (
+  "0": #e3fafc,
+  "1": #c5f6fa,
+  "2": #99e9f2,
+  "3": #66d9e8,
+  "4": #3bc9db,
+  "5": #22b8cf,
+  "6": #15aabf,
+  "7": #1098ad,
+  "8": #0c8599,
+  "9": #0b7285
+);
+
+$cyan-0: map-get($cyan-list, "0");
+$cyan-1: map-get($cyan-list, "1");
+$cyan-2: map-get($cyan-list, "2");
+$cyan-3: map-get($cyan-list, "3");
+$cyan-4: map-get($cyan-list, "4");
+$cyan-5: map-get($cyan-list, "5");
+$cyan-6: map-get($cyan-list, "6");
+$cyan-7: map-get($cyan-list, "7");
+$cyan-8: map-get($cyan-list, "8");
+$cyan-9: map-get($cyan-list, "9");
+
+$teal-list: (
+  "0": #e6fcf5,
+  "1": #c3fae8,
+  "2": #96f2d7,
+  "3": #63e6be,
+  "4": #38d9a9,
+  "5": #20c997,
+  "6": #12b886,
+  "7": #0ca678,
+  "8": #099268,
+  "9": #087f5b
+);
+
+$teal-0: map-get($teal-list, "0");
+$teal-1: map-get($teal-list, "1");
+$teal-2: map-get($teal-list, "2");
+$teal-3: map-get($teal-list, "3");
+$teal-4: map-get($teal-list, "4");
+$teal-5: map-get($teal-list, "5");
+$teal-6: map-get($teal-list, "6");
+$teal-7: map-get($teal-list, "7");
+$teal-8: map-get($teal-list, "8");
+$teal-9: map-get($teal-list, "9");
+
+$green-list: (
+  "0": #ebfbee,
+  "1": #d3f9d8,
+  "2": #b2f2bb,
+  "3": #8ce99a,
+  "4": #69db7c,
+  "5": #51cf66,
+  "6": #40c057,
+  "7": #37b24d,
+  "8": #2f9e44,
+  "9": #2b8a3e
+);
+
+$green-0: map-get($green-list, "0");
+$green-1: map-get($green-list, "1");
+$green-2: map-get($green-list, "2");
+$green-3: map-get($green-list, "3");
+$green-4: map-get($green-list, "4");
+$green-5: map-get($green-list, "5");
+$green-6: map-get($green-list, "6");
+$green-7: map-get($green-list, "7");
+$green-8: map-get($green-list, "8");
+$green-9: map-get($green-list, "9");
+
+$lime-list: (
+  "0": #f4fce3,
+  "1": #e9fac8,
+  "2": #d8f5a2,
+  "3": #c0eb75,
+  "4": #a9e34b,
+  "5": #94d82d,
+  "6": #82c91e,
+  "7": #74b816,
+  "8": #66a80f,
+  "9": #5c940d
+);
+
+$lime-0: map-get($lime-list, "0");
+$lime-1: map-get($lime-list, "1");
+$lime-2: map-get($lime-list, "2");
+$lime-3: map-get($lime-list, "3");
+$lime-4: map-get($lime-list, "4");
+$lime-5: map-get($lime-list, "5");
+$lime-6: map-get($lime-list, "6");
+$lime-7: map-get($lime-list, "7");
+$lime-8: map-get($lime-list, "8");
+$lime-9: map-get($lime-list, "9");
+
+$yellow-list: (
+  "0": #fff9db,
+  "1": #fff8c5,
+  "2": #ffec99,
+  "3": #ffe066,
+  "4": #ffd43b,
+  "5": #fcc419,
+  "6": #fab005,
+  "7": #f59f00,
+  "8": #f08c00,
+  "9": #e67700
+);
+
+$yellow-0: map-get($yellow-list, "0");
+$yellow-1: map-get($yellow-list, "1");
+$yellow-2: map-get($yellow-list, "2");
+$yellow-3: map-get($yellow-list, "3");
+$yellow-4: map-get($yellow-list, "4");
+$yellow-5: map-get($yellow-list, "5");
+$yellow-6: map-get($yellow-list, "6");
+$yellow-7: map-get($yellow-list, "7");
+$yellow-8: map-get($yellow-list, "8");
+$yellow-9: map-get($yellow-list, "9");
+
+$orange-list: (
+  "0": #fff4e6,
+  "1": #ffe8cc,
+  "2": #ffd8a8,
+  "3": #ffc078,
+  "4": #ffa94d,
+  "5": #ff922b,
+  "6": #fd7e14,
+  "7": #f76707,
+  "8": #e8590c,
+  "9": #d9480f
+);
+
+$orange-0: map-get($orange-list, "0");
+$orange-1: map-get($orange-list, "1");
+$orange-2: map-get($orange-list, "2");
+$orange-3: map-get($orange-list, "3");
+$orange-4: map-get($orange-list, "4");
+$orange-5: map-get($orange-list, "5");
+$orange-6: map-get($orange-list, "6");
+$orange-7: map-get($orange-list, "7");
+$orange-8: map-get($orange-list, "8");
+$orange-9: map-get($orange-list, "9");

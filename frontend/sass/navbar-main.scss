@@ -1,0 +1,58 @@
+@import "colors-main.scss";
+
+.navbar {
+  position: absolute;
+  top: 0px;
+  display: flex;
+  width: 100%;
+  padding-top: 12px;
+  margin-bottom: 12px;
+  z-index: 5;
+}
+
+.navbar-item {
+  width: auto;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 16px;
+  color: $gray-5;
+  background: $gray-0;
+}
+
+.navbar-logo-text {
+  font-size: 16px;
+  margin-left: 56px;
+  color: $gray-9;
+}
+
+.navbar-logo {
+  width: 32px;
+  height: 32px;
+  padding-right: 8px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .navbar {
+    display: block;
+  }
+
+  .navbar-item {
+    display: none;
+  }
+
+  .navbar-logo-text {
+    display: flex;
+    margin-left: 16px;
+  }
+
+  .banner-container {
+    width: calc(100% - 24px);
+  }
+}
+
+.navbar-hamburger {
+  color: $gray-9;
+}

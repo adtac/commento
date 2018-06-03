@@ -1,0 +1,87 @@
+@import "colors-main.scss";
+
+html {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  color: $gray-7;
+  background: $gray-0;
+}
+
+body {
+  margin: 0px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
+}
+
+.footer {
+  position: relative;
+  bottom: 0px;
+  width: 100%;
+  margin-top: 72px;
+
+  .copyright {
+    align-items: none;
+    color: $gray-3;
+    background: $white;
+    text-align: center;
+    padding: 12px;
+  }
+
+  .footer-inner {
+    width: 100%;
+    background: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .links {
+      display: flex;
+      justify-content: center;
+      width: 600px;
+    }
+
+    .link-group {
+      margin: 40px;
+
+      .header {
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 12px;
+        color: $gray-5;
+      }
+    }
+
+    .link {
+      margin-top: 12px;
+      margin-bottom: 12px;
+      display: block;
+      color: $gray-5;
+      transition: all 0.2s;
+    }
+
+    .link:hover {
+      color: $gray-7;
+    }
+
+    @media only screen and (max-width: 1000px) {
+      .link-group {
+        display: block
+      }
+
+      .links {
+        display: block;
+        width: 90%;
+      }
+    }
+  }
+}

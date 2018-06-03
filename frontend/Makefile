@@ -1,7 +1,15 @@
 SHELL = bash
 
 # list of JS files to be built
-JS_BUILD =
+JS_BUILD = jquery.js vue.js highlight.js chartist.js login.js signup.js dashboard.js
+
+jquery.js = jquery.js
+vue.js = vue.js
+highlight.js = highlight.js
+chartist.js = chartist.js
+login.js = utils.js http.js auth-common.js login.js
+signup.js = utils.js http.js auth-common.js signup.js
+dashboard.js = utils.js http.js errors.js self.js dashboard.js dashboard-setting.js dashboard-domain.js dashboard-installation.js dashboard-general.js dashboard-moderation.js dashboard-statistics.js dashboard-import.js dashboard-danger.js
 
 # for each file in $(JS_BUILD), list its composition
 
@@ -28,8 +36,6 @@ JS_PROD_BUILD_FILES    = $(addprefix $(JS_PROD_BUILD_DIR)/, $(JS_BUILD))
 
 JS_MINIFIER            = uglifyjs
 JS_MINIFIER_FLAGS      = --compress --mangle
-
-ENV_JS                 = env.js
 
 SASS_SRC_DIR           = sass
 SASS_SRC_FILES         = $(wildcard $(SASS_SRC_DIR)/*.scss)
@@ -69,7 +75,7 @@ $(HTML_PROD_BUILD_FILES): $(HTML_PROD_BUILD_DIR)/%.html: $(HTML_DEVEL_BUILD_DIR)
 devel-js: $(JS_DEVEL_BUILD_FILES)
 
 .SECONDEXPANSION:
-$(JS_DEVEL_BUILD_FILES): $(JS_DEVEL_BUILD_DIR)/%.js: $$(addprefix $$(JS_SRC_DIR)/, $$(%.js) $$(ENV_JS))
+$(JS_DEVEL_BUILD_FILES): $(JS_DEVEL_BUILD_DIR)/%.js: $$(addprefix $$(JS_SRC_DIR)/, $$(%.js))
 	>$@; \
 	for f in $^; do \
 		printf "// %s\n" "$$f" >>$@; \

@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0">
+    <script src="<<<.CdnPrefix>>>/js/jquery.js"></script>
+    <script src="<<<.CdnPrefix>>>/js/login.js"></script>
+    <link rel="stylesheet" href="<<<.CdnPrefix>>>/css/auth.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700|Source+Sans+Pro:200,300,400,700" rel="stylesheet">
+    <title>Commento: Login</title>
+  </head>
+
+  <div class="navbar">
+    <a href="/" class="navbar-item navbar-logo-text"><img src="/images/logo.png" class="navbar-logo">Commento</a>
+    <a href="/login" class="navbar-item"><b>Login</b></a>
+    <a href="/signup" class="navbar-item">Signup</a>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.prefillEmail();
+    window.displayMessages();
+  };
+  </script>
+
+  <div class="auth-form-container">
+    <div class="auth-form">
+      <div class="form-title">
+        Login to continue
+      </div>
+
+      <div class="row">
+        <div class="label">Email Address</div>
+        <input class="input" type="text" name="email" id="email" placeholder="example@example.com">
+      </div>
+
+      <div class="row">
+        <div class="label">Password</div>
+        <input class="input" type="password" name="password" id="password" placeholder="">
+      </div>
+
+      <div class="err" id="err"></div>
+      <div class="msg" id="msg"></div>
+
+      <button id="button" class="button" onclick="window.login()">Login</button>
+
+      <a class="link" href="/forgot">Trouble logging in? Reset your password.</a>
+      <a class="link" href="/signup">Don't have an account yet? Sign up.</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-inner">
+      <div class="links">
+        <div class="link-group">
+          <div class="header">Your Installation</div>
+          <a class="link" href="/login">Login</a>
+          <a class="link" href="/signup">Signup</a>
+          <a class="link" href="/dashboard">Dashboard</a>
+        </div>
+        <div class="link-group">
+          <div class="header">Documentation</div>
+          <a class="link" href="https://docs.commento.io/">Documentation</a>
+          <a class="link" href="https://gitlab.com/commento">Open Source</a>
+        </div>
+        <div class="link-group">
+          <div class="header">About</div>
+          <a class="link" href="https://commento.io">About Commento</a>
+          <a class="link" href="https://commento.io/help">Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

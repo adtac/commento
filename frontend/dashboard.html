@@ -1,0 +1,383 @@
+<html>
+  <head>
+    <script src="<<<.CdnPrefix>>>/js/jquery.js"></script>
+    <script src="<<<.CdnPrefix>>>/js/vue.js"></script>
+    <script src="<<<.CdnPrefix>>>/js/highlight.js"></script>
+    <script src="<<<.CdnPrefix>>>/js/chartist.js"></script>
+    <script src="<<<.CdnPrefix>>>/js/dashboard.js"></script>
+    <link rel="stylesheet" href="<<<.CdnPrefix>>>/css/chartist.css">
+    <link rel="stylesheet" href="<<<.CdnPrefix>>>/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700|Source+Sans+Pro:200,300,400,700" rel="stylesheet">
+    <title>Commento: Dashboard</title>
+  </head>
+
+  <div id="navbar" class="navbar">
+    <a href="/" class="navbar-item navbar-logo-text"><img src="/images/logo.svg" class="navbar-logo">Commento</a>
+    <div class="navbar-item float-right">
+      <a href="/logout" class="navbar-item">Logout</a>
+      <a href="/account" class="navbar-item">Account Settings</a>
+      <div id="owner-name">{{name}}</div>
+    </div>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.selfGet(function() {
+      window.vueConstruct(function() {
+        window.navbarFill();
+        window.domainRefresh();
+        $(document).ready(function(){
+          $("ul.tabs li").click(function(){
+            var tab_id = $(this).attr("data-tab");
+
+            $("ul.tabs li").removeClass("current");
+            $(".content").removeClass("current");
+
+            $(this).addClass("current");
+            $("#"+tab_id).addClass("current");
+          });
+        });
+      });
+    });
+  };
+  </script>
+
+  <div class="global-error" id="global-error"></div>
+  <div class="global-ok" id="global-ok"></div>
+
+  <div id="dashboard" class="dashboard-container">
+    <div class="pane-left">
+      <div class="tree" v-if="domains.length == 0 || domains[0].show == false">
+        <img class="tree-svg" src="/images/tree.svg">
+        It's so quiet in here.
+      </div>
+
+      <div class="pane-setting" v-for="domain in domains" v-on:click="window.domainSelect(domain.domain)" id="{{domain.hex}}" v-bind:class="{selected: domain.selected}" v-if="domain.show">
+        <div class="pane-setting-inside">
+          <div class="setting-title">{{domain.name}}</div>
+          <div class="setting-subtitle">{{domain.domain}}</div>
+        </div>
+      </div>
+      <div class="pane-setting" id="domain-add" onclick="window.location.hash='#new-domain-modal'">
+        <div class="pane-setting-inside super-setting">
+          <div class="super-setting-title">+</div>
+          <div class="super-setting-text">New Domain</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane-middle">
+      <div v-if="showSettings" class="pane-setting" v-for="setting in settings" v-on:click="window.settingSelect(setting.id)" id="{{setting.id}}" v-bind:class="{selected: setting.selected}">
+        <div class="pane-setting-inside">
+          <div class="setting-title">{{setting.text}}</div>
+          <div class="setting-subtitle">{{setting.meaning}}</div>
+        </div>
+      </div>
+      <div class="select-a-domain" v-if="!showSettings">
+        Select a website on the left.
+      </div>
+    </div>
+    <div class="pane-right">
+
+      <!-- Installation -->
+      <div id="installation-view" class="view hidden">
+        <div class="view-inside">
+          <div class="large-view">
+            <div class="tabs-container">
+              <div class="tab">
+                <ul class="tabs">
+                  <li class="tab-link original current" data-tab="install-tab-1">Universal Snippet</li>
+                </ul>
+
+                <div id="install-tab-1" class="content original current">
+                  <div class="import-text">
+                    Copy the following piece of HTML code and paste it where you'd like Commento to load.
+                  </div>
+
+                  <pre><code id="code-div" class="html"></code></pre>
+
+                  <div class="text">
+                    And that's it. All your settings, themes, and comments would be automagically loaded. Commento is mobile-responsive too, as it simply fills the container it is put in.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div id="statistics-view" class="view hidden">
+        <div class="view-inside">
+          <div class="mid-view center">
+            <div class="center center-title">
+              Analytics
+            </div>
+            <div class="stat">
+              <div class="number">
+                <div class="digits gray-digits">{{domains[cd].viewsLast30Days.zeros}}</div>
+                <div class="digits">{{domains[cd].viewsLast30Days.num}}</div>
+                <div class="digits dark-gray-digits">{{domains[cd].viewsLast30Days.units}}</div>
+              </div>
+              <div class="text">
+                views in the last 30 days
+              </div>
+              <div class="graph" id="views-graph"></div>
+            </div>
+
+            <div class="stat">
+              <div class="number">
+                <div class="digits gray-digits">{{domains[cd].commentsLast30Days.zeros}}</div>
+                <div class="digits">{{domains[cd].commentsLast30Days.num}}</div>
+                <div class="digits dark-gray-digits">{{domains[cd].commentsLast30Days.units}}</div>
+              </div>
+              <div class="text">
+                comments in the last 30 days
+              </div>
+              <div class="graph" id="comments-graph"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- moderation -->
+      <div id="moderation-view" class="view hidden">
+        <div class="view-inside">
+          <div class="small-view mid-view">
+            <div class="tabs-container">
+              <div class="tab">
+                <ul class="tabs">
+                  <li class="tab-link original current" data-tab="mod-tab-1">Moderator List</li>
+                </ul>
+
+                <div id="mod-tab-1" class="content original current">
+                  <div class="pitch">
+                    Moderators have the power to approve and delete comments. To make someone a moderator, add their email address down below. Once added, shiny new moderation buttons will appear on each comment for that person on each page on this domain.
+                  </div>
+                  <div class="email-container">
+                    <div class="email">
+                      <input class="input" type="text" id="new-mod" placeholder="Email">
+                      <button id="new-mod-button" class="email-button" onclick="window.moderatorNewHandler()">Add moderator</button>
+                    </div>
+                  </div>
+                  <div class="mod-emails-container">
+                    <div class="content">
+                      <div class="mod-email" v-for="email in domains[cd].moderators" v-if="domains[cd].moderators.length > 0">
+                        <div class="email">{{email.email}}</div>
+                        <div class="delete" v-on:click="window.moderatorDeleteHandler(email.email)">Delete</div>
+                        <div class="date">added {{email.timeAgo}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Settings -->
+      <div id="general-view" class="view hidden">
+        <div class="view-inside">
+          <div class="small-mid-view">
+            <div class="center center-title">
+              General Settings
+            </div>
+            <div class="box">
+              <div class="row">
+                <div class="label">Website Name</div>
+                <input class="input gray-input" id="cur-domain-name" type="text" :placeholder="domains[cd].origName" v-model="domains[cd].name">
+              </div>
+
+              <div class="row no-border round-check">
+                <input type="checkbox" class="switch" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
+                <label for="spam-filtering">Automatic spam filtering</label>
+                <div class="pitch">
+                  Commento uses Akismet's advanced spam detection techniques to automatically identify and remove spam comments. We strongly recommended you leave enabled.
+                </div>
+              </div>
+
+              <div class="row no-border round-check">
+                <input type="checkbox" class="switch" v-model="domains[cd].requireModeration" id="require-moderation">
+                <label for="require-moderation">Require all comments to be approved manually</label>
+                <div class="pitch">
+                  Enabling this would require a moderator to approve every comment. Moderators can manually delete comments even if this is not enabled.
+                </div>
+              </div>
+
+              <div class="row no-border round-check">
+                <input type="checkbox" class="switch" v-model="domains[cd].requireIdentification" id="require-identification">
+                <label for="require-identification">Require identification</label>
+                <div class="pitch">
+                  Enabling this would require all commenters to authenticate themselves (using their Google account, for example). Disabling would optionally allow anonymous comments.
+                </div>
+              </div>
+
+              <div id="new-domain-error" class="modal-error-box"></div>
+            </div>
+            <div class="center">
+              <button id="save-general-button" onclick="window.generalSaveHandler()" class="button">Save Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Import Comments -->
+      <div id="import-view" class="view hidden">
+        <div class="view-inside">
+          <div class="large-view">
+            <div class="tabs-container">
+              <div class="tab">
+                <ul class="tabs">
+                  <li class="tab-link original current" data-tab="install-tab-1">Disqus</li>
+                </ul>
+
+                <div id="install-tab-1" class="content original current">
+                  <div class="import-text">
+                    If you're currently using Disqus and want to import all your comments into Commento, you can do so:
+                    <ul>
+                      <li>
+                        Go to <a href="http://disqus.com/admin/discussions/export/">the admin export section</a> in Disqus and click on <b>Export Comments</b>. This should start the process of exporting your comments.
+                      </li>
+
+                      <li>
+                        After a while, you'll receive an email from Disqus with a link to a compressed archive of all comments and associated data. Copy and paste that link here and start the import process:
+
+                        <br><br>
+
+                        <div class="email-container">
+                          <div class="email">
+                            <input class="input" type="text" id="new-mod" placeholder="https://media.disqus.com/uploads/...">
+                            <button class="email-button">Import</button>
+                          </div>
+                        </div>
+                        <div class="subtext-container">
+                          <div class="subtext">
+                            <div>Note: it is strongly recommended you do this only once. Multiple imports for the same domain may have unintended effects.</div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        We'll automatically download this file, extract it, parse it and import comments into Commento. The URL information will be preserved. By using this service, you grant Commento the permission to download and process your Disqus information.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Danger Zone -->
+      <div id="danger-view" class="view hidden">
+        <div class="view-inside">
+          <div class="mid-view">
+            <div class="tabs-container">
+              <div class="tab">
+                <ul class="tabs">
+                  <li class="tab-link original current" data-tab="danger-tab-1">Freeze Comments</li>
+                  <li class="tab-link current" data-tab="danger-tab-2">Delete Domain</li>
+                </ul>
+
+                <div id="danger-tab-1" class="content original current">
+                  <div class="box" v-if="domains[cd].state == 'frozen'">
+                    <div class="box-subtitle">
+                      If you desire to re-allow comments again on your website, you can do so. You can, of course, freeze the site again in the future.
+                    </div>
+
+                    <button onclick="window.location.hash='#unfreeze-domain-modal'" class="button green-button">Unfreeze Domain</button>
+                  </div>
+
+                  <div class="box" v-if="domains[cd].state != 'frozen'">
+                    <div class="box-subtitle">
+                      If you desire to temporarily freeze new comments (domain-wide), thereby making it read-only, you can do so. You can choose to unfreeze later; this is temporary.
+                    </div>
+
+                    <button id="orange-button" onclick="window.location.hash='#freeze-domain-modal'" class="button orange-button">Freeze Domain</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="danger-tab-2" class="content">
+                <div class="box">
+                  <div class="box-subtitle">
+                    Want to completely remove Commento from your website? This will permanently delete all comments and there is literally no way to retrieve your data once you do this.
+                  </div>
+
+                  <button id="big-red-button" class="button big-red-button" onclick="window.location.hash='#delete-domain-modal'">Delete Domain</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="freeze-domain-modal" class="modal-window">
+    <div class="inside">
+      <a href="#modal-close" title="Close" class="modal-close"></a>
+      <div class="modal-title">Freeze Domain</div>
+      <div class="modal-subtitle">
+        Are you absolutely sure you want to freeze your domain, thereby making it read-only? You can choose to unfreeze later; this is temporary.
+      </div>
+      <div class="modal-contents">
+        <button id="orange-button" class="button orange-button" onclick="window.domainFreezeHandler()">Freeze Domain</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="unfreeze-domain-modal" class="modal-window">
+    <div class="inside">
+      <a href="#modal-close" title="Close" class="modal-close"></a>
+      <div class="modal-title">Unfreeze Domain</div>
+      <div class="modal-subtitle">
+        Are you absolutely sure you want to unfreeze your domain? This will re-allow new comments. You can choose to freeze again in the future.
+      </div>
+      <div class="modal-contents">
+        <button id="blue-button" class="button green-button" onclick="window.domainUnfreezeHandler()">Unfreeze Domain</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="delete-domain-modal" class="modal-window">
+    <div class="inside">
+      <a href="#modal-close" title="Close" class="modal-close"></a>
+      <div class="modal-title">Delete Domain</div>
+      <div class="modal-subtitle">
+        Are you absolutely sure? This will permanently delete all comments and there is literally no way to retrieve your data once you do this.
+      </div>
+      <div class="modal-contents">
+        <button id="big-red-button" class="button big-red-button" onclick="window.domainDeleteHandler()">Delete Domain</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="new-domain-modal" class="modal-window">
+    <div class="inside">
+      <a href="#modal-close" title="Close" class="modal-close"></a>
+      <div class="modal-title">Add a New Domain</div>
+      <div class="modal-contents">
+        <div class="box">
+          <div class="box-subtitle">
+            Remember to double-check the domain, as only connections from this domain will be accepted. You <b>cannot</b> change this in the future. You can change the name, however.
+          </div>
+          <div class="row">
+            <div class="label">Website Name</div>
+            <input class="input gray-input" id="new-domain-name" type="text" placeholder="Billie Joe's Blog">
+          </div>
+          <div class="row">
+            <div class="label">Website Domain</div>
+            <input class="input gray-input" id="new-domain-domain" type="text" placeholder="https://blog.billie.com">
+          </div>
+        </div>
+        <div id="new-domain-error" class="modal-error-box"></div>
+        <div class="center">
+          <button id="add-site-button" onclick="window.domainNewHandler()" class="button">Add Domain</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>
