@@ -43,7 +43,7 @@ func initStaticRouter(router *mux.Router) error {
 			}
 
 			if dir == "js" {
-				asset[path] = "window.API='" + os.Getenv("ORIGIN") + "/api';" + string(contents)
+				asset[path] = "window.origin='" + os.Getenv("ORIGIN") + "';" + string(contents)
 			} else {
 				asset[path] = string(contents)
 			}
