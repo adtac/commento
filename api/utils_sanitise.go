@@ -26,10 +26,10 @@ func stripDomain(domain string) string {
 	return noProtocol
 }
 
-var path = regexp.MustCompile(`(https?://[^/]*)`)
+var pathMatch = regexp.MustCompile(`(https?://[^/]*)`)
 
 func stripPath(url string) string {
-	strippedPath := path.ReplaceAllString(url, ``)
+	strippedPath := pathMatch.ReplaceAllString(url, ``)
 
 	return strippedPath
 }

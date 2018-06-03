@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path"
+	"mime"
 )
 
 func redirectLogin(w http.ResponseWriter, r *http.Request) {
@@ -34,11 +36,11 @@ func initStaticRouter(router *mux.Router) error {
 
 		for _, file := range files {
 			sl := string(os.PathSeparator)
-			path := sl + dir + sl + file.Name()
+			p := sl + dir + sl + file.Name()
 
-			contents, err := ioutil.ReadFile("." + path)
+			contents, err := ioutil.ReadFile("." + p)
 			if err != nil {
-				logger.Errorf("cannot read file %s: %v", path, err)
+				logger.Errorf("cannot read file %s: %v", p, err)
 				return err
 			}
 
@@ -49,7 +51,8 @@ func initStaticRouter(router *mux.Router) error {
 
 			asset[p] = prefix + string(contents);
 
-			router.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+			router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
+				w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
 				fmt.Fprint(w, asset[r.URL.Path])
 			})
 		}
