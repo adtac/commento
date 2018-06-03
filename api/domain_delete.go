@@ -1,6 +1,8 @@
 package main
 
-import ()
+import (
+	"net/http"
+)
 
 func domainDelete(domain string) error {
 	if domain == "" {
@@ -39,6 +41,16 @@ func domainDelete(domain string) error {
 	}
 
 	statement = `
+		DELETE FROM moderators
+		WHERE moderators.domain = $1;
+	`
+	_, err = db.Exec(statement, domain)
+	if err != nil {
+		logger.Errorf("cannot delete domain moderators: %v", err)
+		return errorInternal
+	}
+
+	statement = `
 		DELETE FROM comments
 		WHERE comments.domain = $1;
 	`
@@ -49,4 +61,42 @@ func domainDelete(domain string) error {
 	}
 
 	return nil
+}
+
+func domainDeleteHandler(w http.ResponseWriter, r *http.Request) {
+	type request struct {
+		Session *string `json:"session"`
+		Domain  *string `json:"domain"`
+	}
+
+	var x request
+	if err := unmarshalBody(r, &x); err != nil {
+		writeBody(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	o, err := ownerGetBySession(*x.Session)
+	if err != nil {
+		writeBody(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	domain := stripDomain(*x.Domain)
+	isOwner, err := domainOwnershipVerify(o.OwnerHex, domain)
+	if err != nil {
+		writeBody(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	if !isOwner {
+		writeBody(w, response{"success": false, "message": errorNotAuthorised.Error()})
+		return
+	}
+
+	if err = domainDelete(*x.Domain); err != nil {
+		writeBody(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	writeBody(w, response{"success": true})
 }
