@@ -23,7 +23,7 @@ devel-db: $(DB_DEVEL_BUILD_FILES)
 $(DB_DEVEL_BUILD_FILES): $(DB_DEVEL_BUILD_DIR)/%.sql: $(DB_SRC_DIR)/%.sql
 	cp $^ $@;
 
-prod-templates: $(DB_PROD_BUILD_FILES)
+prod-db: $(DB_PROD_BUILD_FILES)
 
 $(DB_PROD_BUILD_FILES): $(DB_PROD_BUILD_DIR)/%.sql: $(DB_SRC_DIR)/%.sql
 	cp $^ $@;
