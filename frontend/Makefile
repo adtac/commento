@@ -45,7 +45,7 @@ CSS_PROD_BUILD_DIR     = $(PROD_BUILD_DIR)/css
 CSS_PROD_BUILD_FILES   = $(patsubst $(SASS_SRC_DIR)/%.scss, $(CSS_PROD_BUILD_DIR)/%.css, $(SASS_SRC_FILES))
 
 CSS                    = sass
-CSS_DEVEL_FLAGS        = --sourcemap=none
+CSS_DEVEL_FLAGS        = 
 CSS_PROD_FLAGS         = $(CSS_DEVEL_FLAGS) --style compressed
 
 IMGS_SRC_DIR           = images
