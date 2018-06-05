@@ -63,6 +63,7 @@ func initStaticRouter(router *mux.Router) error {
 		"login",
 		"signup",
 		"dashboard",
+		"logout",
 		"account",
 	}
 
