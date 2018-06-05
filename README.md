@@ -1,29 +1,36 @@
 <p align="center">
-<img src="https://user-images.githubusercontent.com/7521600/33375172-14b21f68-d52f-11e7-9b30-477682bccf8f.png">
+<a href="https://commento.io"><img src="https://user-images.githubusercontent.com/7521600/33375172-14b21f68-d52f-11e7-9b30-477682bccf8f.png" width=300></a>
 </p>
 
-<p align="center">A lightweight, open-source, privacy-focused comment engine alternative to Disqus.</p>
+<p align="center"><b>An open source, privacy focused discussion platform.</b></p>
 
 <p align="center">
-<a href="https://www.patreon.com/adtac"><img src="https://img.shields.io/badge/support-patreon-red.svg?style=for-the-badge&colorA=1e2127&colorB=e06c75&label=support"></a>
 <a href="https://commento.adtac.pw"><img src="https://img.shields.io/badge/demo-live-red.svg?style=for-the-badge&colorA=1e2127&colorB=98c379&label=demo"></a>
-<a href="https://gitter.im/commento-dev/commento"><img src="https://img.shields.io/badge/live-gitter-red.svg?style=for-the-badge&colorA=1e2127&colorB=c678dd&label=chat"></a>
+<a href="https://irc.commento.io"><img src="https://img.shields.io/badge/irc-%23commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=c678dd&label=freenode"></a>
 <a href="https://hub.docker.com/r/adtac/commento/"><img src="https://img.shields.io/badge/live-commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=56b6c2&label=docker"></a>
 </p>
 
 <h2 align="center"></h2>
 
-### Introduction
+Commento is a discussion platform that you can self-host. You can embed it on your blog, news articles, and any place where you want your readers to add comments. Unlike most alternatives, Commento is lightweight and privacy focused; we'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
 
-Commento is a discussion platform. You can embed it on your blog, news articles, and any place where you want your readers to add comments. It's free software, meaning you are allowed to modify and redistribute the source code. It's lightweight, allowing for fast page loads. It's privacy-focused because that's the way comment engines should be. Embedding comments on your blog on why Vim is the greatest editor shouldn't inject ads, third-party tracking scripts, and affiliate links into your reader's browser.
+### Features
 
-Commento features a modern interface, [advanced spam filtering](docs/akismet.md), and uses **just 4.2 KB** of JavaScript and CSS (GZipped and minified). Moderation tools, emoji support, and other features will be built in the future as well.
+ - Privacy focused
+ - Modern interface with a clean design
+ - Automatic spam filtering
+ - Review and approve or delete comments through the moderation interface
+ - Lightweight (under 10 KB total), allowing for faster pageloads
+ - Import from existing services
+ - Completely free and open source (MIT license)
 
-##### Principles and What Commento Isn't
+### Editions
 
-* Commento will be free software forever. You are free to fork your own copy, run it as a service and charge your users, run it behind a closed platform or anything else. I only ask that you include the copyright notice in all copies.
-* No ads, injecting third party tracking scripts, affiliate marketing. Ever.
-* Commento is not a centralized multi-site commenting system. If you self-host an instance of Commento for your blog, users of your blog will only exist for your blog.
+There are three editions of Commento:
+
+ - **Commento Community Edition** (CE) is open source software that's freely available under the MIT Expat license.
+ - **Commento Enterprise Edition** (EE) includes extra features geared towards organizations. If you're interested in this, [contact me](mailto:c.adhityaa@gmail.com).
+ - [**Commento Hosted**](https://commento.io) is a service version of Commento if you want to embed Commento without running servers.  This is currently in private beta and you can [add yourself to the waiting list here](https://commento.io).
 
 ### Getting Started
 
@@ -128,7 +135,7 @@ While some open source solutions existed, I didn't find any attractive enough at
 
 Commento is possible only because of its community. The project is still in beta and I'd be thankful for any contribution. Please go through the [development guidelines](docs/development.md) before you start. If you're a newcomer, you want to go through our [newcomer docs](docs/newcomers.md) first. Pick up any issue and hack away!
 
-If you have any questions, [please ask in our Gitter channel](https://gitter.im/commento-dev/commento).
+If you have any questions, [please ask in our `#commento` IRC channel on freenode](https://irc.commento.io).
 
 ### Sponsors
 
