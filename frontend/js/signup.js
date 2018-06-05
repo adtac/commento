@@ -25,7 +25,7 @@
     };
 
     global.buttonDisable("#signup-button");
-    post(global.origin + "/api/owner/new", json, function(resp) {
+    post(global.commento_origin + "/api/owner/new", json, function(resp) {
       global.buttonEnable("#signup-button")
 
       if (!resp.success) {

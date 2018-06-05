@@ -6,7 +6,7 @@
       "session": global.cookieGet("session"),
     };
 
-    global.post(global.origin + "/api/owner/self", json, function(resp) {
+    global.post(global.commento_origin + "/api/owner/self", json, function(resp) {
       if (!resp.success || !resp.loggedIn) {
         document.location = "/login";
         return;

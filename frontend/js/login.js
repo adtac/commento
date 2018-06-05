@@ -57,7 +57,7 @@
     };
 
     global.buttonDisable("#login-button");
-    global.post(global.origin + "/api/owner/login", json, function(resp) {
+    global.post(global.commento_origin + "/api/owner/login", json, function(resp) {
       global.buttonEnable("#login-button");
 
       if (!resp.success) {

@@ -46,8 +46,8 @@ func initStaticRouter(router *mux.Router) error {
 
 			prefix := ""
 			if dir == "js" {
-				prefix = "window.origin='" + os.Getenv("ORIGIN") + "';\n"
-				prefix += "window.cdn='" + os.Getenv("CDN_PREFIX") + "';\n"
+				prefix = "window.commento_origin='" + os.Getenv("ORIGIN") + "';\n"
+				prefix += "window.commento_cdn='" + os.Getenv("CDN_PREFIX") + "';\n"
 			}
 
 			asset[p] = prefix + string(contents);

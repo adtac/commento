@@ -43,7 +43,7 @@
     }
 
     $(".view").hide();
-    post(global.origin + "/api/domain/statistics", json, function(resp) {
+    post(global.commento_origin + "/api/domain/statistics", json, function(resp) {
       $("#statistics-view").show();
 
       if (!resp.success) {

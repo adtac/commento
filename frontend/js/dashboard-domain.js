@@ -42,7 +42,7 @@
     }
 
     global.buttonDisable("#add-site-button");
-    global.post(global.origin + "/api/domain/new", json, function(resp) {
+    global.post(global.commento_origin + "/api/domain/new", json, function(resp) {
       global.buttonEnable("#add-site-button");
 
       $("#new-domain-name").val("");
@@ -69,7 +69,7 @@
       session: global.cookieGet("session"),
     };
 
-    global.post(global.origin + "/api/domain/list", json, function(resp) {
+    global.post(global.commento_origin + "/api/domain/list", json, function(resp) {
       if (!resp.success) {
         global.globalErrorShow(resp.message);
         return;
@@ -111,7 +111,7 @@
       domain: domain,
     };
 
-    global.post(global.origin + "/api/domain/update", json, function(resp) {
+    global.post(global.commento_origin + "/api/domain/update", json, function(resp) {
       if (callback !== undefined)
         callback(resp.success);
 
@@ -130,7 +130,7 @@
       domain: domain,
     };
 
-    global.post(global.origin + "/api/domain/delete", json, function(resp) {
+    global.post(global.commento_origin + "/api/domain/delete", json, function(resp) {
       if (!resp.success) {
         global.globalErrorShow(resp.message);
         return;
