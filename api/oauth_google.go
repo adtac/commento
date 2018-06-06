@@ -27,7 +27,7 @@ func googleOauthConfigure() error {
 	logger.Infof("loading Google OAuth config")
 
 	googleConfig = &oauth2.Config{
-		RedirectURL:  os.Getenv("BACKEND_WEB") + "/oauth/google/callback",
+		RedirectURL:  os.Getenv("ORIGIN") + "/api/oauth/google/callback",
 		ClientID:     os.Getenv("GOOGLE_KEY"),
 		ClientSecret: os.Getenv("GOOGLE_SECRET"),
 		Scopes: []string{
