@@ -16,8 +16,8 @@ func commenterGetByHex(commenterHex string) (commenter, error) {
 
 	c := commenter{}
 	if err := row.Scan(&c.CommenterHex, &c.Email, &c.Name, &c.Link, &c.Photo, &c.Provider, &c.JoinDate); err != nil {
-		logger.Errorf("error scanning commenter: %v", err)
-		return commenter{}, errorInternal
+		// TODO: is this the only error?
+		return commenter{}, errorNoSuchCommenter
 	}
 
 	return c, nil
@@ -38,6 +38,10 @@ func commenterGetBySession(session string) (commenter, error) {
 	var commenterHex string
 	if err := row.Scan(&commenterHex); err != nil {
 		// TODO: is the only error?
+		return commenter{}, errorNoSuchSession
+	}
+
+	if commenterHex == "none" {
 		return commenter{}, errorNoSuchSession
 	}
 
