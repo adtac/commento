@@ -23,6 +23,27 @@ func commenterGetByHex(commenterHex string) (commenter, error) {
 	return c, nil
 }
 
+func commenterGetByEmail(provider string, email string) (commenter, error) {
+	if provider == "" || email == "" {
+		return commenter{}, errorMissingField
+	}
+
+	statement := `
+    SELECT commenterHex, email, name, link, photo, provider, joinDate
+    FROM commenters
+    WHERE email = $1 AND provider = $2;
+  `
+	row := db.QueryRow(statement, email, provider)
+
+	c := commenter{}
+	if err := row.Scan(&c.CommenterHex, &c.Email, &c.Name, &c.Link, &c.Photo, &c.Provider, &c.JoinDate); err != nil {
+		// TODO: is this the only error?
+		return commenter{}, errorNoSuchCommenter
+	}
+
+	return c, nil
+}
+
 func commenterGetBySession(session string) (commenter, error) {
 	if session == "" {
 		return commenter{}, errorMissingField
