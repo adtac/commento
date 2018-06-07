@@ -17,7 +17,7 @@ func TestCommentApproveBasics(t *testing.T) {
 		return
 	}
 
-	if c, _, _ := commentList("anonymous", "example.com", "/path.html", false); c[0].State != "approved" {
+	if c, _, _ := commentList("anonymous", "example.com", "/path.html", true); c[0].State != "approved" {
 		t.Errorf("expected state = approved got state = %s", c[0].State)
 		return
 	}
