@@ -25,8 +25,8 @@ func TestCommentListBasics(t *testing.T) {
 		return
 	}
 
-	if c[0].VoteDirection != 0 {
-		t.Errorf("expected c.VoteDirection = 0 got c.VoteDirection = %d", c[0].VoteDirection)
+	if c[0].Direction != 0 {
+		t.Errorf("expected c.Direction = 0 got c.Direction = %d", c[0].Direction)
 		return
 	}
 
@@ -47,8 +47,8 @@ func TestCommentListBasics(t *testing.T) {
 		return
 	}
 
-	if c[0].VoteDirection != 1 {
-		t.Errorf("expected c.VoteDirection = 1 got c.VoteDirection = %d", c[0].VoteDirection)
+	if c[0].Direction != 1 {
+		t.Errorf("expected c.Direction = 1 got c.Direction = %d", c[0].Direction)
 		return
 	}
 }

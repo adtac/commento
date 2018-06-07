@@ -15,5 +15,5 @@ type comment struct {
 	Score         int       `json:"score"`
 	State         string    `json:"state"`
 	CreationDate  time.Time `json:"creationDate"`
-	VoteDirection int       `json:"voteDirection"`
+	Direction     int       `json:"direction"`
 }

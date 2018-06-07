@@ -65,9 +65,9 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
       `
 			row := db.QueryRow(statement, c.CommentHex, commenterHex)
 
-			if err = row.Scan(&c.VoteDirection); err != nil {
+			if err = row.Scan(&c.Direction); err != nil {
 				// TODO: is the only error here that there is no such entry?
-				c.VoteDirection = 0
+				c.Direction = 0
 			}
 		}
 
