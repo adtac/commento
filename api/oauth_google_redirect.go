@@ -6,16 +6,17 @@ import (
 )
 
 func googleRedirectHandler(w http.ResponseWriter, r *http.Request) {
-	session := r.FormValue("session")
-
-	c, err := commenterGetBySession(session)
-	if err != nil {
-		fmt.Fprintf(w, "error: %s\n", err.Error())
+	if googleConfig == nil {
+		logger.Errorf("google oauth access attempt without configuration")
+		fmt.Fprintf(w, "error: this website has not configured Google OAuth")
 		return
 	}
 
-	if c.CommenterHex != "none" {
-		fmt.Fprintf(w, "error: that session is already in use\n")
+	session := r.FormValue("session")
+
+	_, err := commenterGetBySession(session)
+	if err != nil && err != errorNoSuchSession {
+		fmt.Fprintf(w, "error: %s\n", err.Error())
 		return
 	}
 

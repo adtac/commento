@@ -12,14 +12,9 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	session := r.FormValue("state")
 	code := r.FormValue("code")
 
-	cs, err := commenterSessionGet(session)
-	if err != nil {
+	_, err := commenterSessionGet(session)
+	if err != nil && err != errorNoSuchSession {
 		fmt.Fprintf(w, "Error: %s\n", err.Error())
-		return
-	}
-
-	if cs.Session != "none" {
-		fmt.Fprintf(w, "Error: %v", errorSessionAlreadyInUse.Error())
 		return
 	}
 
@@ -53,12 +48,12 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 
 	// TODO: in case of returning users, update the information we have on record?
-	if !exists {
+	if err == errorNoSuchCommenter {
 		var email string
 		if _, ok := user["email"]; ok {
 			email = user["email"].(string)
 		} else {
-			fmt.Fprintf(w, "error: %s", errorInvalidEmail.Error())
+			fmt.Fprintf(w, "Error: %s", errorInvalidEmail.Error())
 			return
 		}
 
