@@ -13,7 +13,7 @@ type comment struct {
 	Html          string    `json:"html"`
 	ParentHex     string    `json:"parentHex"`
 	Score         int       `json:"score"`
-	State         string    `json:"-"`
+	State         string    `json:"state"`
 	CreationDate  time.Time `json:"creationDate"`
 	VoteDirection int       `json:"voteDirection"`
 }
