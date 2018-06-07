@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseConfigBasics(t *testing.T) {
-	os.Setenv("ORIGIN", "https://commento.io")
+	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
 
 	if err := parseConfig(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
@@ -19,7 +19,7 @@ func TestParseConfigBasics(t *testing.T) {
 		return
 	}
 
-	os.Setenv("PORT", "1886")
+	os.Setenv("COMMENTO_PORT", "1886")
 
 	if err := parseConfig(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
