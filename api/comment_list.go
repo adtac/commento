@@ -71,6 +71,10 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 			}
 		}
 
+		if !includeUnapproved {
+			c.State = ""
+		}
+
 		comments = append(comments, c)
 
 		if _, ok := commenters[c.CommenterHex]; !ok {
