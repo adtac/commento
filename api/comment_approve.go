@@ -48,7 +48,7 @@ func commentApproveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isModerator, err := isDomainModerator(c.Email, domain)
+	isModerator, err := isDomainModerator(domain, c.Email)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return
