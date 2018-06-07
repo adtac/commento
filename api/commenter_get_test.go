@@ -59,3 +59,33 @@ func TestCommenterGetBySessionEmpty(t *testing.T) {
 		return
 	}
 }
+
+func TestCommenterGetByName(t *testing.T) {
+	failTestOnError(t, setupTestEnv())
+
+	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google")
+
+	session, _ := commenterSessionNew()
+
+	commenterSessionUpdate(session, commenterHex)
+
+	c, err := commenterGetByEmail("google", "test@example.com")
+	if err != nil {
+		t.Errorf("unexpected error getting commenter by hex: %v", err)
+		return
+	}
+
+	if c.Name != "Test" {
+		t.Errorf("expected name=Test got name=%s", c.Name)
+		return
+	}
+}
+
+func TestCommenterGetByNameEmpty(t *testing.T) {
+	failTestOnError(t, setupTestEnv())
+
+	if _, err := commenterGetByEmail("", ""); err == nil {
+		t.Errorf("expected error not found getting commenter with empty everything")
+		return
+	}
+}
