@@ -10,7 +10,7 @@ func commenterGetByHex(commenterHex string) (commenter, error) {
 	statement := `
     SELECT commenterHex, email, name, link, photo, provider, joinDate
     FROM commenters
-    WHERE commenterHex=$1;
+    WHERE commenterHex = $1;
   `
 	row := db.QueryRow(statement, commenterHex)
 
@@ -52,7 +52,7 @@ func commenterGetBySession(session string) (commenter, error) {
 	statement := `
     SELECT commenterHex
     FROM commenterSessions
-    WHERE session=$1;
+    WHERE session = $1;
 	`
 	row := db.QueryRow(statement, session)
 
