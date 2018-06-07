@@ -39,8 +39,8 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	exists, err := commenterIsProviderUser("google", user["email"].(string))
-	if err != nil {
+	c, err := commenterGetByEmail("google", user["email"].(string))
+	if err != nil && err != errorNoSuchCommenter {
 		fmt.Fprintf(w, "Error: %s", err.Error())
 		return
 	}
@@ -69,6 +69,8 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return
 		}
+	} else {
+		commenterHex = c.CommenterHex
 	}
 
 	if err := commenterSessionUpdate(session, commenterHex); err != nil {
