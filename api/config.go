@@ -6,7 +6,7 @@ import (
 
 func parseConfig() error {
 	defaults := map[string]string{
-		"POSTGRES": "postgres://postgres:postgres@0.0.0.0/commento?sslmode=disable",
+		"POSTGRES": "postgres://postgres:postgres@localhost/commento?sslmode=disable",
 
 		"PORT":   "8080",
 		"ORIGIN": "",

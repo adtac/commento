@@ -65,7 +65,7 @@ func setupTestDatabase() error {
 		// set it manually because we need to use commento_test, not commento, by mistake
 		os.Setenv("POSTGRES", os.Getenv("COMMENTO_POSTGRES"))
 	} else {
-		os.Setenv("POSTGRES", "postgres://postgres:postgres@0.0.0.0/commento_test?sslmode=disable")
+		os.Setenv("POSTGRES", "postgres://postgres:postgres@localhost/commento_test?sslmode=disable")
 	}
 
 	if err := connectDB(); err != nil {
