@@ -1,7 +1,7 @@
 SHELL = bash
 
 # list of JS files to be built
-JS_BUILD = jquery.js vue.js highlight.js chartist.js login.js signup.js dashboard.js logout.js
+JS_BUILD = jquery.js vue.js highlight.js chartist.js login.js signup.js dashboard.js logout.js commento.js
 
 jquery.js = jquery.js
 vue.js = vue.js
@@ -11,6 +11,7 @@ login.js = utils.js http.js auth-common.js login.js
 signup.js = utils.js http.js auth-common.js signup.js
 dashboard.js = utils.js http.js errors.js self.js dashboard.js dashboard-setting.js dashboard-domain.js dashboard-installation.js dashboard-general.js dashboard-moderation.js dashboard-statistics.js dashboard-import.js dashboard-danger.js
 logout.js = utils.js logout.js
+commento.js = commento.js
 
 # for each file in $(JS_BUILD), list its composition
 

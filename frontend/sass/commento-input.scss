@@ -1,0 +1,187 @@
+@import "colors-main.scss";
+
+textarea,
+input[type=text] {
+  background: #ffffff;
+  border: 1px solid rgba(50, 50, 93, .1);
+  border-radius: 3px;
+  color: #525f7f;
+}
+
+input[type=text]::placeholder {
+  color: #cacaca;
+}
+
+textarea::placeholder {
+  color: #aaa;
+  font-size: 22px;
+  padding-top: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+textarea {
+  display: inline-block;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  padding: 8px;
+  outline: none;
+  overflow: auto;
+  min-height: 75px;
+  width: 100%;
+}
+
+.commento-red-border {
+  border: 1px solid $red-7;
+}
+
+.commento-textarea-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    .commento-button, .commento-buttons-container::before {
+      opacity: 1;
+      transform: translate(0px,-3px);
+    }
+
+    .commento-submit-button {
+      transform: none;
+    }
+
+    .commento-blurred-textarea {
+      opacity: .7;
+      transform: scale(.95);
+      filter: blur(4px);
+    }
+
+    @media only screen and (max-width: 550px) {
+      .commento-buttons-container::before {
+        display: none;
+      }
+    }
+  }
+}
+
+.commento-buttons-container {
+  display: inline-block;
+  position: absolute;
+  z-index: 1;
+  opacity: 1;
+}
+
+.commento-mobile-buttons-container::before,
+.commento-buttons-container::before {
+  content: "Authenticate with";
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  line-height: 24px;
+  font-size: 14px;
+  padding: 6px;
+  color: $gray-8;
+  transition: all 0.3s;
+  opacity: 0;
+  outline: none;
+}
+
+.commento-mobile-buttons-container::before {
+  content: "To join the discussion, authenticate with";;
+  display: block;
+  text-align: center;
+}
+
+@media only screen and (max-width: 550px) {
+  .commento-buttons-container::before {
+    display: none;
+  }
+}
+
+.commento-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 24px;
+  font-size: 14px;
+  padding: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11),0 1px 3px rgba(0,0,0,.08);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #fff;
+  width: 100px;
+  margin-left: 5px;
+  margin-left: 5px;
+  opacity: 0;
+}
+
+.commento-opaque {
+  opacity: 1;
+}
+
+.commento-opaque::before {
+  opacity: 1;
+}
+
+.commento-google-button {
+  transition: all 0.3s;
+  background: #dd4b39;
+}
+
+.commento-github-button {
+  transition: all 0.3s;
+  background: #000000;
+}
+
+.commento-anonymous-button {
+  transition: all 0.3s;
+  background: #096fa6;
+}
+
+.commento-blurred-textarea {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-between;
+  transition: 0.3s all;
+  will-change: transform;
+}
+
+.commento-approve-button,
+.commento-delete-button,
+.commento-submit-button {
+  margin-top: 10px;
+  opacity: 1;
+  font-size: 14px;
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: -ms-fit-content;
+  width: -o-fit-content;
+  width: fit-content;
+}
+
+.commento-submit-button {
+  float: right;
+  background: $indigo-7;
+}
+
+.commento-approve-button {
+  background: $green-7;
+}
+
+.commento-delete-button {
+  background: $red-7;
+}
+
+.commento-button-margin {
+  padding-bottom: 60px;
+}

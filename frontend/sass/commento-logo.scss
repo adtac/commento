@@ -1,0 +1,38 @@
+@import "colors-main.scss";
+
+.commento-footer {
+  margin: 36px 0px 12px 0px;
+  border-top: 1px solid $gray-1;
+  padding-right: 12px;
+
+  .commento-logo-container {
+    float: right;
+
+    .commento-logo {
+      border: none;
+      width: auto;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      border-radius: 3px;
+
+      .commento-logo-svg {
+        display: inline;
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+        outline: none;
+      }
+    }
+
+    .commento-logo-text {
+      font-size: 13px;
+      color: $gray-6;
+      display: inline;
+      line-height: 24px;
+      position: relative;
+      font-weight: bold;
+    }
+  }
+}

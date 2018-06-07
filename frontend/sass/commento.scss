@@ -1,0 +1,134 @@
+#commento {
+  font-family: "Source Sans Pro", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #50596c;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  padding: 8px;
+
+  @import "colors-main.scss";
+  @import "common-main.scss";
+
+  @import "commento-tags.scss";
+  @import "commento-logo.scss";
+  @import "commento-input.scss";
+  @import "commento-logged.scss";
+  @import "commento-buttons.scss";
+
+  .commento-hidden {
+    display: none;
+  }
+
+  .commento-error-box {
+    width: 100%;
+    border-radius: 4px;
+    height: 32px;
+    text-align: center;
+    color: $red-7;
+    font-weight: bold;
+  }
+
+  .commento-moderation-notice {
+    width: 100%;
+    border-radius: 4px;
+    height: 32px;
+    text-align: center;
+    color: $orange-7;
+    font-weight: bold;
+    margin-top: 16px;
+  }
+
+  .commento-dark-card {
+    background: $blue-1;
+  }
+
+  .commento-card {
+    padding: 12px 0px 0px 12px;
+    margin-top: 16px;
+    border-top: 1px solid #f0f0f0;
+
+    .commento-header {
+      padding-bottom: 12px;
+    }
+
+    .commento-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 22px;
+      float: left;
+      margin-right: 10px;
+      border: 1px solid #fff;
+      box-shadow: 0px 0px 0px 2px #f00;
+    }
+
+    .commento-avatar-img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      float: left;
+      margin-right: 10px;
+    }
+
+    .commento-avatar::after {
+      content:"";
+      display:block;
+    }
+
+    .commento-name {
+      font-weight: bold;
+      font-size: 14px;
+      color: #555;
+      border: none;
+      display: block;
+      z-index: 1;
+      margin-left: 48px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .commento-subtitle {
+      display: block;
+      color: #999;
+      font-size: 12px;
+      margin-left: 48px;
+    }
+
+    .commento-score {
+      display: inline;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .commento-score::before {
+      content: "\00a0 \00a0 \00b7 \00a0 \00a0";
+    }
+
+    .commento-body {
+      p {
+        margin-top: 6px;
+        margin-bottom: 6px;
+      }
+    }
+
+    .commento-options {
+      float: right;
+      position: relative;
+      height: 38px;
+      z-index: 2;
+    }
+
+    .commento-moderation {
+      height: 48px;
+    }
+  }
+}
