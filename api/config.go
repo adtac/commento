@@ -23,8 +23,10 @@ func parseConfig() error {
 	}
 
 	for key, value := range defaults {
-		if os.Getenv(key) == "" {
+		if os.Getenv("COMMENTO_" + key) == "" {
 			os.Setenv(key, value)
+		} else {
+			os.Setenv(key, os.Getenv("COMMENTO_" + key))
 		}
 	}
 
