@@ -23,9 +23,11 @@ clean:
 # later down the line).
 
 devel-go:
+	go get .
 	go build -i -v -o $(GO_DEVEL_BUILD_BINARY)
 
 prod-go:
+	go get .
 	go build -i -v -o $(GO_PROD_BUILD_BINARY)
 
 $(shell mkdir -p $(GO_DEVEL_BUILD_DIR) $(GO_PROD_BUILD_DIR))
