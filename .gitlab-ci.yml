@@ -22,6 +22,8 @@ build-src:
 build-docker:
   stage: build-docker
   image: docker:stable
+  services:
+    - docker:dind
   script:
     - docker build -t commento-ce .
 
