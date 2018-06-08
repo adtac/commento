@@ -6,6 +6,8 @@ stages:
 build-src:
   stage: build-src
   image: debian:buster
+  variables:
+    GOPATH: $CI_PROJECT_DIR
   script:
     - apt update
     - apt install -y curl gnupg git make golang
@@ -13,7 +15,7 @@ build-src:
     - apt update
     - apt install -y nodejs
     - npm install -g html-minifier uglify-js sass
-    - cd api && go get -v . && cd ..
+    - mkdir -p src/gitlab.com/commento && cd src/gitlab.com/commento && ln -s $CI_PROJECT_DIR && cd $CI_PROJECT_NAME
     - make devel
     - make prod
 
