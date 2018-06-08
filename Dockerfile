@@ -5,7 +5,6 @@ COPY ./api /go/src/commento-ce/api
 WORKDIR /go/src/commento-ce/api
 
 RUN apk update && apk add bash make git
-RUN go get -v
 
 RUN make prod
 
