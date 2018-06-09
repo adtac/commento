@@ -34,15 +34,15 @@ There are three editions of Commento.
 
 ### Installation
 
-The recommended way to install Commento is with [Docker Compose](https://docs.docker.com/compose). Docker Compose allows you to install and manage the service painlessly. [Read our documentation](https://docs.commento.io/installation/docker-compose/) to find our more on how to get Commento running with Docker Compose.
+The recommended way to install Commento is with [Docker Compose](https://docs.docker.com/compose). Docker Compose allows you to install and manage the service painlessly. [Read our documentation](http://docs.commento.io/installation-docker.html) to find our more on how to get Commento running with Docker Compose.
 
-There are other options to install Commento, including running the binary directly and compiling from source. Please refer to the [installation page](https://docs.commento.io/installation/) for more information.
+There are other options to install Commento, including running the binary directly and compiling from source. Please refer to the [installation page](https://docs.commento.io/installation.html) for more information.
 
-Once you've installed the software, you need to configure it with various environment variables before starting the service. To learn more about this, refer to our documentation on [configuring Commento](https://docs.commento.io/configuration/).
+Once you've installed the software, you need to configure it with various environment variables before starting the service. To learn more about this, refer to our documentation on [configuring Commento](https://docs.commento.io/configuration.html).
 
 ### Contributing
 
-Commento is possible only because of its community. If this is your first contribution to Commento, please go through the [development documentation](https://docs.commento.io/development/) before you begin.
+Commento is possible only because of its community. If this is your first contribution to Commento, please go through the [development documentation](https://docs.commento.io/contributing.html) before you begin.
 
 Help will always be given at Commento to those who ask for it. We use IRC for chat to collaborate with other developers. You're invited to [hang out with us](https://irc.commento.io) in the `#commento-dev` channel on freenode if you want to contribute to Commento!
 
