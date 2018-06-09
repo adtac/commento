@@ -66,7 +66,6 @@ func initStaticRouter(router *mux.Router) error {
 		"signup",
 		"dashboard",
 		"logout",
-		"account",
 	}
 
 	html := make(map[string]string)
