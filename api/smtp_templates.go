@@ -39,7 +39,7 @@ Subject: {{.Subject}}
 	for _, name := range names {
 		var err error
 		templates[name] = template.New(name)
-		templates[name], err = template.ParseFiles(fmt.Sprintf("%s/templates/%s.html", os.Getenv("COMMENTO_STATIC"), name))
+		templates[name], err = template.ParseFiles(fmt.Sprintf("%s/templates/%s.html", os.Getenv("STATIC"), name))
 		if err != nil {
 			logger.Errorf("cannot parse %s/templates/%s.html: %v", os.Getenv("STATIC"), name, err)
 			return errorMalformedTemplate
