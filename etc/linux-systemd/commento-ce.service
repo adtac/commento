@@ -1,0 +1,14 @@
+[Unit]
+Description=Commento-CE daemon service
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/commento-ce
+Environment=COMMENTO_ORIGIN=https://commento.example.com
+Environment=COMMENTO_PORT=8080
+Environment=COMMENTO_POSTGRES=postgres://commento:commento@db:5432/commento?sslmode=disable
+Environment=COMMENTO_STATIC=/usr/share/commento-ce
+
+[Install]
+WantedBy=multi-user.target
