@@ -33,6 +33,15 @@ func TestParseConfigBasics(t *testing.T) {
 	}
 }
 
+func TestParseConfigNoOrigin(t *testing.T) {
+	os.Setenv("COMMENTO_ORIGIN", "")
+
+	if err := parseConfig(); err == nil {
+		t.Errorf("expected error not found parsing config without ORIGIN")
+		return
+	}
+}
+
 func TestParseConfigStatic(t *testing.T) {
 	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
 
