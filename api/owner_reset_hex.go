@@ -10,6 +10,10 @@ func ownerSendResetHex(email string) error {
 		return errorMissingField
 	}
 
+	if !smtpConfigured {
+		return errorSmtpNotConfigured
+	}
+
 	o, err := ownerGetByEmail(email)
 	if err != nil {
 		if err == errorNoSuchEmail {
@@ -20,10 +24,6 @@ func ownerSendResetHex(email string) error {
 			logger.Errorf("cannot get owner by email: %v", err)
 			return errorInternal
 		}
-	}
-
-	if !smtpConfigured {
-		return errorSmtpNotConfigured
 	}
 
 	resetHex, err := randomHex(32)
