@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# PROVIDE: commento_ce
+# REQUIRE: LOGIN postgresql
+# KEYWORD: shutdown
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
+
+. /etc/rc.subr
+
+desc="Commento CE daemon"
+name=commento_ce
+rcvar=commento_ce_enable
+
+load_rc_config $name
+
+: ${commento_ce_enable:=NO}
+
+commento_ce_env="COMMENTO_ORIGIN=https://commento.example.com \
+COMMENTO_PORT=8080 \
+COMMENTO_POSTGRES=postgres://commento:commento@db:5432/commento?sslmode=disable \
+COMMENTO_STATIC=/usr/local/share/commento-ce"
+commento_ce_user=www
+
+command="/usr/local/bin/commento-ce"
+command_args=" >> /var/log/commento_ce/${name}.log 2>&1 &"
+
+run_rc_command "$1"
