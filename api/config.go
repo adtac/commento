@@ -9,7 +9,7 @@ import (
 func parseConfig() error {
 	binPath, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		logger.Fatalf("cannot load binary path: %v", err)
+		logger.Errorf("cannot load binary path: %v", err)
 		return err
 	}
 
@@ -43,7 +43,7 @@ func parseConfig() error {
 	// Mandatory config parameters
 	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN"} {
 		if os.Getenv(env) == "" {
-			logger.Fatalf("missing %s environment variable", env)
+			logger.Errorf("missing %s environment variable", env)
 			return errorMissingConfig
 		}
 	}

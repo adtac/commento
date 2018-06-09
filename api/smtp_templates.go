@@ -27,7 +27,7 @@ Subject: {{.Subject}}
 
 `)
 	if err != nil {
-		logger.Fatalf("cannot parse header template: %v", err)
+		logger.Errorf("cannot parse header template: %v", err)
 		return errorMalformedTemplate
 	}
 
@@ -41,7 +41,7 @@ Subject: {{.Subject}}
 		templates[name] = template.New(name)
 		templates[name], err = template.ParseFiles(fmt.Sprintf("%s/templates/%s.html", os.Getenv("COMMENTO_STATIC"), name))
 		if err != nil {
-			logger.Fatalf("cannot parse %s/templates/%s.html: %v", os.Getenv("STATIC"), name, err)
+			logger.Errorf("cannot parse %s/templates/%s.html: %v", os.Getenv("STATIC"), name, err)
 			return errorMalformedTemplate
 		}
 	}
