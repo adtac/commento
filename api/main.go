@@ -6,6 +6,7 @@ func main() {
 	exitIfError(connectDB())
 	exitIfError(performMigrations())
 	exitIfError(smtpConfigure())
+	exitIfError(smtpTemplatesLoad())
 	exitIfError(oauthConfigure())
 	exitIfError(createMarkdownRenderer())
 	exitIfError(setupSigintCleanup())
