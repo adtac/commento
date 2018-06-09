@@ -45,11 +45,11 @@ api:
 
 .PHONY: templates
 templates:
-	cd templates && $(MAKE) $(MAKECDMGOALS)
+	cd templates && $(MAKE) $(MAKECMDGOALS)
 
 .PHONY: db
 db:
-	cd db && $(MAKE) $(MAKECDMGOALS)
+	cd db && $(MAKE) $(MAKECMDGOALS)
 
 devel-copy: devel-copy-frontend devel-copy-api devel-copy-templates devel-copy-db
 
