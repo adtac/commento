@@ -53,6 +53,7 @@ func TestSmtpConfigureEmptyAddress(t *testing.T) {
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
 	os.Setenv("SMTP_HOST", "smtp.commento.io")
+	os.Setenv("SMTP_PORT", "25")
 
 	if err := smtpConfigure(); err == nil {
 		t.Errorf("expected error not found; SMTP should not be configured when SMTP_FROM_ADDRESS is empty")

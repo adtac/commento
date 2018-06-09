@@ -26,6 +26,7 @@ func parseConfig() error {
 		"SMTP_USERNAME":     "",
 		"SMTP_PASSWORD":     "",
 		"SMTP_HOST":         "",
+		"SMTP_PORT":         "",
 		"SMTP_FROM_ADDRESS": "",
 
 		"OAUTH_GOOGLE_KEY":    "",
