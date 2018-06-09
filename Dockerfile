@@ -57,4 +57,6 @@ COPY --from=db-build /commento-ce/db/build/prod/db/ /commento-ce/db/
 EXPOSE 8080
 
 WORKDIR /commento-ce/
+
+ENV COMMENTO_BIND_ADDRESS="0.0.0.0"
 ENTRYPOINT ["/commento-ce/commento-ce"]
