@@ -22,8 +22,10 @@ func serveRoutes() error {
 	headers := handlers.AllowedHeaders([]string{"X-Requested-With"})
 	methods := handlers.AllowedMethods([]string{"GET", "POST"})
 
-	logger.Infof("starting server on port %s\n", os.Getenv("PORT"))
-	if err := http.ListenAndServe(":"+os.Getenv("PORT"), handlers.CORS(origins, headers, methods)(router)); err != nil {
+	addrPort := os.Getenv("BIND_ADDRESS") + ":" + os.Getenv("PORT")
+
+	logger.Infof("starting server on %s\n", addrPort)
+	if err := http.ListenAndServe(addrPort, handlers.CORS(origins, headers, methods)(router)); err != nil {
 		logger.Errorf("cannot start server: %v", err)
 		return err
 	}

@@ -14,6 +14,23 @@ func TestParseConfigBasics(t *testing.T) {
 		return
 	}
 
+	if os.Getenv("BIND_ADDRESS") != "127.0.0.1" {
+		t.Errorf("expected BIND_ADDRESS=127.0.0.1, but BIND_ADDRESS=%s instead", os.Getenv("BIND_ADDRESS"))
+		return
+	}
+
+	os.Setenv("COMMENTO_BIND_ADDRESS", "192.168.1.100")
+
+	if err := parseConfig(); err != nil {
+		t.Errorf("unexpected error when parsing config: %v", err)
+		return
+	}
+
+	if os.Getenv("BIND_ADDRESS") != "192.168.1.100" {
+		t.Errorf("expected BIND_ADDRESS=192.168.1.100, but BIND_ADDRESS=%s instead", os.Getenv("BIND_ADDRESS"))
+		return
+	}
+
 	// This test feels kinda stupid, but whatever.
 	if os.Getenv("PORT") != "8080" {
 		t.Errorf("expected PORT=8080, but PORT=%s instead", os.Getenv("PORT"))
