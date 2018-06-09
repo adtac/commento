@@ -7,7 +7,7 @@ import (
 )
 
 func performMigrations() error {
-	return performMigrationsFromDir("db")
+	return performMigrationsFromDir(os.Getenv("STATIC") + "/db")
 }
 
 func performMigrationsFromDir(dir string) error {

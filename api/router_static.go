@@ -28,24 +28,26 @@ func initStaticRouter(router *mux.Router) error {
 	asset := make(map[string]string)
 
 	for _, dir := range []string{"js", "css", "images"} {
-		files, err := ioutil.ReadDir("./" + dir)
+		sl := string(os.PathSeparator)
+		dir = sl + dir
+
+		files, err := ioutil.ReadDir(os.Getenv("STATIC") + dir)
 		if err != nil {
-			logger.Errorf("cannot read directory ./%s: %v", dir, err)
+			logger.Errorf("cannot read directory %s%s: %v", os.Getenv("STATIC"), dir, err)
 			return err
 		}
 
 		for _, file := range files {
-			sl := string(os.PathSeparator)
-			p := sl + dir + sl + file.Name()
+			p := dir + sl + file.Name()
 
-			contents, err := ioutil.ReadFile("." + p)
+			contents, err := ioutil.ReadFile(os.Getenv("STATIC") + p)
 			if err != nil {
-				logger.Errorf("cannot read file %s: %v", p, err)
+				logger.Errorf("cannot read file %s%s: %v", os.Getenv("STATIC"), p, err)
 				return err
 			}
 
 			prefix := ""
-			if dir == "js" {
+			if dir == "/js" {
 				prefix = "window.commento_origin='" + os.Getenv("ORIGIN") + "';\n"
 				prefix += "window.commento_cdn='" + os.Getenv("CDN_PREFIX") + "';\n"
 			}
@@ -69,22 +71,26 @@ func initStaticRouter(router *mux.Router) error {
 
 	html := make(map[string]string)
 	for _, page := range pages {
-		contents, err := ioutil.ReadFile(page + ".html")
+		sl := string(os.PathSeparator)
+		page = sl + page
+		file := page + ".html"
+
+		contents, err := ioutil.ReadFile(os.Getenv("STATIC") + file)
 		if err != nil {
-			logger.Errorf("cannot read file %s.html: %v", page, err)
+			logger.Errorf("cannot read file %s%s: %v", os.Getenv("STATIC"), file, err)
 			return err
 		}
 
 		t, err := template.New(page).Delims("<<<", ">>>").Parse(string(contents))
 		if err != nil {
-			logger.Errorf("cannot parse /%s template: %v", page, err)
+			logger.Errorf("cannot parse %s%s template: %v", os.Getenv("STATIC"), file, err)
 			return err
 		}
 
 		var buf bytes.Buffer
 		t.Execute(&buf, &staticHtmlPlugs{CdnPrefix: os.Getenv("CDN_PREFIX")})
 
-		html["/" + page] = buf.String()
+		html[page] = buf.String()
 	}
 
 	for _, page := range pages {

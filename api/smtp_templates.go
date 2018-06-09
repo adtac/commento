@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"html/template"
 )
@@ -38,9 +39,9 @@ Subject: {{.Subject}}
 	for _, name := range names {
 		var err error
 		templates[name] = template.New(name)
-		templates[name], err = template.ParseFiles(fmt.Sprintf("email/%s.html", name))
+		templates[name], err = template.ParseFiles(fmt.Sprintf("%s/templates/%s.html", os.Getenv("COMMENTO_STATIC"), name))
 		if err != nil {
-			logger.Fatalf("cannot parse %s.html: %v\n", name, err)
+			logger.Fatalf("cannot parse %s/templates/%s.html: %v", os.Getenv("STATIC"), name, err)
 			return errorMalformedTemplate
 		}
 	}

@@ -43,3 +43,4 @@ var errorUnassociatedSession = errors.New("No user associated with that session.
 var errorSessionAlreadyInUse = errors.New("Session is already in use.")
 var errorCannotReadResponse = errors.New("Cannot read response.")
 var errorNotModerator = errors.New("You need to be a moderator to do that.")
+var errorNotADirectory = errors.New("The given path is not a directory.")
