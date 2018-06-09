@@ -2,6 +2,7 @@ stages:
   - build-src
   - build-docker
   - go-test
+  - docker-registry
 
 build-src:
   stage: build-src
@@ -41,3 +42,17 @@ go-test:
     - cd api
     - (go get -v . || true) # TODO: remove this ugly hack
     - go test -v .
+
+docker-registry:
+  stage: docker-registry
+  image: docker:stable
+  services:
+    - docker:dind
+  only:
+    - master
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+  script:
+    - docker pull registry.gitlab.com/commento/commento-ce:latest || true
+    - docker build --cache-from registry.gitlab.com/commento/commento-ce:latest --tag registry.gitlab.com/commento/commento-ce:latest .
+    - docker push registry.gitlab.com/commento/commento-ce:latest
