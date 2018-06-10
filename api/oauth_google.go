@@ -37,7 +37,7 @@ func googleOauthConfigure() error {
 		Endpoint: google.Endpoint,
 	}
 
-	configuredOauths = append(configuredOauths, "google");
+	configuredOauths = append(configuredOauths, "google")
 
 	return nil
 }

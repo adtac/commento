@@ -1,6 +1,6 @@
 package main
 
-import()
+import ()
 
 func commentStatistics(domain string) ([]int64, error) {
 	statement := `

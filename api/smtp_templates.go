@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
 	"fmt"
 	"html/template"
+	"os"
 )
 
 var headerTemplate *template.Template

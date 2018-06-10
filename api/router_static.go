@@ -6,10 +6,10 @@ import (
 	"github.com/gorilla/mux"
 	"html/template"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"os"
 	"path"
-	"mime"
 )
 
 func redirectLogin(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +52,7 @@ func initStaticRouter(router *mux.Router) error {
 				prefix += "window.commento_cdn='" + os.Getenv("CDN_PREFIX") + "';\n"
 			}
 
-			asset[p] = prefix + string(contents);
+			asset[p] = prefix + string(contents)
 
 			router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
 				w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
@@ -95,7 +95,7 @@ func initStaticRouter(router *mux.Router) error {
 	}
 
 	for _, page := range pages {
-		router.HandleFunc("/" + page, func(w http.ResponseWriter, r *http.Request) {
+		router.HandleFunc("/"+page, func(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, html[r.URL.Path])
 		})
 	}

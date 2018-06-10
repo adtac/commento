@@ -32,7 +32,7 @@ func commenterNew(email string, name string, link string, photo string, provider
 	}
 
 	passwordHash := []byte{}
-	if (password != "") {
+	if password != "" {
 		passwordHash, err = bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		if err != nil {
 			logger.Errorf("cannot generate hash from password: %v\n", err)
@@ -53,7 +53,6 @@ func commenterNew(email string, name string, link string, photo string, provider
 
 	return commenterHex, nil
 }
-
 
 func commenterNewHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {

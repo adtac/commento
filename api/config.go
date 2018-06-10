@@ -2,8 +2,8 @@ package main
 
 import (
 	"os"
-	"strings"
 	"path/filepath"
+	"strings"
 )
 
 func parseConfig() error {
@@ -29,15 +29,15 @@ func parseConfig() error {
 		"SMTP_PORT":         "",
 		"SMTP_FROM_ADDRESS": "",
 
-		"GOOGLE_KEY":        "",
-		"GOOGLE_SECRET":     "",
+		"GOOGLE_KEY":    "",
+		"GOOGLE_SECRET": "",
 	}
 
 	for key, value := range defaults {
-		if os.Getenv("COMMENTO_" + key) == "" {
+		if os.Getenv("COMMENTO_"+key) == "" {
 			os.Setenv(key, value)
 		} else {
-			os.Setenv(key, os.Getenv("COMMENTO_" + key))
+			os.Setenv(key, os.Getenv("COMMENTO_"+key))
 		}
 	}
 
@@ -55,7 +55,7 @@ func parseConfig() error {
 
 	static := os.Getenv("STATIC")
 	for strings.HasSuffix(static, "/") {
-		static = static[0:len(static)-1]
+		static = static[0 : len(static)-1]
 	}
 
 	file, err := os.Stat(static)
