@@ -331,7 +331,7 @@
       commenters = resp.commenters;
       configuredOauths = resp.configuredOauths;
 
-      if (!resp.requireModeration)
+      if (!resp.requireIdentification)
         configuredOauths.push("anonymous");
 
       cssLoad(cdn + "/css/commento.css");
