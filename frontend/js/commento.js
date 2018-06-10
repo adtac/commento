@@ -1053,9 +1053,8 @@
     append(loginLinkContainer, loginLink);
     append(loginBox, loginLinkContainer);
 
-    append(loginBox, hr);
-
     if (configuredOauths.length > 0) {
+      append(loginBox, hr);
       append(loginBox, oauthPretext);
       append(oauthButtonsContainer, oauthButtons);
       append(loginBox, oauthButtonsContainer);
@@ -1084,9 +1083,11 @@
 
     loginBoxType = "login";
 
-    remove(hr);
-    remove(oauthPretext);
-    remove(oauthButtonsContainer);
+    if (configuredOauths.length > 0) {
+      remove(hr);
+      remove(oauthPretext);
+      remove(oauthButtonsContainer);
+    }
   }
 
   global.signupSwitch = function() {
@@ -1156,9 +1157,11 @@
     remove(emailButton);
     remove(loginLinkContainer);
     if (loginBoxType == "signup") {
-      remove(hr);
-      remove(oauthPretext);
-      remove(oauthButtonsContainer);
+      if (configuredOauth.length > 0) {
+        remove(hr);
+        remove(oauthPretext);
+        remove(oauthButtonsContainer);
+      }
     }
 
     var order, id, type, placeholder;
