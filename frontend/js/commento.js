@@ -1157,7 +1157,7 @@
     remove(emailButton);
     remove(loginLinkContainer);
     if (loginBoxType == "signup") {
-      if (configuredOauth.length > 0) {
+      if (configuredOauths.length > 0) {
         remove(hr);
         remove(oauthPretext);
         remove(oauthButtonsContainer);
