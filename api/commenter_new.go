@@ -15,6 +15,13 @@ func commenterNew(email string, name string, link string, photo string, provider
 		return "", errorMissingField
 	}
 
+	// See utils_sanitise.go's documentation on isHttpsUrl. This is not a URL
+	// validator, just an XSS preventor.
+	// TODO: reject URLs instead of malforming them.
+	if !isHttpsUrl(link) {
+		link = "https://" + link
+	}
+
 	if _, err := commenterGetByEmail(provider, email); err == nil {
 		return "", errorEmailAlreadyExists
 	}

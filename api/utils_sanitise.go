@@ -33,3 +33,13 @@ func stripPath(url string) string {
 
 	return strippedPath
 }
+
+var httpsUrl = regexp.MustCompile(`^https?://`)
+
+func isHttpsUrl(in string) bool {
+	// Admittedly, this isn't the greatest URL checker. But it does what we need.
+	// I don't care if the user gives an invalid URL, I just want to make sure
+	// they don't do any XSS shenanigans. Hopefully, enforcing a https?:// prefix
+	// solves this. If this function returns false, prefix with "http://"
+	return len(httpsUrl.FindAllString(in, -1)) != 0
+}
