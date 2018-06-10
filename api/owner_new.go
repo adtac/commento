@@ -79,5 +79,10 @@ func ownerNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if _, err := commenterNew(*x.Email, *x.Name, "undefined", "undefined", "commento", *x.Password); err != nil {
+		writeBody(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
 	writeBody(w, response{"success": true, "confirmEmail": smtpConfigured})
 }
