@@ -38,10 +38,10 @@ go-test:
     POSTGRES_PASSWORD: postgres
     POSTGRES_DB: commento_test
     COMMENTO_POSTGRES: postgres://postgres:postgres@postgres/commento_test?sslmode=disable
+    GOPATH: $CI_PROJECT_DIR
   script:
-    - cd api
-    - (go get -v . || true) # TODO: remove this ugly hack
-    - go test -v .
+    - mkdir -p src/gitlab.com/commento && cd src/gitlab.com/commento && ln -s $CI_PROJECT_DIR && cd $CI_PROJECT_NAME
+    - make test
 
 docker-registry:
   stage: docker-registry
