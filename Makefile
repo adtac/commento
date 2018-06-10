@@ -28,6 +28,8 @@ DB_DEVEL_ROOT_DIR         = $(DEVEL_BUILD_DIR)/db
 DB_PROD_BUILD_DIR         = $(DB_BUILD_DIR)/$(PROD_BUILD_DIR)
 DB_PROD_ROOT_DIR          = $(PROD_BUILD_DIR)/db
 
+test: api
+
 devel: frontend api templates db devel-copy
 
 prod: frontend api templates db prod-copy

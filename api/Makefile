@@ -11,6 +11,8 @@ GO_DEVEL_BUILD_BINARY  = $(GO_DEVEL_BUILD_DIR)/commento-ce
 GO_PROD_BUILD_DIR      = $(PROD_BUILD_DIR)
 GO_PROD_BUILD_BINARY   = $(GO_PROD_BUILD_DIR)/commento-ce
 
+test: test-go
+
 devel: devel-go
 
 prod: prod-go
@@ -29,5 +31,9 @@ devel-go:
 prod-go:
 	go get .
 	go build -i -v -o $(GO_PROD_BUILD_BINARY)
+
+test-go:
+	go get .
+	go test -v .
 
 $(shell mkdir -p $(GO_DEVEL_BUILD_DIR) $(GO_PROD_BUILD_DIR))
