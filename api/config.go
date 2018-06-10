@@ -29,8 +29,8 @@ func parseConfig() error {
 		"SMTP_PORT":         "",
 		"SMTP_FROM_ADDRESS": "",
 
-		"OAUTH_GOOGLE_KEY":    "",
-		"OAUTH_GOOGLE_SECRET": "",
+		"GOOGLE_KEY":        "",
+		"GOOGLE_SECRET":     "",
 	}
 
 	for key, value := range defaults {

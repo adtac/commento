@@ -64,7 +64,7 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 			link = "undefined"
 		}
 
-		commenterHex, err = commenterNew(email, user["name"].(string), link, user["picture"].(string), "google")
+		commenterHex, err = commenterNew(email, user["name"].(string), link, user["picture"].(string), "google", "")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return

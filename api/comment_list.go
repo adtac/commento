@@ -151,5 +151,6 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 		"requireIdentification": d.RequireIdentification,
 		"isFrozen":              d.State == "frozen",
 		"isModerator":           isModerator,
+		"configuredOauths":      configuredOauths,
 	})
 }

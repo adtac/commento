@@ -7,7 +7,7 @@ import (
 func TestCommenterSessionGetBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google")
+	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
 
 	session, _ := commenterSessionNew()
 

@@ -1,0 +1,58 @@
+@import "colors-main.scss";
+@import "common-main.scss";
+
+.commento-email-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 8px 0px;
+
+  .commento-email {
+    @extend .shadow;
+    border-radius: 4px;
+    background: $white;
+    width: 100%;
+    max-width: 400px;
+
+    .commento-input {
+      height: 40px;
+      background: $white;
+      border: none;
+      outline: none;
+      padding: 5px;
+      padding-left: 10px;
+      width: calc(100% - 120px);
+    }
+
+    .commento-input::placeholder {
+      color: $gray-5;
+    }
+
+    .commento-email-button {
+      height: 40px;
+      min-width: 110px;
+      float: right;
+      background: $white;
+      border: none;
+      outline: none;
+      padding: 0px 10px 0px 10px;
+      border-left: 1px solid $gray-1;
+      font-size: 12px;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: bold;
+      color: $blue-7;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .commento-email-button:hover {
+      color: $blue-6;
+    }
+
+    .commento-email-button:disabled {
+      cursor: default;
+      color: $gray-6;
+    }
+  }
+}

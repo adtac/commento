@@ -116,5 +116,5 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeBody(w, response{"success": true, "commentHex": commentHex})
+	writeBody(w, response{"success": true, "commentHex": commentHex, "approved": state == "approved"})
 }

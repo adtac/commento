@@ -8,7 +8,7 @@ import (
 func TestCommentApproveBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google")
+	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
 
 	commentHex, _ := commentNew(commenterHex, "example.com", "/path.html", "root", "**foo**", "unapproved", time.Now().UTC())
 

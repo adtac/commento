@@ -8,9 +8,9 @@ import (
 func TestCommentVoteBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	cr0, _ := commenterNew("test1@example.com", "Test1", "undefined", "http://example.com/photo.jpg", "google")
-	cr1, _ := commenterNew("test2@example.com", "Test2", "undefined", "http://example.com/photo.jpg", "google")
-	cr2, _ := commenterNew("test3@example.com", "Test3", "undefined", "http://example.com/photo.jpg", "google")
+	cr0, _ := commenterNew("test1@example.com", "Test1", "undefined", "http://example.com/photo.jpg", "google", "")
+	cr1, _ := commenterNew("test2@example.com", "Test2", "undefined", "http://example.com/photo.jpg", "google", "")
+	cr2, _ := commenterNew("test3@example.com", "Test3", "undefined", "http://example.com/photo.jpg", "google", "")
 
 	c0, _ := commentNew(cr0, "example.com", "/path.html", "root", "**foo**", "approved", time.Now().UTC())
 

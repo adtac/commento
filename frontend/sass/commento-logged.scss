@@ -5,6 +5,7 @@
   text-align: left;
   margin-bottom: 16px;
   position: relative;
+  height: 38px;
 
   .commento-logout {
     cursor: pointer;
@@ -23,15 +24,7 @@
       font-weight: bold;
       position: absolute;
       top: 6px;
-      left: 64px;
-    }
-
-    .commento-photo {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      margin-left: 16px;
-      margin-right: 16px;
+      left: 48px;
     }
   }
 }
