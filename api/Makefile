@@ -11,11 +11,11 @@ GO_DEVEL_BUILD_BINARY  = $(GO_DEVEL_BUILD_DIR)/commento-ce
 GO_PROD_BUILD_DIR      = $(PROD_BUILD_DIR)
 GO_PROD_BUILD_BINARY   = $(GO_PROD_BUILD_DIR)/commento-ce
 
-test: test-go
-
 devel: devel-go
 
 prod: prod-go
+
+test: test-go
 
 clean:
 	rm -rf $(BUILD_DIR)
