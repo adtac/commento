@@ -295,7 +295,7 @@
     attr(el, "style", "display: block;");
   }
 
-  function createErrorElement() {
+  function errorElementCreate() {
     var el = create("div");
 
     el.id = ID_ERROR;
@@ -955,7 +955,7 @@
   function main(callback) {
     root = $("commento");
 
-    createErrorElement();
+    errorElementCreate();
 
     selfGet(function() {
       commentsGet(function() {
