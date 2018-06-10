@@ -2,11 +2,11 @@ version: '3'
 
 services:
   server:
-    build: .
+    image: registry.gitlab.com/commento/commento-ce
     ports:
       - 8080:8080
     environment:
-      COMMENTO_ORIGIN: http://192.168.0.172:8080
+      COMMENTO_ORIGIN: http://commento.example.com:8080
       COMMENTO_PORT: 8080
       COMMENTO_POSTGRES: postgres://postgres:postgres@db:5432/commento?sslmode=disable
     depends_on:
