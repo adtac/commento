@@ -7,7 +7,15 @@
 <p align="center">
 <a href="https://commento.adtac.pw"><img src="https://img.shields.io/badge/demo-live-red.svg?style=for-the-badge&colorA=1e2127&colorB=98c379&label=demo"></a>
 <a href="https://irc.commento.io"><img src="https://img.shields.io/badge/irc-%23commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=c678dd&label=freenode"></a>
-<a href="https://hub.docker.com/r/adtac/commento/"><img src="https://img.shields.io/badge/live-commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=56b6c2&label=docker"></a>
+<a href="https://hub.docker.com/r/adtac/commento/"><img src="https://img.shields.io/badge/live-commento-red.svg?style=for-the-badge&colorB=e24329&colorA=554488&label=gitlab"></a>
+</p>
+
+<h2 align="center"></h2>
+
+<p align="center">
+:warning: :warning: :warning: &nbsp; <b>Note: All development has <a href="https://gitlab.com/commento/commento-ce">moved to GitLab</a>.</b> &nbsp; :warning: :warning: :warning:
+
+You're currently viewing the deprecated `v0` branch. Version `0.x` will not receive new features any new features (except critical security patches). <a href="https://gitlab.com/commento/commento-ce">Version `1.x`</a> is the future with lots of new and shiny features (like moderation, voting). Please file new issues <a href="https://gitlab.com/commento/commento-ce">over there</a>.
 </p>
 
 <h2 align="center"></h2>
@@ -33,6 +41,10 @@ There are three editions of Commento:
  - [**Commento Hosted**](https://commento.io) is a service version of Commento if you want to embed Commento without running servers.  This is currently in private beta and you can [add yourself to the waiting list here](https://commento.io).
 
 ### Getting Started
+
+If you're using version `1.x`, you can find [documentation here](https://docs.commento.io).
+
+Below, you'll find documentation for `0.x`.
 
 #### Hosting the Backend
 
