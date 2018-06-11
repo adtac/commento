@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://commento.io"><img src="https://user-images.githubusercontent.com/7521600/33375172-14b21f68-d52f-11e7-9b30-477682bccf8f.png"></a>
+<a href="https://commento.io"><img src="https://user-images.githubusercontent.com/7521600/33375172-14b21f68-d52f-11e7-9b30-477682bccf8f.png" width=300></a>
 </p>
 
 <p align="center"><b>An open source, privacy focused discussion platform.</b></p>
