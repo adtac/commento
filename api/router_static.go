@@ -25,7 +25,8 @@ type staticHtmlPlugs struct {
 }
 
 func initStaticRouter(router *mux.Router) error {
-	asset := make(map[string]string)
+	asset := make(map[string][]byte)
+	gzippedAsset := make(map[string][]byte)
 
 	for _, dir := range []string{"js", "css", "images"} {
 		sl := string(os.PathSeparator)
@@ -52,12 +53,30 @@ func initStaticRouter(router *mux.Router) error {
 				prefix += "window.commento_cdn='" + os.Getenv("CDN_PREFIX") + "';\n"
 			}
 
-			asset[p] = prefix + string(contents)
+			gzip := (os.Getenv("GZIP_STATIC") == "true")
 
-			router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
-				w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
-				fmt.Fprint(w, asset[r.URL.Path])
-			})
+			asset[p] = []byte(prefix + string(contents))
+			if gzip {
+				gzippedAsset[p], err = gzipStatic(asset[p])
+				if err != nil {
+					logger.Errorf("error gzipping %s: %v", p, err)
+					return err
+				}
+			}
+
+			// faster than checking inside the handler
+			if !gzip {
+				router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
+					w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
+					w.Write(asset[r.URL.Path])
+				})
+			} else {
+				router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
+					w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
+					w.Header().Set("Content-Encoding", "gzip")
+					w.Write(gzippedAsset[r.URL.Path])
+				})
+			}
 		}
 	}
 

@@ -24,6 +24,8 @@ func parseConfig() error {
 
 		"STATIC": binPath,
 
+		"GZIP_STATIC": "false",
+
 		"SMTP_USERNAME":     "",
 		"SMTP_PASSWORD":     "",
 		"SMTP_HOST":         "",
