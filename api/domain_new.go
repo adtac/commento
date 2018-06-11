@@ -50,7 +50,7 @@ func domainNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = domainModeratorNew(*x.Domain, o.Email); err != nil {
+	if err = domainModeratorNew(domain, o.Email); err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return
 	}
