@@ -28,6 +28,7 @@
   var ID_LOGIN_BOX_OAUTH_PRETEXT = "commento-login-box-oauth-pretext";
   var ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER = "commento-login-box-oauth-buttons-container";
   var ID_ERROR = "commento-error";
+  var ID_LOGGED_CONTAINER = "commento-logged-container";
   var ID_COMMENTS_AREA = "commento-comments-area";
   var ID_SUPER_CONTAINER = "commento-textarea-super-container-";
   var ID_TEXTAREA_CONTAINER = "commento-textarea-container-";
@@ -46,6 +47,7 @@
   var ID_REMOVE = "commento-comment-remove-";
   var ID_CONTENTS = "commento-comment-contents-";
   var ID_SUBMIT_BUTTON = "commento-submit-button-";
+  var ID_FOOTER = "commento-footer";
 
 
   var origin = global.commento_origin;
@@ -211,6 +213,8 @@
       var logout = create("div");
       var color = colorGet(resp.commenter.name);
 
+      loggedContainer.id = ID_LOGGED_CONTAINER;
+
       classAdd(loggedContainer, "logged-container");
       classAdd(loggedInAs, "logged-in-as");
       classAdd(name, "name");
@@ -219,6 +223,7 @@
       name.innerText = resp.commenter.name;
       logout.innerText = "Logout";
 
+      attr(loggedContainer, "style", "display: none");
       attr(logout, "onclick", "logout()");
       attr(name, "href", resp.commenter.link);
       if (resp.commenter.photo == "undefined") {
@@ -256,6 +261,7 @@
     link.type = "text/css";
     attr(link, "href", file);
     attr(link, "rel", "stylesheet");
+    attr(link, "onload", "window.allShow()");
 
     append(head, link);
   }
@@ -290,12 +296,15 @@
     var img = create("img");
     var text = create("span");
 
+    footer.id = ID_FOOTER;
+
     classAdd(footer, "footer");
     classAdd(aContainer, "logo-container");
     classAdd(a, "logo");
     classAdd(img, "logo-svg");
     classAdd(text, "logo-text");
 
+    attr(footer, "style", "display: none");
     attr(a, "href", "https://commento.io");
     attr(a, "target", "_blank");
     attr(img, "src", cdn + "/images/logo.svg");
@@ -1222,7 +1231,22 @@
 
     classAdd(mainArea, "main-area");
 
+    attr(mainArea, "style", "display: none");
+
     append(root, mainArea);
+  }
+
+  global.allShow = function() {
+    var mainArea = $(ID_MAIN_AREA);
+    var loggedContainer = $(ID_LOGGED_CONTAINER);
+    var footer = $(ID_FOOTER);
+
+    attr(mainArea, "style", "");
+    if (loggedContainer)
+      attr(loggedContainer, "style", "");
+    attr(footer, "style", "");
+
+    nameWidthFix();
   }
 
   global.loginBoxClose = function() {
@@ -1262,7 +1286,6 @@
       commentsGet(function() {
         rootCreate(function() {
           commentsRender();
-          nameWidthFix();
           footerLoad();
           attr(root, "style", "");
           call(callback);
