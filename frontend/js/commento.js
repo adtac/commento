@@ -1273,12 +1273,7 @@
     $(ID_LOGIN_BOX_EMAIL_INPUT).focus();
   }
 
-  var mainExecuted = false;
   function main(callback) {
-    if (mainExecuted)
-      return;
-    mainExecuted = true;
-
     root = $(ID_ROOT);
 
     loginBoxCreate();
@@ -1299,7 +1294,12 @@
     });
   }
 
-  document.addEventListener("domready", main);
+  // There's no danger of both main()s being called because if the first one is
+  // called later, the second `main()` wouldn't have executed because readyState
+  // woldn't have been "interactive" or "complete" at registration. If the
+  // second main() executes, the first would never execute because
+  // DOMContentLoaded wouldn't be fired in the future.
+  document.addEventListener("DOMContentLoaded", main);
   if (document.readyState == "interactive" || document.readyState == "complete")
     main();
 
