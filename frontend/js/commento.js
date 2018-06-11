@@ -198,7 +198,6 @@
     };
 
     post(origin + "/api/commenter/self", json, function(resp) {
-      console.log(resp);
       if (!resp.success) {
         cookieSet("session", "anonymous");
         call(callback);
