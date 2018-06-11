@@ -1273,7 +1273,12 @@
     $(ID_LOGIN_BOX_EMAIL_INPUT).focus();
   }
 
+  var mainExecuted = false;
   function main(callback) {
+    if (mainExecuted)
+      return;
+    mainExecuted = true;
+
     root = $(ID_ROOT);
 
     loginBoxCreate();
@@ -1294,6 +1299,8 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", main);
+  document.addEventListener("domready", main);
+  if (document.readyState == "interactive" || document.readyState == "complete")
+    main();
 
 }(window, document));
