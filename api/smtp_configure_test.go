@@ -13,6 +13,7 @@ func cleanSmtpVars() {
 
 func TestSmtpConfigureBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
+	cleanSmtpVars()
 
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
@@ -23,12 +24,11 @@ func TestSmtpConfigureBasics(t *testing.T) {
 		t.Errorf("unexpected error when configuring SMTP: %v", err)
 		return
 	}
-
-	cleanSmtpVars()
 }
 
 func TestSmtpConfigureEmptyHost(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
+	cleanSmtpVars()
 
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
@@ -43,12 +43,11 @@ func TestSmtpConfigureEmptyHost(t *testing.T) {
 		t.Errorf("SMTP configured when it should not be due to empty COMMENTO_SMTP_HOST")
 		return
 	}
-
-	cleanSmtpVars()
 }
 
 func TestSmtpConfigureEmptyAddress(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
+	cleanSmtpVars()
 
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
@@ -59,6 +58,4 @@ func TestSmtpConfigureEmptyAddress(t *testing.T) {
 		t.Errorf("expected error not found; SMTP should not be configured when COMMENTO_SMTP_FROM_ADDRESS is empty")
 		return
 	}
-
-	cleanSmtpVars()
 }
