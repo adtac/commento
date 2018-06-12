@@ -47,7 +47,7 @@ func parseConfig() error {
 	// Mandatory config parameters
 	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN"} {
 		if os.Getenv(env) == "" {
-			logger.Errorf("missing %s environment variable", env)
+			logger.Errorf("missing COMMENTO_%s environment variable", env)
 			return errorMissingConfig
 		}
 	}

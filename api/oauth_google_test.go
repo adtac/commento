@@ -34,7 +34,7 @@ func TestGoogleOauthConfigureEmpty(t *testing.T) {
 	os.Setenv("GOOGLE_KEY", "google-key")
 
 	if err := googleOauthConfigure(); err == nil {
-		t.Errorf("expected error not found when configuring google oauth with empty GOOGLE_SECRET")
+		t.Errorf("expected error not found when configuring google oauth with empty COMMENTO_GOOGLE_SECRET")
 		return
 	}
 

@@ -20,7 +20,7 @@ func smtpConfigure() error {
 	}
 
 	if os.Getenv("SMTP_FROM_ADDRESS") == "" {
-		logger.Errorf("SMTP_FROM_ADDRESS not set")
+		logger.Errorf("COMMENTO_SMTP_FROM_ADDRESS not set")
 		smtpConfigured = false
 		return errorMissingSmtpAddress
 	}

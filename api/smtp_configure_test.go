@@ -40,7 +40,7 @@ func TestSmtpConfigureEmptyHost(t *testing.T) {
 	}
 
 	if smtpConfigured {
-		t.Errorf("SMTP configured when it should not be due to empty SMTP_HOST")
+		t.Errorf("SMTP configured when it should not be due to empty COMMENTO_SMTP_HOST")
 		return
 	}
 
@@ -56,7 +56,7 @@ func TestSmtpConfigureEmptyAddress(t *testing.T) {
 	os.Setenv("SMTP_PORT", "25")
 
 	if err := smtpConfigure(); err == nil {
-		t.Errorf("expected error not found; SMTP should not be configured when SMTP_FROM_ADDRESS is empty")
+		t.Errorf("expected error not found; SMTP should not be configured when COMMENTO_SMTP_FROM_ADDRESS is empty")
 		return
 	}
 

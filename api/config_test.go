@@ -15,7 +15,7 @@ func TestParseConfigBasics(t *testing.T) {
 	}
 
 	if os.Getenv("BIND_ADDRESS") != "127.0.0.1" {
-		t.Errorf("expected BIND_ADDRESS=127.0.0.1, but BIND_ADDRESS=%s instead", os.Getenv("BIND_ADDRESS"))
+		t.Errorf("expected COMMENTO_BIND_ADDRESS=127.0.0.1, but COMMENTO_BIND_ADDRESS=%s instead", os.Getenv("BIND_ADDRESS"))
 		return
 	}
 
@@ -27,7 +27,7 @@ func TestParseConfigBasics(t *testing.T) {
 	}
 
 	if os.Getenv("BIND_ADDRESS") != "192.168.1.100" {
-		t.Errorf("expected BIND_ADDRESS=192.168.1.100, but BIND_ADDRESS=%s instead", os.Getenv("BIND_ADDRESS"))
+		t.Errorf("expected COMMENTO_BIND_ADDRESS=192.168.1.100, but COMMENTO_BIND_ADDRESS=%s instead", os.Getenv("BIND_ADDRESS"))
 		return
 	}
 
