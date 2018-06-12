@@ -6,7 +6,7 @@ import (
 )
 
 func cleanSmtpVars() {
-	for _, env := range []string{"SMTP_USERNAME", "SMTP_PASSWORD", "SMTP_HOST", "SMTP_FROM_ADDRESS"} {
+	for _, env := range []string{"SMTP_USERNAME", "SMTP_PASSWORD", "SMTP_HOST", "SMTP_PORT", "SMTP_FROM_ADDRESS"} {
 		os.Setenv(env, "")
 	}
 }
