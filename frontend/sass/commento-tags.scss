@@ -1,16 +1,17 @@
 @import "colors-main.scss";
 
 code {
-  background: $red-3;
+  background: $red-1;
   font-family: monospace;
   line-height: 1.5;
   color: $red-6;
-  padding: 4px;
+  padding: 2px;
+  margin: 2px;
 }
 
 a {
-  color: #1f89ff;
-  border-bottom: 1px solid #1f89ff;
+  color: $blue-6;
+  border-bottom: 1px solid $blue-6;
   outline: none;
   text-decoration: none;
 }
