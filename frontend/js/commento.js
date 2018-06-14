@@ -1294,13 +1294,18 @@
     });
   }
 
-  // There's no danger of both main()s being called because if the first one is
-  // called later, the second `main()` wouldn't have executed because readyState
-  // woldn't have been "interactive" or "complete" at registration. If the
-  // second main() executes, the first would never execute because
-  // DOMContentLoaded wouldn't be fired in the future.
-  document.addEventListener("DOMContentLoaded", main);
-  if (document.readyState == "interactive" || document.readyState == "complete")
+  var autoInitted = false;
+  function autoInit() {
+    if (autoInitted)
+      return;
+    autoInitted = true;
+
     main();
+  }
+
+  if (document.readyState != "complete" && document.readyState != "interactive")
+    document.addEventListener("load", autoInit);
+  else
+    autoInit();
 
 }(window, document));
