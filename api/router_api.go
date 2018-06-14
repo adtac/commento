@@ -19,6 +19,7 @@ func initAPIRouter(router *mux.Router) error {
 	router.HandleFunc("/api/domain/moderator/new", domainModeratorNewHandler).Methods("POST")
 	router.HandleFunc("/api/domain/moderator/delete", domainModeratorDeleteHandler).Methods("POST")
 	router.HandleFunc("/api/domain/statistics", domainStatisticsHandler).Methods("POST")
+	router.HandleFunc("/api/domain/import/disqus", domainImportDisqusHandler).Methods("POST")
 
 	router.HandleFunc("/api/commenter/session/new", commenterSessionNewHandler).Methods("GET")
 	router.HandleFunc("/api/commenter/new", commenterNewHandler).Methods("POST")

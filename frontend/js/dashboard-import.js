@@ -18,13 +18,15 @@
     }
 
     global.buttonDisable("#disqus-import-button");
-    global.post(global.commento_origin + "/api/import/disqus", json, function(resp) {
+    global.post(global.commento_origin + "/api/domain/import/disqus", json, function(resp) {
       global.buttonEnable("#disqus-import-button");
 
       if (!resp.success) {
         global.globalErrorShow(resp.message);
         return;
       }
+
+      $("#disqus-import-button").hide();
 
       globalOKShow("Imported " + resp.numImported + " comments!");
     });
