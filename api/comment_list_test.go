@@ -47,7 +47,7 @@ func TestCommentListBasics(t *testing.T) {
 		return
 	}
 
-	if c[0].Direction != 1 {
+	if c[0].Direction != 0 {
 		t.Errorf("expected c.Direction = 1 got c.Direction = %d", c[0].Direction)
 		return
 	}

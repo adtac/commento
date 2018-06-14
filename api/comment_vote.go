@@ -11,6 +11,23 @@ func commentVote(commenterHex string, commentHex string, direction int) error {
 	}
 
 	statement := `
+		SELECT commenterHex
+		FROM comments
+		WHERE commentHex = $1;
+	`
+	row := db.QueryRow(statement, commentHex)
+
+	var authorHex string
+	if err := row.Scan(&authorHex); err != nil {
+		logger.Errorf("erorr selecting authorHex for vote")
+		return errorInternal
+	}
+
+	if authorHex == commenterHex {
+		return errorSelfVote
+	}
+
+	statement = `
     INSERT INTO
     votes  (commentHex, commenterHex, direction, voteDate)
     VALUES ($1,         $2,           $3,        $4      )

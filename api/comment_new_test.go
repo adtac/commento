@@ -51,8 +51,8 @@ func TestCommentNewUpvoted(t *testing.T) {
 		return
 	}
 
-	if score != 1 {
-		t.Errorf("expected comment to be auto-upvoted")
+	if score != 0 {
+		t.Errorf("expected comment to be at 0 points")
 		return
 	}
 }

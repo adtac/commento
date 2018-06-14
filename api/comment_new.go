@@ -31,10 +31,6 @@ func commentNew(commenterHex string, domain string, path string, parentHex strin
 		return "", errorInternal
 	}
 
-	if err = commentVote(commenterHex, commentHex, 1); err != nil {
-		logger.Warningf("error: cannot upvote new comment automatically: %v", err)
-	}
-
 	return commentHex, nil
 }
 
