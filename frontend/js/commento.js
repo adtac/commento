@@ -190,6 +190,7 @@
     document.cookie = name + "=" + value + expires + "; path=/";
   }
 
+
   function sessionGet() {
     var session = cookieGet("session");
     if (session === undefined)
@@ -198,10 +199,12 @@
     return session;
   }
 
+
   global.logout = function() {
     cookieSet("session", "anonymous");
     refreshAll();
   }
+
 
   function selfGet(callback) {
     var session = sessionGet();
@@ -270,6 +273,7 @@
     });
   }
 
+
   function cssLoad(file, onload) {
     var link = create("link");
     var head = document.getElementsByTagName('head')[0];
@@ -281,6 +285,7 @@
 
     append(head, link);
   }
+
 
   function jsLoad(file, ready) {
     var script = document.createElement("script");
@@ -304,6 +309,7 @@
 
     append(document.body, script);
   }
+
 
   function footerLoad() {
     var footer = create("div");
@@ -333,6 +339,7 @@
     append(footer, aContainer);
     append(root, footer);
   }
+
 
   function commentsGet(callback) {
     var json = {
@@ -364,6 +371,7 @@
     });
   }
 
+
   function errorShow(text) {
     var el = $(ID_ERROR);
 
@@ -371,6 +379,7 @@
 
     attrSet(el, "style", "display: block;");
   }
+
 
   function errorElementCreate() {
     var el = create("div");
@@ -383,12 +392,14 @@
     append(root, el);
   }
 
+
   function autoExpander(el) {
     return function() {
       el.style.height = "";
       el.style.height = Math.min(Math.max(el.scrollHeight, 75), 400) + "px";
     }
   };
+
 
   function isMobile() {
     var mobile = false;
@@ -398,6 +409,7 @@
 
     return mobile;
   }
+
 
   function textareaCreate(id) {
     var textareaSuperContainer = create("div");
@@ -440,6 +452,7 @@
     return textareaSuperContainer;
   }
 
+
   function rootCreate(callback) {
     var mainArea = $(ID_MAIN_AREA);
     var commentsArea = create("div");
@@ -457,6 +470,7 @@
     call(callback);
   }
 
+
   function messageCreate(text) {
     var msg = create("div");
 
@@ -466,6 +480,7 @@
 
     return msg;
   }
+
 
   global.postComment = function(id) {
     var textarea = $(ID_TEXTAREA + id);
@@ -513,6 +528,7 @@
     });
   }
 
+
   function colorGet(name) {
     var colors = [
       // some visually distincy
@@ -531,6 +547,7 @@
 
     return color;
   }
+
 
   function timeDifference(current, previous) { // thanks stackoverflow
     var msJustNow = 5000;
@@ -565,12 +582,14 @@
     }
   }
 
+
   function scorify(score) {
     if (score != 1)
       return score + " points";
     else
       return score + " point";
   }
+
 
   function commentsRecurse(parentMap, parentHex) {
     var cur = parentMap[parentHex];
@@ -846,6 +865,7 @@
     post(origin + "/api/comment/vote", json, function(resp) {});
   }
 
+
   global.replyShow = function(id) {
     if (id in shownReply && shownReply[id])
       return;
@@ -864,6 +884,7 @@
     attrSet(replyButton, "onclick", "replyCollapse('" + id + "')")
   };
 
+
   global.replyCollapse = function(id) {
     var replyButton = $(ID_REPLY + id);
     var el = $(ID_SUPER_CONTAINER + id);
@@ -880,6 +901,7 @@
     attrSet(replyButton, "onclick", "replyShow('" + id + "')")
   }
 
+
   global.commentCollapse = function(id) {
     var contents = $(ID_CONTENTS + id);
     var button = $(ID_COLLAPSE + id);
@@ -894,6 +916,7 @@
     attrSet(button, "onclick", "commentUncollapse('" + id + "')");
   }
 
+
   global.commentUncollapse = function(id) {
     var contents = $(ID_CONTENTS + id);
     var button = $(ID_COLLAPSE + id);
@@ -907,6 +930,7 @@
 
     attrSet(button, "onclick", "commentCollapse('" + id + "')");
   }
+
 
   function commentsRender() {
     var parentMap = {};
@@ -927,6 +951,7 @@
       append(commentsArea, cards);
     }
   }
+
 
   global.showSubmitButton = function(id) {
     if (id in shownSubmitButton && shownSubmitButton[id])
@@ -950,6 +975,7 @@
 
     append(el, submit);
   }
+
 
   global.commentoAuth = function(provider) {
     if (provider == "anonymous") {
@@ -980,12 +1006,14 @@
     });
   }
 
+
   function refreshAll(callback) {
     $(ID_ROOT).innerHTML = "";
     shownSubmitButton = {"root": false};
     shownReply = {};
     main(callback);
   }
+
 
   function loginBoxCreate() {
     var loginBoxContainer = create("div");
@@ -994,6 +1022,7 @@
 
     append(root, loginBoxContainer);
   }
+
 
   global.signupRender = function() {
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
@@ -1091,6 +1120,7 @@
     append(loginBoxContainer, loginBox);
   }
 
+
   global.loginSwitch = function() {
     var header = $(ID_LOGIN_BOX_HEADER);
     var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
@@ -1114,10 +1144,12 @@
     }
   }
 
+
   global.signupSwitch = function() {
     loginBoxClose();
     loginBoxShow();
   }
+
 
   function loginUP(username, password) {
     var json = {
@@ -1137,12 +1169,14 @@
     });
   }
 
+
   global.login = function() {
     var email = $(ID_LOGIN_BOX_EMAIL_INPUT);
     var password = $(ID_LOGIN_BOX_PASSWORD_INPUT);
 
     loginUP(email.value, password.value);
   }
+
 
   global.signup = function() {
     var email = $(ID_LOGIN_BOX_EMAIL_INPUT);
@@ -1167,6 +1201,7 @@
       loginUP(email.value, password.value);
     });
   }
+
 
   global.passwordAsk = function() {
     var loginBox = $(ID_LOGIN_BOX);
@@ -1240,6 +1275,7 @@
     }
   }
 
+
   function mainAreaCreate() {
     var mainArea = create("div");
 
@@ -1252,12 +1288,14 @@
     append(root, mainArea);
   }
 
+
   global.loadCssOverride = function() {
     if (cssOverride === undefined)
       global.allShow();
     else
       cssLoad(cssOverride, "window.allShow()");
   }
+
 
   global.allShow = function() {
     var mainArea = $(ID_MAIN_AREA);
@@ -1272,6 +1310,7 @@
     nameWidthFix();
   }
 
+
   global.loginBoxClose = function() {
     var mainArea = $(ID_MAIN_AREA);
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
@@ -1280,6 +1319,7 @@
 
     attrSet(loginBoxContainer, "style", "display: none");
   }
+
 
   global.loginBoxShow = function() {
     var mainArea = $(ID_MAIN_AREA);
@@ -1296,6 +1336,7 @@
     $(ID_LOGIN_BOX_EMAIL_INPUT).focus();
   }
 
+
   function dataTagsLoad() {
     var scripts = tags("script")
     for (var i = 0; i < scripts.length; i++) {
@@ -1310,6 +1351,7 @@
       }
     }
   }
+
 
   global.main = function(callback) {
     root = $(ID_ROOT);
@@ -1333,6 +1375,7 @@
     });
   }
 
+
   var autoInitted = false;
   function autoInit() {
     if (autoInitted)
@@ -1346,6 +1389,7 @@
     else if (autoInit != "false")
       console.log("[commento] error: invalid value for data-auto-init; allowed values: true, false");
   }
+
 
   if (document.readyState != "complete" && document.readyState != "interactive")
     document.addEventListener("load", autoInit);
