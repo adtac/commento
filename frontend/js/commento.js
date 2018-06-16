@@ -53,6 +53,7 @@
   var origin = global.commento_origin;
   var cdn = global.commento_cdn;
   var root = null;
+  var cssOverride = undefined;
   var isAuthenticated = false;
   var comments = [];
   var commenters = [];
@@ -69,6 +70,11 @@
 
   function $(id) {
     return document.getElementById(id);
+  }
+
+
+  function tags(tag) {
+    return document.getElementsByTagName(tag);
   }
 
 
@@ -112,7 +118,17 @@
   }
 
 
-  function attr(node, a, value) {
+  function attrGet(node, a) {
+    var attr = node.attributes[a];
+
+    if (attr === undefined)
+      return undefined;
+    
+    return attr.value;
+  }
+
+
+  function attrSet(node, a, value) {
     node.setAttribute(a, value);
   }
 
@@ -223,9 +239,9 @@
       name.innerText = resp.commenter.name;
       logout.innerText = "Logout";
 
-      attr(loggedContainer, "style", "display: none");
-      attr(logout, "onclick", "logout()");
-      attr(name, "href", resp.commenter.link);
+      attrSet(loggedContainer, "style", "display: none");
+      attrSet(logout, "onclick", "logout()");
+      attrSet(name, "href", resp.commenter.link);
       if (resp.commenter.photo == "undefined") {
         avatar = create("div");
         avatar.style["background"] = color;
@@ -235,9 +251,9 @@
       } else {
         avatar = create("img");
         if (resp.commenter.provider == "google") {
-          attr(avatar, "src", resp.commenter.photo + "?sz=50");
+          attrSet(avatar, "src", resp.commenter.photo + "?sz=50");
         } else {
-          attr(avatar, "src", resp.commenter.photo);
+          attrSet(avatar, "src", resp.commenter.photo);
         }
         classAdd(avatar, "avatar-img");
       }
@@ -254,14 +270,14 @@
     });
   }
 
-  function cssLoad(file) {
+  function cssLoad(file, onload) {
     var link = create("link");
     var head = document.getElementsByTagName('head')[0];
 
     link.type = "text/css";
-    attr(link, "href", file);
-    attr(link, "rel", "stylesheet");
-    attr(link, "onload", "window.allShow()");
+    attrSet(link, "href", file);
+    attrSet(link, "rel", "stylesheet");
+    attrSet(link, "onload", onload);
 
     append(head, link);
   }
@@ -304,10 +320,10 @@
     classAdd(img, "logo-svg");
     classAdd(text, "logo-text");
 
-    attr(footer, "style", "display: none");
-    attr(a, "href", "https://commento.io");
-    attr(a, "target", "_blank");
-    attr(img, "src", cdn + "/images/logo.svg");
+    attrSet(footer, "style", "display: none");
+    attrSet(a, "href", "https://commento.io");
+    attrSet(a, "target", "_blank");
+    attrSet(img, "src", cdn + "/images/logo.svg");
 
     text.innerText = "Powered by Commento";
 
@@ -342,7 +358,7 @@
       if (!resp.requireIdentification)
         configuredOauths.push("anonymous");
 
-      cssLoad(cdn + "/css/commento.css");
+      cssLoad(cdn + "/css/commento.css", "window.loadCssOverride()");
 
       call(callback);
     });
@@ -353,7 +369,7 @@
 
     el.innerText = text;
 
-    attr(el, "style", "display: block;");
+    attrSet(el, "style", "display: block;");
   }
 
   function errorElementCreate() {
@@ -362,7 +378,7 @@
     el.id = ID_ERROR;
 
     classAdd(el, "error-box");
-    attr(el, "style", "display: none;");
+    attrSet(el, "style", "display: none;");
 
     append(root, el);
   }
@@ -403,8 +419,8 @@
       classAdd(createButton, "button");
       classAdd(createButton, "create-button");
 
-      attr(createButton, "onclick", "loginBoxShow()");
-      attr(textarea, "disabled", true);
+      attrSet(createButton, "onclick", "loginBoxShow()");
+      attrSet(textarea, "disabled", true);
 
       createButton.innerText = "Create an Account";
 
@@ -412,8 +428,8 @@
       append(textareaContainer, buttonsContainer);
     }
     else {
-      attr(textarea, "placeholder", "Join the discussion!");
-      attr(textarea, "onclick", "showSubmitButton('" + id + "')");
+      attrSet(textarea, "placeholder", "Join the discussion!");
+      attrSet(textarea, "onclick", "showSubmitButton('" + id + "')");
     }
 
     textarea.oninput = autoExpander(textarea);
@@ -625,9 +641,9 @@
       } else {
         avatar = create("img");
         if (commenter.provider == "google") {
-          attr(avatar, "src", commenter.photo + "?sz=50");
+          attrSet(avatar, "src", commenter.photo + "?sz=50");
         } else {
-          attr(avatar, "src", commenter.photo);
+          attrSet(avatar, "src", commenter.photo);
         }
         classAdd(avatar, "avatar-img");
       }
@@ -663,50 +679,50 @@
           classAdd(downvote, "downvoted");
       }
 
-      attr(edit, "onclick", "startEdit('" + comment.commentHex + "')");
-      attr(collapse, "onclick", "commentCollapse('" + comment.commentHex + "')");
-      attr(approve, "onclick", "commentApprove('" + comment.commentHex + "')");
-      attr(remove, "onclick", "commentDelete('" + comment.commentHex + "')");
+      attrSet(edit, "onclick", "startEdit('" + comment.commentHex + "')");
+      attrSet(collapse, "onclick", "commentCollapse('" + comment.commentHex + "')");
+      attrSet(approve, "onclick", "commentApprove('" + comment.commentHex + "')");
+      attrSet(remove, "onclick", "commentDelete('" + comment.commentHex + "')");
 
       if (isAuthenticated) {
         if (comment.direction > 0) {
-          attr(upvote, "onclick", "vote('" + comment.commentHex + "', 1, 0)");
-          attr(downvote, "onclick", "vote('" + comment.commentHex + "', 1, -1)");
+          attrSet(upvote, "onclick", "vote('" + comment.commentHex + "', 1, 0)");
+          attrSet(downvote, "onclick", "vote('" + comment.commentHex + "', 1, -1)");
         }
         else if (comment.direction < 0) {
-          attr(upvote, "onclick", "vote('" + comment.commentHex + "', -1, 1)");
-          attr(downvote, "onclick", "vote('" + comment.commentHex + "', -1, 0)");
+          attrSet(upvote, "onclick", "vote('" + comment.commentHex + "', -1, 1)");
+          attrSet(downvote, "onclick", "vote('" + comment.commentHex + "', -1, 0)");
         }
         else {
-          attr(upvote, "onclick", "vote('" + comment.commentHex + "', 0, 1)");
-          attr(downvote, "onclick", "vote('" + comment.commentHex + "', 0, -1)");
+          attrSet(upvote, "onclick", "vote('" + comment.commentHex + "', 0, 1)");
+          attrSet(downvote, "onclick", "vote('" + comment.commentHex + "', 0, -1)");
         }
       }
       else {
-        attr(upvote, "onclick", "loginBoxShow()");
-        attr(downvote, "onclick", "loginBoxShow()");
+        attrSet(upvote, "onclick", "loginBoxShow()");
+        attrSet(downvote, "onclick", "loginBoxShow()");
       }
 
       if (isAuthenticated || chosenAnonymous)
-        attr(reply, "onclick", "replyShow('" + comment.commentHex + "')");
+        attrSet(reply, "onclick", "replyShow('" + comment.commentHex + "')");
       else
-        attr(reply, "onclick", "loginBoxShow()");
+        attrSet(reply, "onclick", "loginBoxShow()");
 
       if (isAuthenticated) {
         if (isModerator) {
           if (comment.state == "unapproved")
-            attr(options, "style", "width: 192px;");
+            attrSet(options, "style", "width: 192px;");
           else
-            attr(options, "style", "width: 160px;");
+            attrSet(options, "style", "width: 160px;");
         }
         else
-          attr(options, "style", "width: 128px;");
+          attrSet(options, "style", "width: 128px;");
       }
       else
-        attr(options, "style", "width: 32px;");
+        attrSet(options, "style", "width: 32px;");
 
       if (commenter.link != "undefined")
-        attr(name, "href", commenter.link);
+        attrSet(name, "href", commenter.link);
 
       if (false) // replace when edit is implemented
         append(options, edit);
@@ -762,7 +778,7 @@
       var tick = $(ID_APPROVE + commentHex);
 
       classRemove(card, "dark-card");
-      attr(options, "style", "width: 160px;");
+      attrSet(options, "style", "width: 160px;");
       remove(tick);
     });
   }
@@ -790,7 +806,7 @@
     var els = document.getElementsByClassName("commento-name");
 
     for (var i = 0; i < els.length; i++)
-      attr(els[i], "style", "max-width: " + (els[i].getBoundingClientRect()["width"] + 20) + "px;")
+      attrSet(els[i], "style", "max-width: " + (els[i].getBoundingClientRect()["width"] + 20) + "px;")
   }
 
 
@@ -806,16 +822,16 @@
     };
 
     if (direction > 0) {
-      attr(upvote, "onclick", "vote('" + commentHex + "', 1, 0)");
-      attr(downvote, "onclick", "vote('" + commentHex + "', 1, -1)");
+      attrSet(upvote, "onclick", "vote('" + commentHex + "', 1, 0)");
+      attrSet(downvote, "onclick", "vote('" + commentHex + "', 1, -1)");
     }
     else if (direction < 0) {
-      attr(upvote, "onclick", "vote('" + commentHex + "', -1, 1)");
-      attr(downvote, "onclick", "vote('" + commentHex + "', -1, 0)");
+      attrSet(upvote, "onclick", "vote('" + commentHex + "', -1, 1)");
+      attrSet(downvote, "onclick", "vote('" + commentHex + "', -1, 0)");
     }
     else {
-      attr(upvote, "onclick", "vote('" + commentHex + "', 0, 1)");
-      attr(downvote, "onclick", "vote('" + commentHex + "', 0, -1)");
+      attrSet(upvote, "onclick", "vote('" + commentHex + "', 0, 1)");
+      attrSet(downvote, "onclick", "vote('" + commentHex + "', 0, -1)");
     }
 
     classRemove(upvote, "upvoted");
@@ -845,7 +861,7 @@
 
     replyButton.title = "Cancel reply";
 
-    attr(replyButton, "onclick", "replyCollapse('" + id + "')")
+    attrSet(replyButton, "onclick", "replyCollapse('" + id + "')")
   };
 
   global.replyCollapse = function(id) {
@@ -861,7 +877,7 @@
 
     replyButton.title = "Reply to this comment";
 
-    attr(replyButton, "onclick", "replyShow('" + id + "')")
+    attrSet(replyButton, "onclick", "replyShow('" + id + "')")
   }
 
   global.commentCollapse = function(id) {
@@ -875,7 +891,7 @@
 
     button.title = "Expand";
 
-    attr(button, "onclick", "commentUncollapse('" + id + "')");
+    attrSet(button, "onclick", "commentUncollapse('" + id + "')");
   }
 
   global.commentUncollapse = function(id) {
@@ -889,7 +905,7 @@
 
     button.title = "Collapse";
 
-    attr(button, "onclick", "commentCollapse('" + id + "')");
+    attrSet(button, "onclick", "commentCollapse('" + id + "')");
   }
 
   function commentsRender() {
@@ -930,7 +946,7 @@
     classAdd(submit, "submit-button");
     classAdd(el, "button-margin");
 
-    attr(submit, "onclick", "postComment('" + id + "')");
+    attrSet(submit, "onclick", "postComment('" + id + "')");
 
     append(el, submit);
   }
@@ -1029,13 +1045,13 @@
     subtitle.innerText = "Sign up with your email to vote and comment.";
     oauthPretext.innerText = "Or proceed with social login.";
 
-    attr(loginBoxContainer, "style", "display: none; opacity: 0;");
-    attr(emailInput, "name", "email");
-    attr(emailInput, "placeholder", "Email address");
-    attr(emailInput, "type", "text");
-    attr(emailButton, "onclick", "passwordAsk()");
-    attr(loginLink, "onclick", "loginSwitch()");
-    attr(close, "onclick", "loginBoxClose()");
+    attrSet(loginBoxContainer, "style", "display: none; opacity: 0;");
+    attrSet(emailInput, "name", "email");
+    attrSet(emailInput, "placeholder", "Email address");
+    attrSet(emailInput, "type", "text");
+    attrSet(emailButton, "onclick", "passwordAsk()");
+    attrSet(loginLink, "onclick", "loginSwitch()");
+    attrSet(close, "onclick", "loginBoxClose()");
 
     for (var i = 0; i < configuredOauths.length; i++) {
       var button = create("button");
@@ -1045,7 +1061,7 @@
 
       button.innerText = configuredOauths[i];
 
-      attr(button, "onclick", "commentoAuth('" + configuredOauths[i] + "')");
+      attrSet(button, "onclick", "commentoAuth('" + configuredOauths[i] + "')");
 
       append(oauthButtons, button);
     }
@@ -1087,7 +1103,7 @@
     loginLink.innerText = "Don't have an account? Sign up.";
     subtitle.innerText = "Enter your email address to start with.";
 
-    attr(loginLink, "onclick", "signupSwitch()");
+    attrSet(loginLink, "onclick", "signupSwitch()");
 
     loginBoxType = "login";
 
@@ -1200,9 +1216,9 @@
       classAdd(field, "email");
       classAdd(fieldInput, "input");
 
-      attr(fieldInput, "name", order[i]);
-      attr(fieldInput, "type", type[i]);
-      attr(fieldInput, "placeholder", placeholder[i]);
+      attrSet(fieldInput, "name", order[i]);
+      attrSet(fieldInput, "type", type[i]);
+      attrSet(fieldInput, "placeholder", placeholder[i]);
 
       append(field, fieldInput);
       append(fieldContainer, field);
@@ -1213,9 +1229,9 @@
         fieldButton.innerText = loginBoxType;
 
         if (loginBoxType == "signup")
-          attr(fieldButton, "onclick", "signup()");
+          attrSet(fieldButton, "onclick", "signup()");
         else
-          attr(fieldButton, "onclick", "login()");
+          attrSet(fieldButton, "onclick", "login()");
 
         append(field, fieldButton);
       }
@@ -1231,9 +1247,16 @@
 
     classAdd(mainArea, "main-area");
 
-    attr(mainArea, "style", "display: none");
+    attrSet(mainArea, "style", "display: none");
 
     append(root, mainArea);
+  }
+
+  global.loadCssOverride = function() {
+    if (cssOverride === undefined)
+      global.allShow();
+    else
+      cssLoad(cssOverride, "window.allShow()");
   }
 
   global.allShow = function() {
@@ -1241,10 +1264,10 @@
     var loggedContainer = $(ID_LOGGED_CONTAINER);
     var footer = $(ID_FOOTER);
 
-    attr(mainArea, "style", "");
+    attrSet(mainArea, "style", "");
     if (loggedContainer)
-      attr(loggedContainer, "style", "");
-    attr(footer, "style", "");
+      attrSet(loggedContainer, "style", "");
+    attrSet(footer, "style", "");
 
     nameWidthFix();
   }
@@ -1255,7 +1278,7 @@
 
     classRemove(mainArea, "blurred");
 
-    attr(loginBoxContainer, "style", "display: none");
+    attrSet(loginBoxContainer, "style", "display: none");
   }
 
   global.loginBoxShow = function() {
@@ -1266,15 +1289,27 @@
 
     classAdd(mainArea, "blurred");
     
-    attr(loginBoxContainer, "style", "");
+    attrSet(loginBoxContainer, "style", "");
 
     window.location.hash = ID_LOGIN_BOX_CONTAINER;
 
     $(ID_LOGIN_BOX_EMAIL_INPUT).focus();
   }
 
+  function dataTagsLoad() {
+    var scripts = tags("script")
+    for (var i = 0; i < scripts.length; i++) {
+      if (scripts[i].src.match(/\/js\/commento\.js$/)) {
+        cssOverride = attrGet(scripts[i], "data-css-override");
+      }
+    }
+  }
+
   function main(callback) {
     root = $(ID_ROOT);
+    classAdd(root, "root");
+
+    dataTagsLoad();
 
     loginBoxCreate();
 
@@ -1287,7 +1322,7 @@
         rootCreate(function() {
           commentsRender();
           footerLoad();
-          attr(root, "style", "");
+          attrSet(root, "style", "");
           call(callback);
         });
       });
