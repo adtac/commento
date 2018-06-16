@@ -16,9 +16,9 @@ func parseConfig() error {
 	defaults := map[string]string{
 		"POSTGRES": "postgres://postgres:postgres@localhost/commento?sslmode=disable",
 
-		"BIND_ADDRESS":    "127.0.0.1",
-		"PORT":   "8080",
-		"ORIGIN": "",
+		"BIND_ADDRESS": "127.0.0.1",
+		"PORT":         "8080",
+		"ORIGIN":       "",
 
 		"CDN_PREFIX": "",
 

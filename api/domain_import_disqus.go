@@ -1,27 +1,27 @@
 package main
 
 import (
-	"time"
-	"io/ioutil"
-	"net/http"
 	"compress/gzip"
 	"encoding/xml"
+	"io/ioutil"
+	"net/http"
+	"time"
 	// "github.com/grokify/html-strip-tags-go"
 	"github.com/lunny/html2md"
 )
 
 type disqusThread struct {
 	XMLName xml.Name `xml:"thread"`
-	Id string `xml:"http://disqus.com/disqus-internals id,attr"`
-	URL string `xml:"link"`
-	Name string `xml:"name"`
+	Id      string   `xml:"http://disqus.com/disqus-internals id,attr"`
+	URL     string   `xml:"link"`
+	Name    string   `xml:"name"`
 }
 
 type disqusAuthor struct {
-	XMLName xml.Name `xml:"author"`
-	IsAnonymous bool `xml:"isAnonymous"`
-	Name string `xml:"name"`
-	Email string `xml:"email"`
+	XMLName     xml.Name `xml:"author"`
+	IsAnonymous bool     `xml:"isAnonymous"`
+	Name        string   `xml:"name"`
+	Email       string   `xml:"email"`
 }
 
 type disqusThreadId struct {
@@ -40,22 +40,22 @@ type disqusPostId struct {
 }
 
 type disqusPost struct {
-	XMLName xml.Name `xml:"post"`
-	Id string `xml:"http://disqus.com/disqus-internals id,attr"`
+	XMLName      xml.Name       `xml:"post"`
+	Id           string         `xml:"http://disqus.com/disqus-internals id,attr"`
 	ThreadId     disqusThreadId `xml:"thread"`
-	ParentId disqusParentId `xml:"parent"`
-	PostId disqusPostId `xml:"post"`
-	Message string `xml:"message"`
-	CreationDate time.Time `xml:"createdAt"`
-	IsDeleted bool `xml:"isDeleted"`
-	IsSpam bool `xml:"isSpam"`
-	Author disqusAuthor `xml:"author"`
+	ParentId     disqusParentId `xml:"parent"`
+	PostId       disqusPostId   `xml:"post"`
+	Message      string         `xml:"message"`
+	CreationDate time.Time      `xml:"createdAt"`
+	IsDeleted    bool           `xml:"isDeleted"`
+	IsSpam       bool           `xml:"isSpam"`
+	Author       disqusAuthor   `xml:"author"`
 }
 
 type disqusXML struct {
-	XMLName xml.Name `xml:"disqus"`
+	XMLName xml.Name       `xml:"disqus"`
 	Threads []disqusThread `xml:"thread"`
-	Posts []disqusPost `xml:"post"`
+	Posts   []disqusPost   `xml:"post"`
 }
 
 func domainImportDisqus(domain string, url string) (int, error) {
@@ -170,8 +170,8 @@ func domainImportDisqus(domain string, url string) (int, error) {
 func domainImportDisqusHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		Session *string `json:"session"`
-		Domain *string `json:"domain"`
-		URL *string `json:"url"`
+		Domain  *string `json:"domain"`
+		URL     *string `json:"url"`
 	}
 
 	var x request
