@@ -1301,15 +1301,19 @@
     for (var i = 0; i < scripts.length; i++) {
       if (scripts[i].src.match(/\/js\/commento\.js$/)) {
         cssOverride = attrGet(scripts[i], "data-css-override");
+
+        autoInit = attrGet(scripts[i], "data-auto-init");
+
+        ID_ROOT = attrGet(scripts[i], "data-id-root");
+        if (ID_ROOT === undefined)
+          ID_ROOT = "commento";
       }
     }
   }
 
-  function main(callback) {
+  global.main = function(callback) {
     root = $(ID_ROOT);
     classAdd(root, "root");
-
-    dataTagsLoad();
 
     loginBoxCreate();
 
@@ -1335,7 +1339,12 @@
       return;
     autoInitted = true;
 
-    main();
+    dataTagsLoad();
+
+    if (autoInit == "true" || autoInit === undefined)
+      main(undefined);
+    else if (autoInit != "false")
+      console.log("[commento] error: invalid value for data-auto-init; allowed values: true, false");
   }
 
   if (document.readyState != "complete" && document.readyState != "interactive")
