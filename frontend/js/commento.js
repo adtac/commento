@@ -54,6 +54,7 @@
   var cdn = global.commentoCdn;
   var root = null;
   var cssOverride = undefined;
+  var autoInit = undefined;
   var isAuthenticated = false;
   var comments = [];
   var commenters = [];
@@ -1366,11 +1367,11 @@
   }
 
 
-  var autoInitted = false;
-  function autoInit() {
-    if (autoInitted)
+  var initted = false;
+  function init() {
+    if (initted)
       return;
-    autoInitted = true;
+    initted = true;
 
     dataTagsLoad();
 
@@ -1381,9 +1382,28 @@
   }
 
 
-  if (document.readyState != "complete" && document.readyState != "interactive")
-    document.addEventListener("load", autoInit);
-  else
-    autoInit();
+  var readyLoad = function() {
+    var readyState = document.readyState;
+
+    if (readyState == "loading") {
+      // The document is still loading. The div we need to fill might not have
+      // been parsed yet, so let's wait and retry when the readyState changes.
+      // If there is more than one state change, we aren't affected because we
+      // have a double-call protection in init().
+      document.addEventListener("readystatechange", readyLoad);
+    }
+    else if (readyState == "interactive") {
+      // The document has been parsed and DOM objects are now accessible. While
+      // JS, CSS, and images are still loading, we don't need to wait.
+      init();
+    }
+    else if (readyState == "complete") {
+      // The page has fully loaded (including JS, CSS, and images). From our
+      // point of view, this is practically no different from interactive.
+      init();
+    }
+  };
+
+  readyLoad();
 
 }(window, document));
