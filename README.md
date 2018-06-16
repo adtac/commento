@@ -17,9 +17,10 @@ Commento is a discussion platform that you can self-host. You can embed it on yo
 ### Features
 
  - Privacy focused
- - Modern interface with a clean design
  - Automatic spam filtering
  - Review and approve or delete comments through the moderation interface
+ - Modern interface with a clean design
+ - Custom CSS theming
  - Extremely lightweight, allowing for faster pageloads
  - Import from existing services (like Disqus)
  - Completely free and open source (MIT Expat license)
