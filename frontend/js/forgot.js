@@ -16,7 +16,7 @@
     };
 
     global.buttonDisable("#reset-button");
-    global.post(global.commento_origin + "/api/owner/send-reset-hex", json, function(resp) {
+    global.post(global.commentoOrigin + "/api/owner/send-reset-hex", json, function(resp) {
       global.buttonEnable("#reset-button");
 
       global.textSet("#err", "");

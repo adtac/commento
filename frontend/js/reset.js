@@ -21,7 +21,7 @@
     };
 
     global.buttonDisable("#reset-button");
-    global.post(global.commento_origin + "/api/owner/reset-password", json, function(resp) {
+    global.post(global.commentoOrigin + "/api/owner/reset-password", json, function(resp) {
       global.buttonEnable("#reset-button");
 
       global.textSet("#err", "");

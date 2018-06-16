@@ -6,7 +6,7 @@
 
     var html = '' +
                '<div id="commento"></div>\n' +
-               '<script src="' + window.commento_cdn + '/js/commento.js"><\/script>\n' +
+               '<script src="' + window.commentoCdn + '/js/commento.js"><\/script>\n' +
                '';
 
     $("#code-div").text(html);

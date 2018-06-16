@@ -18,7 +18,7 @@
     }
 
     global.buttonDisable("#disqus-import-button");
-    global.post(global.commento_origin + "/api/domain/import/disqus", json, function(resp) {
+    global.post(global.commentoOrigin + "/api/domain/import/disqus", json, function(resp) {
       global.buttonEnable("#disqus-import-button");
 
       if (!resp.success) {

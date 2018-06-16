@@ -50,8 +50,8 @@
   var ID_FOOTER = "commento-footer";
 
 
-  var origin = global.commento_origin;
-  var cdn = global.commento_cdn;
+  var origin = global.commentoOrigin;
+  var cdn = global.commentoCdn;
   var root = null;
   var cssOverride = undefined;
   var isAuthenticated = false;
