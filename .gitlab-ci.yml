@@ -1,4 +1,5 @@
 stages:
+  - go-fmt
   - build-src
   - build-docker
   - go-test
@@ -42,6 +43,13 @@ go-test:
   script:
     - mkdir -p src/gitlab.com/commento && cd src/gitlab.com/commento && ln -s $CI_PROJECT_DIR && cd $CI_PROJECT_NAME
     - make test
+
+go-fmt:
+  stage: go-fmt
+  image: golang:1.10.2
+  script:
+    - cd api
+    - test -z $(go fmt)
 
 docker-registry:
   stage: docker-registry
