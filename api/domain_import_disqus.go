@@ -3,11 +3,10 @@ package main
 import (
 	"compress/gzip"
 	"encoding/xml"
+	"github.com/lunny/html2md"
 	"io/ioutil"
 	"net/http"
 	"time"
-	// "github.com/grokify/html-strip-tags-go"
-	"github.com/lunny/html2md"
 )
 
 type disqusThread struct {
