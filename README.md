@@ -4,14 +4,6 @@
 
 <p align="center"><b>An open source, privacy focused discussion platform.</b></p>
 
-<p align="center">
-<a href="https://demo.commento.io"><img src="https://img.shields.io/badge/demo-live-red.svg?style=for-the-badge&colorA=1e2127&colorB=98c379&label=demo"></a>
-<a href="https://irc.commento.io"><img src="https://img.shields.io/badge/irc-%23commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=c678dd&label=freenode"></a>
-<a href="https://gitlab.com/commento/commento-ce/container_registry"><img src="https://img.shields.io/badge/live-commento-red.svg?style=for-the-badge&colorA=1e2127&colorB=56b6c2&label=docker"></a>
-</p>
-
-<h2 align="center"></h2>
-
 Commento is a discussion platform that you can self-host. You can embed it on your blog, news articles, and any place where you want your readers to add comments. Unlike most alternatives, Commento is lightweight and privacy focused; we'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
 
 ### Features
