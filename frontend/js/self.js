@@ -3,7 +3,7 @@
   // Get self details.
   global.selfGet = function(callback) {
     var json = {
-      "ownerToken": global.cookieGet("ownerToken"),
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
     };
 
     global.post(global.commentoOrigin + "/api/owner/self", json, function(resp) {

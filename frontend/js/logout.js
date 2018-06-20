@@ -1,7 +1,7 @@
 (function (global, document) {
 
   global.logout = function() {
-    global.cookieSet("ownerToken", "");
+    global.cookieSet("commentoOwnerToken", "");
     document.location = "/login";
   }
 

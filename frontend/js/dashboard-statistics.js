@@ -38,7 +38,7 @@
     var data = global.dashboard.$data;
     
     var json = {
-      "ownerToken": global.cookieGet("ownerToken"),
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
       "domain": data.domains[data.cd].domain,
     }
 

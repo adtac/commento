@@ -36,7 +36,7 @@
   // Creates a new domain.
   global.domainNewHandler = function() {
     var json = {
-      "ownerToken": global.cookieGet("ownerToken"),
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
       "name": $("#new-domain-name").val(),
       "domain": $("#new-domain-domain").val(),
     }
@@ -66,7 +66,7 @@
   // Refreshes the list of domains.
   global.domainRefresh = function(callback) {
     var json = {
-      ownerToken: global.cookieGet("ownerToken"),
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
     };
 
     global.post(global.commentoOrigin + "/api/domain/list", json, function(resp) {
@@ -107,7 +107,7 @@
   // Updates a domain with the backend.
   global.domainUpdate = function(domain, callback) {
     var json = {
-      "ownerToken": global.cookieGet("ownerToken"),
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
       "domain": domain,
     };
 
@@ -126,7 +126,7 @@
   // Deletes a domain.
   global.domainDelete = function(domain, callback) {
     var json = {
-      "ownerToken": global.cookieGet("ownerToken"),
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
       "domain": domain,
     };
 
