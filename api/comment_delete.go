@@ -26,7 +26,7 @@ func commentDelete(commentHex string) error {
 func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		CommenterToken *string `json:"commenterToken"`
-		CommentHex *string `json:"commentHex"`
+		CommentHex     *string `json:"commentHex"`
 	}
 
 	var x request

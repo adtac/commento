@@ -92,8 +92,8 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 func commentListHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		CommenterToken *string `json:"CommenterToken"`
-		Domain  *string `json:"domain"`
-		Path    *string `json:"path"`
+		Domain         *string `json:"domain"`
+		Path           *string `json:"path"`
 	}
 
 	var x request

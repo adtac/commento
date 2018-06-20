@@ -46,8 +46,8 @@ func commentVote(commenterHex string, commentHex string, direction int) error {
 func commentVoteHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		CommenterToken *string `json:"commenterToken"`
-		CommentHex *string `json:"commentHex"`
-		Direction  *int    `json:"direction"`
+		CommentHex     *string `json:"commentHex"`
+		Direction      *int    `json:"direction"`
 	}
 
 	var x request

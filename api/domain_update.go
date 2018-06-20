@@ -23,7 +23,7 @@ func domainUpdate(d domain) error {
 func domainUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		OwnerToken *string `json:"ownerToken"`
-		D       *domain `json:"domain"`
+		D          *domain `json:"domain"`
 	}
 
 	var x request

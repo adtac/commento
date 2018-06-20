@@ -1,10 +1,10 @@
 package main
 
 import (
-	"time"
 	"database/sql"
 	_ "github.com/lib/pq"
 	"os"
+	"time"
 )
 
 func connectDB(retriesLeft int) error {

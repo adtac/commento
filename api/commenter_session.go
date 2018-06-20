@@ -9,6 +9,6 @@ import (
 // while the session contains more information.
 type commenterSession struct {
 	CommenterToken string    `json:"commenterToken"`
-	CommenterHex string    `json:"commenterHex"`
-	CreationDate time.Time `json:"creationDate"`
+	CommenterHex   string    `json:"commenterHex"`
+	CreationDate   time.Time `json:"creationDate"`
 }

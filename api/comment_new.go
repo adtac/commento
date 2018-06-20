@@ -37,10 +37,10 @@ func commentNew(commenterHex string, domain string, path string, parentHex strin
 func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		CommenterToken *string `json:"commenterToken"`
-		Domain    *string `json:"domain"`
-		Path      *string `json:"path"`
-		ParentHex *string `json:"parentHex"`
-		Markdown  *string `json:"markdown"`
+		Domain         *string `json:"domain"`
+		Path           *string `json:"path"`
+		ParentHex      *string `json:"parentHex"`
+		Markdown       *string `json:"markdown"`
 	}
 
 	var x request

@@ -169,8 +169,8 @@ func domainImportDisqus(domain string, url string) (int, error) {
 func domainImportDisqusHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		OwnerToken *string `json:"ownerToken"`
-		Domain  *string `json:"domain"`
-		URL     *string `json:"url"`
+		Domain     *string `json:"domain"`
+		URL        *string `json:"url"`
 	}
 
 	var x request
