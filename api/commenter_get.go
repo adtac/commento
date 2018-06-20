@@ -44,26 +44,26 @@ func commenterGetByEmail(provider string, email string) (commenter, error) {
 	return c, nil
 }
 
-func commenterGetBySession(session string) (commenter, error) {
-	if session == "" {
+func commenterGetByCommenterToken(commenterToken string) (commenter, error) {
+	if commenterToken == "" {
 		return commenter{}, errorMissingField
 	}
 
 	statement := `
     SELECT commenterHex
     FROM commenterSessions
-    WHERE session = $1;
+    WHERE commenterToken = $1;
 	`
-	row := db.QueryRow(statement, session)
+	row := db.QueryRow(statement, commenterToken)
 
 	var commenterHex string
 	if err := row.Scan(&commenterHex); err != nil {
 		// TODO: is the only error?
-		return commenter{}, errorNoSuchSession
+		return commenter{}, errorNoSuchToken
 	}
 
 	if commenterHex == "none" {
-		return commenter{}, errorNoSuchSession
+		return commenter{}, errorNoSuchToken
 	}
 
 	return commenterGetByHex(commenterHex)

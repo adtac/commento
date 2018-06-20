@@ -25,7 +25,7 @@ func commentDelete(commentHex string) error {
 
 func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Session    *string `json:"session"`
+		CommenterToken *string `json:"commenterToken"`
 		CommentHex *string `json:"commentHex"`
 	}
 
@@ -35,7 +35,7 @@ func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c, err := commenterGetBySession(*x.Session)
+	c, err := commenterGetByCommenterToken(*x.CommenterToken)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return

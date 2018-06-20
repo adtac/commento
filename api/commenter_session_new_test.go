@@ -4,11 +4,11 @@ import (
 	"testing"
 )
 
-func TestCommenterSessionNewBasics(t *testing.T) {
+func TestCommenterTokenNewBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	if _, err := commenterSessionNew(); err != nil {
-		t.Errorf("unexpected error creating new session: %v", err)
+	if _, err := commenterTokenNew(); err != nil {
+		t.Errorf("unexpected error creating new commenterToken: %v", err)
 		return
 	}
 }

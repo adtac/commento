@@ -12,14 +12,14 @@ func googleRedirectHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session := r.FormValue("session")
+	commenterToken := r.FormValue("commenterToken")
 
-	_, err := commenterGetBySession(session)
-	if err != nil && err != errorNoSuchSession {
+	_, err := commenterGetByCommenterToken(commenterToken)
+	if err != nil && err != errorNoSuchToken {
 		fmt.Fprintf(w, "error: %s\n", err.Error())
 		return
 	}
 
-	url := googleConfig.AuthCodeURL(session)
+	url := googleConfig.AuthCodeURL(commenterToken)
 	http.Redirect(w, r, url, http.StatusFound)
 }

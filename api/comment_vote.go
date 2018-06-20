@@ -45,7 +45,7 @@ func commentVote(commenterHex string, commentHex string, direction int) error {
 
 func commentVoteHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Session    *string `json:"session"`
+		CommenterToken *string `json:"commenterToken"`
 		CommentHex *string `json:"commentHex"`
 		Direction  *int    `json:"direction"`
 	}
@@ -56,12 +56,12 @@ func commentVoteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if *x.Session == "anonymous" {
+	if *x.CommenterToken == "anonymous" {
 		writeBody(w, response{"success": false, "message": errorUnauthorisedVote.Error()})
 		return
 	}
 
-	c, err := commenterGetBySession(*x.Session)
+	c, err := commenterGetByCommenterToken(*x.CommenterToken)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return

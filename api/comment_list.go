@@ -91,7 +91,7 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 
 func commentListHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Session *string `json:"session"`
+		CommenterToken *string `json:"CommenterToken"`
 		Domain  *string `json:"domain"`
 		Path    *string `json:"path"`
 	}
@@ -113,10 +113,10 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 
 	commenterHex := "anonymous"
 	isModerator := false
-	if *x.Session != "anonymous" {
-		c, err := commenterGetBySession(*x.Session)
+	if *x.CommenterToken != "anonymous" {
+		c, err := commenterGetByCommenterToken(*x.CommenterToken)
 		if err != nil {
-			if err == errorNoSuchSession {
+			if err == errorNoSuchToken {
 				commenterHex = "anonymous"
 			} else {
 				writeBody(w, response{"success": false, "message": err.Error()})

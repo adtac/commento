@@ -23,8 +23,8 @@ func ownerGetByEmail(email string) (owner, error) {
 	return o, nil
 }
 
-func ownerGetBySession(session string) (owner, error) {
-	if session == "" {
+func ownerGetByOwnerToken(ownerToken string) (owner, error) {
+	if ownerToken == "" {
 		return owner{}, errorMissingField
 	}
 
@@ -33,10 +33,10 @@ func ownerGetBySession(session string) (owner, error) {
 		FROM owners
 		WHERE email IN (
 			SELECT email FROM ownerSessions
-			WHERE session=$1
+			WHERE ownerToken = $1
 		);
 	`
-	row := db.QueryRow(statement, session)
+	row := db.QueryRow(statement, ownerToken)
 
 	var o owner
 	if err := row.Scan(&o.OwnerHex, &o.Email, &o.Name, &o.ConfirmedEmail, &o.JoinDate); err != nil {

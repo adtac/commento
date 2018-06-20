@@ -2,19 +2,19 @@ package main
 
 import ()
 
-func commenterSessionUpdate(session string, commenterHex string) error {
-	if session == "" || commenterHex == "" {
+func commenterSessionUpdate(commenterToken string, commenterHex string) error {
+	if commenterToken == "" || commenterHex == "" {
 		return errorMissingField
 	}
 
 	statement := `
     UPDATE commenterSessions
-    SET commenterHex=$2
-    WHERE session=$1;
+    SET commenterHex = $2
+    WHERE commenterToken = $1;
   `
-	_, err := db.Exec(statement, session, commenterHex)
+	_, err := db.Exec(statement, commenterToken, commenterHex)
 	if err != nil {
-		logger.Errorf("error updating commenterHex in commenterSessions: %v", err)
+		logger.Errorf("error updating commenterHex: %v", err)
 		return errorInternal
 	}
 

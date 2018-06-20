@@ -7,10 +7,10 @@ import (
 func TestCommenterSessionUpdateBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	session, _ := commenterSessionNew()
+	commenterToken, _ := commenterTokenNew()
 
-	if err := commenterSessionUpdate(session, "temp-commenter-hex"); err != nil {
-		t.Errorf("unexpected error updating session to commenterHex: %v", err)
+	if err := commenterSessionUpdate(commenterToken, "temp-commenter-hex"); err != nil {
+		t.Errorf("unexpected error updating commenter session: %v", err)
 		return
 	}
 }
@@ -19,7 +19,7 @@ func TestCommenterSessionUpdateEmpty(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
 	if err := commenterSessionUpdate("", "temp-commenter-hex"); err == nil {
-		t.Errorf("expected error not found when updating with empty session")
+		t.Errorf("expected error not found when updating with empty commenterToken")
 		return
 	}
 }

@@ -13,9 +13,9 @@
     var email = $("#new-mod").val();
     
     var json = {
-      session: global.cookieGet("session"),
-      domain: data.domains[data.cd].domain,
-      email: email,
+      "ownerToken": global.cookieGet("ownerToken"),
+      "domain": data.domains[data.cd].domain,
+      "email": email,
     }
 
     var idx = -1;
@@ -53,9 +53,9 @@
     var data = global.dashboard.$data;
     
     var json = {
-      session: global.cookieGet("session"),
-      domain: data.domains[data.cd].domain,
-      email: email,
+      "ownerToken": global.cookieGet("ownerToken"),
+      "domain": data.domains[data.cd].domain,
+      "email": email,
     }
 
     var idx = -1;

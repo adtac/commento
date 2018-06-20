@@ -36,7 +36,7 @@ func commentNew(commenterHex string, domain string, path string, parentHex strin
 
 func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Session   *string `json:"session"`
+		CommenterToken *string `json:"commenterToken"`
 		Domain    *string `json:"domain"`
 		Path      *string `json:"path"`
 		ParentHex *string `json:"parentHex"`
@@ -74,11 +74,11 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	var commenterHex string
 	var state string
 
-	if *x.Session == "anonymous" {
+	if *x.CommenterToken == "anonymous" {
 		state = "unapproved"
 		commenterHex = "anonymous"
 	} else {
-		c, err := commenterGetBySession(*x.Session)
+		c, err := commenterGetByCommenterToken(*x.CommenterToken)
 		if err != nil {
 			writeBody(w, response{"success": false, "message": err.Error()})
 			return

@@ -192,36 +192,36 @@
   }
 
 
-  function sessionGet() {
-    var session = cookieGet("session");
-    if (session === undefined)
+  function commenterTokenGet() {
+    var commenterToken = cookieGet("commenterToken");
+    if (commenterToken === undefined)
       return "anonymous";
 
-    return session;
+    return commenterToken;
   }
 
 
   global.logout = function() {
-    cookieSet("session", "anonymous");
+    cookieSet("commenterToken", "anonymous");
     refreshAll();
   }
 
 
   function selfGet(callback) {
-    var session = sessionGet();
-    if (session == "anonymous") {
+    var commenterToken = commenterTokenGet();
+    if (commenterToken == "anonymous") {
       isAuthenticated = false;
       call(callback);
       return;
     }
 
     var json = {
-      session: sessionGet(),
+      "commenterToken": commenterTokenGet(),
     };
 
     post(origin + "/api/commenter/self", json, function(resp) {
       if (!resp.success) {
-        cookieSet("session", "anonymous");
+        cookieSet("commenterToken", "anonymous");
         call(callback);
         return;
       }
@@ -344,9 +344,9 @@
 
   function commentsGet(callback) {
     var json = {
-      session: sessionGet(),
-      domain: location.host,
-      path: location.pathname,
+      "commenterToken": commenterTokenGet(),
+      "domain": location.host,
+      "path": location.pathname,
     };
 
     post(origin + "/api/comment/list", json, function(resp) {
@@ -487,7 +487,7 @@
     }
 
     var json = {
-      "session": sessionGet(),
+      "commenterToken": commenterTokenGet(),
       "domain": location.host,
       "path": location.pathname,
       "parentHex": id,
@@ -773,7 +773,7 @@
 
   global.commentApprove = function(commentHex) {
     var json = {
-      "session": sessionGet(),
+      "commenterToken": commenterTokenGet(),
       "commentHex": commentHex,
     }
 
@@ -796,7 +796,7 @@
 
   global.commentDelete = function(commentHex) {
     var json = {
-      "session": sessionGet(),
+      "commenterToken": commenterTokenGet(),
       "commentHex": commentHex,
     }
 
@@ -826,7 +826,7 @@
     var score = $(ID_SCORE + commentHex);
 
     var json = {
-      "session": sessionGet(),
+      "commenterToken": commenterTokenGet(),
       "commentHex": commentHex,
       "direction": direction,
     };
@@ -970,7 +970,7 @@
 
   global.commentoAuth = function(provider) {
     if (provider == "anonymous") {
-      cookieSet("session", "anonymous");
+      cookieSet("commenterToken", "anonymous");
       chosenAnonymous = true;
       refreshAll();
       return;
@@ -978,15 +978,15 @@
 
     var popup = window.open("", "_blank");
 
-    get(origin + "/api/commenter/session/new", function(resp) {
+    get(origin + "/api/commenter/token/new", function(resp) {
       if (!resp.success) {
         errorShow(resp.message);
         return;
       }
 
-      cookieSet("session", resp.session);
+      cookieSet("commenterToken", resp.commenterToken);
 
-      popup.location = origin + "/api/oauth/" + provider + "/redirect?session=" + resp.session;
+      popup.location = origin + "/api/oauth/" + provider + "/redirect?commenterToken=" + resp.commenterToken;
 
       var interval = setInterval(function() {
         if (popup.closed) {
@@ -1144,8 +1144,8 @@
 
   function loginUP(username, password) {
     var json = {
-      email: username,
-      password: password,
+      "email": username,
+      "password": password,
     };
 
     post(origin + "/api/commenter/login", json, function(resp) {
@@ -1155,7 +1155,7 @@
         return
       }
 
-      cookieSet("session", resp.session);
+      cookieSet("commenterToken", resp.commenterToken);
       refreshAll();
     });
   }
@@ -1176,10 +1176,10 @@
     var password = $(ID_LOGIN_BOX_PASSWORD_INPUT);
 
     var json = {
-      email: email.value,
-      name: name.value,
-      website: website.value,
-      password: password.value,
+      "email": email.value,
+      "name": name.value,
+      "website": website.value,
+      "password": password.value,
     };
 
     post(origin + "/api/commenter/new", json, function(resp) {

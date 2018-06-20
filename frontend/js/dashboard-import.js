@@ -12,9 +12,9 @@
     var data = global.dashboard.$data;
 
     var json = {
-      session: global.cookieGet("session"),
-      domain: data.domains[data.cd].domain,
-      url: url,
+      "ownerToken": global.cookieGet("ownerToken"),
+      "domain": data.domains[data.cd].domain,
+      "url": url,
     }
 
     global.buttonDisable("#disqus-import-button");

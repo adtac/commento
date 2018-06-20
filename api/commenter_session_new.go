@@ -5,33 +5,33 @@ import (
 	"time"
 )
 
-func commenterSessionNew() (string, error) {
-	session, err := randomHex(32)
+func commenterTokenNew() (string, error) {
+	commenterToken, err := randomHex(32)
 	if err != nil {
-		logger.Errorf("cannot create session hex: %v", err)
+		logger.Errorf("cannot create commenterToken: %v", err)
 		return "", errorInternal
 	}
 
 	statement := `
 		INSERT INTO
-		commenterSessions (session, creationDate)
-		VALUES            ($1,      $2          );
+		commenterSessions (commenterToken, creationDate)
+		VALUES            ($1,             $2          );
 	`
-	_, err = db.Exec(statement, session, time.Now().UTC())
+	_, err = db.Exec(statement, commenterToken, time.Now().UTC())
 	if err != nil {
-		logger.Errorf("cannot insert new session: %v", err)
+		logger.Errorf("cannot insert new commenterToken: %v", err)
 		return "", errorInternal
 	}
 
-	return session, nil
+	return commenterToken, nil
 }
 
-func commenterSessionNewHandler(w http.ResponseWriter, r *http.Request) {
-	session, err := commenterSessionNew()
+func commenterTokenNewHandler(w http.ResponseWriter, r *http.Request) {
+	commenterToken, err := commenterTokenNew()
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "session": session})
+	writeBody(w, response{"success": true, "commenterToken": commenterToken})
 }

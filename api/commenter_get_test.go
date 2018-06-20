@@ -30,16 +30,16 @@ func TestCommenterGetByHexEmpty(t *testing.T) {
 	}
 }
 
-func TestCommenterGetBySession(t *testing.T) {
+func TestCommenterGetByCommenterToken(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
 	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
 
-	session, _ := commenterSessionNew()
+	commenterToken, _ := commenterTokenNew()
 
-	commenterSessionUpdate(session, commenterHex)
+	commenterSessionUpdate(commenterToken, commenterHex)
 
-	c, err := commenterGetBySession(session)
+	c, err := commenterGetByCommenterToken(commenterToken)
 	if err != nil {
 		t.Errorf("unexpected error getting commenter by hex: %v", err)
 		return
@@ -51,11 +51,11 @@ func TestCommenterGetBySession(t *testing.T) {
 	}
 }
 
-func TestCommenterGetBySessionEmpty(t *testing.T) {
+func TestCommenterGetByCommenterTokenEmpty(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	if _, err := commenterGetBySession(""); err == nil {
-		t.Errorf("expected error not found getting commenter with empty session")
+	if _, err := commenterGetByCommenterToken(""); err == nil {
+		t.Errorf("expected error not found getting commenter with empty commenterToken")
 		return
 	}
 }
@@ -65,9 +65,9 @@ func TestCommenterGetByName(t *testing.T) {
 
 	commenterHex, _ := commenterNew("test@example.com", "Test", "undefined", "https://example.com/photo.jpg", "google", "")
 
-	session, _ := commenterSessionNew()
+	commenterToken, _ := commenterTokenNew()
 
-	commenterSessionUpdate(session, commenterHex)
+	commenterSessionUpdate(commenterToken, commenterHex)
 
 	c, err := commenterGetByEmail("google", "test@example.com")
 	if err != nil {

@@ -34,24 +34,24 @@ func ownerLogin(email string, password string) (string, error) {
 		return "", errorInvalidEmailPassword
 	}
 
-	session, err := randomHex(32)
+	ownerToken, err := randomHex(32)
 	if err != nil {
-		logger.Errorf("cannot create session hex: %v", err)
+		logger.Errorf("cannot create ownerToken: %v", err)
 		return "", errorInternal
 	}
 
 	statement = `
 		INSERT INTO
-		ownerSessions (session, ownerHex, loginDate)
-		VALUES        ($1,      $2,       $3       );
+		ownerSessions (ownerToken, ownerHex, loginDate)
+		VALUES        ($1,         $2,       $3       );
 	`
-	_, err = db.Exec(statement, session, ownerHex, time.Now().UTC())
+	_, err = db.Exec(statement, ownerToken, ownerHex, time.Now().UTC())
 	if err != nil {
-		logger.Errorf("cannot insert session token: %v\n", err)
+		logger.Errorf("cannot insert ownerSession: %v\n", err)
 		return "", errorInternal
 	}
 
-	return session, nil
+	return ownerToken, nil
 }
 
 func ownerLoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -66,11 +66,11 @@ func ownerLoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, err := ownerLogin(*x.Email, *x.Password)
+	ownerToken, err := ownerLogin(*x.Email, *x.Password)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "session": session})
+	writeBody(w, response{"success": true, "ownerToken": ownerToken})
 }

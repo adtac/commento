@@ -30,16 +30,16 @@ func TestOwnerGetByEmailDNE(t *testing.T) {
 	}
 }
 
-func TestOwnerGetBySessionBasics(t *testing.T) {
+func TestOwnerGetByOwnerTokenBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
 	ownerHex, _ := ownerNew("test@example.com", "Test", "hunter2")
 
-	session, _ := ownerLogin("test@example.com", "hunter2")
+	ownerToken, _ := ownerLogin("test@example.com", "hunter2")
 
-	o, err := ownerGetBySession(session)
+	o, err := ownerGetByOwnerToken(ownerToken)
 	if err != nil {
-		t.Errorf("unexpected error on ownerGetBySession: %v", err)
+		t.Errorf("unexpected error on ownerGetByOwnerToken: %v", err)
 		return
 	}
 
@@ -49,11 +49,11 @@ func TestOwnerGetBySessionBasics(t *testing.T) {
 	}
 }
 
-func TestOwnerGetBySessionDNE(t *testing.T) {
+func TestOwnerGetByOwnerTokenDNE(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	if _, err := ownerGetBySession("does-not-exist"); err == nil {
-		t.Errorf("expected error not found on ownerGetBySession before creating an account")
+	if _, err := ownerGetByOwnerToken("does-not-exist"); err == nil {
+		t.Errorf("expected error not found on ownerGetByOwnerToken before creating an account")
 		return
 	}
 }

@@ -65,7 +65,7 @@
         return;
       }
 
-      global.cookieSet("session", resp.session);
+      global.cookieSet("ownerToken", resp.ownerToken);
       document.location = "/dashboard";
     });
   };

@@ -38,8 +38,8 @@
     var data = global.dashboard.$data;
     
     var json = {
-      session: global.cookieGet("session"),
-      domain: data.domains[data.cd].domain,
+      "ownerToken": global.cookieGet("ownerToken"),
+      "domain": data.domains[data.cd].domain,
     }
 
     $(".view").hide();

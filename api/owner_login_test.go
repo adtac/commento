@@ -24,8 +24,8 @@ func TestOwnerLoginBasics(t *testing.T) {
 		return
 	}
 
-	if session, err := ownerLogin("test@example.com", "hunter2"); session == "" {
-		t.Errorf("empty session on successful login: %v", err)
+	if ownerToken, err := ownerLogin("test@example.com", "hunter2"); ownerToken == "" {
+		t.Errorf("empty token on successful login: %v", err)
 		return
 	}
 }

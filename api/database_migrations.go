@@ -40,6 +40,8 @@ func performMigrationsFromDir(dir string) error {
 		filenames[filename] = true
 	}
 
+	logger.Infof("%d migrations already installed, looking for more", len(filenames))
+
 	completed := 0
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".sql") {
@@ -73,7 +75,9 @@ func performMigrationsFromDir(dir string) error {
 	}
 
 	if completed > 0 {
-		logger.Infof("%d migrations found, %d new migrations completed (%d total)", len(filenames), completed, len(filenames)+completed)
+		logger.Infof("%d new migrations completed (%d total)", completed, len(filenames)+completed)
+	} else {
+		logger.Infof("none found")
 	}
 
 	return nil

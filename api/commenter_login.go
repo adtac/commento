@@ -29,24 +29,24 @@ func commenterLogin(email string, password string) (string, error) {
 		return "", errorInvalidEmailPassword
 	}
 
-	session, err := randomHex(32)
+	commenterToken, err := randomHex(32)
 	if err != nil {
-		logger.Errorf("cannot create session hex: %v", err)
+		logger.Errorf("cannot create commenterToken: %v", err)
 		return "", errorInternal
 	}
 
 	statement = `
 		INSERT INTO
-		commenterSessions (session, commenterHex, creationDate)
-		VALUES            ($1,      $2,           $3          );
+		commenterSessions (commenterToken, commenterHex, creationDate)
+		VALUES            ($1,             $2,           $3          );
 	`
-	_, err = db.Exec(statement, session, commenterHex, time.Now().UTC())
+	_, err = db.Exec(statement, commenterToken, commenterHex, time.Now().UTC())
 	if err != nil {
-		logger.Errorf("cannot insert session token: %v\n", err)
+		logger.Errorf("cannot insert commenterToken token: %v\n", err)
 		return "", errorInternal
 	}
 
-	return session, nil
+	return commenterToken, nil
 }
 
 func commenterLoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -61,11 +61,11 @@ func commenterLoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, err := commenterLogin(*x.Email, *x.Password)
+	commenterToken, err := commenterLogin(*x.Email, *x.Password)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "session": session})
+	writeBody(w, response{"success": true, "commenterToken": commenterToken})
 }

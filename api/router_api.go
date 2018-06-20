@@ -21,7 +21,7 @@ func initAPIRouter(router *mux.Router) error {
 	router.HandleFunc("/api/domain/statistics", domainStatisticsHandler).Methods("POST")
 	router.HandleFunc("/api/domain/import/disqus", domainImportDisqusHandler).Methods("POST")
 
-	router.HandleFunc("/api/commenter/session/new", commenterSessionNewHandler).Methods("GET")
+	router.HandleFunc("/api/commenter/token/new", commenterTokenNewHandler).Methods("GET")
 	router.HandleFunc("/api/commenter/new", commenterNewHandler).Methods("POST")
 	router.HandleFunc("/api/commenter/login", commenterLoginHandler).Methods("POST")
 	router.HandleFunc("/api/commenter/self", commenterSelfHandler).Methods("POST")

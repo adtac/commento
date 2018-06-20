@@ -9,11 +9,11 @@ import (
 )
 
 func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
-	session := r.FormValue("state")
+	commenterToken := r.FormValue("state")
 	code := r.FormValue("code")
 
-	_, err := commenterSessionGet(session)
-	if err != nil && err != errorNoSuchSession {
+	_, err := commenterGetByCommenterToken(commenterToken)
+	if err != nil && err != errorNoSuchToken {
 		fmt.Fprintf(w, "Error: %s\n", err.Error())
 		return
 	}
@@ -73,7 +73,7 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		commenterHex = c.CommenterHex
 	}
 
-	if err := commenterSessionUpdate(session, commenterHex); err != nil {
+	if err := commenterSessionUpdate(commenterToken, commenterHex); err != nil {
 		fmt.Fprintf(w, "Error: %s", err.Error())
 		return
 	}

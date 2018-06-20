@@ -65,7 +65,7 @@ func domainDelete(domain string) error {
 
 func domainDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Session *string `json:"session"`
+		OwnerToken *string `json:"ownerToken"`
 		Domain  *string `json:"domain"`
 	}
 
@@ -75,7 +75,7 @@ func domainDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	o, err := ownerGetBySession(*x.Session)
+	o, err := ownerGetByOwnerToken(*x.OwnerToken)
 	if err != nil {
 		writeBody(w, response{"success": false, "message": err.Error()})
 		return

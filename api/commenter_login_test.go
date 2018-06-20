@@ -24,8 +24,8 @@ func TestCommenterLoginBasics(t *testing.T) {
 		return
 	}
 
-	if session, err := commenterLogin("test@example.com", "hunter2"); session == "" {
-		t.Errorf("empty session on successful login: %v", err)
+	if commenterToken, err := commenterLogin("test@example.com", "hunter2"); commenterToken == "" {
+		t.Errorf("empty comenterToken on successful login: %v", err)
 		return
 	}
 }
