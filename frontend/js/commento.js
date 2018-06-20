@@ -288,30 +288,6 @@
   }
 
 
-  function jsLoad(file, ready) {
-    var script = document.createElement("script");
-    var loaded = false;
-
-    script.type = "application/javascript";
-    script.src = file;
-    script.async = true;
-    script.onreadysessionchange = script.onload = function() {
-      if (!loaded &&
-        (!this.readySession ||
-          this.readySession === "loaded" ||
-          this.readySession === "complete"))
-      {
-        ready();
-      }
-
-      loaded = true;
-      script.onload = script.onreadysessionchange = null;
-    };
-
-    append(document.body, script);
-  }
-
-
   function footerLoad() {
     var footer = create("div");
     var aContainer = create("div");
