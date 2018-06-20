@@ -193,7 +193,7 @@
 
 
   function commenterTokenGet() {
-    var commenterToken = cookieGet("commenterToken");
+    var commenterToken = cookieGet("commentoCommenterToken");
     if (commenterToken === undefined)
       return "anonymous";
 
@@ -202,7 +202,7 @@
 
 
   global.logout = function() {
-    cookieSet("commenterToken", "anonymous");
+    cookieSet("commentoCommenterToken", "anonymous");
     refreshAll();
   }
 
@@ -221,7 +221,7 @@
 
     post(origin + "/api/commenter/self", json, function(resp) {
       if (!resp.success) {
-        cookieSet("commenterToken", "anonymous");
+        cookieSet("commentoCommenterToken", "anonymous");
         call(callback);
         return;
       }
@@ -970,7 +970,7 @@
 
   global.commentoAuth = function(provider) {
     if (provider == "anonymous") {
-      cookieSet("commenterToken", "anonymous");
+      cookieSet("commentoCommenterToken", "anonymous");
       chosenAnonymous = true;
       refreshAll();
       return;
@@ -984,7 +984,7 @@
         return;
       }
 
-      cookieSet("commenterToken", resp.commenterToken);
+      cookieSet("commentoCommenterToken", resp.commenterToken);
 
       popup.location = origin + "/api/oauth/" + provider + "/redirect?commenterToken=" + resp.commenterToken;
 
@@ -1155,7 +1155,7 @@
         return
       }
 
-      cookieSet("commenterToken", resp.commenterToken);
+      cookieSet("commentoCommenterToken", resp.commenterToken);
       refreshAll();
     });
   }
