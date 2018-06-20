@@ -13,6 +13,24 @@ func TestCommenterSessionUpdateBasics(t *testing.T) {
 		t.Errorf("unexpected error updating commenter session: %v", err)
 		return
 	}
+
+	statement := `
+		SELECT commenterHex
+		FROM commenterSessions
+		WHERE commenterToken = $1;
+	`
+	row := db.QueryRow(statement, commenterToken)
+
+	var commenterHex string
+	if err := row.Scan(&commenterHex); err != nil {
+		t.Errorf("error scanning commenterHex: %v", err)
+		return
+	}
+
+	if commenterHex != "temp-commenter-hex" {
+		t.Errorf("expected commenterHex=temp-commenter-hex got commenterHex=%s", commenterHex)
+		return
+	}
 }
 
 func TestCommenterSessionUpdateEmpty(t *testing.T) {
