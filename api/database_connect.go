@@ -1,12 +1,13 @@
 package main
 
 import (
+	"time"
 	"database/sql"
 	_ "github.com/lib/pq"
 	"os"
 )
 
-func connectDB() error {
+func connectDB(retriesLeft int) error {
 	con := os.Getenv("POSTGRES")
 	logger.Infof("opening connection to postgres: %s", con)
 
@@ -15,6 +16,18 @@ func connectDB() error {
 	if err != nil {
 		logger.Errorf("cannot open connection to postgres: %v", err)
 		return err
+	}
+
+	err = db.Ping()
+	if err != nil {
+		if retriesLeft > 0 {
+			logger.Errorf("cannot talk to postgres, retrying in 10 seconds (%d attempts left): %v", retriesLeft-1, err)
+			time.Sleep(10 * time.Second)
+			return connectDB(retriesLeft - 1)
+		} else {
+			logger.Errorf("cannot talk to postgres, last attempt failed: %v", err)
+			return err
+		}
 	}
 
 	statement := `
