@@ -21,6 +21,10 @@ func configFileLoad(filepath string) error {
 			continue
 		}
 
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+
 		i := strings.Index(line, "=")
 		if i == -1 {
 			continue
