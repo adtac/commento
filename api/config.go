@@ -14,6 +14,8 @@ func parseConfig() error {
 	}
 
 	defaults := map[string]string{
+		"CONFIG_FILE": "",
+
 		"POSTGRES": "postgres://postgres:postgres@localhost/commento?sslmode=disable",
 
 		"BIND_ADDRESS": "127.0.0.1",
@@ -34,6 +36,12 @@ func parseConfig() error {
 
 		"GOOGLE_KEY":    "",
 		"GOOGLE_SECRET": "",
+	}
+
+	if os.Getenv("COMMENTO_CONFIG_FILE") != "" {
+		if err := configFileLoad(os.Getenv("COMMENTO_CONFIG_FILE")); err != nil {
+			return err
+		}
 	}
 
 	for key, value := range defaults {
