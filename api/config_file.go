@@ -14,8 +14,11 @@ func configFileLoad(filepath string) error {
 
 	defer file.Close()
 
+	num := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
+		num += 1
+
 		line := strings.TrimSpace(scanner.Text())
 		if line == "" {
 			continue
@@ -27,7 +30,8 @@ func configFileLoad(filepath string) error {
 
 		i := strings.Index(line, "=")
 		if i == -1 {
-			continue
+			logger.Errorf("%s: line %d: neither a comment nor a valid setting", filepath, num)
+			return errorInvalidConfigFile
 		}
 
 		key := line[:i]
