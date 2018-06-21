@@ -17,6 +17,9 @@ func configFileLoad(filepath string) error {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
 
 		i := strings.Index(line, "=")
 		if i == -1 {
