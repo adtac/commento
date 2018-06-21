@@ -41,6 +41,10 @@ func configFileLoad(filepath string) error {
 			continue
 		}
 
+		if os.Getenv(key[9:]) != "" {
+			continue
+		}
+
 		os.Setenv(key[9:], value)
 	}
 
