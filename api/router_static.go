@@ -22,6 +22,7 @@ type staticAssetPlugs struct {
 
 type staticHtmlPlugs struct {
 	CdnPrefix string
+	Footer    template.HTML
 }
 
 func initStaticRouter(router *mux.Router) error {
@@ -80,6 +81,12 @@ func initStaticRouter(router *mux.Router) error {
 		}
 	}
 
+	footer, err := ioutil.ReadFile(os.Getenv("STATIC") + string(os.PathSeparator) + "footer.html")
+	if err != nil {
+		logger.Errorf("cannot read file footer.html: %v", err)
+		return err
+	}
+
 	pages := []string{
 		"login",
 		"forgot",
@@ -108,7 +115,7 @@ func initStaticRouter(router *mux.Router) error {
 		}
 
 		var buf bytes.Buffer
-		t.Execute(&buf, &staticHtmlPlugs{CdnPrefix: os.Getenv("CDN_PREFIX")})
+		t.Execute(&buf, &staticHtmlPlugs{CdnPrefix: os.Getenv("CDN_PREFIX"), Footer: template.HTML(string(footer))})
 
 		html[page] = buf.String()
 	}
