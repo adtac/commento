@@ -16,7 +16,7 @@ COPY ./frontend /commento-ce/frontend/
 WORKDIR /commento-ce/frontend/
 
 RUN apk update && apk add bash make
-RUN npm install -g html-minifier uglify-js sass
+RUN npm install -g html-minifier@3.5.7 uglify-js@3.4.1 sass@1.5.1
 
 RUN make prod
 
