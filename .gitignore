@@ -1,2 +1,6 @@
 build
 devel.env
+
+# Ignoring for IDE-specific files
+.idea/*
+.dir-locals.el
