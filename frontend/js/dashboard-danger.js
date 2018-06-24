@@ -1,4 +1,5 @@
 (function (global, document) {
+  "use strict";
 
   // Opens the danger zone.
   global.dangerOpen = function() {
@@ -12,8 +13,9 @@
     var data = global.dashboard.$data;
 
     global.domainDelete(data.domains[data.cd].domain, function(success) {
-      if (success)
-        document.location = global.origin + '/dashboard';
+      if (success) {
+        document.location = global.origin + "/dashboard";
+      }
     });
   }
 

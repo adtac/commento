@@ -1,4 +1,7 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Sets the vue.js toggle to select and deselect panes visually.
   function settingSelectCSS(id) {
@@ -6,10 +9,9 @@
     var settings = data.settings;
 
     for (var i = 0; i < settings.length; i++) {
-      if (settings[i].id == id) {
+      if (settings[i].id === id) {
         settings[i].selected = true;
-      }
-      else {
+      } else {
         settings[i].selected = false;
       }
     }
@@ -28,8 +30,9 @@
     $(".original").addClass("current");
 
     for (var i = 0; i < settings.length; i++) {
-      if (id == settings[i].id)
+      if (id === settings[i].id) {
         settings[i].open();
+      }
     }
   };
 
@@ -39,8 +42,9 @@
     var data = global.dashboard.$data;
     var settings = data.settings;
 
-    for (var i = 0; i < settings.length; i++)
+    for (var i = 0; i < settings.length; i++) {
       settings[i].selected = false;
+    }
   }
 
 } (window.commento, document));

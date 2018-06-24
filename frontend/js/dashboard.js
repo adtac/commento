@@ -1,4 +1,7 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Sets a vue.js field. Short for "vue set".
   function vs(field, value) {
@@ -82,8 +85,9 @@
       data: reactiveData,
     });
 
-    if (callback !== undefined)
+    if (callback !== undefined) {
       callback();
+    }
   };
 
 } (window.commento, document));

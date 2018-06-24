@@ -1,35 +1,41 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   global.numberify = function(x) {
-    if (x == 0)
+    if (x === 0) {
       return {"zeros": "000", "num": "", "units": ""}
+    }
 
-    if (x < 10)
+    if (x < 10) {
       return {"zeros": "00", "num": x, "units": ""}
+    }
 
-    if (x < 100)
+    if (x < 100) {
       return {"zeros": "0", "num": x, "units": ""}
+    }
 
-    if (x < 1000)
+    if (x < 1000) {
       return {"zeros": "", "num": x, "units": ""}
+    }
 
     var res;
 
     if (x < 1000000) {
       res = global.numberify((x/1000).toFixed(0))
       res.units = "K"
-    }
-    else if (x < 1000000000) {
+    } else if (x < 1000000000) {
       res = global.numberify((x/1000000).toFixed(0))
       res.units = "M"
-    }
-    else if (x < 1000000000000) {
+    } else if (x < 1000000000000) {
       res = global.numberify((x/1000000000).toFixed(0))
       res.units = "B"
     }
 
-    if (res.num*10 % 10 == 0)
+    if (res.num*10 % 10 === 0) {
       res.num = Math.ceil(res.num);
+    }
     
     return res;
   }
@@ -74,12 +80,12 @@
 
       var labels = new Array();
       for (var i = 0; i < views.length; i++) {
-        if ((views.length-i) % 7 == 0) {
+        if ((views.length-i) % 7 === 0) {
           var x = (views.length-i)/7;
           labels.push(x + " week" + (x > 1 ? "s" : "") + " ago");
-        }
-        else
+        } else {
           labels.push("");
+        }
       }
 
       new Chartist.Line("#views-graph", {
@@ -92,8 +98,12 @@
         series: [comments],
       }, options);
 
-      data.domains[data.cd].viewsLast30Days = numberify(views.reduce(function(a, b) { return a + b; }, 0));
-      data.domains[data.cd].commentsLast30Days = numberify(comments.reduce(function(a, b) { return a + b; }, 0));
+      data.domains[data.cd].viewsLast30Days = numberify(views.reduce(function(a, b) {
+        return a + b; 
+      }, 0));
+      data.domains[data.cd].commentsLast30Days = numberify(comments.reduce(function(a, b) {
+        return a + b; 
+      }, 0));
     });
   }
 

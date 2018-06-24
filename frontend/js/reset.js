@@ -1,16 +1,17 @@
 (function (global, document) {
+  "use strict";
 
   global.resetPassword = function() {
-    var all_ok = global.unfilledMark(["#password", "#password2"], function(el) {
+    var allOk = global.unfilledMark(["#password", "#password2"], function(el) {
       el.css("border-bottom", "1px solid red");
     });
 
-    if (!all_ok) {
+    if (!allOk) {
       global.textSet("#err", "Please make sure all fields are filled.");
       return;
     }
 
-    if ($("#password").val() != $("#password2").val()) {
+    if ($("#password").val() !== $("#password2").val()) {
       global.textSet("#err", "The two passwords do not match.");
       return;
     }

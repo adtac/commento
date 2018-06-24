@@ -1,0 +1,33 @@
+{
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "$": true
+  },
+  "rules": {
+    "no-bitwise": 2,
+    "camelcase": 2,
+    "brace-style": ["error", "1tbs"],
+    "curly": ["error", "all"],
+    "eqeqeq": ["error", "smart"],
+    "indent": ["error", 2],
+    "no-use-before-define": [
+      2,
+      {
+        "functions": false
+      }
+    ],
+    "new-cap": 2,
+    "no-caller": 2,
+    "quotes": [
+      2,
+      "double"
+    ],
+    "no-unused-vars": 2,
+    "strict": [
+      2,
+      "function"
+    ]
+  }
+}

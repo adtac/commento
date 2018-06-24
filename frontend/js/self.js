@@ -1,4 +1,5 @@
 (function (global, document) {
+  "use strict";
 
   // Get self details.
   global.selfGet = function(callback) {

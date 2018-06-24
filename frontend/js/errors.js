@@ -1,9 +1,10 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Registers a given ID for a fade out after 5 seconds.
   global.registerHide = function(id) {
-    var el = $(id);
-
     setTimeout(function() {
       $(id).fadeOut("fast");
     }, 5000);

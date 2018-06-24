@@ -1,4 +1,7 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Opens the import window.
   global.importOpen = function() {

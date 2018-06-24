@@ -1,19 +1,20 @@
 (function(global, document) {
-  'use strict';
+  "use strict";
 
   if (global.commento === undefined) {
     console.log("[commento] error: window.commento namespace not defined; maybe there's a mismatch in version between the backend and the frontend?");
     return;
+  } else {
+    global = global.commento;
   }
 
-  global = global.commento;
 
-  // Do not use other files like utils.js and http.js in the Makefile to build
+  // Do not use other files like utils.js and http.js in the gulpfile to build
   // commento.js for the following reasons:
   //   - We don't use jQuery in the actual JavaScript payload because we need
   //     to be lightweight.
   //   - They pollute the global/window namespace (with global.post, etc.).
-  //     That's NOT fine when we expect them source our JavaScript. For example,
+  //     That's NOT fine when we expect them to source our JavaScript. For example,
   //     the user may have their own window.post defined. We don't want to
   //     override that.
 
@@ -67,13 +68,12 @@
   var origin = global.origin;
   var cdn = global.cdn;
   var root = null;
-  var cssOverride = undefined;
-  var autoInit = undefined;
+  var cssOverride;
+  var autoInit;
   var isAuthenticated = false;
   var comments = [];
   var commenters = [];
   var requireIdentification = true;
-  var requireModeration = true;
   var isModerator = false;
   var isFrozen = false;
   var shownSubmitButton = {"root": false};
@@ -96,16 +96,6 @@
   }
 
 
-  function dataGet(el, key) {
-    return el.dataset[key];
-  }
-
-
-  function dataSet(el, key, data) {
-    el.dataset[key] = data;
-  }
-
-
   function append(root, el) {
     root.appendChild(el);
   }
@@ -122,8 +112,9 @@
 
 
   function classRemove(el, cls) {
-    if (el !== null)
+    if (el !== null) {
       el.classList.remove("commento-" + cls);
+    }
   }
 
 
@@ -133,24 +124,26 @@
 
 
   function remove(el) {
-    if (el !== null)
+    if (el !== null) {
       el.parentNode.removeChild(el);
+    }
   }
 
 
   function attrGet(node, a) {
     var attr = node.attributes[a];
 
-    if (attr === undefined)
+    if (attr === undefined) {
       return undefined;
+    }
     
     return attr.value;
   }
 
 
-  function onclick(node, f, ...args) {
+  function onclick(node, f, arg) {
     node.addEventListener("click", function() {
-      f(...args);
+      f(arg);
     }, false);
   }
 
@@ -176,7 +169,7 @@
   function get(url, callback) {
     var xmlDoc = new XMLHttpRequest();
 
-    xmlDoc.open('GET', url, true);
+    xmlDoc.open("GET", url, true);
     xmlDoc.onload = function() {
       callback(JSON.parse(xmlDoc.response));
     };
@@ -186,32 +179,25 @@
 
 
   function call(callback) {
-    if (typeof(callback) == "function")
+    if (typeof(callback) === "function") {
       callback();
-  }
-
-
-  function rootSpinnerShow() {
-    var spinner = create("div");
-
-    classAdd(spinner, "loading");
-
-    append(root, spinner);
+    }
   }
 
 
   function cookieGet(name) {
     var c = "; " + document.cookie;
     var x = c.split("; " + name + "=");
-    if (x.length == 2)
+    if (x.length === 2) {
       return x.pop().split(";").shift();
+    }
   }
 
 
   function cookieSet(name, value) {
     var expires = "";
     var date = new Date();
-    date.setTime(date.getTime() + (365*24*60*60*1000));
+    date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
     expires = "; expires=" + date.toUTCString();
 
     document.cookie = name + "=" + value + expires + "; path=/";
@@ -220,8 +206,9 @@
 
   function commenterTokenGet() {
     var commenterToken = cookieGet("commentoCommenterToken");
-    if (commenterToken === undefined)
+    if (commenterToken === undefined) {
       return "anonymous";
+    }
 
     return commenterToken;
   }
@@ -235,7 +222,7 @@
 
   function selfGet(callback) {
     var commenterToken = commenterTokenGet();
-    if (commenterToken == "anonymous") {
+    if (commenterToken === "anonymous") {
       isAuthenticated = false;
       call(callback);
       return;
@@ -273,14 +260,14 @@
 
       attrSet(loggedContainer, "style", "display: none");
       attrSet(name, "href", resp.commenter.link);
-      if (resp.commenter.photo == "undefined") {
+      if (resp.commenter.photo === "undefined") {
         avatar = create("div");
         avatar.style["background"] = color;
         avatar.innerHTML = resp.commenter.name[0].toUpperCase();
         classAdd(avatar, "avatar");
       } else {
         avatar = create("img");
-        if (resp.commenter.provider == "google") {
+        if (resp.commenter.provider === "google") {
           attrSet(avatar, "src", resp.commenter.photo + "?sz=50");
         } else {
           attrSet(avatar, "src", resp.commenter.photo);
@@ -303,7 +290,7 @@
 
   function cssLoad(file, onload) {
     var link = create("link");
-    var head = document.getElementsByTagName('head')[0];
+    var head = document.getElementsByTagName("head")[0];
 
     link.type = "text/css";
     attrSet(link, "href", file);
@@ -357,7 +344,6 @@
         return;
       }
 
-      requireModeration = resp.requireModeration;
       requireIdentification = resp.requireIdentification;
       isModerator = resp.isModerator;
       isFrozen = resp.isFrozen;
@@ -448,12 +434,12 @@
       append(buttons, createButton);
       append(buttons, loginButton);
       append(buttonsContainer, buttons);
-      if (!requireIdentification)
+      if (!requireIdentification) {
         append(buttonsContainer, anonymousButton);
+      }
       append(textareaContainer, question);
       append(textareaContainer, buttonsContainer);
-    }
-    else {
+    } else {
       onclick(textarea, global.showSubmitButton, id);
 
       attrSet(textarea, "placeholder", "Join the discussion!");
@@ -478,14 +464,15 @@
 
     commentsArea.innerHTML = "";
 
-    if (isLocked) {
-      if (isAuthenticated)
+    if (isLocked || isFrozen) {
+      if (isAuthenticated) {
         append(mainArea, messageCreate("This thread is locked. You cannot add new comments."));
-      else
+      } else {
         append(mainArea, textareaCreate("root"));
-    }
-    else
+      }
+    } else {
       append(mainArea, textareaCreate("root"));
+    }
 
     append(mainArea, commentsArea);
     append(root, mainArea);
@@ -510,11 +497,10 @@
 
     var comment = textarea.value;
 
-    if (comment == "") {
+    if (comment === "") {
       classAdd(textarea, "red-border");
       return;
-    }
-    else {
+    } else {
       classRemove(textarea, "red-border");
     }
 
@@ -539,16 +525,18 @@
         commentsRender();
 
         var message = "";
-        if (resp.state == "unapproved")
+        if (resp.state === "unapproved") {
           message = "Your comment is under moderation.";
-        else if (resp.state == "flagged")
+        } else if (resp.state === "flagged") {
           message = "Your comment was flagged as spam and is under moderation.";
+        }
 
-        if (message != "") {
-          if (id == "root")
+        if (message !== "") {
+          if (id === "root") {
             prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
-          else
+          } else {
             append($(ID_BODY + id), messageCreate(message));
+          }
         }
       });
     });
@@ -567,8 +555,9 @@
     ];
 
     var total = 0;
-    for (var i = 0; i < name.length; i++)
+    for (var i = 0; i < name.length; i++) {
       total += name.charCodeAt(i);
+    }
     var color = colors[total % colors.length];
 
     return color;
@@ -586,34 +575,29 @@
     var elapsed = current - previous;
 
     if (elapsed < msJustNow) {
-     return 'just now';
-    }
-    else if (elapsed < msPerMinute) {
-      return Math.round(elapsed/1000) + ' seconds ago';
-    }
-    else if (elapsed < msPerHour) {
-      return Math.round(elapsed/msPerMinute) + ' minutes ago';
-    }
-    else if (elapsed < msPerDay ) {
-      return Math.round(elapsed/msPerHour ) + ' hours ago';
-    }
-    else if (elapsed < msPerMonth) {
-      return Math.round(elapsed/msPerDay) + ' days ago';
-    }
-    else if (elapsed < msPerYear) {
-      return Math.round(elapsed/msPerMonth) + ' months ago';
-    }
-    else {
-      return Math.round(elapsed/msPerYear ) + ' years ago';
+      return "just now";
+    } else if (elapsed < msPerMinute) {
+      return Math.round(elapsed / 1000) + " seconds ago";
+    } else if (elapsed < msPerHour) {
+      return Math.round(elapsed / msPerMinute) + " minutes ago";
+    } else if (elapsed < msPerDay ) {
+      return Math.round(elapsed / msPerHour ) + " hours ago";
+    } else if (elapsed < msPerMonth) {
+      return Math.round(elapsed / msPerDay) + " days ago";
+    } else if (elapsed < msPerYear) {
+      return Math.round(elapsed / msPerMonth) + " months ago";
+    } else {
+      return Math.round(elapsed / msPerYear ) + " years ago";
     }
   }
 
 
   function scorify(score) {
-    if (score != 1)
+    if (score !== 1) {
       return score + " points";
-    else
+    } else {
       return score + " point";
+    }
   }
 
 
@@ -624,10 +608,12 @@
     }
 
     cur.sort(function(a, b) {
-      if (a.commentHex == stickyCommentHex)
+      if (a.commentHex === stickyCommentHex) {
         return -Infinity;
-      if (b.commentHex == stickyCommentHex)
+      }
+      if (b.commentHex === stickyCommentHex) {
         return Infinity;
+      }
       return b.score - a.score;
     });
 
@@ -655,10 +641,11 @@
       var contents = create("div");
       var color = colorGet(comment.commenterHex + "-" + commenter.name);
       var name;
-      if (commenter.link != "undefined" && commenter.link != "https://undefined" && commenter.link != "")
+      if (commenter.link !== "undefined" && commenter.link !== "https://undefined" && commenter.link !== "") {
         name = create("a");
-      else
+      } else {
         name = create("div");
+      }
 
       card.id = ID_CARD + comment.commentHex;
       body.id = ID_BODY + comment.commentHex;
@@ -674,8 +661,9 @@
       approve.id = ID_APPROVE + comment.commentHex;
       remove.id = ID_REMOVE + comment.commentHex;
       sticky.id = ID_STICKY + comment.commentHex;
-      if (children)
+      if (children) {
         children.id = ID_CHILDREN + comment.commentHex;
+      }
       contents.id = ID_CONTENTS + comment.commentHex;
       name.id = ID_NAME + comment.commentHex;
 
@@ -686,14 +674,15 @@
       reply.title = "Reply";
       approve.title = "Approve";
       remove.title = "Remove";
-      if (stickyCommentHex == comment.commentHex) {
-        if (isModerator)
+      if (stickyCommentHex === comment.commentHex) {
+        if (isModerator) {
           sticky.title = "Unsticky";
-        else
+        } else {
           sticky.title = "This comment has been stickied";
-      }
-      else
+        }
+      } else {
         sticky.title = "Sticky";
+      }
 
       card.style["borderLeft"] = "2px solid " + color;
       name.innerText = commenter.name;
@@ -701,14 +690,14 @@
       timeago.innerHTML = timeDifference((new Date()).getTime(), Date.parse(comment.creationDate));
       score.innerText = scorify(comment.score);
 
-      if (commenter.photo == "undefined") {
+      if (commenter.photo === "undefined") {
         avatar = create("div");
         avatar.style["background"] = color;
         avatar.innerHTML = commenter.name[0].toUpperCase();
         classAdd(avatar, "avatar");
       } else {
         avatar = create("img");
-        if (commenter.provider == "google") {
+        if (commenter.provider === "google") {
           attrSet(avatar, "src", commenter.photo + "?sz=50");
         } else {
           attrSet(avatar, "src", commenter.photo);
@@ -717,10 +706,12 @@
       }
 
       classAdd(card, "card");
-      if (isModerator && comment.state != "approved")
+      if (isModerator && comment.state !== "approved") {
         classAdd(card, "dark-card");
-      if (comment.state == "flagged")
+      }
+      if (comment.state === "flagged") {
         classAdd(name, "flagged");
+      }
       classAdd(header, "header");
       classAdd(name, "name");
       classAdd(subtitle, "subtitle");
@@ -728,8 +719,9 @@
       classAdd(score, "score");
       classAdd(body, "body");
       classAdd(options, "options");
-      if (mobileView)
+      if (mobileView) {
         classAdd(options, "options-mobile");
+      }
       classAdd(edit, "option-button");
       classAdd(edit, "option-edit");
       classAdd(reply, "option-button");
@@ -745,16 +737,18 @@
       classAdd(remove, "option-button");
       classAdd(remove, "option-remove");
       classAdd(sticky, "option-button");
-      if (stickyCommentHex == comment.commentHex)
+      if (stickyCommentHex === comment.commentHex) {
         classAdd(sticky, "option-unsticky");
-      else
+      } else {
         classAdd(sticky, "option-sticky");
+      }
 
       if (isAuthenticated) {
-        if (comment.direction > 0)
+        if (comment.direction > 0) {
           classAdd(upvote, "upvoted");
-        else if (comment.direction < 0)
+        } else if (comment.direction < 0) {
           classAdd(downvote, "downvoted");
+        }
       }
 
       onclick(collapse, global.commentCollapse, comment.commentHex);
@@ -762,20 +756,22 @@
       onclick(remove, global.commentDelete, comment.commentHex);
       onclick(sticky, global.commentSticky, comment.commentHex);
 
-      if (isAuthenticated)
+      if (isAuthenticated) {
         upDownOnclickSet(upvote, downvote, comment.commentHex, comment.direction);
-      else {
+      } else {
         onclick(upvote, global.loginBoxShow);
         onclick(downvote, global.loginBoxShow);
       }
 
-      if (isAuthenticated || chosenAnonymous)
+      if (isAuthenticated || chosenAnonymous) {
         onclick(reply, global.replyShow, comment.commentHex);
-      else
+      } else {
         onclick(reply, global.loginBoxShow);
+      }
 
-      if (commenter.link != "undefined" && commenter.link != "https://undefined" && commenter.link != "")
+      if (commenter.link !== "undefined" && commenter.link !== "https://undefined" && commenter.link !== "") {
         attrSet(name, "href", commenter.link);
+      }
 
       append(options, collapse);
 
@@ -786,26 +782,30 @@
       append(options, reply);
 
       if (isModerator) {
-        if (parentHex == "root")
+        if (parentHex === "root") {
           append(options, sticky);
+        }
         append(options, remove);
-        if (comment.state != "approved")
+        if (comment.state !== "approved") {
           append(options, approve);
-      }
-      else {
-        if (stickyCommentHex == comment.commentHex)
+        }
+      } else {
+        if (stickyCommentHex === comment.commentHex) {
           append(options, sticky);
+        }
       }
 
       attrSet(options, "style", "width: " + ((options.childNodes.length+1)*32) + "px;");
-      for (var i = 0; i < options.childNodes.length; i++)
+      for (var i = 0; i < options.childNodes.length; i++) {
         attrSet(options.childNodes[i], "style", "right: " + (i*32) + "px;");
+      }
 
       append(subtitle, score);
       append(subtitle, timeago);
 
-      if (!mobileView)
+      if (!mobileView) {
         append(header, options);
+      }
       append(header, avatar);
       append(header, name);
       append(header, subtitle);
@@ -847,7 +847,6 @@
 
       var card = $(ID_CARD + commentHex);
       var name = $(ID_NAME + commentHex);
-      var options = $(ID_OPTIONS + commentHex);
       var tick = $(ID_APPROVE + commentHex);
 
       classRemove(card, "dark-card");
@@ -878,28 +877,29 @@
   function nameWidthFix() {
     var els = document.getElementsByClassName("commento-name");
 
-    for (var i = 0; i < els.length; i++)
+    for (var i = 0; i < els.length; i++) {
       attrSet(els[i], "style", "max-width: " + (els[i].getBoundingClientRect()["width"] + 20) + "px;")
+    }
   }
 
 
   function upDownOnclickSet(upvote, downvote, commentHex, direction) {
     if (direction > 0) {
-      onclick(upvote, global.vote, commentHex, 1, 0);
-      onclick(downvote, global.vote, commentHex, 1, -1);
-    }
-    else if (direction < 0) {
-      onclick(upvote, global.vote, commentHex, -1, 1);
-      onclick(downvote, global.vote, commentHex, -1, 0);
-    }
-    else {
-      onclick(upvote, global.vote, commentHex, 0, 1);
-      onclick(downvote, global.vote, commentHex, 0, -1);
+      onclick(upvote, global.vote, commentHex, [1, 0]);
+      onclick(downvote, global.vote, commentHex, [1, -1]);
+    } else if (direction < 0) {
+      onclick(upvote, global.vote, commentHex, [-1, 1]);
+      onclick(downvote, global.vote, commentHex, [-1, 0]);
+    } else {
+      onclick(upvote, global.vote, commentHex, [0, 1]);
+      onclick(downvote, global.vote, commentHex, [0, -1]);
     }
   }
 
 
-  global.vote = function(commentHex, oldVote, direction) {
+  global.vote = function(commentHex, dirs) {
+    var oldVote = dirs[0];
+    var direction = dirs[1];
     var upvote = $(ID_UPVOTE + commentHex);
     var downvote = $(ID_DOWNVOTE + commentHex);
     var score = $(ID_SCORE + commentHex);
@@ -914,20 +914,27 @@
 
     classRemove(upvote, "upvoted");
     classRemove(downvote, "downvoted");
-    if (direction > 0)
+    if (direction > 0) {
       classAdd(upvote, "upvoted");
-    else if (direction < 0)
+    } else if (direction < 0) {
       classAdd(downvote, "downvoted");
+    }
 
     score.innerText = scorify(parseInt(score.innerText.replace(/[^\d-.]/g, "")) + direction - oldVote);
 
-    post(origin + "/api/comment/vote", json, function(resp) {});
+    post(origin + "/api/comment/vote", json, function(resp) {
+      if (!resp.success) {
+        errorShow(resp.message);
+        return;
+      }
+    });
   }
 
 
   global.replyShow = function(id) {
-    if (id in shownReply && shownReply[id])
+    if (id in shownReply && shownReply[id]) {
       return;
+    }
 
     var body = $(ID_BODY + id);
     append(body, textareaCreate(id));
@@ -965,8 +972,9 @@
     var children = $(ID_CHILDREN + id);
     var button = $(ID_COLLAPSE + id);
 
-    if (children)
+    if (children) {
       classAdd(children, "hidden");
+    }
 
     classRemove(button, "option-collapse");
     classAdd(button, "option-uncollapse");
@@ -981,8 +989,9 @@
     var children = $(ID_CHILDREN + id);
     var button = $(ID_COLLAPSE + id);
 
-    if (children)
+    if (children) {
       classRemove(children, "hidden");
+    }
 
     classRemove(button, "option-uncollapse");
     classAdd(button, "option-collapse");
@@ -1015,8 +1024,9 @@
 
 
   global.showSubmitButton = function(id) {
-    if (id in shownSubmitButton && shownSubmitButton[id])
+    if (id in shownSubmitButton && shownSubmitButton[id]) {
       return;
+    }
 
     shownSubmitButton[id] = true;
 
@@ -1037,7 +1047,8 @@
     append(el, submit);
   }
 
-  global.anonymousChoose = function(provider) {
+
+  global.anonymousChoose = function() {
     cookieSet("commentoCommenterToken", "anonymous");
     chosenAnonymous = true;
     refreshAll();
@@ -1178,12 +1189,13 @@
       append(loginBox, oauthPretext);
       append(oauthButtonsContainer, oauthButtons);
       append(loginBox, oauthButtonsContainer);
-      if (!requireIdentification)
+      if (!requireIdentification) {
         append(loginBox, anonymousButton);
+      }
       oauthButtonsShown = true;
-    }
-    else
+    } else {
       oauthButtonsShown = false;
+    }
 
     append(loginBox, close);
 
@@ -1279,15 +1291,16 @@
   global.passwordAsk = function() {
     var loginBox = $(ID_LOGIN_BOX);
     var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
-    var emailInput = $(ID_LOGIN_BOX_EMAIL_INPUT);
     var emailButton = $(ID_LOGIN_BOX_EMAIL_BUTTON);
     var loginLinkContainer = $(ID_LOGIN_BOX_LOGIN_LINK_CONTAINER);
     var hr = $(ID_LOGIN_BOX_HR);
     var oauthButtonsContainer = $(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER);
     var oauthPretext = $(ID_LOGIN_BOX_OAUTH_PRETEXT);
     var anonymousButton = null;
-    if (!requireIdentification);
-      anonymousButton = $(ID_LOGIN_BOX_ANONYMOUS_BUTTON);
+    if (!requireIdentification){
+      ;
+    }
+    anonymousButton = $(ID_LOGIN_BOX_ANONYMOUS_BUTTON);
     
     remove(emailButton);
     remove(loginLinkContainer);
@@ -1302,23 +1315,23 @@
 
     var order, id, type, placeholder;
 
-    if (loginBoxType == "signup") {
+    if (loginBoxType === "signup") {
       var order = ["name", "website", "password"];
       var id = [ID_LOGIN_BOX_NAME_INPUT, ID_LOGIN_BOX_WEBSITE_INPUT, ID_LOGIN_BOX_PASSWORD_INPUT];
       var type = ["text", "text", "password"];
       var placeholder = ["Real Name", "Website (Optional)", "Password"];
-    }
-    else {
+    } else {
       var order = ["password"];
       var id = [ID_LOGIN_BOX_PASSWORD_INPUT];
       var type = ["password"];
       var placeholder = ["Password"];
     }
 
-    if (loginBoxType == "signup")
+    if (loginBoxType === "signup") {
       subtitle.innerText = "Finish the rest of your profile to complete."
-    else
+    } else {
       subtitle.innerText = "Enter your password to log in."
+    }
 
     for (var i = 0; i < order.length; i++) {
       var fieldContainer = create("div");
@@ -1338,15 +1351,16 @@
       append(field, fieldInput);
       append(fieldContainer, field);
 
-      if (order[i] == "password") {
+      if (order[i] === "password") {
         var fieldButton = create("button");
         classAdd(fieldButton, "email-button");
         fieldButton.innerText = loginBoxType;
 
-        if (loginBoxType == "signup")
+        if (loginBoxType === "signup") {
           onclick(fieldButton, global.signup);
-        else
+        } else {
           onclick(fieldButton, global.login);
+        }
 
         append(field, fieldButton);
       }
@@ -1354,10 +1368,11 @@
       append(loginBox, fieldContainer);
     }
 
-    if (loginBoxType == "signup")
+    if (loginBoxType === "signup") {
       $(ID_LOGIN_BOX_NAME_INPUT).focus();
-    else
+    } else {
       $(ID_LOGIN_BOX_PASSWORD_INPUT).focus();
+    }
   }
 
 
@@ -1392,36 +1407,41 @@
 
     lock.disabled = true;
     pageUpdate(function(success) {
-      lock.disabled = false;
-      if (isLocked)
-        lock.innerHTML = "Unlock Thread";
-      else
-        lock.innerHTML = "Lock Thread";
+      if (success) {
+        lock.disabled = false;
+        if (isLocked) {
+          lock.innerHTML = "Unlock Thread";
+        } else {
+          lock.innerHTML = "Lock Thread";
+        }
+      }
     });
   }
 
 
   global.commentSticky = function(commentHex) {
-    if (stickyCommentHex != "none") {
+    if (stickyCommentHex !== "none") {
       var sticky = $(ID_STICKY + stickyCommentHex);
       classRemove(sticky, "option-unsticky");
       classAdd(sticky, "option-sticky");
     }
 
-    if (stickyCommentHex == commentHex)
+    if (stickyCommentHex === commentHex) {
       stickyCommentHex = "none";
-    else
+    } else {
       stickyCommentHex = commentHex;
+    }
 
     pageUpdate(function(success) {
-      var sticky = $(ID_STICKY + commentHex);
-      if (stickyCommentHex == commentHex) {
-        classRemove(sticky, "option-sticky");
-        classAdd(sticky, "option-unsticky");
-      }
-      else {
-        classRemove(sticky, "option-unsticky");
-        classAdd(sticky, "option-sticky");
+      if (success) {
+        var sticky = $(ID_STICKY + commentHex);
+        if (stickyCommentHex === commentHex) {
+          classRemove(sticky, "option-sticky");
+          classAdd(sticky, "option-unsticky");
+        } else {
+          classRemove(sticky, "option-unsticky");
+          classAdd(sticky, "option-sticky");
+        }
       }
     });
   }
@@ -1449,10 +1469,11 @@
 
     classAdd(modTools, "mod-tools");
 
-    if (isLocked)
+    if (isLocked) {
       lock.innerHTML = "Unlock Thread";
-    else
+    } else {
       lock.innerHTML = "Lock Thread";
+    }
 
     onclick(lock, global.threadLockToggle);
 
@@ -1464,10 +1485,11 @@
 
 
   global.loadCssOverride = function() {
-    if (cssOverride === undefined)
+    if (cssOverride === undefined) {
       global.allShow();
-    else
+    } else {
       cssLoad(cssOverride, "window.allShow()");
+    }
   }
 
 
@@ -1479,11 +1501,13 @@
 
     attrSet(mainArea, "style", "");
 
-    if (isModerator)
+    if (isModerator) {
       attrSet(modTools, "style", "");
+    }
 
-    if (loggedContainer)
+    if (loggedContainer) {
       attrSet(loggedContainer, "style", "");
+    }
 
     attrSet(footer, "style", "");
 
@@ -1502,7 +1526,7 @@
   }
 
 
-  global.loginBoxShow = function(signup) {
+  global.loginBoxShow = function() {
     var mainArea = $(ID_MAIN_AREA);
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
 
@@ -1527,8 +1551,9 @@
         autoInit = attrGet(scripts[i], "data-auto-init");
 
         ID_ROOT = attrGet(scripts[i], "data-id-root");
-        if (ID_ROOT === undefined)
+        if (ID_ROOT === undefined) {
           ID_ROOT = "commento";
+        }
       }
     }
   }
@@ -1559,42 +1584,46 @@
 
 
   var initted = false;
+
+
   function init() {
-    if (initted)
+    if (initted) {
       return;
+    }
     initted = true;
 
     dataTagsLoad();
 
-    if (autoInit == "true" || autoInit === undefined)
+    if (autoInit === "true" || autoInit === undefined) {
       global.main(undefined);
-    else if (autoInit != "false")
+    } else if (autoInit !== "false") {
       console.log("[commento] error: invalid value for data-auto-init; allowed values: true, false");
+    }
   }
 
 
   var readyLoad = function() {
     var readyState = document.readyState;
 
-    if (readyState == "loading") {
+    if (readyState === "loading") {
       // The document is still loading. The div we need to fill might not have
       // been parsed yet, so let's wait and retry when the readyState changes.
       // If there is more than one state change, we aren't affected because we
       // have a double-call protection in init().
       document.addEventListener("readystatechange", readyLoad);
-    }
-    else if (readyState == "interactive") {
+    } else if (readyState === "interactive") {
       // The document has been parsed and DOM objects are now accessible. While
       // JS, CSS, and images are still loading, we don't need to wait.
       init();
-    }
-    else if (readyState == "complete") {
+    } else if (readyState === "complete") {
       // The page has fully loaded (including JS, CSS, and images). From our
       // point of view, this is practically no different from interactive.
       init();
     }
   };
 
+
   readyLoad();
+
 
 }(window, document));

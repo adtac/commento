@@ -1,19 +1,20 @@
 (function (global, document) {
+  "use strict"
 
   // Signs up the user and redirects to either the login page or the email
   // confirmation, depending on whether or not SMTP is configured in the
   // backend.
   global.signup = function() {
-    if ($("#password").val() != $("#password2").val()) {
+    if ($("#password").val() !== $("#password2").val()) {
       global.textSet("#err", "The two passwords don't match");
       return;
     }
 
-    var all_ok = global.unfilledMark(["#email", "#name", "#password", "#password2"], function(el) {
+    var allOk = global.unfilledMark(["#email", "#name", "#password", "#password2"], function(el) {
       el.css("border-bottom", "1px solid red");
     });
 
-    if (!all_ok) {
+    if (!allOk) {
       global.textSet("#err", "Please make sure all fields are filled");
       return;
     }
@@ -33,10 +34,11 @@
         return;
       }
 
-      if (resp.confirmEmail)
+      if (resp.confirmEmail) {
         document.locatidocumenton = global.origin + "/confirm-email";
-      else
+      } else {
         document.location = global.origin + "/login?signedUp=true";
+      }
     });
   };
 

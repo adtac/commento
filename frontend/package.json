@@ -1,0 +1,33 @@
+{
+  "name": "commento-ce",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:commento/commento-ce.git",
+  "author": "Adhityaa <c.adhityaa@gmail.com> Anton Linevych anton@linevich.net",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "chartist": "0.11.0",
+    "fixmyjs": "2.0.0",
+    "gulp": "3.9.1",
+    "gulp-clean-css": "3.9.4",
+    "gulp-concat": "2.6.1",
+    "gulp-eslint": "5.0.0",
+    "gulp-html-minifier": "0.1.8",
+    "gulp-rename": "1.3.0",
+    "gulp-sass": "4.0.1",
+    "gulp-sourcemaps": "2.6.4",
+    "gulp-uglify": "3.0.0",
+    "highlightjs": "9.10.0",
+    "html-minifier": "3.5.7",
+    "jquery": "3.2.1",
+    "natives": "^1.1.6",
+    "normalize-scss": "7.0.1",
+    "sass": "1.5.1",
+    "uglify-js": "3.4.1",
+    "vue": "2.5.16"
+  },
+  "dependencies": {
+    "eslint": "^5.10.0"
+  }
+}

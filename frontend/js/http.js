@@ -1,4 +1,7 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Performs a JSON POST request to the given url with the given data and
   // calls the callback function with the JSON response.

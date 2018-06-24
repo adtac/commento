@@ -1,4 +1,5 @@
 (function (global, document) {
+  "use strict";
 
   // Selects a domain.
   global.domainSelect = function(domain) {
@@ -6,14 +7,14 @@
     var domains = data.domains;
 
     for (var i = 0; i < domains.length; i++) {
-      if (domains[i].domain == domain) {
-        global.vs("frozen", domains[i].state == "frozen");
+      if (domains[i].domain === domain) {
+        global.vs("frozen", domains[i].state === "frozen");
         domains[i].selected = true;
         data.cd = i;
         data.importedComments = domains[i].importedComments;
-      }
-      else
+      } else {
         domains[i].selected = false;
+      }
     }
 
     data.showSettings = true;
@@ -28,8 +29,9 @@
     var data = global.dashboard.$data;
     var domains = data.domains;
 
-    for (var i = 0; i < domains.length; i++)
+    for (var i = 0; i < domains.length; i++) {
       domains[i].selected = false;
+    }
   }
 
 
@@ -76,8 +78,8 @@
       }
 
       resp.domains = resp.domains.sort(function(a, b) {
-          var x = a.creationDate; var y = b.creationDate;
-          return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        var x = a.creationDate; var y = b.creationDate;
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
       });
 
       for (var i = 0; i < resp.domains.length; i++) {
@@ -98,8 +100,9 @@
 
       global.vs("domains", resp.domains);
 
-      if (callback !== undefined)
+      if (callback !== undefined) {
         callback();
+      }
     });
   };
 
@@ -112,8 +115,9 @@
     };
 
     global.post(global.origin + "/api/domain/update", json, function(resp) {
-      if (callback !== undefined)
+      if (callback !== undefined) {
         callback(resp.success);
+      }
 
       if (!resp.success) {
         global.globalErrorShow(resp.message);
@@ -136,8 +140,9 @@
         return;
       }
 
-      if (callback !== undefined)
+      if (callback !== undefined) {
         callback(resp.success);
+      }
     });
   }
 

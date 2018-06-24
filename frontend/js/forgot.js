@@ -1,12 +1,15 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Talks to the API and sends an reset email.
   global.sendResetHex = function() {
-    var all_ok = global.unfilledMark(["#email"], function(el) {
+    var allOk = global.unfilledMark(["#email"], function(el) {
       el.css("border-bottom", "1px solid red");
     });
 
-    if (!all_ok) {
+    if (!allOk) {
       global.textSet("#err", "Please make sure all fields are filled.");
       return;
     }

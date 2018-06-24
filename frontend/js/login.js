@@ -1,13 +1,15 @@
 (function (global, document) {
+  "use strict";
+
+  (document);
 
   // Shows messages produced from email confirmation attempts.
   function displayConfirmedEmail() {
     var confirmed = global.paramGet("confirmed");
 
-    if (confirmed == "true") {
+    if (confirmed === "true") {
       $("#msg").html("Successfully confirmed! Login to continue.")
-    }
-    else if (confirmed == "false") {
+    } else if (confirmed === "false") {
       $("#err").html("That link has expired.")
     }
   }
@@ -17,7 +19,7 @@
   function displayChangedPassword() {
     var changed = global.paramGet("changed");
 
-    if (changed == "true") {
+    if (changed === "true") {
       $("#msg").html("Password changed successfully! Login to continue.")
     }
   }
@@ -26,7 +28,7 @@
   function displaySignedUp() {
     var signedUp = global.paramGet("signedUp");
 
-    if (signedUp == "true") {
+    if (signedUp === "true") {
       $("#msg").html("Registration successful! Login to continue.")
     }
   }
@@ -42,11 +44,11 @@
 
   // Logs the user in and redirects to the dashboard.
   global.login = function() {
-    var all_ok = global.unfilledMark(["#email", "#password"], function(el) {
+    var allOk = global.unfilledMark(["#email", "#password"], function(el) {
       el.css("border-bottom", "1px solid red");
     });
 
-    if (!all_ok) {
+    if (!allOk) {
       global.textSet("#err", "Please make sure all fields are filled");
       return;
     }
