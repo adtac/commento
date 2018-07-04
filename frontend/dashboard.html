@@ -12,7 +12,7 @@
   </head>
 
   <div id="navbar" class="navbar">
-    <a href="/" class="navbar-item navbar-logo-text"><img src="/images/logo.svg" class="navbar-logo">Commento</a>
+    <a href="/" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
     <div class="navbar-item">
       <a href="/logout" class="navbar-item">Logout</a>
       <div class="float-right"><b><div id="owner-name"></div></b></div>
@@ -47,7 +47,7 @@
   <div id="dashboard" class="dashboard-container">
     <div class="pane-left">
       <div class="tree" v-if="domains.length == 0 || domains[0].show == false">
-        <img class="tree-svg" src="/images/tree.svg">
+        <img class="tree-svg" src="[[[.CdnPrefix]]]/images/tree.svg">
         It's so quiet in here.
       </div>
 
