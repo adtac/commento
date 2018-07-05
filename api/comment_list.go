@@ -111,6 +111,12 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	p, err := pageGet(domain, path)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
 	commenterHex := "anonymous"
 	isModerator := false
 	if *x.CommenterToken != "anonymous" {
@@ -151,6 +157,7 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 		"requireIdentification": d.RequireIdentification,
 		"isFrozen":              d.State == "frozen",
 		"isModerator":           isModerator,
+		"attributes":            p,
 		"configuredOauths":      configuredOauths,
 	})
 }

@@ -177,3 +177,18 @@ textarea {
 .commento-button-margin {
   padding-bottom: 60px;
 }
+
+.commento-mod-tools-lock-button {
+  color: $gray-6;
+  background: none;
+  border: none;
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-left: 12px;
+  padding: 2px;
+}
+
+.commento-mod-tools-lock-button:hover {
+  cursor: pointer;
+}

@@ -56,3 +56,18 @@ func TestCommentNewUpvoted(t *testing.T) {
 		return
 	}
 }
+
+func TestCommentNewThreadLocked(t *testing.T) {
+	failTestOnError(t, setupTestEnv())
+
+	pageNew("example.com", "/path.html")
+	p, _ := pageGet("example.com", "/path.html")
+	p.IsLocked = true
+	pageUpdate(p)
+
+	_, err := commentNew("temp-commenter-hex", "example.com", "/path.html", "root", "**foo**", "approved", time.Now().UTC())
+	if err == nil {
+		t.Errorf("expected error not found creating a new comment on a locked thread")
+		return
+	}
+}

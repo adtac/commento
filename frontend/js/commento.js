@@ -27,6 +27,8 @@
   var ID_LOGIN_BOX_HR = "commento-login-box-hr";
   var ID_LOGIN_BOX_OAUTH_PRETEXT = "commento-login-box-oauth-pretext";
   var ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER = "commento-login-box-oauth-buttons-container";
+  var ID_MOD_TOOLS = "commento-mod-tools";
+  var ID_MOD_TOOLS_LOCK_BUTTON = "commento-mod-tools-lock-button";
   var ID_ERROR = "commento-error";
   var ID_LOGGED_CONTAINER = "commento-logged-container";
   var ID_COMMENTS_AREA = "commento-comments-area";
@@ -62,8 +64,9 @@
   var requireModeration = true;
   var isModerator = false;
   var isFrozen = false;
-  var chosenAnonymous = false;
   var shownSubmitButton = {"root": false};
+  var chosenAnonymous = false;
+  var isLocked = false;
   var shownReply = {};
   var configuredOauths = [];
   var loginBoxType = "signup";
@@ -336,6 +339,9 @@
       requireIdentification = resp.requireIdentification;
       isModerator = resp.isModerator;
       isFrozen = resp.isFrozen;
+
+      isLocked = resp.attributes.isLocked;
+
       comments = resp.comments;
       commenters = resp.commenters;
       configuredOauths = resp.configuredOauths;
@@ -443,7 +449,11 @@
 
     commentsArea.innerHTML = "";
 
-    append(mainArea, textareaCreate("root"));
+    if (!isLocked)
+      append(mainArea, textareaCreate("root"));
+    else
+      append(mainArea, messageCreate("This thread is locked. You cannot create new comments."));
+
     append(mainArea, commentsArea);
     append(root, mainArea);
 
@@ -715,7 +725,10 @@
       // append(options, edit); // uncomment when implemented
       append(options, downvote);
       append(options, upvote);
-      append(options, reply);
+
+      if (!isLocked)
+        append(options, reply);
+
       if (isModerator) {
         append(options, remove);
         if (comment.state == "unapproved")
@@ -1257,6 +1270,45 @@
   }
 
 
+  function pageUpdate(callback) {
+    var attributes = {
+      "isLocked": isLocked,
+    };
+
+    var json = {
+      "commenterToken": commenterTokenGet(),
+      "domain": location.host,
+      "path": location.pathname,
+      "attributes": attributes,
+    };
+
+    post(origin + "/api/page/update", json, function(resp) {
+      if (!resp.success) {
+        errorShow(resp.message);
+        return
+      }
+
+      call(callback);
+    });
+  }
+
+
+  global.threadLockToggle = function() {
+    var lock = $(ID_MOD_TOOLS_LOCK_BUTTON);
+
+    isLocked = !isLocked;
+
+    lock.disabled = true;
+    pageUpdate(function(success) {
+      lock.disabled = false;
+      if (isLocked)
+        lock.innerHTML = "Unlock Thread";
+      else
+        lock.innerHTML = "Lock Thread";
+    });
+  }
+
+
   function mainAreaCreate() {
     var mainArea = create("div");
 
@@ -1270,6 +1322,29 @@
   }
 
 
+  function modToolsCreate() {
+    var modTools = create("div");
+    var lock = create("button");
+
+    modTools.id = ID_MOD_TOOLS;
+    lock.id = ID_MOD_TOOLS_LOCK_BUTTON;
+
+    classAdd(modTools, "mod-tools");
+    classAdd(lock, "mod-tools-lock-button");
+
+    if (isLocked)
+      lock.innerHTML = "Unlock Thread";
+    else
+      lock.innerHTML = "Lock Thread";
+
+    attrSet(modTools, "style", "display: none");
+    attrSet(lock, "onclick", "threadLockToggle()");
+
+    append(modTools, lock);
+    append(root, modTools);
+  }
+
+
   global.loadCssOverride = function() {
     if (cssOverride === undefined)
       global.allShow();
@@ -1280,12 +1355,18 @@
 
   global.allShow = function() {
     var mainArea = $(ID_MAIN_AREA);
+    var modTools = $(ID_MOD_TOOLS);
     var loggedContainer = $(ID_LOGGED_CONTAINER);
     var footer = $(ID_FOOTER);
 
     attrSet(mainArea, "style", "");
+
+    if (isModerator)
+      attrSet(modTools, "style", "");
+
     if (loggedContainer)
       attrSet(loggedContainer, "style", "");
+
     attrSet(footer, "style", "");
 
     nameWidthFix();
@@ -1346,6 +1427,7 @@
 
     selfGet(function() {
       commentsGet(function() {
+        modToolsCreate();
         rootCreate(function() {
           commentsRender();
           footerLoad();

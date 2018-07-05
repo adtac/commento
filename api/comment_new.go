@@ -13,6 +13,16 @@ func commentNew(commenterHex string, domain string, path string, parentHex strin
 		return "", errorMissingField
 	}
 
+	p, err := pageGet(domain, path)
+	if err != nil {
+		logger.Errorf("cannot get page attributes: %v", err)
+		return "", errorInternal
+	}
+
+	if p.IsLocked {
+		return "", errorThreadLocked
+	}
+
 	commentHex, err := randomHex(32)
 	if err != nil {
 		return "", err
@@ -29,6 +39,10 @@ func commentNew(commenterHex string, domain string, path string, parentHex strin
 	if err != nil {
 		logger.Errorf("cannot insert comment: %v", err)
 		return "", errorInternal
+	}
+
+	if err = pageNew(domain, path); err != nil {
+		return "", err
 	}
 
 	return commentHex, nil
