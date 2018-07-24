@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func cleanSmtpVars() {
+func smtpVarsClean() {
 	for _, env := range []string{"SMTP_USERNAME", "SMTP_PASSWORD", "SMTP_HOST", "SMTP_PORT", "SMTP_FROM_ADDRESS"} {
 		os.Setenv(env, "")
 	}
@@ -13,7 +13,7 @@ func cleanSmtpVars() {
 
 func TestSmtpConfigureBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
-	cleanSmtpVars()
+	smtpVarsClean()
 
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
@@ -28,7 +28,7 @@ func TestSmtpConfigureBasics(t *testing.T) {
 
 func TestSmtpConfigureEmptyHost(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
-	cleanSmtpVars()
+	smtpVarsClean()
 
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
@@ -47,7 +47,7 @@ func TestSmtpConfigureEmptyHost(t *testing.T) {
 
 func TestSmtpConfigureEmptyAddress(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
-	cleanSmtpVars()
+	smtpVarsClean()
 
 	os.Setenv("SMTP_USERNAME", "test@example.com")
 	os.Setenv("SMTP_PASSWORD", "hunter2")
