@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func serveRoutes() error {
+func routesServe() error {
 	router := mux.NewRouter()
 
 	if err := initAPIRouter(router); err != nil {

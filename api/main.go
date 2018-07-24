@@ -11,5 +11,5 @@ func main() {
 	exitIfError(markdownRendererCreate())
 	exitIfError(sigintCleanupSetup())
 
-	exitIfError(serveRoutes())
+	exitIfError(routesServe())
 }
