@@ -694,37 +694,27 @@
       else
         attrSet(reply, "onclick", "loginBoxShow()");
 
-      if (isAuthenticated) {
-        if (isModerator) {
-          if (comment.state == "unapproved")
-            attrSet(options, "style", "width: 192px;");
-          else
-            attrSet(options, "style", "width: 160px;");
-        }
-        else
-          attrSet(options, "style", "width: 128px;");
-      }
-      else
-        attrSet(options, "style", "width: 32px;");
-
       if (commenter.link != "undefined")
         attrSet(name, "href", commenter.link);
 
-      if (false) // replace when edit is implemented
-        append(options, edit);
+      append(options, collapse);
 
-      append(options, upvote);
+      // append(options, edit); // uncomment when implemented
       append(options, downvote);
+      append(options, upvote);
       append(options, reply);
-
       if (isModerator) {
+        append(options, remove);
         if (comment.state == "unapproved")
           append(options, approve);
-        append(options, remove);
       }
 
-      append(options, collapse);
+      attrSet(options, "style", "width: " + ((options.childNodes.length+1)*32) + "px;");
+      for (var i = 0; i < options.childNodes.length; i++)
+        attrSet(options.childNodes[i], "style", "right: " + (i*32) + "px;");
+
       append(subtitle, score);
+
       append(header, options);
       append(header, avatar);
       append(header, name);
@@ -764,7 +754,6 @@
       var tick = $(ID_APPROVE + commentHex);
 
       classRemove(card, "dark-card");
-      attrSet(options, "style", "width: 160px;");
       remove(tick);
     });
   }

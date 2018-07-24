@@ -21,7 +21,6 @@
   width: 20px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns"><g transform="matrix(1.7358 0 0 1.7335 4.2642 15.217)"><path d="m10 2.5 1e-6 -4.4421-9 7.4421 9 6.5759-1e-6 -4.6759c6.4194-1.4839 11.739 2.1762 11.739 2.1762s-2.0774-6.5475-11.739-7.0762z" fill="%23abbac4"/></g></svg>');
   margin: 9px 3px 9px 3px;
-  right: 32px;
 }
 
 .commento-option-cancel {
@@ -29,7 +28,6 @@
   width: 13px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 129 129" version="1.1" viewBox="0 0 129 129" xmlns="http://www.w3.org/2000/svg"><path d="m7.6 121.4c0.8 0.8 1.8 1.2 2.9 1.2s2.1-0.4 2.9-1.2l51.1-51.1 51.1 51.1c0.8 0.8 1.8 1.2 2.9 1.2 1 0 2.1-0.4 2.9-1.2 1.6-1.6 1.6-4.2 0-5.8l-51.1-51.1 51.1-51.1c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8 0l-51.1 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8 0s-1.6 4.2 0 5.8l51.1 51.1-51.1 51.1c-1.6 1.6-1.6 4.2 0 5.8z" fill="%23abbac4"/></svg>');
   margin: 12px 6px 12px 6px;
-  right: 32px;
   background: $gray-5;
 }
 
@@ -38,7 +36,6 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 42 42" version="1.1" viewBox="0 0 42 42" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><polygon points="42 20 0 20 0 22 20 22 22 22 42 22" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  right: 0px;
   background: $gray-7;
 }
 
@@ -47,7 +44,6 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 42 42" version="1.1" viewBox="0 0 42 42" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><polygon points="42 20 22 20 22 0 20 0 20 20 0 20 0 22 20 22 20 42 22 42 22 22 42 22" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  right: 0px;
   background: $gray-7;
 }
 
@@ -59,13 +55,8 @@
   margin: 12px 6px 12px 6px;
 }
 
-.commento-option-upvote {
-  right: 96px;
-}
-
 .commento-option-downvote {
   transform: rotate(180deg);
-  right: 64px;
 }
 
 .commento-upvoted {
@@ -81,7 +72,6 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 59 59" version="1.1" viewBox="0 0 59 59" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g fill="%231e2127">	<path d="m29.5 51c0.552 0 1-0.447 1-1v-33c0-0.553-0.448-1-1-1s-1 0.447-1 1v33c0 0.553 0.448 1 1 1z"/>	<path d="m19.5 51c0.552 0 1-0.447 1-1v-33c0-0.553-0.448-1-1-1s-1 0.447-1 1v33c0 0.553 0.448 1 1 1z"/>	<path d="m39.5 51c0.552 0 1-0.447 1-1v-33c0-0.553-0.448-1-1-1s-1 0.447-1 1v33c0 0.553 0.448 1 1 1z"/>	<path d="M52.5,6H38.456c-0.11-1.25-0.495-3.358-1.813-4.711C35.809,0.434,34.751,0,33.499,0H23.5c-1.252,0-2.31,0.434-3.144,1.289   C19.038,2.642,18.653,4.75,18.543,6H6.5c-0.552,0-1,0.447-1,1s0.448,1,1,1h2.041l1.915,46.021C10.493,55.743,11.565,59,15.364,59   h28.272c3.799,0,4.871-3.257,4.907-4.958L50.459,8H52.5c0.552,0,1-0.447,1-1S53.052,6,52.5,6z M21.792,2.681   C22.24,2.223,22.799,2,23.5,2h9.999c0.701,0,1.26,0.223,1.708,0.681c0.805,0.823,1.128,2.271,1.24,3.319H20.553   C20.665,4.952,20.988,3.504,21.792,2.681z M46.544,53.979C46.538,54.288,46.4,57,43.636,57H15.364   c-2.734,0-2.898-2.717-2.909-3.042L10.542,8h37.915L46.544,53.979z"/></g></svg>');
   margin: 12px 6px 12px 6px;
-  right: 128px;
   background: $red-8;
 }
 
@@ -90,7 +80,6 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 26 26" version="1.1" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="m0.3 14c-0.2-0.2-0.3-0.5-0.3-0.7s0.1-0.5 0.3-0.7l1.4-1.4c0.4-0.4 1-0.4 1.4 0l0.1 0.1 5.5 5.9c0.2 0.2 0.5 0.2 0.7 0l13.4-13.9h0.1v-8.8818e-16c0.4-0.4 1-0.4 1.4 0l1.4 1.4c0.4 0.4 0.4 1 0 1.4l-16 16.6c-0.2 0.2-0.4 0.3-0.7 0.3s-0.5-0.1-0.7-0.3l-7.8-8.4-0.2-0.3z" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  right: 160px;
   background: $green-7;
 }
 
