@@ -106,7 +106,7 @@ func setupTestEnv() error {
 	if !setupComplete {
 		setupComplete = true
 
-		if err := createLogger(); err != nil {
+		if err := loggerCreate(); err != nil {
 			return err
 		}
 

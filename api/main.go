@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	exitIfError(createLogger())
+	exitIfError(loggerCreate())
 	exitIfError(configParse())
 	exitIfError(connectDB(5))
 	exitIfError(performMigrations())

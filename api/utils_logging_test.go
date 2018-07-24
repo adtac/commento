@@ -4,16 +4,16 @@ import (
 	"testing"
 )
 
-func TestCreateLoggerBasics(t *testing.T) {
+func TestLoggerCreateBasics(t *testing.T) {
 	logger = nil
 
-	if err := createLogger(); err != nil {
+	if err := loggerCreate(); err != nil {
 		t.Errorf("unexpected error creating logger: %v", err)
 		return
 	}
 
 	if logger == nil {
-		t.Errorf("logger null after createLogger()")
+		t.Errorf("logger null after loggerCreate()")
 		return
 	}
 
