@@ -25,7 +25,7 @@ type staticHtmlPlugs struct {
 	Footer    template.HTML
 }
 
-func initStaticRouter(router *mux.Router) error {
+func staticRouterInit(router *mux.Router) error {
 	asset := make(map[string][]byte)
 	gzippedAsset := make(map[string][]byte)
 

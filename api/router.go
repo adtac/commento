@@ -14,7 +14,7 @@ func routesServe() error {
 		return err
 	}
 
-	if err := initStaticRouter(router); err != nil {
+	if err := staticRouterInit(router); err != nil {
 		return err
 	}
 
