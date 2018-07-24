@@ -6,11 +6,11 @@ import (
 	"strings"
 )
 
-func performMigrations() error {
-	return performMigrationsFromDir(os.Getenv("STATIC") + "/db")
+func migrate() error {
+	return migrateFromDir(os.Getenv("STATIC") + "/db")
 }
 
-func performMigrationsFromDir(dir string) error {
+func migrateFromDir(dir string) error {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		logger.Errorf("cannot read directory for migrations: %v", err)

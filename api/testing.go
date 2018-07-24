@@ -76,7 +76,7 @@ func setupTestDatabase() error {
 		return err
 	}
 
-	if err := performMigrationsFromDir("../db/"); err != nil {
+	if err := migrateFromDir("../db/"); err != nil {
 		return err
 	}
 
