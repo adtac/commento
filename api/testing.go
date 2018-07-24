@@ -120,7 +120,7 @@ func setupTestEnv() error {
 			return err
 		}
 
-		if err := createMarkdownRenderer(); err != nil {
+		if err := markdownRendererCreate(); err != nil {
 			return err
 		}
 	}

@@ -9,7 +9,7 @@ var policy *bluemonday.Policy
 var renderer blackfriday.Renderer
 var extensions int
 
-func createMarkdownRenderer() error {
+func markdownRendererCreate() error {
 	policy = bluemonday.UGCPolicy()
 
 	extensions = 0

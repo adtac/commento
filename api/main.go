@@ -8,7 +8,7 @@ func main() {
 	exitIfError(smtpConfigure())
 	exitIfError(smtpTemplatesLoad())
 	exitIfError(oauthConfigure())
-	exitIfError(createMarkdownRenderer())
+	exitIfError(markdownRendererCreate())
 	exitIfError(setupSigintCleanup())
 
 	exitIfError(serveRoutes())
