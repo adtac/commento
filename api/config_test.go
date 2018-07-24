@@ -6,10 +6,10 @@ import (
 	"testing"
 )
 
-func TestParseConfigBasics(t *testing.T) {
+func TestConfigParseBasics(t *testing.T) {
 	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
 
-	if err := parseConfig(); err != nil {
+	if err := configParse(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
 		return
 	}
@@ -21,7 +21,7 @@ func TestParseConfigBasics(t *testing.T) {
 
 	os.Setenv("COMMENTO_BIND_ADDRESS", "192.168.1.100")
 
-	if err := parseConfig(); err != nil {
+	if err := configParse(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
 		return
 	}
@@ -39,7 +39,7 @@ func TestParseConfigBasics(t *testing.T) {
 
 	os.Setenv("COMMENTO_PORT", "1886")
 
-	if err := parseConfig(); err != nil {
+	if err := configParse(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
 		return
 	}
@@ -50,19 +50,19 @@ func TestParseConfigBasics(t *testing.T) {
 	}
 }
 
-func TestParseConfigNoOrigin(t *testing.T) {
+func TestConfigParseNoOrigin(t *testing.T) {
 	os.Setenv("COMMENTO_ORIGIN", "")
 
-	if err := parseConfig(); err == nil {
+	if err := configParse(); err == nil {
 		t.Errorf("expected error not found parsing config without ORIGIN")
 		return
 	}
 }
 
-func TestParseConfigStatic(t *testing.T) {
+func TestConfigParseStatic(t *testing.T) {
 	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
 
-	if err := parseConfig(); err != nil {
+	if err := configParse(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
 		return
 	}
@@ -80,7 +80,7 @@ func TestParseConfigStatic(t *testing.T) {
 
 	os.Setenv("COMMENTO_STATIC", "/usr/")
 
-	if err := parseConfig(); err != nil {
+	if err := configParse(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
 		return
 	}
@@ -91,21 +91,21 @@ func TestParseConfigStatic(t *testing.T) {
 	}
 }
 
-func TestParseConfigStaticDNE(t *testing.T) {
+func TestConfigParseStaticDNE(t *testing.T) {
 	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
 	os.Setenv("COMMENTO_STATIC", "/does/not/exist/surely/")
 
-	if err := parseConfig(); err == nil {
+	if err := configParse(); err == nil {
 		t.Errorf("expected error not found when a non-existant directory is used")
 		return
 	}
 }
 
-func TestParseConfigStaticNotADirectory(t *testing.T) {
+func TestConfigParseStaticNotADirectory(t *testing.T) {
 	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
 	os.Setenv("COMMENTO_STATIC", os.Args[0])
 
-	if err := parseConfig(); err != errorNotADirectory {
+	if err := configParse(); err != errorNotADirectory {
 		t.Errorf("expected error not found when a file is used")
 		return
 	}
