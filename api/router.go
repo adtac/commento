@@ -10,7 +10,7 @@ import (
 func routesServe() error {
 	router := mux.NewRouter()
 
-	if err := initAPIRouter(router); err != nil {
+	if err := apiRouterInit(router); err != nil {
 		return err
 	}
 

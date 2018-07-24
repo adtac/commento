@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func initAPIRouter(router *mux.Router) error {
+func apiRouterInit(router *mux.Router) error {
 	router.HandleFunc("/api/owner/new", ownerNewHandler).Methods("POST")
 	router.HandleFunc("/api/owner/confirm-hex", ownerConfirmHexHandler).Methods("GET")
 	router.HandleFunc("/api/owner/login", ownerLoginHandler).Methods("POST")
