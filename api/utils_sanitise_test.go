@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestStripEmailBasics(t *testing.T) {
+func TestEmailStripBasics(t *testing.T) {
 	tests := map[string]string{
 		"test@example.com":              "test@example.com",
 		"test+strip@example.com":        "test@example.com",
@@ -12,8 +12,8 @@ func TestStripEmailBasics(t *testing.T) {
 	}
 
 	for in, out := range tests {
-		if stripEmail(in) != out {
-			t.Errorf("for in=%s expected out=%s got out=%s", in, out, stripEmail(in))
+		if emailStrip(in) != out {
+			t.Errorf("for in=%s expected out=%s got out=%s", in, out, emailStrip(in))
 			return
 		}
 	}

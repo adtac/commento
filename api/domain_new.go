@@ -43,7 +43,7 @@ func domainNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	domain := stripDomain(*x.Domain)
+	domain := domainStrip(*x.Domain)
 
 	if err = domainNew(o.OwnerHex, *x.Name, domain); err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})

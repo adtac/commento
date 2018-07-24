@@ -150,7 +150,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 		commentHex, err := commentNew(
 			commenterHex[post.Author.Email],
 			domain,
-			stripPath(threads[post.ThreadId.Id].URL),
+			pathStrip(threads[post.ThreadId.Id].URL),
 			parentHex,
 			html2md.Convert(post.Message),
 			"approved",
@@ -185,7 +185,7 @@ func domainImportDisqusHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	domain := stripDomain(*x.Domain)
+	domain := domainStrip(*x.Domain)
 	isOwner, err := domainOwnershipVerify(o.OwnerHex, domain)
 	if err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})

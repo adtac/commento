@@ -38,7 +38,7 @@ func domainUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	domain := stripDomain((*x.D).Domain)
+	domain := domainStrip((*x.D).Domain)
 	isOwner, err := domainOwnershipVerify(o.OwnerHex, domain)
 	if err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})

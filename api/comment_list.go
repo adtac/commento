@@ -102,7 +102,7 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	domain := stripDomain(*x.Domain)
+	domain := domainStrip(*x.Domain)
 	path := *x.Path
 
 	d, err := domainGet(domain)
