@@ -3,12 +3,17 @@ package main
 import (
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"os"
 	"time"
 )
 
 func ownerNew(email string, name string, password string) (string, error) {
 	if email == "" || name == "" || password == "" {
 		return "", errorMissingField
+	}
+
+	if os.Getenv("FORBID_NEW_OWNERS") == "true" {
+		return "", errorNewOwnerForbidden
 	}
 
 	ownerHex, err := randomHex(32)

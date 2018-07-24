@@ -24,6 +24,8 @@ func configParse() error {
 
 		"CDN_PREFIX": "",
 
+		"FORBID_NEW_OWNERS": "false",
+
 		"STATIC": binPath,
 
 		"GZIP_STATIC": "false",
@@ -53,7 +55,7 @@ func configParse() error {
 	}
 
 	// Mandatory config parameters
-	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN"} {
+	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN", "FORBID_NEW_OWNERS"} {
 		if os.Getenv(env) == "" {
 			logger.Errorf("missing COMMENTO_%s environment variable", env)
 			return errorMissingConfig
@@ -62,6 +64,11 @@ func configParse() error {
 
 	if os.Getenv("CDN_PREFIX") == "" {
 		os.Setenv("CDN_PREFIX", os.Getenv("ORIGIN"))
+	}
+
+	if os.Getenv("FORBID_NEW_OWNERS") != "true" && os.Getenv("FORBID_NEW_OWNERS") != "false" {
+		logger.Errorf("COMMENTO_FORBID_NEW_OWNERS neither 'true' nor 'false'")
+		return errorInvalidConfigValue
 	}
 
 	static := os.Getenv("STATIC")
