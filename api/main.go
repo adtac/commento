@@ -9,7 +9,7 @@ func main() {
 	exitIfError(smtpTemplatesLoad())
 	exitIfError(oauthConfigure())
 	exitIfError(markdownRendererCreate())
-	exitIfError(setupSigintCleanup())
+	exitIfError(sigintCleanupSetup())
 
 	exitIfError(serveRoutes())
 }

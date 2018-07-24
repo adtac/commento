@@ -11,7 +11,7 @@ func sigintCleanup() int {
 	return 0
 }
 
-func setupSigintCleanup() error {
+func sigintCleanupSetup() error {
 	logger.Infof("setting up SIGINT cleanup")
 
 	c := make(chan os.Signal)
