@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func connectDB(retriesLeft int) error {
+func dbConnect(retriesLeft int) error {
 	con := os.Getenv("POSTGRES")
 	logger.Infof("opening connection to postgres: %s", con)
 
@@ -23,7 +23,7 @@ func connectDB(retriesLeft int) error {
 		if retriesLeft > 0 {
 			logger.Errorf("cannot talk to postgres, retrying in 10 seconds (%d attempts left): %v", retriesLeft-1, err)
 			time.Sleep(10 * time.Second)
-			return connectDB(retriesLeft - 1)
+			return dbConnect(retriesLeft - 1)
 		} else {
 			logger.Errorf("cannot talk to postgres, last attempt failed: %v", err)
 			return err

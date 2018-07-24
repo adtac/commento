@@ -68,7 +68,7 @@ func setupTestDatabase() error {
 		os.Setenv("POSTGRES", "postgres://postgres:postgres@localhost/commento_test?sslmode=disable")
 	}
 
-	if err := connectDB(0); err != nil {
+	if err := dbConnect(0); err != nil {
 		return err
 	}
 

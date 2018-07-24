@@ -3,7 +3,7 @@ package main
 func main() {
 	exitIfError(loggerCreate())
 	exitIfError(configParse())
-	exitIfError(connectDB(5))
+	exitIfError(dbConnect(5))
 	exitIfError(performMigrations())
 	exitIfError(smtpConfigure())
 	exitIfError(smtpTemplatesLoad())
