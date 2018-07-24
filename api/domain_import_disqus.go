@@ -174,34 +174,34 @@ func domainImportDisqusHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	o, err := ownerGetByOwnerToken(*x.OwnerToken)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	domain := stripDomain(*x.Domain)
 	isOwner, err := domainOwnershipVerify(o.OwnerHex, domain)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	if !isOwner {
-		writeBody(w, response{"success": false, "message": errorNotAuthorised.Error()})
+		bodyMarshal(w, response{"success": false, "message": errorNotAuthorised.Error()})
 		return
 	}
 
 	numImported, err := domainImportDisqus(domain, *x.URL)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "numImported": numImported})
+	bodyMarshal(w, response{"success": true, "numImported": numImported})
 }

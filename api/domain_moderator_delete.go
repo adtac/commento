@@ -30,33 +30,33 @@ func domainModeratorDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	o, err := ownerGetByOwnerToken(*x.OwnerToken)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	domain := stripDomain(*x.Domain)
 	authorised, err := domainOwnershipVerify(o.OwnerHex, domain)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	if !authorised {
-		writeBody(w, response{"success": false, "message": errorNotAuthorised.Error()})
+		bodyMarshal(w, response{"success": false, "message": errorNotAuthorised.Error()})
 		return
 	}
 
 	if err = domainModeratorDelete(domain, *x.Email); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true})
+	bodyMarshal(w, response{"success": true})
 }

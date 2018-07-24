@@ -51,19 +51,19 @@ func commentVoteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	if *x.CommenterToken == "anonymous" {
-		writeBody(w, response{"success": false, "message": errorUnauthorisedVote.Error()})
+		bodyMarshal(w, response{"success": false, "message": errorUnauthorisedVote.Error()})
 		return
 	}
 
 	c, err := commenterGetByCommenterToken(*x.CommenterToken)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
@@ -75,9 +75,9 @@ func commentVoteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := commentVote(c.CommenterHex, *x.CommentHex, direction); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true})
+	bodyMarshal(w, response{"success": true})
 }

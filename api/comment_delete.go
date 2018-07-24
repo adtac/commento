@@ -30,38 +30,38 @@ func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	c, err := commenterGetByCommenterToken(*x.CommenterToken)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	domain, err := commentDomainGet(*x.CommentHex)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	isModerator, err := isDomainModerator(domain, c.Email)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	if !isModerator {
-		writeBody(w, response{"success": false, "message": errorNotModerator.Error()})
+		bodyMarshal(w, response{"success": false, "message": errorNotModerator.Error()})
 		return
 	}
 
 	if err = commentDelete(*x.CommentHex); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true})
+	bodyMarshal(w, response{"success": true})
 }

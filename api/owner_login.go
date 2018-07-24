@@ -61,16 +61,16 @@ func ownerLoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	ownerToken, err := ownerLogin(*x.Email, *x.Password)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "ownerToken": ownerToken})
+	bodyMarshal(w, response{"success": true, "ownerToken": ownerToken})
 }

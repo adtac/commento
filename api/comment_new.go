@@ -44,8 +44,8 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
@@ -54,12 +54,12 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 
 	d, err := domainGet(domain)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	if d.State == "frozen" {
-		writeBody(w, response{"success": false, "message": errorDomainFrozen.Error()})
+		bodyMarshal(w, response{"success": false, "message": errorDomainFrozen.Error()})
 		return
 	}
 
@@ -80,7 +80,7 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		c, err := commenterGetByCommenterToken(*x.CommenterToken)
 		if err != nil {
-			writeBody(w, response{"success": false, "message": err.Error()})
+			bodyMarshal(w, response{"success": false, "message": err.Error()})
 			return
 		}
 
@@ -108,9 +108,9 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 
 	commentHex, err := commentNew(commenterHex, domain, path, *x.ParentHex, *x.Markdown, state, time.Now().UTC())
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "commentHex": commentHex, "approved": state == "approved"})
+	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "approved": state == "approved"})
 }

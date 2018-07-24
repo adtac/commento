@@ -97,8 +97,8 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
@@ -107,7 +107,7 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 
 	d, err := domainGet(domain)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
@@ -119,7 +119,7 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 			if err == errorNoSuchToken {
 				commenterHex = "anonymous"
 			} else {
-				writeBody(w, response{"success": false, "message": err.Error()})
+				bodyMarshal(w, response{"success": false, "message": err.Error()})
 				return
 			}
 		} else {
@@ -138,11 +138,11 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 
 	comments, commenters, err := commentList(commenterHex, domain, path, isModerator)
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{
+	bodyMarshal(w, response{
 		"success":               true,
 		"domain":                domain,
 		"comments":              comments,

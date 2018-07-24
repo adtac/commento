@@ -63,8 +63,8 @@ func commenterNewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
@@ -72,9 +72,9 @@ func commenterNewHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: email confirmation if provider = commento?
 	// TODO: email confirmation if provider = commento?
 	if _, err := commenterNew(*x.Email, *x.Name, *x.Website, "undefined", "commento", *x.Password); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "confirmEmail": smtpConfigured})
+	bodyMarshal(w, response{"success": true, "confirmEmail": smtpConfigured})
 }

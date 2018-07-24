@@ -10,21 +10,21 @@ func ownerSelfHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var x request
-	if err := unmarshalBody(r, &x); err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
 	o, err := ownerGetByOwnerToken(*x.OwnerToken)
 	if err == errorNoSuchToken {
-		writeBody(w, response{"success": true, "loggedIn": false})
+		bodyMarshal(w, response{"success": true, "loggedIn": false})
 		return
 	}
 
 	if err != nil {
-		writeBody(w, response{"success": false, "message": err.Error()})
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
 
-	writeBody(w, response{"success": true, "loggedIn": true, "owner": o})
+	bodyMarshal(w, response{"success": true, "loggedIn": true, "owner": o})
 }

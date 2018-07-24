@@ -11,7 +11,7 @@ type response map[string]interface{}
 
 // TODO: Add tests in utils_http_test.go
 
-func unmarshalBody(r *http.Request, x interface{}) error {
+func bodyUnmarshal(r *http.Request, x interface{}) error {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logger.Errorf("cannot read POST body: %v\n", err)
@@ -32,7 +32,7 @@ func unmarshalBody(r *http.Request, x interface{}) error {
 	return nil
 }
 
-func writeBody(w http.ResponseWriter, x map[string]interface{}) error {
+func bodyMarshal(w http.ResponseWriter, x map[string]interface{}) error {
 	resp, err := json.Marshal(x)
 	if err != nil {
 		w.Write([]byte(`{"success":false,"message":"Some internal error occurred"}`))
