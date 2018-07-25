@@ -10,7 +10,7 @@ ctrl_c() {
 }
 
 binary_pid=
-if make; then
+if make -j8; then
   source devel.env
   cd build/devel
   ./$binary_name &
@@ -50,7 +50,7 @@ while true; do
     wait $binary_pid
   fi
 
-  if make; then
+  if make -j8; then
     source devel.env
     cd build/devel
     ./$binary_name &
