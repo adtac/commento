@@ -6,7 +6,7 @@ WORKDIR /go/src/commento-ce/api
 
 RUN apk update && apk add bash make git
 
-RUN make prod
+RUN make prod -j8
 
 
 # frontend build (html, js, css, images)
@@ -18,7 +18,7 @@ WORKDIR /commento-ce/frontend/
 RUN apk update && apk add bash make
 RUN npm install -g html-minifier@3.5.7 uglify-js@3.4.1 sass@1.5.1
 
-RUN make prod
+RUN make prod -j8
 
 
 # templates build
@@ -29,7 +29,7 @@ WORKDIR /commento-ce/templates
 
 RUN apk update && apk add bash make
 
-RUN make prod
+RUN make prod -j8
 
 
 # db build
@@ -40,7 +40,7 @@ WORKDIR /commento-ce/db
 
 RUN apk update && apk add bash make
 
-RUN make prod
+RUN make prod -j8
 
 
 # final image
