@@ -110,3 +110,18 @@ func TestConfigParseStaticNotADirectory(t *testing.T) {
 		return
 	}
 }
+
+func TestConfigOriginTrailingSlash(t *testing.T) {
+	os.Setenv("COMMENTO_ORIGIN", "https://commento.io/")
+	os.Setenv("COMMENTO_STATIC", "")
+
+	if err := configParse(); err != nil {
+		t.Errorf("unexpected error when parsing config: %v", err)
+		return
+	}
+
+	if os.Getenv("ORIGIN") != "https://commento.io" {
+		t.Errorf("expected ORIGIN=https://commento.io got ORIGIN=%s", os.Getenv("ORIGIN"))
+		return
+	}
+}

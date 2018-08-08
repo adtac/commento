@@ -62,9 +62,13 @@ func configParse() error {
 		}
 	}
 
+	os.Setenv("ORIGIN", strings.TrimSuffix(os.Getenv("ORIGIN"), "/"))
+
 	if os.Getenv("CDN_PREFIX") == "" {
 		os.Setenv("CDN_PREFIX", os.Getenv("ORIGIN"))
 	}
+
+	os.Setenv("CDN_PREFIX", strings.TrimSuffix(os.Getenv("ORIGIN"), "/"))
 
 	if os.Getenv("FORBID_NEW_OWNERS") != "true" && os.Getenv("FORBID_NEW_OWNERS") != "false" {
 		logger.Errorf("COMMENTO_FORBID_NEW_OWNERS neither 'true' nor 'false'")
