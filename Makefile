@@ -28,9 +28,9 @@ DB_DEVEL_ROOT_DIR         = $(DEVEL_BUILD_DIR)/db
 DB_PROD_BUILD_DIR         = $(DB_BUILD_DIR)/$(PROD_BUILD_DIR)
 DB_PROD_ROOT_DIR          = $(PROD_BUILD_DIR)/db
 
-devel: frontend api templates db devel-copy
+devel: devel-frontend devel-api devel-templates devel-db
 
-prod: frontend api templates db prod-copy
+prod: prod-frontend prod-api prod-templates prod-db
 
 test: api
 
@@ -53,32 +53,28 @@ templates:
 db:
 	cd db && $(MAKE) $(MAKECMDGOALS)
 
-devel-copy: devel-copy-frontend devel-copy-api devel-copy-templates devel-copy-db
-
-prod-copy: prod-copy-frontend prod-copy-api prod-copy-templates prod-copy-db
-
-devel-copy-frontend:
+devel-frontend: frontend
 	cp -r $(FRONTEND_DEVEL_BUILD_DIR)/* $(FRONTEND_DEVEL_ROOT_DIR)
 
-devel-copy-api:
+devel-api: api
 	cp -r $(API_DEVEL_BUILD_DIR)/* $(API_DEVEL_ROOT_DIR)
 
-devel-copy-templates:
+devel-templates: templates
 	cp -r $(TEMPLATES_DEVEL_BUILD_DIR)/* $(TEMPLATES_DEVEL_ROOT_DIR)
 
-devel-copy-db:
+devel-db: db
 	cp -r $(DB_DEVEL_BUILD_DIR)/* $(DB_DEVEL_ROOT_DIR)
 
-prod-copy-frontend:
+prod-frontend: frontend
 	cp -r $(FRONTEND_PROD_BUILD_DIR)/* $(FRONTEND_PROD_ROOT_DIR)
 
-prod-copy-api:
+prod-api: api
 	cp -r $(API_PROD_BUILD_DIR)/* $(API_PROD_ROOT_DIR)
 
-prod-copy-templates:
+prod-templates: templates
 	cp -r $(TEMPLATES_PROD_BUILD_DIR)/* $(TEMPLATES_PROD_ROOT_DIR)
 
-prod-copy-db:
+prod-db: db
 	cp -r $(DB_PROD_BUILD_DIR)/* $(DB_PROD_ROOT_DIR)
 
 clean: clean-root clean-frontend clean-api clean-templates clean-db
