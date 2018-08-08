@@ -52,7 +52,8 @@ textarea {
 }
 
 .commento-oauth-buttons,
-.commento-create-container {
+.commento-account-buttons,
+.commento-account-buttons-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,12 +61,21 @@ textarea {
   z-index: 1;
 }
 
+.commento-account-buttons {
+  flex-direction: row;
+}
+
+.commento-account-buttons-container {
+  padding-bottom: 10px;
+}
+
 .commento-oauth-buttons {
   display: contents;
 }
 
-.commento-create-container::before {
-  content: "Want to add to the discussion?";
+.commento-account-buttons-question {
+  position: absolute;
+  top: 25px;
   display: block;
   text-align: center;
   justify-content: center;
@@ -139,8 +149,13 @@ textarea {
 }
 
 .commento-create-button {
-  width: 150px;
+  width: 120px;
   background: $pink-9;
+}
+
+.commento-login-button {
+  width: 50px;
+  background: $cyan-9;
 }
 
 .commento-submit-button {

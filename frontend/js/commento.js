@@ -391,19 +391,31 @@
 
     if (!isAuthenticated && !chosenAnonymous) {
       var buttonsContainer = create("div");
+      var question = create("div");
+      var buttons = create("div");
       var createButton = create("div");
+      var loginButton = create("div");
 
-      classAdd(buttonsContainer, "create-container");
-
+      classAdd(buttonsContainer, "account-buttons-container");
+      classAdd(question, "account-buttons-question");
+      classAdd(buttons, "account-buttons");
       classAdd(createButton, "button");
       classAdd(createButton, "create-button");
+      classAdd(loginButton, "button");
+      classAdd(loginButton, "login-button");
 
       attrSet(createButton, "onclick", "loginBoxShow()");
+      attrSet(loginButton, "onclick", "loginBoxShow(); loginSwitch(true);");
       attrSet(textarea, "disabled", true);
 
       createButton.innerText = "Create an Account";
+      loginButton.innerText = "Login";
+      question.innerText = "Want to add to the discussion?";
 
-      append(buttonsContainer, createButton);
+      append(buttons, createButton);
+      append(buttons, loginButton);
+      append(buttonsContainer, buttons);
+      append(textareaContainer, question);
       append(textareaContainer, buttonsContainer);
     }
     else {
@@ -1077,7 +1089,7 @@
   }
 
 
-  global.loginSwitch = function() {
+  global.loginSwitch = function(leaveOauth) {
     var header = $(ID_LOGIN_BOX_HEADER);
     var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
     var loginLink = $(ID_LOGIN_BOX_LOGIN_LINK);
@@ -1093,7 +1105,7 @@
 
     loginBoxType = "login";
 
-    if (configuredOauths.length > 0) {
+    if (leaveOauth !== true && configuredOauths.length > 0) {
       remove(hr);
       remove(oauthPretext);
       remove(oauthButtonsContainer);
