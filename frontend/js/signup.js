@@ -34,9 +34,9 @@
       }
 
       if (resp.confirmEmail)
-        document.location = "/confirm-email";
+        document.location = global.commentoOrigin + "/confirm-email";
       else
-        document.location = "/login?signedUp=true";
+        document.location = global.commentoOrigin + "/login?signedUp=true";
     });
   };
 

@@ -2,7 +2,7 @@
 
   global.logout = function() {
     global.cookieSet("commentoOwnerToken", "");
-    document.location = "/login";
+    document.location = global.commentoOrigin + "/login";
   }
 
 } (window, document));

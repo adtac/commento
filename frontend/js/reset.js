@@ -30,7 +30,7 @@
         return
       }
 
-      document.location = "/login?changed=true";
+      document.location = global.commentoOrigin + "/login?changed=true";
     });
   }
 

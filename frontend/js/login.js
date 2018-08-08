@@ -66,7 +66,7 @@
       }
 
       global.cookieSet("commentoOwnerToken", resp.ownerToken);
-      document.location = "/dashboard";
+      document.location = global.commentoOrigin + "/dashboard";
     });
   };
 

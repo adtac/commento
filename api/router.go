@@ -10,6 +10,11 @@ import (
 func routesServe() error {
 	router := mux.NewRouter()
 
+	subdir := pathStrip(os.Getenv("ORIGIN"))
+	if subdir != "" {
+		router = router.PathPrefix(subdir).Subrouter()
+	}
+
 	if err := apiRouterInit(router); err != nil {
 		return err
 	}

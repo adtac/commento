@@ -13,7 +13,7 @@ import (
 )
 
 func redirectLogin(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "/login", 301)
+	http.Redirect(w, r, os.Getenv("ORIGIN")+"/login", 301)
 }
 
 type staticAssetPlugs struct {
@@ -21,6 +21,7 @@ type staticAssetPlugs struct {
 }
 
 type staticHtmlPlugs struct {
+	Origin    string
 	CdnPrefix string
 	Footer    template.HTML
 }
@@ -56,9 +57,11 @@ func staticRouterInit(router *mux.Router) error {
 
 			gzip := (os.Getenv("GZIP_STATIC") == "true")
 
-			asset[p] = []byte(prefix + string(contents))
+			subdir := pathStrip(os.Getenv("ORIGIN"))
+
+			asset[subdir+p] = []byte(prefix + string(contents))
 			if gzip {
-				gzippedAsset[p], err = gzipStatic(asset[p])
+				gzippedAsset[subdir+p], err = gzipStatic(asset[subdir+p])
 				if err != nil {
 					logger.Errorf("error gzipping %s: %v", p, err)
 					return err
@@ -115,9 +118,15 @@ func staticRouterInit(router *mux.Router) error {
 		}
 
 		var buf bytes.Buffer
-		t.Execute(&buf, &staticHtmlPlugs{CdnPrefix: os.Getenv("CDN_PREFIX"), Footer: template.HTML(string(footer))})
+		t.Execute(&buf, &staticHtmlPlugs{
+			Origin:    os.Getenv("ORIGIN"),
+			CdnPrefix: os.Getenv("CDN_PREFIX"),
+			Footer:    template.HTML(string(footer)),
+		})
 
-		html[page] = buf.String()
+		subdir := pathStrip(os.Getenv("ORIGIN"))
+
+		html[subdir+page] = buf.String()
 	}
 
 	for _, page := range pages {

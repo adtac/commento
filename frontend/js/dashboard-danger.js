@@ -13,7 +13,7 @@
 
     domainDelete(data.domains[data.cd].domain, function(success) {
       if (success)
-        document.location = '/dashboard';
+        document.location = global.commentoOrigin + '/dashboard';
     });
   }
 
