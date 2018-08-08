@@ -1,1 +1,1 @@
-DROP TABLE config;
+DROP TABLE IF EXISTS config;
