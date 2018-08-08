@@ -65,7 +65,7 @@ docker-registry:
   services:
     - docker:dind
   only:
-    - master
+    - master@commento/commento-ce
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
