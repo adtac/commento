@@ -54,6 +54,8 @@ COPY --from=frontend-build /commento-ce/frontend/build/prod/images/* /commento-c
 COPY --from=templates-build /commento-ce/templates/build/prod/templates/ /commento-ce/templates/
 COPY --from=db-build /commento-ce/db/build/prod/db/ /commento-ce/db/
 
+RUN apk update && apk add ca-certificates --no-cache
+
 EXPOSE 8080
 
 WORKDIR /commento-ce/
