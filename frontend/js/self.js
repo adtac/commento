@@ -6,8 +6,14 @@
       "ownerToken": global.cookieGet("commentoOwnerToken"),
     };
 
+    if (json.ownerToken === undefined) {
+      document.location = "/login";
+      return;
+    }
+
     global.post(global.commentoOrigin + "/api/owner/self", json, function(resp) {
       if (!resp.success || !resp.loggedIn) {
+        global.cookieDelete("commentoOwnerToken");
         document.location = "/login";
         return;
       }

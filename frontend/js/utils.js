@@ -75,6 +75,12 @@
   }
 
 
+  // Deletes a cookie.
+  global.cookieDelete = function(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+
+
   // Converts a date in the past to a human-friendly duration relative to now.
   global.timeSince = function(date) {
     var seconds = Math.floor((new Date() - date) / 1000);
