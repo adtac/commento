@@ -585,7 +585,7 @@
       var contents = create("div");
       var color = colorGet(commenter.name);
       var name;
-      if (commenter.link != "undefined")
+      if (commenter.link != "undefined" && commenter.link != "https://undefined" && commenter.link != "")
         name = create("a");
       else
         name = create("div");
@@ -694,7 +694,7 @@
       else
         attrSet(reply, "onclick", "loginBoxShow()");
 
-      if (commenter.link != "undefined")
+      if (commenter.link != "undefined" && commenter.link != "https://undefined" && commenter.link != "")
         attrSet(name, "href", commenter.link);
 
       append(options, collapse);
