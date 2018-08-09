@@ -1,9 +1,10 @@
 package main
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func commenterNew(email string, name string, link string, photo string, provider string, password string) (string, error) {
@@ -18,7 +19,7 @@ func commenterNew(email string, name string, link string, photo string, provider
 	// See utils_sanitise.go's documentation on isHttpsUrl. This is not a URL
 	// validator, just an XSS preventor.
 	// TODO: reject URLs instead of malforming them.
-	if !isHttpsUrl(link) {
+	if link != "undefined" && !isHttpsUrl(link) {
 		link = "https://" + link
 	}
 
@@ -71,6 +72,10 @@ func commenterNewHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO: add gravatar?
 	// TODO: email confirmation if provider = commento?
 	// TODO: email confirmation if provider = commento?
+	if *x.Website == "" {
+		*x.Website = "undefined"
+	}
+
 	if _, err := commenterNew(*x.Email, *x.Name, *x.Website, "undefined", "commento", *x.Password); err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
