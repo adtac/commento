@@ -51,11 +51,11 @@ func ownerConfirmHex(confirmHex string) error {
 func ownerConfirmHexHandler(w http.ResponseWriter, r *http.Request) {
 	if confirmHex := r.FormValue("confirmHex"); confirmHex != "" {
 		if err := ownerConfirmHex(confirmHex); err == nil {
-			http.Redirect(w, r, fmt.Sprintf("%s/login?confirmed=true", os.Getenv("FRONTEND")), http.StatusTemporaryRedirect)
+			http.Redirect(w, r, fmt.Sprintf("%s/login?confirmed=true", os.Getenv("ORIGIN")), http.StatusTemporaryRedirect)
 			return
 		}
 	}
 
 	// TODO: include error message in the URL
-	http.Redirect(w, r, fmt.Sprintf("%s/login?confirmed=false", os.Getenv("FRONTEND")), http.StatusTemporaryRedirect)
+	http.Redirect(w, r, fmt.Sprintf("%s/login?confirmed=false", os.Getenv("ORIGIN")), http.StatusTemporaryRedirect)
 }
