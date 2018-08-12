@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gopkg.in/russross/blackfriday.v1"
+	"github.com/russross/blackfriday"
 )
 
 func markdownToHtml(markdown string) string {

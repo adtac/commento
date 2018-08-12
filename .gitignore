@@ -4,3 +4,9 @@ devel.env
 # Ignoring for IDE-specific files
 .idea/*
 .dir-locals.el
+
+# We don't *need* the vendor directory because Gopkg.lock has all the
+# information you might need about version pinning. The vendor directory
+# needlessly bloats the repo size. Discuss here:
+#   https://gitlab.com/commento/commento-ce/issues/74
+vendor
