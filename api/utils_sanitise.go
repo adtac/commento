@@ -2,6 +2,7 @@ package main
 
 import (
 	"regexp"
+	"strings"
 )
 
 var prePlusMatch = regexp.MustCompile(`([^@\+]*)\+?(.*)@.*`)
@@ -42,4 +43,12 @@ func isHttpsUrl(in string) bool {
 	// they don't do any XSS shenanigans. Hopefully, enforcing a https?:// prefix
 	// solves this. If this function returns false, prefix with "http://"
 	return len(httpsUrl.FindAllString(in, -1)) != 0
+}
+
+func addHttpIfAbsent(in string) string {
+	if !strings.HasPrefix(in, "http://") && !strings.HasPrefix(in, "https://") {
+		return "http://" + in
+	}
+
+	return in
 }
