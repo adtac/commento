@@ -69,7 +69,7 @@ func configParse() error {
 		os.Setenv("CDN_PREFIX", os.Getenv("ORIGIN"))
 	}
 
-	os.Setenv("CDN_PREFIX", strings.TrimSuffix(os.Getenv("ORIGIN"), "/"))
+	os.Setenv("CDN_PREFIX", strings.TrimSuffix(os.Getenv("CDN_PREFIX"), "/"))
 	os.Setenv("CDN_PREFIX", addHttpIfAbsent(os.Getenv("CDN_PREFIX")))
 
 	if os.Getenv("FORBID_NEW_OWNERS") != "true" && os.Getenv("FORBID_NEW_OWNERS") != "false" {
