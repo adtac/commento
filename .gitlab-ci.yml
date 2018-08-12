@@ -1,9 +1,20 @@
 stages:
+  - check-dco
   - go-fmt
   - build-src
   - build-docker
   - go-test
   - docker-registry
+
+check-dco:
+  stage: check-dco
+  image: debian:buster
+  except:
+    - master
+  script:
+    - apt update
+    - apt install -y curl git jq
+    - bash ./scripts/check-dco
 
 build-src:
   stage: build-src
