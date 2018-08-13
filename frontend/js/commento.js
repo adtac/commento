@@ -1211,7 +1211,10 @@
       var placeholder = ["Password"];
     }
 
-    subtitle.innerText = "Finish the rest of your profile to complete."
+    if (loginBoxType == "signup")
+      subtitle.innerText = "Finish the rest of your profile to complete."
+    else
+      subtitle.innerText = "Enter your password to log in."
 
     for (var i = 0; i < order.length; i++) {
       var fieldContainer = create("div");
