@@ -1249,6 +1249,8 @@
 
       append(loginBox, fieldContainer);
     }
+
+    $(ID_LOGIN_BOX_PASSWORD_INPUT).focus();
   }
 
 
