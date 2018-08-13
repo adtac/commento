@@ -37,6 +37,7 @@ textarea {
 }
 
 .commento-textarea-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,10 +63,12 @@ textarea {
 }
 
 .commento-account-buttons {
+  position: static;
   flex-direction: row;
 }
 
 .commento-account-buttons-container {
+  top: 3rem;
   padding-bottom: 10px;
 }
 
@@ -75,7 +78,7 @@ textarea {
 
 .commento-account-buttons-question {
   position: absolute;
-  top: 25px;
+  top: 0.5rem;
   display: block;
   text-align: center;
   justify-content: center;
