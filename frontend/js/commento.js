@@ -67,6 +67,7 @@
   var shownReply = {};
   var configuredOauths = [];
   var loginBoxType = "signup";
+  var oauthButtonsShown = false;
 
 
   function $(id) {
@@ -1079,7 +1080,10 @@
       append(loginBox, oauthPretext);
       append(oauthButtonsContainer, oauthButtons);
       append(loginBox, oauthButtonsContainer);
+      oauthButtonsShown = true;
     }
+    else
+      oauthButtonsShown = false;
 
     append(loginBox, close);
 
@@ -1105,10 +1109,11 @@
 
     loginBoxType = "login";
 
-    if (leaveOauth !== true && configuredOauths.length > 0) {
+    if (ouathButtonsShown && leaveOauth !== true && configuredOauths.length > 0) {
       remove(hr);
       remove(oauthPretext);
       remove(oauthButtonsContainer);
+      oauthButtonsShown = false;
     }
   }
 
@@ -1183,7 +1188,7 @@
     
     remove(emailButton);
     remove(loginLinkContainer);
-    if (loginBoxType == "signup") {
+    if (oauthButtonsShown) {
       if (configuredOauths.length > 0) {
         remove(hr);
         remove(oauthPretext);
@@ -1289,7 +1294,7 @@
   }
 
 
-  global.loginBoxShow = function() {
+  global.loginBoxShow = function(signup) {
     var mainArea = $(ID_MAIN_AREA);
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
 
