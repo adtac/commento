@@ -1250,7 +1250,10 @@
       append(loginBox, fieldContainer);
     }
 
-    $(ID_LOGIN_BOX_PASSWORD_INPUT).focus();
+    if (loginBoxType == "signup")
+      $(ID_LOGIN_BOX_PASSWORD_NAME).focus();
+    else
+      $(ID_LOGIN_BOX_PASSWORD_INPUT).focus();
   }
 
 
