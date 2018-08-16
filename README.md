@@ -2,44 +2,43 @@
 <a href="https://commento.io"><img src="https://user-images.githubusercontent.com/7521600/33375172-14b21f68-d52f-11e7-9b30-477682bccf8f.png" width=300></a>
 </p>
 
-<p align="center"><b>An open source, privacy focused discussion platform.</b></p>
+<p align="center"><b>A bloat-free and privacy-focused discussion platform.</b></p>
 
-Commento is a discussion platform that you can self-host. You can embed it on your blog, news articles, and any place where you want your readers to add comments. Unlike most alternatives, Commento is lightweight and privacy focused; we'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
+Commento is a discussion platform that you can embed on your blog, news articles, and any place where you want your readers to add comments. Commento is fast, lightweight, and privacy-focused; we'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
 
-### Features
+#### Features
 
- - Privacy focused
+ - Privacy-focused
+ - Super lightweight, allowing for fast pageloads
  - Automatic spam filtering
  - Review and approve or delete comments through the moderation interface
  - Modern interface with a clean design
+ - OAuth support (Google login, for example)
  - Custom CSS theming
- - Extremely lightweight, allowing for faster pageloads
  - Import from existing services (like Disqus)
  - Completely free and open source (MIT Expat license)
 
-### Editions
+#### Editions
 
 There are three editions of Commento.
 
- - **Commento Community Edition (CE)** is open source software that's freely available under the MIT Expat license.
- - **Commento Enterprise Edition (EE)** includes extra features geared towards organizations. If you're interested in this, [contact me](mailto:c.adhityaa@gmail.com).
- - [**Commento Hosted**](https://commento.io) is a hosted version of Commento if you don't want to host and manage servers on your own. This is currently in private beta and you can [add yourself to the waiting list here](https://commento.io).
+ - **Commento Community Edition (CE)** is open source software that's freely available under the MIT license.
+ - [**Commento Enterprise Edition (EE)**](https://commento.io/pricing#self-hosted) includes extra features geared towards organizations that want to self-host.
+ - [**Commento Hosted**](https://commento.io) is a hosted version of Commento for those who don't want to host and manage servers. This is currently in private beta and you can [add yourself to the waiting list here](https://commento.io).
 
-### Installation
+#### Installation and Configuration
 
-The recommended way to install Commento is with [Docker Compose](https://docs.docker.com/compose). Docker Compose allows you to install and manage the service painlessly. [Read our documentation](http://docs.commento.io/installation-docker.html) to find our more on how to get Commento running with Docker Compose.
-
-There are other options to install Commento, including running the binary directly and compiling from source. Please refer to the [installation page](https://docs.commento.io/installation.html) for more information.
+See our [documentation on how to install Commento](http://docs.commento.io/installation.html) to get started. We offer several ways to install the software, including a Docker image.
 
 Once you've installed the software, you need to configure it with various environment variables before starting the service. To learn more about this, refer to our documentation on [configuring Commento](https://docs.commento.io/configuration.html).
 
-### Contributing
+#### Contributing
 
 Commento is possible only because of its community. If this is your first contribution to Commento, please go through the [development documentation](https://docs.commento.io/contributing.html) before you begin.
 
-Help will always be given at Commento to those who ask for it. We use IRC for chat to collaborate with other developers. You're invited to [hang out with us](https://irc.commento.io) in the `#commento-dev` channel on freenode if you want to contribute to Commento!
+Help will always be given to those who ask for it. We use IRC for chat to collaborate with other developers. You're invited to [hang out with us](https://irc.commento.io) in the `#commento-dev` channel on freenode if you want to contribute to Commento!
 
-### License
+#### License
 
 ```
 Copyright 2018 Commento, Inc.
