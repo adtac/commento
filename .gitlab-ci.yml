@@ -1,9 +1,9 @@
 stages:
   - check-dco
   - go-fmt
+  - go-test
   - build-src
   - build-docker
-  - go-test
   - docker-registry
 
 check-dco:
