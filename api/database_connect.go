@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	_ "github.com/lib/pq"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -41,12 +42,13 @@ func dbConnect(retriesLeft int) error {
 		return err
 	}
 
-	// At most 1000 database connections will be left open in the idle state. This
-	// was found to be important when benchmarking with `wrk`: if this was unset,
-	// too many open idle connections were present, resulting in dropped requests
-	// due to the limit on the number of file handles. On benchmarking, around
-	// 100 was found to be pretty optimal.
-	db.SetMaxIdleConns(100)
+	maxIdleConnections, err := strconv.Atoi(os.Getenv("MAX_IDLE_PG_CONNECTIONS"))
+	if err != nil {
+		logger.Warningf("cannot parse COMMENTO_MAX_IDLE_PG_CONNECTIONS: %v", err)
+		maxIdleConnections = 50
+	}
+
+	db.SetMaxIdleConns(maxIdleConnections)
 
 	return nil
 }

@@ -125,3 +125,32 @@ func TestConfigOriginTrailingSlash(t *testing.T) {
 		return
 	}
 }
+
+func TestConfigMaxConnections(t *testing.T) {
+	os.Setenv("COMMENTO_ORIGIN", "https://commento.io")
+	os.Setenv("COMMENTO_STATIC", "")
+
+	os.Setenv("COMMENTO_MAX_IDLE_PG_CONNECTIONS", "100")
+	if err := configParse(); err != nil {
+		t.Errorf("unexpected error when MAX_IDLE_PG_CONNECTIONS=100: %v", err)
+		return
+	}
+
+	os.Setenv("COMMENTO_MAX_IDLE_PG_CONNECTIONS", "text")
+	if err := configParse(); err == nil {
+		t.Errorf("expected error with MAX_IDLE_PG_CONNECTIONS=text not found")
+		return
+	}
+
+	os.Setenv("COMMENTO_MAX_IDLE_PG_CONNECTIONS", "0")
+	if err := configParse(); err == nil {
+		t.Errorf("expected error with MAX_IDLE_PG_CONNECTIONS=0 not found")
+		return
+	}
+
+	os.Setenv("COMMENTO_MAX_IDLE_PG_CONNECTIONS", "-1")
+	if err := configParse(); err == nil {
+		t.Errorf("expected error with MAX_IDLE_PG_CONNECTIONS=-1 not found")
+		return
+	}
+}

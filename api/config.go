@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -17,6 +18,12 @@ func configParse() error {
 		"CONFIG_FILE": "",
 
 		"POSTGRES": "postgres://postgres:postgres@localhost/commento?sslmode=disable",
+
+		// PostgreSQL recommends max_connections in the order of hundreds. The default
+		// is 100, so let's use half that and leave the other half for other services.
+		// Ideally, you'd be setting this to a much higher number (for example, at the
+		// time of writing, commento.io uses 600). See https://wiki.postgresql.org/wiki/Number_Of_Database_Connections
+		"MAX_IDLE_PG_CONNECTIONS": "50",
 
 		"BIND_ADDRESS": "127.0.0.1",
 		"PORT":         "8080",
@@ -55,7 +62,7 @@ func configParse() error {
 	}
 
 	// Mandatory config parameters
-	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN", "FORBID_NEW_OWNERS"} {
+	for _, env := range []string{"POSTGRES", "PORT", "ORIGIN", "FORBID_NEW_OWNERS", "MAX_IDLE_PG_CONNECTIONS"} {
 		if os.Getenv(env) == "" {
 			logger.Errorf("missing COMMENTO_%s environment variable", env)
 			return errorMissingConfig
@@ -94,6 +101,14 @@ func configParse() error {
 	}
 
 	os.Setenv("STATIC", static)
+
+	if num, err := strconv.Atoi(os.Getenv("MAX_IDLE_PG_CONNECTIONS")); err != nil {
+		logger.Errorf("invalid COMMENTO_MAX_IDLE_PG_CONNECTIONS: %v", err)
+		return errorInvalidConfigValue
+	} else if num <= 0 {
+		logger.Errorf("COMMENTO_MAX_IDLE_PG_CONNECTIONS should be a positive integer")
+		return errorInvalidConfigValue
+	}
 
 	return nil
 }
