@@ -10,6 +10,7 @@ func main() {
 	exitIfError(oauthConfigure())
 	exitIfError(markdownRendererCreate())
 	exitIfError(sigintCleanupSetup())
+	exitIfError(versionCheckStart())
 
 	exitIfError(routesServe())
 }
