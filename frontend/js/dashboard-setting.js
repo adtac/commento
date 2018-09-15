@@ -9,11 +9,7 @@
     var settings = data.settings;
 
     for (var i = 0; i < settings.length; i++) {
-      if (settings[i].id === id) {
-        settings[i].selected = true;
-      } else {
-        settings[i].selected = false;
-      }
+      settings[i].selected = settings[i].id === id;
     }
   }
 
