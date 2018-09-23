@@ -587,6 +587,10 @@
       return null;
     }
 
+    cur.sort(function(a, b) {
+      return a.score - b.score;
+    });
+
     var cards = create("div");
     cur.forEach(function(comment) {
       var commenter = commenters[comment.commenterHex];
