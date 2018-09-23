@@ -472,7 +472,7 @@
   }
 
 
-  global.postComment = function(id) {
+  global.commentNew = function(id) {
     var textarea = $(ID_TEXTAREA + id);
 
     var comment = textarea.value;
@@ -957,7 +957,7 @@
     classAdd(submit, "submit-button");
     classAdd(el, "button-margin");
 
-    attrSet(submit, "onclick", "postComment('" + id + "')");
+    attrSet(submit, "onclick", "commentNew('" + id + "')");
 
     append(el, submit);
   }
