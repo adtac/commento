@@ -604,8 +604,8 @@
       var edit = create("button");
       var reply = create("button");
       var collapse = create("button");
-      var upvote = create("div");
-      var downvote = create("div");
+      var upvote = create("button");
+      var downvote = create("button");
       var approve = create("button");
       var remove = create("button");
       var children = commentsRecurse(parentMap, comment.commentHex);
