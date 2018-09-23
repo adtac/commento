@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
+.commento-root-min-height {
+  min-height: 350px;
+}
+
 .commento-root {
   font-family: "Source Sans Pro", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   font-size: 15px;
@@ -8,7 +12,6 @@
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   padding: 8px;
-  min-height: 350px;
 
   @import "colors-main.scss";
   @import "common-main.scss";

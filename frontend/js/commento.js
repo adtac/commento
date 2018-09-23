@@ -1050,6 +1050,7 @@
     classAdd(oauthButtonsContainer, "oauth-buttons-container");
     classAdd(oauthButtons, "oauth-buttons");
     classAdd(close, "login-box-close");
+    classAdd(root, "root-min-height");
 
     emailButton.innerText = "Continue";
     loginLink.innerText = "Already have an account? Log in.";
@@ -1378,6 +1379,7 @@
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
 
     classRemove(mainArea, "blurred");
+    classRemove(root, "root-min-height");
 
     attrSet(loginBoxContainer, "style", "display: none");
   }
