@@ -6,7 +6,8 @@ import (
 )
 
 func commentList(commenterHex string, domain string, path string, includeUnapproved bool) ([]comment, map[string]commenter, error) {
-	if commenterHex == "" || domain == "" || path == "" {
+	// path can be empty
+	if commenterHex == "" || domain == "" {
 		return nil, nil, errorMissingField
 	}
 
