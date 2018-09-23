@@ -20,8 +20,8 @@ func commentCount(domain string, path string) (int, error) {
 
 func commentCountHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		Domain         *string `json:"domain"`
-		Path           *string `json:"path"`
+		Domain *string `json:"domain"`
+		Path   *string `json:"path"`
 	}
 
 	var x request

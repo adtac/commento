@@ -29,10 +29,10 @@ func pageUpdate(p page) error {
 
 func pageUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
-		CommenterToken   *string `json:"commenterToken"`
-		Domain           *string `json:"domain"`
-		Path             *string `json:"path"`
-		Attributes       *page   `json:"attributes"`
+		CommenterToken *string `json:"commenterToken"`
+		Domain         *string `json:"domain"`
+		Path           *string `json:"path"`
+		Attributes     *page   `json:"attributes"`
 	}
 
 	var x request
