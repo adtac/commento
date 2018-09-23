@@ -27,7 +27,7 @@
       },
       {
         "id": "general",
-        "text": "General Settings",
+        "text": "Configure Domain",
         "meaning": "Names, domains and the rest",
         "selected": false,
         "open": generalOpen,
@@ -35,13 +35,13 @@
       {
         "id": "moderation",
         "text": "Moderation Settings",
-        "meaning": "Approve and delete comments",
+        "meaning": "Manage list of moderators",
         "selected": false,
         "open": moderationOpen,
       },
       {
         "id": "statistics",
-        "text": "Statistics",
+        "text": "View Activity",
         "meaning": "Usage and comment statistics",
         "selected": false,
         "open": statisticsOpen,
