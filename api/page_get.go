@@ -11,19 +11,20 @@ func pageGet(domain string, path string) (page, error) {
 	}
 
 	statement := `
-		SELECT isLocked
+		SELECT isLocked, commentCount
 		FROM pages
 		WHERE domain=$1 AND path=$2;
 	`
 	row := db.QueryRow(statement, domain, path)
 
 	p := page{Domain: domain, Path: path}
-	if err := row.Scan(&p.IsLocked); err != nil {
+	if err := row.Scan(&p.IsLocked, &p.CommentCount); err != nil {
 		if err == sql.ErrNoRows {
 			// If there haven't been any comments, there won't be a record for this
 			// page. The sane thing to do is return defaults.
 			// TODO: the defaults are hard-coded in two places: here and the schema
 			p.IsLocked = false
+			p.CommentCount = 0
 		} else {
 			logger.Errorf("error scanning page: %v", err)
 			return page{}, errorInternal

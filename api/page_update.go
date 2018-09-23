@@ -9,6 +9,8 @@ func pageUpdate(p page) error {
 		return errorMissingField
 	}
 
+	// fields to not update:
+	//   commentCount
 	statement := `
 		INSERT INTO
 		pages  (domain, path, isLocked)
