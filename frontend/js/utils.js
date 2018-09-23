@@ -71,7 +71,11 @@
     date.setTime(date.getTime() + (365*24*60*60*1000));
     expires = "; expires=" + date.toUTCString();
 
-    document.cookie = name + "=" + value + expires + "; path=/";
+    var cookieString = name + "=" + value + expires + "; path=/";
+    if (/^https:\/\//i.test(commentoOrigin))
+      cookieString += "; secure";
+
+    document.cookie = cookieString;
   }
 
 
