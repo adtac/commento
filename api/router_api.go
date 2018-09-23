@@ -31,6 +31,7 @@ func apiRouterInit(router *mux.Router) error {
 
 	router.HandleFunc("/api/comment/new", commentNewHandler).Methods("POST")
 	router.HandleFunc("/api/comment/list", commentListHandler).Methods("POST")
+	router.HandleFunc("/api/comment/count", commentCountHandler).Methods("POST")
 	router.HandleFunc("/api/comment/vote", commentVoteHandler).Methods("POST")
 	router.HandleFunc("/api/comment/approve", commentApproveHandler).Methods("POST")
 	router.HandleFunc("/api/comment/delete", commentDeleteHandler).Methods("POST")
