@@ -27,6 +27,8 @@ type staticHtmlPlugs struct {
 }
 
 func staticRouterInit(router *mux.Router) error {
+	subdir := pathStrip(os.Getenv("ORIGIN"))
+
 	asset := make(map[string][]byte)
 	gzippedAsset := make(map[string][]byte)
 
@@ -56,8 +58,6 @@ func staticRouterInit(router *mux.Router) error {
 			}
 
 			gzip := (os.Getenv("GZIP_STATIC") == "true")
-
-			subdir := pathStrip(os.Getenv("ORIGIN"))
 
 			asset[subdir+p] = []byte(prefix + string(contents))
 			if gzip {
@@ -102,6 +102,10 @@ func staticRouterInit(router *mux.Router) error {
 
 	html := make(map[string]string)
 	for _, page := range pages {
+		html[subdir+page] = ""
+	}
+
+	for _, page := range pages {
 		sl := string(os.PathSeparator)
 		page = sl + page
 		file := page + ".html"
@@ -112,22 +116,30 @@ func staticRouterInit(router *mux.Router) error {
 			return err
 		}
 
-		t, err := template.New(page).Delims("[[[", "]]]").Parse(string(contents))
-		if err != nil {
-			logger.Errorf("cannot parse %s%s template: %v", os.Getenv("STATIC"), file, err)
-			return err
+		result := string(contents)
+
+		for {
+			t, err := template.New(page).Delims("[[[", "]]]").Parse(result)
+			if err != nil {
+				logger.Errorf("cannot parse %s%s template: %v", os.Getenv("STATIC"), file, err)
+				return err
+			}
+
+			var buf bytes.Buffer
+			t.Execute(&buf, &staticHtmlPlugs{
+				Origin:    os.Getenv("ORIGIN"),
+				CdnPrefix: os.Getenv("CDN_PREFIX"),
+				Footer:    template.HTML(string(footer)),
+			})
+
+			result = buf.String()
+			if result == html[subdir+page] {
+				break
+			} else {
+				html[subdir+page] = result
+				continue
+			}
 		}
-
-		var buf bytes.Buffer
-		t.Execute(&buf, &staticHtmlPlugs{
-			Origin:    os.Getenv("ORIGIN"),
-			CdnPrefix: os.Getenv("CDN_PREFIX"),
-			Footer:    template.HTML(string(footer)),
-		})
-
-		subdir := pathStrip(os.Getenv("ORIGIN"))
-
-		html[subdir+page] = buf.String()
 	}
 
 	for _, page := range pages {
