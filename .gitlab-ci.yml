@@ -4,13 +4,15 @@ stages:
   - go-test
   - build-src
   - build-docker
-  - docker-registry
+  - docker-registry-master
+  - docker-registry-tags
 
 check-dco:
   stage: check-dco
   image: debian:buster
   except:
     - master
+    - tags
   script:
     - apt update
     - apt install -y curl git jq
@@ -23,6 +25,7 @@ build-src:
     GOPATH: $CI_PROJECT_DIR
   except:
     - master
+    - tags
   script:
     - apt update
     - apt install -y curl gnupg git make golang
@@ -41,6 +44,7 @@ build-docker:
     - docker:dind
   except:
     - master
+    - tags
   script:
     - docker build -t commento-ce .
 
@@ -57,6 +61,7 @@ go-test:
     GOPATH: $CI_PROJECT_DIR
   except:
     - master
+    - tags
   script:
     - mkdir -p src/gitlab.com/commento && cd src/gitlab.com/commento && ln -s $CI_PROJECT_DIR && cd $CI_PROJECT_NAME
     - make test
@@ -66,12 +71,13 @@ go-fmt:
   image: golang:1.10.2
   except:
     - master
+    - tags
   script:
     - cd api
     - test -z $(go fmt)
 
-docker-registry:
-  stage: docker-registry
+docker-registry-master:
+  stage: docker-registry-master
   image: docker:stable
   services:
     - docker:dind
@@ -83,3 +89,16 @@ docker-registry:
     - docker pull registry.gitlab.com/commento/commento-ce:latest || true
     - docker build --cache-from registry.gitlab.com/commento/commento-ce:latest --tag registry.gitlab.com/commento/commento-ce:latest .
     - docker push registry.gitlab.com/commento/commento-ce:latest
+
+docker-registry-tags:
+  stage: docker-registry-tags
+  image: docker:stable
+  services:
+    - docker:dind
+  only:
+    - tags
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+  script:
+    - docker build --tag registry.gitlab.com/commento/commento-ce:$(git describe --tags) .
+    - docker push registry.gitlab.com/commento/commento-ce:$(git describe --tags)
