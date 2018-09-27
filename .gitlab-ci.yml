@@ -100,5 +100,6 @@ docker-registry-tags:
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
+    - apk add git
     - docker build --tag registry.gitlab.com/commento/commento-ce:$(git describe --tags) .
     - docker push registry.gitlab.com/commento/commento-ce:$(git describe --tags)
