@@ -588,7 +588,7 @@
     }
 
     cur.sort(function(a, b) {
-      return a.score - b.score;
+      return b.score - a.score;
     });
 
     var cards = create("div");
