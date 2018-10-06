@@ -38,6 +38,16 @@ Commento is possible only because of its community. If this is your first contri
 
 Help will always be given to those who ask for it. We use IRC for chat to collaborate with other developers. You're invited to [hang out with us](https://irc.commento.io) in the `#commento-dev` channel on freenode if you want to contribute to Commento!
 
+### Sponsors
+
+Commento CE development is sponsored by [Mozilla](https://mozilla.org) and [DigitalOcean](https://www.digitalocean.com/) independently.
+
+<p align="center">
+<a href="https://www.mozilla.org/en-US/"><img src="https://user-images.githubusercontent.com/7521600/32265838-d05b2d08-bf0a-11e7-92e1-2cb183eae616.png" title="Mozilla" height="40"></a>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+<a href="https://www.digitalocean.com"><img src="https://user-images.githubusercontent.com/7521600/32265839-d093c7da-bf0a-11e7-8d99-96a940041d06.png" title="DigitalOcean" height="40"></a>
+</p>
+
 #### License
 
 ```
