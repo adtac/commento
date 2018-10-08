@@ -60,6 +60,16 @@ func domainDelete(domain string) error {
 		return errorInternal
 	}
 
+	statement = `
+		DELETE FROM pages
+		WHERE pages.domain = $1;
+	`
+	_, err = db.Exec(statement, domain)
+	if err != nil {
+		logger.Errorf(statement, domain)
+		return errorInternal
+	}
+
 	return nil
 }
 
