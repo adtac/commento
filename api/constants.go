@@ -1,4 +1,4 @@
 package main
 
 var edition = "ce"
-var version = "v1.3.0"
+var version = "v1.3.1"
