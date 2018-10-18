@@ -4,7 +4,8 @@ FROM golang:1.10.2-alpine AS api-build
 COPY ./api /go/src/commento-ce/api
 WORKDIR /go/src/commento-ce/api
 
-RUN apk update && apk add bash make git
+RUN apk update && apk add bash make git curl
+RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 RUN make prod -j$(($(nproc) + 1))
 

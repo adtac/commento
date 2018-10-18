@@ -26,14 +26,20 @@ build-src:
   except:
     - master
     - tags
-  script:
+  before_script:
     - apt update
     - apt install -y curl gnupg git make golang
+    - mkdir -p /go/src /go/bin /go/pkg
+    - export GOPATH=/go
+    - export PATH=$PATH:/go/bin
+    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    - ln -s $CI_PROJECT_DIR /go/src/$CI_PROJECT_NAME
     - curl -sL https://deb.nodesource.com/setup_10.x | bash -
     - apt update
     - apt install -y nodejs
     - npm install -g html-minifier@3.5.7 uglify-js@3.4.1 sass@1.5.1
-    - mkdir -p src/gitlab.com/commento && cd src/gitlab.com/commento && ln -s $CI_PROJECT_DIR && cd $CI_PROJECT_NAME
+  script:
+    - cd /go/src/$CI_PROJECT_NAME
     - make devel
     - make prod
 
@@ -58,12 +64,17 @@ go-test:
     POSTGRES_PASSWORD: postgres
     POSTGRES_DB: commento_test
     COMMENTO_POSTGRES: postgres://postgres:postgres@postgres/commento_test?sslmode=disable
-    GOPATH: $CI_PROJECT_DIR
   except:
     - master
     - tags
+  before_script:
+    - mkdir -p /go/src /go/bin /go/pkg
+    - export GOPATH=/go
+    - export PATH=$PATH:/go/bin
+    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    - ln -s $CI_PROJECT_DIR /go/src/$CI_PROJECT_NAME
   script:
-    - mkdir -p src/gitlab.com/commento && cd src/gitlab.com/commento && ln -s $CI_PROJECT_DIR && cd $CI_PROJECT_NAME
+    - cd /go/src/$CI_PROJECT_NAME
     - make test
 
 go-fmt:
