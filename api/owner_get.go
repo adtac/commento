@@ -31,8 +31,8 @@ func ownerGetByOwnerToken(ownerToken string) (owner, error) {
 	statement := `
     SELECT ownerHex, email, name, confirmedEmail, joinDate
 		FROM owners
-		WHERE email IN (
-			SELECT email FROM ownerSessions
+		WHERE ownerHex IN (
+			SELECT ownerHex FROM ownerSessions
 			WHERE ownerToken = $1
 		);
 	`
