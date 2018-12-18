@@ -13,12 +13,12 @@ func pageUpdate(p page) error {
 	//   commentCount
 	statement := `
 		INSERT INTO
-		pages  (domain, path, isLocked)
-		VALUES ($1,     $2,   $3    )
+		pages  (domain, path, isLocked, stickyCommentHex)
+		VALUES ($1,     $2,   $3,       $4              )
 		ON CONFLICT (domain, path) DO
-			UPDATE SET isLocked = $3;
+			UPDATE SET isLocked = $3, stickyCommentHex = $4;
 	`
-	_, err := db.Exec(statement, p.Domain, p.Path, p.IsLocked)
+	_, err := db.Exec(statement, p.Domain, p.Path, p.IsLocked, p.StickyCommentHex)
 	if err != nil {
 		logger.Errorf("error setting page attributes: %v", err)
 		return errorInternal

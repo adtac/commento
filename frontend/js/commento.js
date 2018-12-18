@@ -47,6 +47,7 @@
   var ID_DOWNVOTE = "commento-comment-downvote-";
   var ID_APPROVE = "commento-comment-approve-";
   var ID_REMOVE = "commento-comment-remove-";
+  var ID_STICKY = "commento-comment-sticky-";
   var ID_CONTENTS = "commento-comment-contents-";
   var ID_SUBMIT_BUTTON = "commento-submit-button-";
   var ID_FOOTER = "commento-footer";
@@ -67,6 +68,7 @@
   var shownSubmitButton = {"root": false};
   var chosenAnonymous = false;
   var isLocked = false;
+  var stickyCommentHex = "none";
   var shownReply = {};
   var configuredOauths = [];
   var loginBoxType = "signup";
@@ -341,6 +343,7 @@
       isFrozen = resp.isFrozen;
 
       isLocked = resp.attributes.isLocked;
+      stickyCommentHex = resp.attributes.stickyCommentHex;
 
       comments = resp.comments;
       commenters = resp.commenters;
@@ -449,10 +452,14 @@
 
     commentsArea.innerHTML = "";
 
-    if (!isLocked)
-      append(mainArea, textareaCreate("root"));
+    if (isLocked) {
+      if (isAuthenticated)
+        append(mainArea, messageCreate("This thread is locked. You cannot add new comments."));
+      else
+        append(mainArea, textareaCreate("root"));
+    }
     else
-      append(mainArea, messageCreate("This thread is locked. You cannot create new comments."));
+      append(mainArea, textareaCreate("root"));
 
     append(mainArea, commentsArea);
     append(root, mainArea);
@@ -588,6 +595,10 @@
     }
 
     cur.sort(function(a, b) {
+      if (a.commentHex == stickyCommentHex)
+        return -Infinity;
+      if (b.commentHex == stickyCommentHex)
+        return Infinity;
       return b.score - a.score;
     });
 
@@ -608,6 +619,7 @@
       var downvote = create("button");
       var approve = create("button");
       var remove = create("button");
+      var sticky = create("button");
       var children = commentsRecurse(parentMap, comment.commentHex);
       var contents = create("div");
       var color = colorGet(commenter.name);
@@ -629,6 +641,7 @@
       downvote.id = ID_DOWNVOTE + comment.commentHex;
       approve.id = ID_APPROVE + comment.commentHex;
       remove.id = ID_REMOVE + comment.commentHex;
+      sticky.id = ID_STICKY + comment.commentHex;
       contents.id = ID_CONTENTS + comment.commentHex;
 
       collapse.title = "Collapse";
@@ -638,6 +651,14 @@
       reply.title = "Reply";
       approve.title = "Approve";
       remove.title = "Remove";
+      if (stickyCommentHex == comment.commentHex) {
+        if (isModerator)
+          sticky.title = "Unsticky";
+        else
+          sticky.title = "This comment has been stickied";
+      }
+      else
+        sticky.title = "Sticky";
 
       card.style["borderLeft"] = "2px solid " + color;
       name.innerText = commenter.name;
@@ -684,6 +705,11 @@
       classAdd(approve, "option-approve");
       classAdd(remove, "option-button");
       classAdd(remove, "option-remove");
+      classAdd(sticky, "option-button");
+      if (stickyCommentHex == comment.commentHex)
+        classAdd(sticky, "option-unsticky");
+      else
+        classAdd(sticky, "option-sticky");
 
       if (isAuthenticated) {
         if (comment.direction > 0)
@@ -696,6 +722,7 @@
       attrSet(collapse, "onclick", "commentCollapse('" + comment.commentHex + "')");
       attrSet(approve, "onclick", "commentApprove('" + comment.commentHex + "')");
       attrSet(remove, "onclick", "commentDelete('" + comment.commentHex + "')");
+      attrSet(sticky, "onclick", "commentSticky('" + comment.commentHex + "')");
 
       if (isAuthenticated) {
         if (comment.direction > 0) {
@@ -730,13 +757,18 @@
       append(options, downvote);
       append(options, upvote);
 
-      if (!isLocked)
-        append(options, reply);
+      append(options, reply);
 
       if (isModerator) {
+        if (parentHex == "root")
+          append(options, sticky);
         append(options, remove);
         if (comment.state == "unapproved")
           append(options, approve);
+      }
+      else {
+        if (stickyCommentHex == comment.commentHex)
+          append(options, sticky);
       }
 
       attrSet(options, "style", "width: " + ((options.childNodes.length+1)*32) + "px;");
@@ -1278,6 +1310,7 @@
   function pageUpdate(callback) {
     var attributes = {
       "isLocked": isLocked,
+      "stickyCommentHex": stickyCommentHex,
     };
 
     var json = {
@@ -1310,6 +1343,32 @@
         lock.innerHTML = "Unlock Thread";
       else
         lock.innerHTML = "Lock Thread";
+    });
+  }
+
+
+  global.commentSticky = function(commentHex) {
+    if (stickyCommentHex != "none") {
+      var sticky = $(ID_STICKY + stickyCommentHex);
+      classRemove(sticky, "option-unsticky");
+      classAdd(sticky, "option-sticky");
+    }
+
+    if (stickyCommentHex == commentHex)
+      stickyCommentHex = "none";
+    else
+      stickyCommentHex = commentHex;
+
+    pageUpdate(function(success) {
+      var sticky = $(ID_STICKY + commentHex);
+      if (stickyCommentHex == commentHex) {
+        classRemove(sticky, "option-sticky");
+        classAdd(sticky, "option-unsticky");
+      }
+      else {
+        classRemove(sticky, "option-unsticky");
+        classAdd(sticky, "option-sticky");
+      }
     });
   }
 
