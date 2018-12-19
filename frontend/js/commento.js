@@ -528,13 +528,13 @@
 
   function colorGet(name) {
     var colors = [
-      // some visually distincy
-      "#35b2de", // some kind of teal/cyan
-      "#62cd0a", // fresh lemon green
-      "#383838", // shade of gray
-      "#e4a90f", // comfy yellow
-      "#f80707", // sharp red
-      "#f0479c", // bright pink
+      "#396ab1",
+      "#da7c30",
+      "#3e9651",
+      "#cc2529",
+      "#535154",
+      "#6b4c9a",
+      "#922428",
     ];
 
     var total = 0;
@@ -622,7 +622,7 @@
       var sticky = create("button");
       var children = commentsRecurse(parentMap, comment.commentHex);
       var contents = create("div");
-      var color = colorGet(commenter.name);
+      var color = colorGet(comment.commenterHex + "-" + commenter.name);
       var name;
       if (commenter.link != "undefined" && commenter.link != "https://undefined" && commenter.link != "")
         name = create("a");
