@@ -16,7 +16,7 @@ textarea::placeholder {
   color: #aaa;
   font-size: 20px;
   display: flex;
-  line-height: 80px;
+  line-height: 110px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -28,7 +28,7 @@ textarea {
   padding: 8px;
   outline: none;
   overflow: auto;
-  min-height: 100px;
+  min-height: 130px;
   width: 100%;
 }
 
@@ -78,7 +78,7 @@ textarea {
 
 .commento-account-buttons-question {
   position: absolute;
-  top: 0.5rem;
+  top: 10px;
   display: block;
   text-align: center;
   justify-content: center;
@@ -124,9 +124,14 @@ textarea {
 }
 
 .commento-anonymous-button {
-  background: #096fa6;
-  text-transform: uppercase;
+  display: block;
+  color: $blue-6;
+  font-weight: 700;
+  margin-top: 12px;
   font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .commento-blurred-textarea {
@@ -154,16 +159,22 @@ textarea {
 .commento-create-button {
   width: 150px;
   background: $pink-9;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .commento-login-button {
   width: 50px;
   background: $cyan-9;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .commento-submit-button {
   float: right;
   background: $indigo-7;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .commento-approve-button {

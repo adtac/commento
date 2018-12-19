@@ -27,6 +27,7 @@
   var ID_LOGIN_BOX_HR = "commento-login-box-hr";
   var ID_LOGIN_BOX_OAUTH_PRETEXT = "commento-login-box-oauth-pretext";
   var ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER = "commento-login-box-oauth-buttons-container";
+  var ID_LOGIN_BOX_ANONYMOUS_BUTTON = "commento-login-box-anonymous-button";
   var ID_MOD_TOOLS = "commento-mod-tools";
   var ID_MOD_TOOLS_LOCK_BUTTON = "commento-mod-tools-lock-button";
   var ID_ERROR = "commento-error";
@@ -112,7 +113,8 @@
 
 
   function classRemove(el, cls) {
-    el.classList.remove("commento-" + cls);
+    if (el !== null)
+      el.classList.remove("commento-" + cls);
   }
 
 
@@ -122,7 +124,8 @@
 
 
   function remove(el) {
-    el.parentNode.removeChild(el);
+    if (el !== null)
+      el.parentNode.removeChild(el);
   }
 
 
@@ -350,9 +353,6 @@
       commenters = resp.commenters;
       configuredOauths = resp.configuredOauths;
 
-      if (!resp.requireIdentification)
-        configuredOauths.push("anonymous");
-
       cssLoad(cdn + "/css/commento.css", "window.loadCssOverride()");
 
       call(callback);
@@ -406,6 +406,7 @@
       var buttons = create("div");
       var createButton = create("div");
       var loginButton = create("div");
+      var anonymousButton = create("div");
 
       classAdd(buttonsContainer, "account-buttons-container");
       classAdd(question, "account-buttons-question");
@@ -414,18 +415,23 @@
       classAdd(createButton, "create-button");
       classAdd(loginButton, "button");
       classAdd(loginButton, "login-button");
+      classAdd(anonymousButton, "anonymous-button");
 
       attrSet(createButton, "onclick", "loginBoxShow()");
       attrSet(loginButton, "onclick", "loginBoxShow(); loginSwitch(true);");
+      attrSet(anonymousButton, "onclick", "anonymousChoose()");
       attrSet(textarea, "disabled", true);
 
       createButton.innerText = "Create an Account";
       loginButton.innerText = "Login";
+      anonymousButton.innerText = "Comment anonymously";
       question.innerText = "Want to add to the discussion?";
 
       append(buttons, createButton);
       append(buttons, loginButton);
       append(buttonsContainer, buttons);
+      if (!requireIdentification)
+        append(buttonsContainer, anonymousButton);
       append(textareaContainer, question);
       append(textareaContainer, buttonsContainer);
     }
@@ -999,15 +1005,14 @@
     append(el, submit);
   }
 
+  global.anonymousChoose = function(provider) {
+    cookieSet("commentoCommenterToken", "anonymous");
+    chosenAnonymous = true;
+    refreshAll();
+  }
+
 
   global.commentoAuth = function(provider) {
-    if (provider == "anonymous") {
-      cookieSet("commentoCommenterToken", "anonymous");
-      chosenAnonymous = true;
-      refreshAll();
-      return;
-    }
-
     var popup = window.open("", "_blank");
 
     get(origin + "/api/commenter/token/new", function(resp) {
@@ -1062,6 +1067,7 @@
     var oauthPretext = create("div");
     var oauthButtonsContainer = create("div");
     var oauthButtons = create("div");
+    var anonymousButton = create("div");
     var close = create("div");
 
     loginBox.id = ID_LOGIN_BOX;
@@ -1074,6 +1080,7 @@
     hr.id = ID_LOGIN_BOX_HR;
     oauthPretext.id = ID_LOGIN_BOX_OAUTH_PRETEXT;
     oauthButtonsContainer.id = ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER;
+    anonymousButton.id = ID_LOGIN_BOX_ANONYMOUS_BUTTON;
 
     header.innerText = "Create an account to join the discussion!";
 
@@ -1090,6 +1097,7 @@
     classAdd(oauthPretext, "login-box-subtitle");
     classAdd(oauthButtonsContainer, "oauth-buttons-container");
     classAdd(oauthButtons, "oauth-buttons");
+    classAdd(anonymousButton, "anonymous-button");
     classAdd(close, "login-box-close");
     classAdd(root, "root-min-height");
 
@@ -1097,6 +1105,7 @@
     loginLink.innerText = "Already have an account? Log in.";
     subtitle.innerText = "Sign up with your email to vote and comment.";
     oauthPretext.innerText = "Or proceed with social login.";
+    anonymousButton.innerText = "Comment anonymously";
 
     attrSet(loginBoxContainer, "style", "display: none; opacity: 0;");
     attrSet(emailInput, "name", "email");
@@ -1104,6 +1113,7 @@
     attrSet(emailInput, "type", "text");
     attrSet(emailButton, "onclick", "passwordAsk()");
     attrSet(loginLink, "onclick", "loginSwitch()");
+    attrSet(anonymousButton, "onclick", "anonymousChoose()");
     attrSet(close, "onclick", "loginBoxClose()");
 
     for (var i = 0; i < configuredOauths.length; i++) {
@@ -1135,6 +1145,8 @@
       append(loginBox, oauthPretext);
       append(oauthButtonsContainer, oauthButtons);
       append(loginBox, oauthButtonsContainer);
+      if (!requireIdentification)
+        append(loginBox, anonymousButton);
       oauthButtonsShown = true;
     }
     else
@@ -1240,6 +1252,9 @@
     var hr = $(ID_LOGIN_BOX_HR);
     var oauthButtonsContainer = $(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER);
     var oauthPretext = $(ID_LOGIN_BOX_OAUTH_PRETEXT);
+    var anonymousButton = null;
+    if (!requireIdentification);
+      anonymousButton = $(ID_LOGIN_BOX_ANONYMOUS_BUTTON);
     
     remove(emailButton);
     remove(loginLinkContainer);
@@ -1250,6 +1265,7 @@
         remove(oauthButtonsContainer);
       }
     }
+    remove(anonymousButton);
 
     var order, id, type, placeholder;
 
