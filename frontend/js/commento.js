@@ -38,6 +38,7 @@
   var ID_CARD = "commento-comment-card-";
   var ID_BODY = "commento-comment-body-";
   var ID_SUBTITLE = "commento-comment-subtitle-";
+  var ID_TIMEAGO = "commento-comment-timeago-";
   var ID_SCORE = "commento-comment-score-";
   var ID_OPTIONS = "commento-comment-options-";
   var ID_EDIT = "commento-comment-edit-";
@@ -609,6 +610,7 @@
       var card = create("div");
       var header = create("div");
       var subtitle = create("div");
+      var timeago = create("div");
       var score = create("div");
       var body = create("div");
       var options = create("div");
@@ -632,6 +634,7 @@
       card.id = ID_CARD + comment.commentHex;
       body.id = ID_BODY + comment.commentHex;
       subtitle.id = ID_SUBTITLE + comment.commentHex;
+      timeago.id = ID_TIMEAGO + comment.commentHex;
       score.id = ID_SCORE + comment.commentHex;
       options.id = ID_OPTIONS + comment.commentHex;
       edit.id = ID_EDIT + comment.commentHex;
@@ -663,7 +666,7 @@
       card.style["borderLeft"] = "2px solid " + color;
       name.innerText = commenter.name;
       body.innerHTML = comment.html;
-      subtitle.innerHTML = timeDifference((new Date()).getTime(), Date.parse(comment.creationDate));
+      timeago.innerHTML = timeDifference((new Date()).getTime(), Date.parse(comment.creationDate));
       score.innerText = scorify(comment.score);
 
       if (commenter.photo == "undefined") {
@@ -688,6 +691,7 @@
       classAdd(header, "header");
       classAdd(name, "name");
       classAdd(subtitle, "subtitle");
+      classAdd(timeago, "timeago");
       classAdd(score, "score");
       classAdd(body, "body");
       classAdd(options, "options");
@@ -776,6 +780,7 @@
         attrSet(options.childNodes[i], "style", "right: " + (i*32) + "px;");
 
       append(subtitle, score);
+      append(subtitle, timeago);
 
       append(header, options);
       append(header, avatar);

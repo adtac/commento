@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700');
 
 .commento-root-min-height {
   min-height: 350px;
@@ -41,7 +41,7 @@
     height: 32px;
     text-align: center;
     color: $red-7;
-    font-weight: bold;
+    font-weight: 700;
   }
 
   .commento-mod-tools {
@@ -53,7 +53,7 @@
     text-transform: uppercase;
     color: $indigo-8;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 700;
   }
 
   .commento-moderation-notice {
@@ -62,7 +62,7 @@
     height: 32px;
     text-align: center;
     color: $orange-7;
-    font-weight: bold;
+    font-weight: 700;
     margin-top: 16px;
   }
 
@@ -111,7 +111,7 @@
     }
 
     .commento-name {
-      font-weight: bold;
+      font-weight: 700;
       font-size: 14px;
       color: #555;
       border: none;
@@ -131,13 +131,20 @@
       margin-left: 48px;
     }
 
-    .commento-score {
+    .commento-timeago {
       display: inline;
-      color: #999;
+      color: #888;
       font-size: 12px;
     }
 
-    .commento-score::before {
+    .commento-score {
+      display: inline;
+      color: #888;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .commento-timeago::before {
       content: "\00a0 \00a0 \00b7 \00a0 \00a0";
     }
 
