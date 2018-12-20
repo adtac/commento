@@ -9,10 +9,12 @@ ctrl_c() {
   exit
 }
 
+version=devel
+
 binary_pid=
-if make -j$(($(nproc) + 1)); then
+if make $version -j$(($(nproc) + 1)); then
   source devel.env
-  cd build/devel
+  cd build/$version
   ./$binary_name &
   binary_pid=$!
   cd ../../
@@ -50,9 +52,9 @@ while true; do
     wait $binary_pid
   fi
 
-  if make -j$(($(nproc) + 1)); then
+  if make $version -j$(($(nproc) + 1)); then
     source devel.env
-    cd build/devel
+    cd build/$version
     ./$binary_name &
     binary_pid=$!
     cd ../../
