@@ -57,6 +57,7 @@
   var ID_APPROVE = "commento-comment-approve-";
   var ID_REMOVE = "commento-comment-remove-";
   var ID_STICKY = "commento-comment-sticky-";
+  var ID_CHILDREN = "commento-comment-children-";
   var ID_CONTENTS = "commento-comment-contents-";
   var ID_NAME = "commento-comment-name-";
   var ID_SUBMIT_BUTTON = "commento-submit-button-";
@@ -632,6 +633,7 @@
 
     var cards = create("div");
     cur.forEach(function(comment) {
+      var mobileView = root.getBoundingClientRect()["width"] < 450;
       var commenter = commenters[comment.commenterHex];
       var avatar;
       var card = create("div");
@@ -672,10 +674,12 @@
       approve.id = ID_APPROVE + comment.commentHex;
       remove.id = ID_REMOVE + comment.commentHex;
       sticky.id = ID_STICKY + comment.commentHex;
+      if (children)
+        children.id = ID_CHILDREN + comment.commentHex;
       contents.id = ID_CONTENTS + comment.commentHex;
       name.id = ID_NAME + comment.commentHex;
 
-      collapse.title = "Collapse";
+      collapse.title = "Collapse children";
       upvote.title = "Upvote";
       downvote.title = "Downvote";
       edit.title = "Edit";
@@ -724,6 +728,8 @@
       classAdd(score, "score");
       classAdd(body, "body");
       classAdd(options, "options");
+      if (mobileView)
+        classAdd(options, "options-mobile");
       classAdd(edit, "option-button");
       classAdd(edit, "option-edit");
       classAdd(reply, "option-button");
@@ -798,11 +804,18 @@
       append(subtitle, score);
       append(subtitle, timeago);
 
-      append(header, options);
+      if (!mobileView)
+        append(header, options);
       append(header, avatar);
       append(header, name);
       append(header, subtitle);
       append(contents, body);
+      if (mobileView) {
+        append(contents, options);
+        var optionsClearfix = create("div");
+        classAdd(optionsClearfix, "options-clearfix");
+        append(contents, optionsClearfix);
+      }
 
       if (children) {
         classAdd(children, "body");
@@ -949,30 +962,32 @@
 
 
   global.commentCollapse = function(id) {
-    var contents = $(ID_CONTENTS + id);
+    var children = $(ID_CHILDREN + id);
     var button = $(ID_COLLAPSE + id);
 
-    classAdd(contents, "hidden");
+    if (children)
+      classAdd(children, "hidden");
 
     classRemove(button, "option-collapse");
     classAdd(button, "option-uncollapse");
 
-    button.title = "Expand";
+    button.title = "Expand children";
 
     onclick(button, global.commentUncollapse, id);
   }
 
 
   global.commentUncollapse = function(id) {
-    var contents = $(ID_CONTENTS + id);
+    var children = $(ID_CHILDREN + id);
     var button = $(ID_COLLAPSE + id);
 
-    classRemove(contents, "hidden");
+    if (children)
+      classRemove(children, "hidden");
 
     classRemove(button, "option-uncollapse");
     classAdd(button, "option-collapse");
 
-    button.title = "Collapse";
+    button.title = "Collapse children";
 
     onclick(button, global.commentCollapse, id);
   }
