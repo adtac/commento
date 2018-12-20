@@ -108,7 +108,6 @@ gulp.task("js-devel", function () {
       .pipe(sourcemaps.init())
       .pipe(concat(outputFile))
       .pipe(rename(outputFile))
-      .pipe(uglify())
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(develPath))
   }
