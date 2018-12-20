@@ -43,6 +43,8 @@ func configParse() error {
 		"SMTP_PORT":         "",
 		"SMTP_FROM_ADDRESS": "",
 
+		"AKISMET_KEY": "",
+
 		"GOOGLE_KEY":    "",
 		"GOOGLE_SECRET": "",
 	}

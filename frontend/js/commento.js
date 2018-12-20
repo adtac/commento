@@ -51,6 +51,7 @@
   var ID_REMOVE = "commento-comment-remove-";
   var ID_STICKY = "commento-comment-sticky-";
   var ID_CONTENTS = "commento-comment-contents-";
+  var ID_NAME = "commento-comment-name-";
   var ID_SUBMIT_BUTTON = "commento-submit-button-";
   var ID_FOOTER = "commento-footer";
 
@@ -519,14 +520,17 @@
         $(ID_COMMENTS_AREA).innerHTML = "";
         commentsRender();
 
-        if (!resp.approved) {
-          if (id == "root") {
-            var body = $(ID_SUPER_CONTAINER + id);
-            prepend(body, messageCreate("Your comment is under moderation."));
-          } else {
-            var body = $(ID_BODY + id);
-            append(body, messageCreate("Your comment is under moderation."));
-          }
+        var message = "";
+        if (resp.state == "unapproved")
+          message = "Your comment is under moderation.";
+        else if (resp.state == "flagged")
+          message = "Your comment was flagged as spam and is under moderation.";
+
+        if (message != "") {
+          if (id == "root")
+            prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
+          else
+            append($(ID_BODY + id), messageCreate(message));
         }
       });
     });
@@ -652,6 +656,7 @@
       remove.id = ID_REMOVE + comment.commentHex;
       sticky.id = ID_STICKY + comment.commentHex;
       contents.id = ID_CONTENTS + comment.commentHex;
+      name.id = ID_NAME + comment.commentHex;
 
       collapse.title = "Collapse";
       upvote.title = "Upvote";
@@ -692,8 +697,10 @@
       }
 
       classAdd(card, "card");
-      if (isModerator && comment.state == "unapproved")
+      if (isModerator && comment.state != "approved")
         classAdd(card, "dark-card");
+      if (comment.state == "flagged")
+        classAdd(name, "flagged");
       classAdd(header, "header");
       classAdd(name, "name");
       classAdd(subtitle, "subtitle");
@@ -773,7 +780,7 @@
         if (parentHex == "root")
           append(options, sticky);
         append(options, remove);
-        if (comment.state == "unapproved")
+        if (comment.state != "approved")
           append(options, approve);
       }
       else {
@@ -823,10 +830,12 @@
       }
 
       var card = $(ID_CARD + commentHex);
+      var name = $(ID_NAME + commentHex);
       var options = $(ID_OPTIONS + commentHex);
       var tick = $(ID_APPROVE + commentHex);
 
       classRemove(card, "dark-card");
+      classRemove(name, "flagged");
       remove(tick);
     });
   }

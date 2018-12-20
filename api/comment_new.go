@@ -89,8 +89,12 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	var state string
 
 	if *x.CommenterToken == "anonymous" {
-		state = "unapproved"
 		commenterHex = "anonymous"
+		if isSpam(*x.Domain, getIp(r), getUserAgent(r), "Anonymous", "", "", *x.Markdown) {
+			state = "flagged"
+		} else {
+			state = "unapproved"
+		}
 	} else {
 		c, err := commenterGetByCommenterToken(*x.CommenterToken)
 		if err != nil {
@@ -112,10 +116,14 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		if isModerator {
 			state = "approved"
 		} else {
-			if d.RequireModeration {
-				state = "unapproved"
+			if isSpam(*x.Domain, getIp(r), getUserAgent(r), c.Name, c.Email, c.Link, *x.Markdown) {
+				state = "flagged"
 			} else {
-				state = "approved"
+				if d.RequireModeration {
+					state = "unapproved"
+				} else {
+					state = "approved"
+				}
 			}
 		}
 	}
@@ -126,5 +134,5 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "approved": state == "approved"})
+	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state})
 }

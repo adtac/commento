@@ -43,3 +43,16 @@ func bodyMarshal(w http.ResponseWriter, x map[string]interface{}) error {
 	w.Write(resp)
 	return nil
 }
+
+func getIp(r *http.Request) string {
+	ip := r.RemoteAddr
+	if r.Header.Get("X-Forwarded-For") != "" {
+		ip = r.Header.Get("X-Forwarded-For")
+	}
+
+	return ip
+}
+
+func getUserAgent(r *http.Request) string {
+	return r.Header.Get("User-Agent")
+}

@@ -10,6 +10,14 @@
   version = "v0.26.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:9769b231d8f5ff406a012aa7f293e45ed69d11617832a1c3c7b8c6ce1558a2a1"
+  name = "github.com/adtac/go-akismet"
+  packages = ["akismet"]
+  pruneopts = "UT"
+  revision = "0ca9e1023047c869ecd4bd3c20780511597a4a77"
+
+[[projects]]
   digest = "1:15042ad3498153684d09f393bbaec6b216c8eec6d61f63dff711de7d64ed8861"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
@@ -143,6 +151,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/adtac/go-akismet/akismet",
     "github.com/gorilla/handlers",
     "github.com/gorilla/mux",
     "github.com/lib/pq",
