@@ -19,4 +19,4 @@
     $("#installation-view").show();
   };
 
-} (window, document));
+} (window.commento, document));

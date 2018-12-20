@@ -15,7 +15,7 @@
 
   // Shows messages produced from password reset attempts.
   function displayChangedPassword() {
-    var changed = paramGet("changed");
+    var changed = global.paramGet("changed");
 
     if (changed == "true") {
       $("#msg").html("Password changed successfully! Login to continue.")
@@ -24,7 +24,7 @@
 
   // Shows messages produced from completed signups.
   function displaySignedUp() {
-    var signedUp = paramGet("signedUp");
+    var signedUp = global.paramGet("signedUp");
 
     if (signedUp == "true") {
       $("#msg").html("Registration successful! Login to continue.")
@@ -57,7 +57,7 @@
     };
 
     global.buttonDisable("#login-button");
-    global.post(global.commentoOrigin + "/api/owner/login", json, function(resp) {
+    global.post(global.origin + "/api/owner/login", json, function(resp) {
       global.buttonEnable("#login-button");
 
       if (!resp.success) {
@@ -66,8 +66,8 @@
       }
 
       global.cookieSet("commentoOwnerToken", resp.ownerToken);
-      document.location = global.commentoOrigin + "/dashboard";
+      document.location = global.origin + "/dashboard";
     });
   };
 
-} (window, document));
+} (window.commento, document));

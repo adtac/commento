@@ -21,10 +21,10 @@
 
   <script>
   window.onload = function() {
-    window.selfGet(function() {
-      window.vueConstruct(function() {
-        window.navbarFill();
-        window.domainRefresh();
+    window.commento.selfGet(function() {
+      window.commento.vueConstruct(function() {
+        window.commento.navbarFill();
+        window.commento.domainRefresh();
         $(document).ready(function(){
           $("ul.tabs li").click(function(){
             var tab_id = $(this).attr("data-tab");
@@ -51,13 +51,13 @@
         It's so quiet in here.
       </div>
 
-      <div class="pane-setting" v-for="domain in domains" v-on:click="window.domainSelect(domain.domain)" id="{{domain.hex}}" v-bind:class="{selected: domain.selected}" v-if="domain.show">
+      <div class="pane-setting" v-for="domain in domains" v-on:click="window.commento.domainSelect(domain.domain)" id="{{domain.hex}}" v-bind:class="{selected: domain.selected}" v-if="domain.show">
         <div class="pane-setting-inside">
           <div class="setting-title">{{domain.name}}</div>
           <div class="setting-subtitle">{{domain.domain}}</div>
         </div>
       </div>
-      <div class="pane-setting" id="domain-add" onclick="window.location.hash='#new-domain-modal'">
+      <div class="pane-setting" id="domain-add" onclick="document.location.hash='#new-domain-modal'">
         <div class="pane-setting-inside super-setting">
           <div class="super-setting-title">+</div>
           <div class="super-setting-text">New Domain</div>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="pane-middle">
-      <div v-if="showSettings" class="pane-setting" v-for="setting in settings" v-on:click="window.settingSelect(setting.id)" id="{{setting.id}}" v-bind:class="{selected: setting.selected}">
+      <div v-if="showSettings" class="pane-setting" v-for="setting in settings" v-on:click="window.commento.settingSelect(setting.id)" id="{{setting.id}}" v-bind:class="{selected: setting.selected}">
         <div class="pane-setting-inside">
           <div class="setting-title">{{setting.text}}</div>
           <div class="setting-subtitle">{{setting.meaning}}</div>
@@ -156,14 +156,14 @@
                   <div class="commento-email-container">
                     <div class="commento-email">
                       <input class="commento-input" type="text" id="new-mod" placeholder="Email">
-                      <button id="new-mod-button" class="commento-email-button" onclick="window.moderatorNewHandler()">Add moderator</button>
+                      <button id="new-mod-button" class="commento-email-button" onclick="window.commento.moderatorNewHandler()">Add moderator</button>
                     </div>
                   </div>
                   <div class="mod-emails-container">
                     <div class="content">
                       <div class="mod-email" v-for="email in domains[cd].moderators" v-if="domains[cd].moderators.length > 0">
                         <div class="email">{{email.email}}</div>
-                        <div class="delete" v-on:click="window.moderatorDeleteHandler(email.email)">Delete</div>
+                        <div class="delete" v-on:click="window.commento.moderatorDeleteHandler(email.email)">Delete</div>
                         <div class="date">added {{email.timeAgo}}</div>
                       </div>
                     </div>
@@ -215,7 +215,7 @@
               <div id="new-domain-error" class="modal-error-box"></div>
             </div>
             <div class="center">
-              <button id="save-general-button" onclick="window.generalSaveHandler()" class="button">Save Changes</button>
+              <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
             </div>
           </div>
         </div>
@@ -247,7 +247,7 @@
                         <div class="commento-email-container">
                           <div class="commento-email">
                             <input class="commento-input" type="text" id="disqus-url" placeholder="https://media.disqus.com/uploads/...">
-                            <button id="disqus-import-button" class="commento-email-button" onclick="importDisqus()">Import</button>
+                            <button id="disqus-import-button" class="commento-email-button" onclick="window.commento.importDisqus()">Import</button>
                           </div>
                         </div>
                         <div class="subtext-container">
@@ -286,7 +286,7 @@
                       If you desire to re-allow comments again on your website, you can do so. You can, of course, freeze the site again in the future.
                     </div>
 
-                    <button onclick="window.location.hash='#unfreeze-domain-modal'" class="button green-button">Unfreeze Domain</button>
+                    <button onclick="document.location.hash='#unfreeze-domain-modal'" class="button green-button">Unfreeze Domain</button>
                   </div>
 
                   <div class="box" v-if="domains[cd].state != 'frozen'">
@@ -294,7 +294,7 @@
                       If you desire to temporarily freeze new comments (domain-wide), thereby making it read-only, you can do so. You can choose to unfreeze later; this is temporary.
                     </div>
 
-                    <button id="orange-button" onclick="window.location.hash='#freeze-domain-modal'" class="button orange-button">Freeze Domain</button>
+                    <button id="orange-button" onclick="document.location.hash='#freeze-domain-modal'" class="button orange-button">Freeze Domain</button>
                   </div>
                 </div>
               </div>
@@ -305,7 +305,7 @@
                     Want to completely remove Commento from your website? This will permanently delete all comments and there is literally no way to retrieve your data once you do this.
                   </div>
 
-                  <button id="big-red-button" class="button big-red-button" onclick="window.location.hash='#delete-domain-modal'">Delete Domain</button>
+                  <button id="big-red-button" class="button big-red-button" onclick="document.location.hash='#delete-domain-modal'">Delete Domain</button>
                 </div>
               </div>
             </div>
@@ -323,7 +323,7 @@
         Are you absolutely sure you want to freeze your domain, thereby making it read-only? You can choose to unfreeze later; this is temporary.
       </div>
       <div class="modal-contents">
-        <button id="orange-button" class="button orange-button" onclick="window.domainFreezeHandler()">Freeze Domain</button>
+        <button id="orange-button" class="button orange-button" onclick="window.commento.domainFreezeHandler()">Freeze Domain</button>
       </div>
     </div>
   </div>
@@ -336,7 +336,7 @@
         Are you absolutely sure you want to unfreeze your domain? This will re-allow new comments. You can choose to freeze again in the future.
       </div>
       <div class="modal-contents">
-        <button id="blue-button" class="button green-button" onclick="window.domainUnfreezeHandler()">Unfreeze Domain</button>
+        <button id="blue-button" class="button green-button" onclick="window.commento.domainUnfreezeHandler()">Unfreeze Domain</button>
       </div>
     </div>
   </div>
@@ -349,7 +349,7 @@
         Are you absolutely sure? This will permanently delete all comments and there is literally no way to retrieve your data once you do this.
       </div>
       <div class="modal-contents">
-        <button id="big-red-button" class="button big-red-button" onclick="window.domainDeleteHandler()">Delete Domain</button>
+        <button id="big-red-button" class="button big-red-button" onclick="window.commento.domainDeleteHandler()">Delete Domain</button>
       </div>
     </div>
   </div>
@@ -374,7 +374,7 @@
         </div>
         <div id="new-domain-error" class="modal-error-box"></div>
         <div class="center">
-          <button id="add-site-button" onclick="window.domainNewHandler()" class="button">Add Domain</button>
+          <button id="add-site-button" onclick="window.commento.domainNewHandler()" class="button">Add Domain</button>
         </div>
       </div>
     </div>

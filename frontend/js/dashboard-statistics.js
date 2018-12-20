@@ -16,15 +16,15 @@
     var res;
 
     if (x < 1000000) {
-      res = numberify((x/1000).toFixed(0))
+      res = global.numberify((x/1000).toFixed(0))
       res.units = "K"
     }
     else if (x < 1000000000) {
-      res = numberify((x/1000000).toFixed(0))
+      res = global.numberify((x/1000000).toFixed(0))
       res.units = "M"
     }
     else if (x < 1000000000000) {
-      res = numberify((x/1000000000).toFixed(0))
+      res = global.numberify((x/1000000000).toFixed(0))
       res.units = "B"
     }
 
@@ -43,11 +43,11 @@
     }
 
     $(".view").hide();
-    post(global.commentoOrigin + "/api/domain/statistics", json, function(resp) {
+    global.post(global.origin + "/api/domain/statistics", json, function(resp) {
       $("#statistics-view").show();
 
       if (!resp.success) {
-        globalErrorShow(resp.message);
+        global.globalErrorShow(resp.message);
         return;
       }
 
@@ -97,4 +97,4 @@
     });
   }
 
-} (window, document));
+} (window.commento, document));

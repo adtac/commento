@@ -9,7 +9,7 @@
       return;
     }
 
-    var all_ok = unfilledMark(["#email", "#name", "#password", "#password2"], function(el) {
+    var all_ok = global.unfilledMark(["#email", "#name", "#password", "#password2"], function(el) {
       el.css("border-bottom", "1px solid red");
     });
 
@@ -25,7 +25,7 @@
     };
 
     global.buttonDisable("#signup-button");
-    post(global.commentoOrigin + "/api/owner/new", json, function(resp) {
+    global.post(global.origin + "/api/owner/new", json, function(resp) {
       global.buttonEnable("#signup-button")
 
       if (!resp.success) {
@@ -34,10 +34,10 @@
       }
 
       if (resp.confirmEmail)
-        document.location = global.commentoOrigin + "/confirm-email";
+        document.locatidocumenton = global.origin + "/confirm-email";
       else
-        document.location = global.commentoOrigin + "/login?signedUp=true";
+        document.location = global.origin + "/login?signedUp=true";
     });
   };
 
-} (window, document));
+} (window.commento, document));

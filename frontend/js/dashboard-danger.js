@@ -11,9 +11,9 @@
   global.domainDeleteHandler = function() {
     var data = global.dashboard.$data;
 
-    domainDelete(data.domains[data.cd].domain, function(success) {
+    global.domainDelete(data.domains[data.cd].domain, function(success) {
       if (success)
-        document.location = global.commentoOrigin + '/dashboard';
+        document.location = global.origin + '/dashboard';
     });
   }
 
@@ -23,7 +23,7 @@
     var data = global.dashboard.$data;
 
     data.domains[data.cd].state = "frozen"
-    domainUpdate(data.domains[data.cd])
+    global.domainUpdate(data.domains[data.cd])
     document.location.hash = "#modal-close";
   }
 
@@ -33,9 +33,9 @@
     var data = global.dashboard.$data;
 
     data.domains[data.cd].state = "unfrozen"
-    domainUpdate(data.domains[data.cd])
+    global.domainUpdate(data.domains[data.cd])
     document.location.hash = "#modal-close";
   }
 
 
-} (window, document));
+} (window.commento, document));

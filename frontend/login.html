@@ -16,9 +16,9 @@
 
   <script>
   window.onload = function() {
-    window.loggedInRedirect();
-    window.prefillEmail();
-    window.displayMessages();
+    window.commento.loggedInRedirect();
+    window.commento.prefillEmail();
+    window.commento.displayMessages();
   };
   </script>
 
@@ -41,7 +41,7 @@
       <div class="err" id="err"></div>
       <div class="msg" id="msg"></div>
 
-      <button id="button" class="button" onclick="window.login()">Login</button>
+      <button id="button" class="button" onclick="window.commento.login()">Login</button>
 
       <a class="link" href="[[[.Origin]]]/forgot">Trouble logging in? Reset your password.</a>
       <a class="link" href="[[[.Origin]]]/signup">Don't have an account yet? Sign up.</a>

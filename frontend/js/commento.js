@@ -1,6 +1,13 @@
 (function(global, document) {
   'use strict';
 
+  if (global.commento === undefined) {
+    console.log("[commento] error: window.commento namespace not defined; maybe there's a mismatch in version between the backend and the frontend?");
+    return;
+  }
+
+  global = global.commento;
+
   // Do not use other files like utils.js and http.js in the Makefile to build
   // commento.js for the following reasons:
   //   - We don't use jQuery in the actual JavaScript payload because we need
@@ -56,8 +63,8 @@
   var ID_FOOTER = "commento-footer";
 
 
-  var origin = global.commentoOrigin;
-  var cdn = global.commentoCdn;
+  var origin = global.origin;
+  var cdn = global.cdn;
   var root = null;
   var cssOverride = undefined;
   var autoInit = undefined;
@@ -137,6 +144,13 @@
       return undefined;
     
     return attr.value;
+  }
+
+
+  function onclick(node, f, ...args) {
+    node.addEventListener("click", function() {
+      f(...args);
+    }, false);
   }
 
 
@@ -254,13 +268,13 @@
       name.innerText = resp.commenter.name;
       logout.innerText = "Logout";
 
+      onclick(logout, global.logout);
+
       attrSet(loggedContainer, "style", "display: none");
-      attrSet(logout, "onclick", "logout()");
       attrSet(name, "href", resp.commenter.link);
       if (resp.commenter.photo == "undefined") {
         avatar = create("div");
         avatar.style["background"] = color;
-        avatar.style["boxShadow"] = "0px 0px 0px 2px " + color;
         avatar.innerHTML = resp.commenter.name[0].toUpperCase();
         classAdd(avatar, "avatar");
       } else {
@@ -354,7 +368,7 @@
       commenters = resp.commenters;
       configuredOauths = resp.configuredOauths;
 
-      cssLoad(cdn + "/css/commento.css", "window.loadCssOverride()");
+      cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
 
       call(callback);
     });
@@ -418,9 +432,11 @@
       classAdd(loginButton, "login-button");
       classAdd(anonymousButton, "anonymous-button");
 
-      attrSet(createButton, "onclick", "loginBoxShow()");
-      attrSet(loginButton, "onclick", "loginBoxShow(); loginSwitch(true);");
-      attrSet(anonymousButton, "onclick", "anonymousChoose()");
+      onclick(createButton, global.loginBoxShow);
+      onclick(loginButton, global.loginBoxShow);
+      onclick(loginButton, global.loginSwitch);
+      onclick(anonymousButton, global.anonymousChoose);
+
       attrSet(textarea, "disabled", true);
 
       createButton.innerText = "Create an Account";
@@ -437,8 +453,9 @@
       append(textareaContainer, buttonsContainer);
     }
     else {
+      onclick(textarea, global.showSubmitButton, id);
+
       attrSet(textarea, "placeholder", "Join the discussion!");
-      attrSet(textarea, "onclick", "showSubmitButton('" + id + "')");
     }
 
     textarea.oninput = autoExpander(textarea);
@@ -683,7 +700,6 @@
       if (commenter.photo == "undefined") {
         avatar = create("div");
         avatar.style["background"] = color;
-        avatar.style["boxShadow"] = "0px 0px 0px 2px " + color;
         avatar.innerHTML = commenter.name[0].toUpperCase();
         classAdd(avatar, "avatar");
       } else {
@@ -735,35 +751,22 @@
           classAdd(downvote, "downvoted");
       }
 
-      attrSet(edit, "onclick", "startEdit('" + comment.commentHex + "')");
-      attrSet(collapse, "onclick", "commentCollapse('" + comment.commentHex + "')");
-      attrSet(approve, "onclick", "commentApprove('" + comment.commentHex + "')");
-      attrSet(remove, "onclick", "commentDelete('" + comment.commentHex + "')");
-      attrSet(sticky, "onclick", "commentSticky('" + comment.commentHex + "')");
+      onclick(collapse, global.commentCollapse, comment.commentHex);
+      onclick(approve, global.commentApprove, comment.commentHex);
+      onclick(remove, global.commentDelete, comment.commentHex);
+      onclick(sticky, global.commentSticky, comment.commentHex);
 
-      if (isAuthenticated) {
-        if (comment.direction > 0) {
-          attrSet(upvote, "onclick", "vote('" + comment.commentHex + "', 1, 0)");
-          attrSet(downvote, "onclick", "vote('" + comment.commentHex + "', 1, -1)");
-        }
-        else if (comment.direction < 0) {
-          attrSet(upvote, "onclick", "vote('" + comment.commentHex + "', -1, 1)");
-          attrSet(downvote, "onclick", "vote('" + comment.commentHex + "', -1, 0)");
-        }
-        else {
-          attrSet(upvote, "onclick", "vote('" + comment.commentHex + "', 0, 1)");
-          attrSet(downvote, "onclick", "vote('" + comment.commentHex + "', 0, -1)");
-        }
-      }
+      if (isAuthenticated)
+        upDownOnclickSet(upvote, downvote, comment.commentHex, comment.direction);
       else {
-        attrSet(upvote, "onclick", "loginBoxShow()");
-        attrSet(downvote, "onclick", "loginBoxShow()");
+        onclick(upvote, global.loginBoxShow);
+        onclick(downvote, global.loginBoxShow);
       }
 
       if (isAuthenticated || chosenAnonymous)
-        attrSet(reply, "onclick", "replyShow('" + comment.commentHex + "')");
+        onclick(reply, global.replyShow, comment.commentHex);
       else
-        attrSet(reply, "onclick", "loginBoxShow()");
+        onclick(reply, global.loginBoxShow);
 
       if (commenter.link != "undefined" && commenter.link != "https://undefined" && commenter.link != "")
         attrSet(name, "href", commenter.link);
@@ -867,6 +870,22 @@
   }
 
 
+  function upDownOnclickSet(upvote, downvote, commentHex, direction) {
+    if (direction > 0) {
+      onclick(upvote, global.vote, commentHex, 1, 0);
+      onclick(downvote, global.vote, commentHex, 1, -1);
+    }
+    else if (direction < 0) {
+      onclick(upvote, global.vote, commentHex, -1, 1);
+      onclick(downvote, global.vote, commentHex, -1, 0);
+    }
+    else {
+      onclick(upvote, global.vote, commentHex, 0, 1);
+      onclick(downvote, global.vote, commentHex, 0, -1);
+    }
+  }
+
+
   global.vote = function(commentHex, oldVote, direction) {
     var upvote = $(ID_UPVOTE + commentHex);
     var downvote = $(ID_DOWNVOTE + commentHex);
@@ -878,18 +897,7 @@
       "direction": direction,
     };
 
-    if (direction > 0) {
-      attrSet(upvote, "onclick", "vote('" + commentHex + "', 1, 0)");
-      attrSet(downvote, "onclick", "vote('" + commentHex + "', 1, -1)");
-    }
-    else if (direction < 0) {
-      attrSet(upvote, "onclick", "vote('" + commentHex + "', -1, 1)");
-      attrSet(downvote, "onclick", "vote('" + commentHex + "', -1, 0)");
-    }
-    else {
-      attrSet(upvote, "onclick", "vote('" + commentHex + "', 0, 1)");
-      attrSet(downvote, "onclick", "vote('" + commentHex + "', 0, -1)");
-    }
+    upDownOnclickSet(upvote, downvote, commentHex, direction);
 
     classRemove(upvote, "upvoted");
     classRemove(downvote, "downvoted");
@@ -919,7 +927,7 @@
 
     replyButton.title = "Cancel reply";
 
-    attrSet(replyButton, "onclick", "replyCollapse('" + id + "')")
+    onclick(replyButton, global.replyCollapse, id);
   };
 
 
@@ -936,7 +944,7 @@
 
     replyButton.title = "Reply to this comment";
 
-    attrSet(replyButton, "onclick", "replyShow('" + id + "')")
+    onclick(replyButton, global.replyShow, id)
   }
 
 
@@ -951,7 +959,7 @@
 
     button.title = "Expand";
 
-    attrSet(button, "onclick", "commentUncollapse('" + id + "')");
+    onclick(button, global.commentUncollapse, id);
   }
 
 
@@ -966,7 +974,7 @@
 
     button.title = "Collapse";
 
-    attrSet(button, "onclick", "commentCollapse('" + id + "')");
+    onclick(button, global.commentCollapse, id);
   }
 
 
@@ -1009,7 +1017,7 @@
     classAdd(submit, "submit-button");
     classAdd(el, "button-margin");
 
-    attrSet(submit, "onclick", "commentNew('" + id + "')");
+    onclick(submit, global.commentNew, id);
 
     append(el, submit);
   }
@@ -1048,7 +1056,7 @@
     $(ID_ROOT).innerHTML = "";
     shownSubmitButton = {"root": false};
     shownReply = {};
-    main(callback);
+    global.main(callback);
   }
 
 
@@ -1116,14 +1124,15 @@
     oauthPretext.innerText = "Or proceed with social login.";
     anonymousButton.innerText = "Comment anonymously";
 
+    onclick(emailButton, global.passwordAsk);
+    onclick(loginLink, global.loginSwitch);
+    onclick(anonymousButton, global.anonymousChoose);
+    onclick(close, global.loginBoxClose);
+
     attrSet(loginBoxContainer, "style", "display: none; opacity: 0;");
     attrSet(emailInput, "name", "email");
     attrSet(emailInput, "placeholder", "Email address");
     attrSet(emailInput, "type", "text");
-    attrSet(emailButton, "onclick", "passwordAsk()");
-    attrSet(loginLink, "onclick", "loginSwitch()");
-    attrSet(anonymousButton, "onclick", "anonymousChoose()");
-    attrSet(close, "onclick", "loginBoxClose()");
 
     for (var i = 0; i < configuredOauths.length; i++) {
       var button = create("button");
@@ -1133,7 +1142,7 @@
 
       button.innerText = configuredOauths[i];
 
-      attrSet(button, "onclick", "commentoAuth('" + configuredOauths[i] + "')");
+      onclick(button, global.commentoAuth, configuredOauths[i]); 
 
       append(oauthButtons, button);
     }
@@ -1181,7 +1190,7 @@
     loginLink.innerText = "Don't have an account? Sign up.";
     subtitle.innerText = "Enter your email address to start with.";
 
-    attrSet(loginLink, "onclick", "signupSwitch()");
+    onclick(loginLink, global.signupSwitch);
 
     loginBoxType = "login";
 
@@ -1195,8 +1204,8 @@
 
 
   global.signupSwitch = function() {
-    loginBoxClose();
-    loginBoxShow();
+    global.loginBoxClose();
+    global.loginBoxShow();
   }
 
 
@@ -1208,7 +1217,7 @@
 
     post(origin + "/api/commenter/login", json, function(resp) {
       if (!resp.success) {
-        loginBoxClose();
+        global.loginBoxClose();
         errorShow(resp.message);
         return
       }
@@ -1242,7 +1251,7 @@
 
     post(origin + "/api/commenter/new", json, function(resp) {
       if (!resp.success) {
-        loginBoxClose();
+        global.loginBoxClose();
         errorShow(resp.message);
         return
       }
@@ -1320,9 +1329,9 @@
         fieldButton.innerText = loginBoxType;
 
         if (loginBoxType == "signup")
-          attrSet(fieldButton, "onclick", "signup()");
+          onclick(fieldButton, global.signup);
         else
-          attrSet(fieldButton, "onclick", "login()");
+          onclick(fieldButton, global.login);
 
         append(field, fieldButton);
       }
@@ -1331,7 +1340,7 @@
     }
 
     if (loginBoxType == "signup")
-      $(ID_LOGIN_BOX_PASSWORD_NAME).focus();
+      $(ID_LOGIN_BOX_NAME_INPUT).focus();
     else
       $(ID_LOGIN_BOX_PASSWORD_INPUT).focus();
   }
@@ -1424,15 +1433,15 @@
     lock.id = ID_MOD_TOOLS_LOCK_BUTTON;
 
     classAdd(modTools, "mod-tools");
-    classAdd(lock, "mod-tools-lock-button");
 
     if (isLocked)
       lock.innerHTML = "Unlock Thread";
     else
       lock.innerHTML = "Lock Thread";
 
+    onclick(lock, global.threadLockToggle);
+
     attrSet(modTools, "style", "display: none");
-    attrSet(lock, "onclick", "threadLockToggle()");
 
     append(modTools, lock);
     append(root, modTools);
@@ -1543,7 +1552,7 @@
     dataTagsLoad();
 
     if (autoInit == "true" || autoInit === undefined)
-      main(undefined);
+      global.main(undefined);
     else if (autoInit != "false")
       console.log("[commento] error: invalid value for data-auto-init; allowed values: true, false");
   }

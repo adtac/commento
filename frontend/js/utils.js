@@ -72,7 +72,7 @@
     expires = "; expires=" + date.toUTCString();
 
     var cookieString = name + "=" + value + expires + "; path=/";
-    if (/^https:\/\//i.test(commentoOrigin))
+    if (/^https:\/\//i.test(origin))
       cookieString += "; secure";
 
     document.cookie = cookieString;
@@ -115,4 +115,4 @@
       return "just now";
   }
 
-} (window, document));
+} (window.commento, document));

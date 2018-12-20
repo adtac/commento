@@ -5,13 +5,16 @@
 }
 
 .commento-root {
-  font-family: "Source Sans Pro", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #50596c;
   overflow-x: hidden;
-  text-rendering: optimizeLegibility;
-  padding: 8px;
+  padding: 0px;
+
+  * {
+    font-family: "Source Sans Pro", "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #50596c;
+    text-rendering: optimizeLegibility;
+  }
 
   @import "colors-main.scss";
   @import "common-main.scss";
@@ -46,13 +49,24 @@
 
   .commento-mod-tools {
     margin-bottom: 16px;
+
+    button {
+      text-transform: uppercase;
+      color: $gray-7;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-left: 12px;
+      background: none;
+      border: none;
+    }
   }
 
   .commento-mod-tools::before {
-    content: "Moderators";
+    content: "Moderator Tools";
     text-transform: uppercase;
     color: $indigo-8;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
   }
 
@@ -71,8 +85,8 @@
   }
 
   .commento-avatar {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -81,8 +95,7 @@
     font-size: 22px;
     float: left;
     margin-right: 10px;
-    border: 1px solid #fff;
-    box-shadow: 0px 0px 0px 2px #f00;
+    border: 0px transparent;
   }
 
   .commento-avatar-img {

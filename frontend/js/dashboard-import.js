@@ -6,7 +6,6 @@
     $("#import-view").show();
   }
 
-
   global.importDisqus = function() {
     var url = $("#disqus-url").val();
     var data = global.dashboard.$data;
@@ -18,7 +17,7 @@
     }
 
     global.buttonDisable("#disqus-import-button");
-    global.post(global.commentoOrigin + "/api/domain/import/disqus", json, function(resp) {
+    global.post(global.origin + "/api/domain/import/disqus", json, function(resp) {
       global.buttonEnable("#disqus-import-button");
 
       if (!resp.success) {
@@ -28,8 +27,8 @@
 
       $("#disqus-import-button").hide();
 
-      globalOKShow("Imported " + resp.numImported + " comments!");
+      global.globalOKShow("Imported " + resp.numImported + " comments!");
     });
   }
 
-} (window, document));
+} (window.commento, document));

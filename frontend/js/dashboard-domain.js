@@ -7,7 +7,7 @@
 
     for (var i = 0; i < domains.length; i++) {
       if (domains[i].domain == domain) {
-        vs("frozen", domains[i].state == "frozen");
+        global.vs("frozen", domains[i].state == "frozen");
         domains[i].selected = true;
         data.cd = i;
         data.importedComments = domains[i].importedComments;
@@ -18,7 +18,7 @@
 
     data.showSettings = true;
 
-    settingDeselectAll();
+    global.settingDeselectAll();
     $(".view").hide();
   };
 
@@ -42,7 +42,7 @@
     }
 
     global.buttonDisable("#add-site-button");
-    global.post(global.commentoOrigin + "/api/domain/new", json, function(resp) {
+    global.post(global.origin + "/api/domain/new", json, function(resp) {
       global.buttonEnable("#add-site-button");
 
       $("#new-domain-name").val("");
@@ -69,7 +69,7 @@
       "ownerToken": global.cookieGet("commentoOwnerToken"),
     };
 
-    global.post(global.commentoOrigin + "/api/domain/list", json, function(resp) {
+    global.post(global.origin + "/api/domain/list", json, function(resp) {
       if (!resp.success) {
         global.globalErrorShow(resp.message);
         return;
@@ -111,7 +111,7 @@
       "domain": domain,
     };
 
-    global.post(global.commentoOrigin + "/api/domain/update", json, function(resp) {
+    global.post(global.origin + "/api/domain/update", json, function(resp) {
       if (callback !== undefined)
         callback(resp.success);
 
@@ -130,7 +130,7 @@
       "domain": domain,
     };
 
-    global.post(global.commentoOrigin + "/api/domain/delete", json, function(resp) {
+    global.post(global.origin + "/api/domain/delete", json, function(resp) {
       if (!resp.success) {
         global.globalErrorShow(resp.message);
         return;
@@ -141,4 +141,4 @@
     });
   }
 
-} (window, document));
+} (window.commento, document));

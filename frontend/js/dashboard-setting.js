@@ -43,4 +43,4 @@
       settings[i].selected = false;
   }
 
-} (window, document));
+} (window.commento, document));

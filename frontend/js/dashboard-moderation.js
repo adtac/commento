@@ -29,7 +29,7 @@
     if (idx == -1) {
       data.domains[data.cd].moderators.push({"email": email, "timeAgo": "just now"});
       global.buttonDisable("#new-mod-button");
-      global.post(global.commentoOrigin + "/api/domain/moderator/new", json, function(resp) {
+      global.post(global.origin + "/api/domain/moderator/new", json, function(resp) {
         global.buttonEnable("#new-mod-button");
 
         if (!resp.success) {
@@ -68,15 +68,15 @@
 
     if (idx != -1) {
       data.domains[data.cd].moderators.splice(idx, 1);
-      global.post(global.commentoOrigin + "/api/domain/moderator/delete", json, function(resp) {
+      global.post(global.origin + "/api/domain/moderator/delete", json, function(resp) {
         if (!resp.success) {
           global.globalErrorShow(resp.message);
           return
         }
 
-        globalOKShow("Removed!");
+        global.globalOKShow("Removed!");
       });
     }
   }
 
-} (window, document));
+} (window.commento, document));

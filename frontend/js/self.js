@@ -7,14 +7,14 @@
     };
 
     if (json.ownerToken === undefined) {
-      document.location = global.commentoOrigin + "/login";
+      document.location = global.origin + "/login";
       return;
     }
 
-    global.post(global.commentoOrigin + "/api/owner/self", json, function(resp) {
+    global.post(global.origin + "/api/owner/self", json, function(resp) {
       if (!resp.success || !resp.loggedIn) {
         global.cookieDelete("commentoOwnerToken");
-        document.location = global.commentoOrigin + "/login";
+        document.location = global.origin + "/login";
         return;
       }
 
@@ -23,4 +23,4 @@
     });
   };
 
-}(window, document));
+}(window.commento, document));

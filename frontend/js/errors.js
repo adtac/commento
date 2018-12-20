@@ -28,4 +28,4 @@
     global.showGlobalMessage("#global-ok", text);
   }
 
-} (window, document));
+} (window.commento, document));

@@ -53,8 +53,8 @@ func staticRouterInit(router *mux.Router) error {
 
 			prefix := ""
 			if dir == "/js" {
-				prefix = "window.commentoOrigin='" + os.Getenv("ORIGIN") + "';\n"
-				prefix += "window.commentoCdn='" + os.Getenv("CDN_PREFIX") + "';\n"
+				prefix = `window.commento = {origin: "` + os.Getenv("ORIGIN") + `", cdn: "` + os.Getenv("CDN_PREFIX") + `"};
+`
 			}
 
 			gzip := (os.Getenv("GZIP_STATIC") == "true")

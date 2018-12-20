@@ -23,42 +23,42 @@
         "text": "Installation",
         "meaning": "Install Commento with HTML",
         "selected": false,
-        "open": installationOpen,
+        "open": global.installationOpen,
       },
       {
         "id": "general",
         "text": "Configure Domain",
         "meaning": "Names, domains and the rest",
         "selected": false,
-        "open": generalOpen,
+        "open": global.generalOpen,
       },
       {
         "id": "moderation",
         "text": "Moderation Settings",
         "meaning": "Manage list of moderators",
         "selected": false,
-        "open": moderationOpen,
+        "open": global.moderationOpen,
       },
       {
         "id": "statistics",
         "text": "View Activity",
         "meaning": "Usage and comment statistics",
         "selected": false,
-        "open": statisticsOpen,
+        "open": global.statisticsOpen,
       },
       {
         "id": "import",
         "text": "Import Comments",
         "meaning": "Import from a different service",
         "selected": false,
-        "open": importOpen,
+        "open": global.importOpen,
       },
       {
         "id": "danger",
         "text": "Danger Zone",
         "meaning": "Delete or freeze domain",
         "selected": false,
-        "open": dangerOpen,
+        "open": global.dangerOpen,
       },
     ];
 
@@ -86,4 +86,4 @@
       callback();
   };
 
-} (window, document));
+} (window.commento, document));

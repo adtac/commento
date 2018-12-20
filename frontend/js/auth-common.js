@@ -5,7 +5,7 @@
   // cookie is deleted.
   global.loggedInRedirect = function() {
     if (global.cookieGet("commentoOwnerToken") !== undefined)
-      document.location = global.commentoOrigin + "/dashboard";
+      document.location = global.origin + "/dashboard";
   }
 
 
@@ -17,4 +17,4 @@
     }
   };
 
-} (window, document));
+} (window.commento, document));

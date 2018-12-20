@@ -21,7 +21,7 @@
     };
 
     global.buttonDisable("#reset-button");
-    global.post(global.commentoOrigin + "/api/owner/reset-password", json, function(resp) {
+    global.post(global.origin + "/api/owner/reset-password", json, function(resp) {
       global.buttonEnable("#reset-button");
 
       global.textSet("#err", "");
@@ -30,8 +30,8 @@
         return
       }
 
-      document.location = global.commentoOrigin + "/login?changed=true";
+      document.location = global.origin + "/login?changed=true";
     });
   }
 
-} (window, document));
+} (window.commento, document));
