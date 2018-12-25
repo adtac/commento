@@ -37,7 +37,7 @@ const jsCompileMap = {
     "js/forgot.js"
   ],
   "js/reset.js": [
-    "js/js/utils.js",
+    "js/utils.js",
     "js/http.js",
     "js/reset.js"
   ],
