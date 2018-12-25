@@ -7,7 +7,7 @@
   global.installationOpen = function() {
     var html = "" +
                "<div id=\"commento\"></div>\n" +
-               "<script src=\"" + global.commento.cdn + "/js/commento.js\"><\/script>\n" +
+               "<script src=\"" + global.cdn + "/js/commento.js\"><\/script>\n" +
                "";
 
     $("#code-div").text(html);
