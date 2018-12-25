@@ -1,41 +1,81 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
 	"github.com/gorilla/mux"
-	"html/template"
+	"strings"
 	"io/ioutil"
-	"mime"
 	"net/http"
-	"os"
+	"mime"
 	"path"
+	"os"
 )
 
 func redirectLogin(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, os.Getenv("ORIGIN")+"/login", 301)
 }
 
-type staticAssetPlugs struct {
-	Origin string
-}
-
-type staticHtmlPlugs struct {
+type staticPlugs struct {
 	Origin    string
 	CdnPrefix string
-	Footer    template.HTML
+	Footer    string
+}
+
+var asset map[string][]byte = make(map[string][]byte)
+var contentType map[string]string = make(map[string]string)
+var footer string
+var compress bool
+
+func fileDetemplate(f string) ([]byte, error) {
+	contents, err := ioutil.ReadFile(f)
+	if err != nil {
+		logger.Errorf("cannot read file %s: %v", f, err)
+		return []byte{}, err
+	}
+
+	x := string(contents)
+	x = strings.Replace(x, "[[[.Origin]]]", os.Getenv("ORIGIN"), -1)
+	x = strings.Replace(x, "[[[.CdnPrefix]]]", os.Getenv("CDN_PREFIX"), -1)
+	x = strings.Replace(x, "[[[.Footer]]]", footer, -1)
+
+	return []byte(x), nil
+}
+
+func footerInit() error {
+	contents, err := fileDetemplate(os.Getenv("STATIC") + "/footer.html")
+	if err != nil {
+		logger.Errorf("cannot init footer: %v", err)
+		return err
+	}
+
+	footer = string(contents)
+	return nil
+}
+
+func fileLoad(f string) ([]byte, error) {
+	b, err := fileDetemplate(f)
+	if err != nil {
+		logger.Errorf("cannot load file %s: %v", f, err)
+		return []byte{}, err
+	}
+
+	if !compress {
+		return b, nil
+	}
+
+	return gzipStatic(b)
 }
 
 func staticRouterInit(router *mux.Router) error {
+	var err error
+
 	subdir := pathStrip(os.Getenv("ORIGIN"))
 
-	asset := make(map[string][]byte)
-	gzippedAsset := make(map[string][]byte)
+	if err = footerInit(); err != nil {
+		logger.Errorf("error initialising static router: %v", err)
+		return err
+	}
 
-	for _, dir := range []string{"js", "css", "images"} {
-		sl := string(os.PathSeparator)
-		dir = sl + dir
-
+	for _, dir := range []string{"/js", "/css", "/images"} {
 		files, err := ioutil.ReadDir(os.Getenv("STATIC") + dir)
 		if err != nil {
 			logger.Errorf("cannot read directory %s%s: %v", os.Getenv("STATIC"), dir, err)
@@ -43,108 +83,47 @@ func staticRouterInit(router *mux.Router) error {
 		}
 
 		for _, file := range files {
-			p := dir + sl + file.Name()
-
-			contents, err := ioutil.ReadFile(os.Getenv("STATIC") + p)
+			f := dir + "/" + file.Name()
+			asset[subdir+f], err = fileLoad(os.Getenv("STATIC") + f)
 			if err != nil {
-				logger.Errorf("cannot read file %s%s: %v", os.Getenv("STATIC"), p, err)
+				logger.Errorf("cannot detemplate %s%s: %v", os.Getenv("STATIC"), f, err)
 				return err
 			}
-
-			prefix := ""
-			if dir == "/js" {
-				prefix = `window.commento = {origin: "` + os.Getenv("ORIGIN") + `", cdn: "` + os.Getenv("CDN_PREFIX") + `"};
-`
-			}
-
-			gzip := (os.Getenv("GZIP_STATIC") == "true")
-
-			asset[subdir+p] = []byte(prefix + string(contents))
-			if gzip {
-				gzippedAsset[subdir+p], err = gzipStatic(asset[subdir+p])
-				if err != nil {
-					logger.Errorf("error gzipping %s: %v", p, err)
-					return err
-				}
-			}
-
-			// faster than checking inside the handler
-			if !gzip {
-				router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
-					w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
-					w.Write(asset[r.URL.Path])
-				})
-			} else {
-				router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
-					w.Header().Set("Content-Type", mime.TypeByExtension(path.Ext(r.URL.Path)))
-					w.Header().Set("Content-Encoding", "gzip")
-					w.Write(gzippedAsset[r.URL.Path])
-				})
-			}
 		}
-	}
-
-	footer, err := ioutil.ReadFile(os.Getenv("STATIC") + string(os.PathSeparator) + "footer.html")
-	if err != nil {
-		logger.Errorf("cannot read file footer.html: %v", err)
-		return err
 	}
 
 	pages := []string{
-		"login",
-		"forgot",
-		"reset-password",
-		"signup",
-		"confirm-email",
-		"dashboard",
-		"logout",
-	}
-
-	html := make(map[string]string)
-	for _, page := range pages {
-		html[subdir+page] = ""
+		"/login",
+		"/forgot",
+		"/reset-password",
+		"/signup",
+		"/confirm-email",
+		"/dashboard",
+		"/logout",
 	}
 
 	for _, page := range pages {
-		sl := string(os.PathSeparator)
-		page = sl + page
-		file := page + ".html"
-
-		contents, err := ioutil.ReadFile(os.Getenv("STATIC") + file)
+		f := page + ".html"
+		asset[subdir+page], err = fileLoad(os.Getenv("STATIC") + f)
 		if err != nil {
-			logger.Errorf("cannot read file %s%s: %v", os.Getenv("STATIC"), file, err)
+			logger.Errorf("cannot detemplate %s%s: %v", os.Getenv("STATIC"), f, err)
 			return err
 		}
-
-		result := string(contents)
-
-		for {
-			t, err := template.New(page).Delims("[[[", "]]]").Parse(result)
-			if err != nil {
-				logger.Errorf("cannot parse %s%s template: %v", os.Getenv("STATIC"), file, err)
-				return err
-			}
-
-			var buf bytes.Buffer
-			t.Execute(&buf, &staticHtmlPlugs{
-				Origin:    os.Getenv("ORIGIN"),
-				CdnPrefix: os.Getenv("CDN_PREFIX"),
-				Footer:    template.HTML(string(footer)),
-			})
-
-			result = buf.String()
-			if result == html[subdir+page] {
-				break
-			} else {
-				html[subdir+page] = result
-				continue
-			}
-		}
 	}
 
-	for _, page := range pages {
-		router.HandleFunc("/"+page, func(w http.ResponseWriter, r *http.Request) {
-			fmt.Fprint(w, html[r.URL.Path])
+	for p, _ := range(asset) {
+		if path.Ext(p) != "" {
+			contentType[p] = mime.TypeByExtension(path.Ext(p))
+		} else {
+			contentType[p] = mime.TypeByExtension("html")
+		}
+
+		router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", contentType[r.URL.Path])
+			if compress {
+				w.Header().Set("Content-Encoding", "gzip")
+			}
+			w.Write(asset[r.URL.Path])
 		})
 	}
 

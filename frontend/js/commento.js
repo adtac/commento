@@ -65,8 +65,8 @@
   var ID_FOOTER = "commento-footer";
 
 
-  var origin = global.origin;
-  var cdn = global.cdn;
+  var origin = "[[[.Origin]]]";
+  var cdn = "[[[.CdnPrefix]]]";
   var root = null;
   var cssOverride;
   var autoInit;

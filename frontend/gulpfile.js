@@ -26,28 +26,33 @@ const jsCompileMap = {
   "js/highlight.js": ["node_modules/highlightjs/highlight.pack.min.js"],
   "js/chartist.js": ["node_modules/chartist/dist/chartist.min.js"],
   "js/login.js": [
+    "js/constants.js",
     "js/utils.js",
     "js/http.js",
     "js/auth-common.js",
     "js/login.js"
   ],
   "js/forgot.js": [
+    "js/constants.js",
     "js/utils.js",
     "js/http.js",
     "js/forgot.js"
   ],
   "js/reset.js": [
+    "js/constants.js",
     "js/utils.js",
     "js/http.js",
     "js/reset.js"
   ],
   "js/signup.js": [
+    "js/constants.js",
     "js/utils.js",
     "js/http.js",
     "js/auth-common.js",
     "js/signup.js"
   ],
   "js/dashboard.js": [
+    "js/constants.js",
     "js/utils.js",
     "js/http.js",
     "js/errors.js",
@@ -63,6 +68,7 @@ const jsCompileMap = {
     "js/dashboard-danger.js",
   ],
   "js/logout.js": [
+    "js/constants.js",
     "js/utils.js",
     "js/logout.js"
   ],
