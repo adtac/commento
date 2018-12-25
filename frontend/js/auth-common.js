@@ -1,5 +1,5 @@
 (function (global, document) {
-  "use strict"
+  "use strict";
 
   // Redirect the user to the dashboard if there's a cookie. If the cookie is
   // invalid, they would be redirected back to the login page *after* the
