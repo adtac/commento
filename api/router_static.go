@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	"strings"
 	"io/ioutil"
-	"net/http"
 	"mime"
-	"path"
+	"net/http"
 	"os"
+	"path"
+	"strings"
 )
 
 func redirectLogin(w http.ResponseWriter, r *http.Request) {
@@ -111,7 +111,7 @@ func staticRouterInit(router *mux.Router) error {
 		}
 	}
 
-	for p, _ := range(asset) {
+	for p, _ := range asset {
 		if path.Ext(p) != "" {
 			contentType[p] = mime.TypeByExtension(path.Ext(p))
 		} else {
