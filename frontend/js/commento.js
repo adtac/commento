@@ -1561,6 +1561,11 @@
 
   global.main = function(callback) {
     root = $(ID_ROOT);
+    if (root === null) {
+      console.log("[commento] error: no root element with ID '" + ID_ROOT + "' found");
+      return;
+    }
+
     classAdd(root, "root");
 
     loginBoxCreate();
