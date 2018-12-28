@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-binary_name=commento-ce
+binary_name=commento
 
 trap ctrl_c INT
 ctrl_c() {

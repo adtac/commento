@@ -2,7 +2,7 @@ version: '3'
 
 services:
   server:
-    image: registry.gitlab.com/commento/commento-ce
+    image: registry.gitlab.com/commento/commento
     ports:
       - 8080:8080
     environment:

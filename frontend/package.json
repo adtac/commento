@@ -1,8 +1,8 @@
 {
-  "name": "commento-ce",
+  "name": "commento",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@gitlab.com:commento/commento-ce.git",
+  "repository": "git@gitlab.com:commento/commento.git",
   "author": "Adhityaa <c.adhityaa@gmail.com> Anton Linevych anton@linevich.net",
   "license": "MIT",
   "private": true,

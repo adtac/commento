@@ -7,9 +7,9 @@ PROD_BUILD_DIR         = $(BUILD_DIR)/prod
 GO_SRC_DIR             = .
 GO_SRC_FILES           = $(wildcard $(GO_SRC_DIR)/*.go)
 GO_DEVEL_BUILD_DIR     = $(DEVEL_BUILD_DIR)
-GO_DEVEL_BUILD_BINARY  = $(GO_DEVEL_BUILD_DIR)/commento-ce
+GO_DEVEL_BUILD_BINARY  = $(GO_DEVEL_BUILD_DIR)/commento
 GO_PROD_BUILD_DIR      = $(PROD_BUILD_DIR)
-GO_PROD_BUILD_BINARY   = $(GO_PROD_BUILD_DIR)/commento-ce
+GO_PROD_BUILD_BINARY   = $(GO_PROD_BUILD_DIR)/commento
 
 devel: devel-go
 
