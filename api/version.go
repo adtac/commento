@@ -14,13 +14,12 @@ func versionCheckStart() error {
 	go func() {
 		printedError := false
 		errorCount := 0
+		latestSeen := ""
 
 		for {
 			time.Sleep(5 * time.Minute)
 
 			data := url.Values{
-				"origin":  {os.Getenv("ORIGIN")},
-				"edition": {edition},
 				"version": {version},
 			}
 
@@ -65,8 +64,9 @@ func versionCheckStart() error {
 				continue
 			}
 
-			if r.NewUpdate {
+			if r.NewUpdate && r.Latest != latestSeen {
 				logger.Infof("New update available! Latest version: %s", r.Latest)
+				latestSeen = r.Latest
 			}
 
 			errorCount = 0
