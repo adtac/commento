@@ -3,10 +3,10 @@ stages:
   - go-fmt
   - go-test
   - build-src
+  - aws-upload-tags
   - build-docker
   - docker-registry-master
   - docker-registry-tags
-  - aws-upload-tags
 
 check-dco:
   stage: check-dco
@@ -37,6 +37,8 @@ build-src:
 aws-upload-tags:
   stage: aws-upload-tags
   image: debian:buster
+  environment:
+    name: aws-upload-tags
   only:
     - tags
   before_script:
