@@ -58,7 +58,7 @@ build-docker:
     - master
     - tags
   script:
-    - docker build -t commento-ce .
+    - docker build -t commento .
 
 go-test:
   stage: go-test
@@ -99,13 +99,13 @@ docker-registry-master:
   services:
     - docker:dind
   only:
-    - master@commento/commento-ce
+    - master@commento/commento
   before_script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
-    - docker pull registry.gitlab.com/commento/commento-ce:latest || true
-    - docker build --cache-from registry.gitlab.com/commento/commento-ce:latest --tag registry.gitlab.com/commento/commento-ce:latest .
-    - docker push registry.gitlab.com/commento/commento-ce:latest
+    - docker pull registry.gitlab.com/commento/commento:latest || true
+    - docker build --cache-from registry.gitlab.com/commento/commento:latest --tag registry.gitlab.com/commento/commento:latest .
+    - docker push registry.gitlab.com/commento/commento:latest
 
 docker-registry-tags:
   stage: docker-registry-tags
@@ -118,5 +118,5 @@ docker-registry-tags:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
     - apk add git
-    - docker build --tag registry.gitlab.com/commento/commento-ce:$(git describe --tags) .
-    - docker push registry.gitlab.com/commento/commento-ce:$(git describe --tags)
+    - docker build --tag registry.gitlab.com/commento/commento:$(git describe --tags) .
+    - docker push registry.gitlab.com/commento/commento:$(git describe --tags)
