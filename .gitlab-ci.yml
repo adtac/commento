@@ -38,6 +38,9 @@ aws-upload-tags:
   stage: aws-upload-tags
   image: debian:buster
   environment: aws-upload-tags
+  variables:
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
   only:
     - tags
   before_script:
