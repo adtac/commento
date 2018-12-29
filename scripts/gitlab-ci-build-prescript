@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+mkdir -p /go/src /go/bin /go/pkg
+ln -s $CI_PROJECT_DIR /go/src/$CI_PROJECT_NAME
+
+apt update
+apt install -y curl gnupg git make golang python
+export GOPATH=/go
+export PATH=$PATH:/go/bin
+curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+apt install -y nodejs
+npm install -g yarn@1.10.0
+
+apt install -y python python-pip
+pip install awscli

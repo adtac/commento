@@ -6,6 +6,7 @@ stages:
   - build-docker
   - docker-registry-master
   - docker-registry-tags
+  - aws-upload-tags
 
 check-dco:
   stage: check-dco
@@ -21,27 +22,32 @@ check-dco:
 build-src:
   stage: build-src
   image: debian:buster
-  variables:
-    GOPATH: $CI_PROJECT_DIR
   except:
     - master
     - tags
   before_script:
-    - apt update
-    - apt install -y curl gnupg git make golang
-    - mkdir -p /go/src /go/bin /go/pkg
+    - bash $CI_PROJECT_DIR/scripts/gitlab-ci-build-prescript
+  script:
     - export GOPATH=/go
     - export PATH=$PATH:/go/bin
-    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    - ln -s $CI_PROJECT_DIR /go/src/$CI_PROJECT_NAME
-    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    - apt update
-    - apt install -y nodejs
-    - npm install -g yarn@1.10.0
-  script:
     - cd /go/src/$CI_PROJECT_NAME
     - make devel
     - make prod
+
+aws-upload-tags:
+  stage: aws-upload-tags
+  image: debian:buster
+  only:
+    - tags
+  before_script:
+    - bash $CI_PROJECT_DIR/scripts/gitlab-ci-build-prescript
+  script:
+    - export GOPATH=/go
+    - export PATH=$PATH:/go/bin
+    - cd /go/src/$CI_PROJECT_NAME
+    - make prod
+    - cd build/prod && tar -zcvf /commento-linux-amd64-$(git describe --tags).tgz .
+    - aws s3 cp /commento-linux-amd64-$(git describe --tags).tgz s3://commento-release/
 
 build-docker:
   stage: build-docker
