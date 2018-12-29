@@ -37,8 +37,7 @@ build-src:
 aws-upload-tags:
   stage: aws-upload-tags
   image: debian:buster
-  environment:
-    name: aws-upload-tags
+  environment: aws-upload-tags
   only:
     - tags
   before_script:
