@@ -4,43 +4,59 @@
 
 <p align="center"><b>A bloat-free and privacy-focused discussion platform.</b></p>
 
-Commento is a discussion platform that you can embed on your blog, news articles, and any place where you want your readers to add comments. Commento is fast, lightweight, and privacy-focused; we'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
+Commento allows you to foster discussion on your website &ndash; if you have a blog, you can embed Commento if you want your readers to add comments. It's fast and bloat-free, has a modern interface, and is reasonably secure. Unlike most alternatives, Commento is lightweight and privacy-focused; I'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
 
-#### Features
+#### Frequently Asked Questions
 
- - Privacy-focused
- - Super lightweight, allowing for fast pageloads
- - Automatic spam filtering
- - Review and approve or delete comments through the moderation interface
- - Modern interface with a clean design
- - OAuth support (Google login, for example)
- - Custom CSS theming
- - Import from existing services (like Disqus)
- - Completely free and open source (MIT Expat license)
+**I don't want to install and manage Commento on a server.**  
+You can use [Commento.io](https://commento.io), the cloud version of Commento, where I do the server hosting, updates, and security and performance tuning for you. To make the hosted service self-sustainable, it is not free. You may choose the plan that best matches your financial situation and needs &ndash; all plans have all features.
 
-#### Editions
+**What features does Commento have?**  
+Commento comes with a lot of useful features out-of-the-box: rich text support, upvotes and downvotes, automatic spam detection, moderation tools, sticky comments, thread locking, OAuth login, email notifications, and more!
 
-There are three editions of Commento.
+**What does Commento look like? Do you have a demo?**  
+Check out [demo.commento.io](https://demo.commento.io) to play around with a live demo of Commento.
 
- - **Commento Community Edition (CE)** is open source software that's freely available under the MIT license.
- - [**Commento Enterprise Edition (EE)**](https://commento.io/pricing#self-hosted) includes extra features geared towards organizations that want to self-host.
- - [**Commento Hosted**](https://commento.io) is a hosted version of Commento for those who don't want to host and manage servers. This is currently in private beta and you can [add yourself to the waiting list here](https://commento.io).
+**How is Commento different from Disqus, Facebook Comments, and the rest?**  
+Most other products in this space do not respect your privacy; showing adverts is their primary business model and that nearly always comes at the users' cost. There is no free lunch. Commento is also orders of magnitude lighter than alternatives &ndash; while Disqus and Facebook take megabytes of download to load, Commento is just 11 kB.
+
+**Is Commento free software?**  
+Yes. Commento is made [freely available](https://gitlab.com/commento/commento) under the [MIT license](https://gitlab.com/commento/commento/blob/master/LICENSE). And it will always stay that way.
+
+**Disqus has a free plan. Why is the [cloud version](https://commento.io) not free of cost?**  
+When I say Commento is free, I mean [free as in freedom](https://www.gnu.org/philosophy/free-sw.en.html). The cloud version is not offered free of cost because servers cost money and offering the service for free would not be sustainable. Unlike most alternatives, Commento does not operate on adverts and shady tactics; you're the customer, not the product.
+
+**I have nothing to hide. Why should I care about my privacy?**  
+The thing about privacy is that once you give up control over your information, you can't get it back. You may be fine with having your personal information sold to unknown third-parties today, but when your insurance company uses this information against you tomorrow, you'll regret it. And you'll have no recourse to correct this. Read [this Wikipedia article](https://en.wikipedia.org/wiki/Nothing_to_hide_argument) for more information.
+
+<div><p style="margin: 0px 0px"><b>As a blog owner, why should I worry about my readers' privacy?</b><br>
+Good question. For starters, your readers value their privacy. Not caring about them is disrespectful and you will end up alienating your audience; they won't come back. But even if you ignore this, you have bigger questions to answer:</p>
+<ul>
+ <li><b>Legality</b>: Did you know that Disqus still isn't GDPR-compliant (according to their <a href="https://help.disqus.com/terms-and-policies/privacy-faq" title="At the time of writing (28 December 2018)" rel="nofollow">privacy policy</a>)?</li>
+ <li><b>Security</b>: What happens when a random third-party script is injected into your website?</li>
+ <li><b>Performance</b>: Did you know that half a second increase in page load time results in a 20% decrease in  engagement and site traffic?</li>
+ <li><b>Ownership</b>: Who owns the content when your readers create comments?</li>
+</ul></div>
+
+**Who's behind this? Are you an evil corporation?**  
+My name is <a href="https://adtac.in">Adhityaa</a>, and I created the project. As someone who's still a student, I promise you I'm neither evil nor a corporation. But I'm not the only one &ndash; dozens of people have contributed to the project and Commento would not exist without these wonderful people.
+
+**Okay, how do I get started?**  
+Glad you asked! You have two options &ndash; self-hosting Commento on your own server or using the [cloud  version](https://commento.io). Start [from here](https://docs.commento.io/getting-started/) to decide which option is right for you and proceed from there.
 
 #### Installation and Configuration
 
-See our [documentation on how to install Commento](http://docs.commento.io/installation.html) to get started. We offer several ways to install the software, including a Docker image.
-
-Once you've installed the software, you need to configure it with various environment variables before starting the service. To learn more about this, refer to our documentation on [configuring Commento](https://docs.commento.io/configuration.html).
+See our [documentation on how to install Commento](https://docs.commento.io/installation/) to get started.
 
 #### Contributing
 
-Commento is possible only because of its community. If this is your first contribution to Commento, please go through the [development documentation](https://docs.commento.io/contributing.html) before you begin.
+Commento is possible only because of its community. If this is your first contribution to Commento, please go through the [documentation](https://docs.commento.io/contributing/) before you begin.
 
 Help will always be given to those who ask for it. We use IRC for chat to collaborate with other developers. You're invited to [hang out with us](https://irc.commento.io) in the `#commento-dev` channel on freenode if you want to contribute to Commento!
 
 ### Sponsors
 
-Commento CE development is sponsored by [Mozilla](https://mozilla.org) and [DigitalOcean](https://www.digitalocean.com/) independently.
+Commento development is partially sponsored by [Mozilla](https://mozilla.org) and [DigitalOcean](https://www.digitalocean.com/) independently.
 
 <p align="center">
 <a href="https://www.mozilla.org/en-US/"><img src="https://user-images.githubusercontent.com/7521600/32265838-d05b2d08-bf0a-11e7-92e1-2cb183eae616.png" title="Mozilla" height="40"></a>
