@@ -4,9 +4,11 @@
 
 <p align="center"><b>A bloat-free and privacy-focused discussion platform.</b></p>
 
+### What is Commento?
+
 Commento allows you to foster discussion on your website &ndash; if you have a blog, you can embed Commento if you want your readers to add comments. It's fast and bloat-free, has a modern interface, and is reasonably secure. Unlike most alternatives, Commento is lightweight and privacy-focused; I'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
 
-#### Frequently Asked Questions
+### Frequently Asked Questions
 
 **I don't want to install and manage Commento on a server.**  
 You can use [Commento.io](https://commento.io), the cloud version of Commento, where I do the server hosting, updates, and security and performance tuning for you. To make the hosted service self-sustainable, it is not free. You may choose the plan that best matches your financial situation and needs &ndash; all plans have all features.
@@ -44,11 +46,11 @@ My name is <a href="https://adtac.in">Adhityaa</a>, and I created the project. A
 **Okay, how do I get started?**  
 Glad you asked! You have two options &ndash; self-hosting Commento on your own server or using the [cloud  version](https://commento.io). Start [from here](https://docs.commento.io/getting-started/) to decide which option is right for you and proceed from there.
 
-#### Installation and Configuration
+### Installation
 
 See our [documentation on how to install Commento](https://docs.commento.io/installation/) to get started.
 
-#### Contributing
+### Contributing
 
 Commento is possible only because of its community. If this is your first contribution to Commento, please go through the [documentation](https://docs.commento.io/contributing/) before you begin.
 
@@ -64,7 +66,7 @@ Commento development is partially sponsored by [Mozilla](https://mozilla.org) an
 <a href="https://www.digitalocean.com"><img src="https://user-images.githubusercontent.com/7521600/32265839-d093c7da-bf0a-11e7-8d99-96a940041d06.png" title="DigitalOcean" height="40"></a>
 </p>
 
-#### License
+### License
 
 ```
 Copyright 2018 Commento, Inc.
