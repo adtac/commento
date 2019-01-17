@@ -885,21 +885,23 @@
 
   function upDownOnclickSet(upvote, downvote, commentHex, direction) {
     if (direction > 0) {
-      onclick(upvote, global.vote, commentHex, [1, 0]);
-      onclick(downvote, global.vote, commentHex, [1, -1]);
+      onclick(upvote, global.vote, [commentHex, [1, 0]]);
+      onclick(downvote, global.vote, [commentHex, [1, -1]]);
     } else if (direction < 0) {
-      onclick(upvote, global.vote, commentHex, [-1, 1]);
-      onclick(downvote, global.vote, commentHex, [-1, 0]);
+      onclick(upvote, global.vote, [commentHex, [-1, 1]]);
+      onclick(downvote, global.vote, [commentHex, [-1, 0]]);
     } else {
-      onclick(upvote, global.vote, commentHex, [0, 1]);
-      onclick(downvote, global.vote, commentHex, [0, -1]);
+      onclick(upvote, global.vote, [commentHex, [0, 1]]);
+      onclick(downvote, global.vote, [commentHex, [0, -1]]);
     }
   }
 
 
-  global.vote = function(commentHex, dirs) {
-    var oldVote = dirs[0];
-    var direction = dirs[1];
+  global.vote = function(data) {
+    var commentHex = data[0];
+    var oldDirection = data[1][0];
+    var newDirection = data[1][1];
+
     var upvote = $(ID_UPVOTE + commentHex);
     var downvote = $(ID_DOWNVOTE + commentHex);
     var score = $(ID_SCORE + commentHex);
@@ -907,20 +909,20 @@
     var json = {
       "commenterToken": commenterTokenGet(),
       "commentHex": commentHex,
-      "direction": direction,
+      "direction": newDirection,
     };
 
-    upDownOnclickSet(upvote, downvote, commentHex, direction);
+    upDownOnclickSet(upvote, downvote, commentHex, newDirection);
 
     classRemove(upvote, "upvoted");
     classRemove(downvote, "downvoted");
-    if (direction > 0) {
+    if (newDirection > 0) {
       classAdd(upvote, "upvoted");
-    } else if (direction < 0) {
+    } else if (newDirection < 0) {
       classAdd(downvote, "downvoted");
     }
 
-    score.innerText = scorify(parseInt(score.innerText.replace(/[^\d-.]/g, "")) + direction - oldVote);
+    score.innerText = scorify(parseInt(score.innerText.replace(/[^\d-.]/g, "")) + newDirection - oldDirection);
 
     post(origin + "/api/comment/vote", json, function(resp) {
       if (!resp.success) {
