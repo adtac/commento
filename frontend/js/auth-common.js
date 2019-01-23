@@ -13,8 +13,8 @@
 
   // Prefills the email field from the URL parameter.
   global.prefillEmail = function() {
-    if (paramGet("email") !== undefined) {
-      $("#email").val(paramGet("email"));
+    if (global.paramGet("email") !== undefined) {
+      $("#email").val(global.paramGet("email"));
       $("#password").click();
     }
   };

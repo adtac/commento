@@ -17,7 +17,7 @@
     }
 
     var json = {
-      "resetHex": paramGet("hex"),
+      "resetHex": global.paramGet("hex"),
       "password": $("#password").val(),
     };
 
