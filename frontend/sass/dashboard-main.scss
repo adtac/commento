@@ -623,6 +623,10 @@ body {
   border: none;
 }
 
+.indent {
+  padding-left: 32px;
+}
+
 .button {
   @extend .shadow;
   height: 40px;

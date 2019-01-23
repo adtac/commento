@@ -78,12 +78,13 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// logic: (empty column indicates the value doesn't matter)
-	// | anonymous | moderator | requireIdentification | requireModeration | approved? |
-	// |-----------+-----------+-----------------------+-------------------+-----------|
-	// |       yes |           |                       |                   |        no |
-	// |        no |       yes |                       |                   |       yes |
-	// |        no |        no |                       |               yes |       yes |
-	// |        no |        no |                       |                no |        no |
+	// | anonymous | moderator | requireIdentification | requireModeration | moderateAllAnonymous | approved? |
+	// |-----------+-----------+-----------------------+-------------------+----------------------+-----------|
+	// |       yes |           |                       |                   |                   no |       yes |
+	// |       yes |           |                       |                   |                  yes |        no |
+	// |        no |       yes |                       |                   |                      |       yes |
+	// |        no |        no |                       |               yes |                      |       yes |
+	// |        no |        no |                       |                no |                      |        no |
 
 	var commenterHex string
 	var state string
@@ -93,7 +94,11 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		if isSpam(*x.Domain, getIp(r), getUserAgent(r), "Anonymous", "", "", *x.Markdown) {
 			state = "flagged"
 		} else {
-			state = "unapproved"
+			if d.ModerateAllAnonymous {
+				state = "unapproved"
+			} else {
+				state = "approved"
+			}
 		}
 	} else {
 		c, err := commenterGetByCommenterToken(*x.CommenterToken)

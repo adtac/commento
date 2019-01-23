@@ -7,11 +7,11 @@ import (
 func domainUpdate(d domain) error {
 	statement := `
 		UPDATE domains
-    SET name=$2, state=$3, autoSpamFilter=$4, requireModeration=$5, requireIdentification=$6
+    SET name=$2, state=$3, autoSpamFilter=$4, requireModeration=$5, requireIdentification=$6, moderateAllAnonymous=$7
 		WHERE domain=$1;
 	`
 
-	_, err := db.Exec(statement, d.Domain, d.Name, d.State, d.AutoSpamFilter, d.RequireModeration, d.RequireIdentification)
+	_, err := db.Exec(statement, d.Domain, d.Name, d.State, d.AutoSpamFilter, d.RequireModeration, d.RequireIdentification, d.ModerateAllAnonymous)
 	if err != nil {
 		logger.Errorf("cannot update non-moderators: %v", err)
 		return errorInternal

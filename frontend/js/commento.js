@@ -465,7 +465,7 @@
     commentsArea.innerHTML = "";
 
     if (isLocked || isFrozen) {
-      if (isAuthenticated) {
+      if (isAuthenticated || chosenAnonymous) {
         append(mainArea, messageCreate("This thread is locked. You cannot add new comments."));
       } else {
         append(mainArea, textareaCreate("root"));
@@ -1408,15 +1408,9 @@
     isLocked = !isLocked;
 
     lock.disabled = true;
-    pageUpdate(function(success) {
-      if (success) {
-        lock.disabled = false;
-        if (isLocked) {
-          lock.innerHTML = "Unlock Thread";
-        } else {
-          lock.innerHTML = "Lock Thread";
-        }
-      }
+    pageUpdate(function() {
+      lock.disabled = false;
+      refreshAll();
     });
   }
 
@@ -1434,16 +1428,14 @@
       stickyCommentHex = commentHex;
     }
 
-    pageUpdate(function(success) {
-      if (success) {
-        var sticky = $(ID_STICKY + commentHex);
-        if (stickyCommentHex === commentHex) {
-          classRemove(sticky, "option-sticky");
-          classAdd(sticky, "option-unsticky");
-        } else {
-          classRemove(sticky, "option-unsticky");
-          classAdd(sticky, "option-sticky");
-        }
+    pageUpdate(function() {
+      var sticky = $(ID_STICKY + commentHex);
+      if (stickyCommentHex === commentHex) {
+        classRemove(sticky, "option-sticky");
+        classAdd(sticky, "option-unsticky");
+      } else {
+        classRemove(sticky, "option-unsticky");
+        classAdd(sticky, "option-sticky");
       }
     });
   }

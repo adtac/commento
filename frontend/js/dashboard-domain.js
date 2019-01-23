@@ -91,6 +91,8 @@
 
         resp.domains[i].viewsLast30Days = global.numberify(0);
         resp.domains[i].commentsLast30Days = global.numberify(0);
+
+        resp.domains[i].allowAnonymous = !resp.domains[i].requireIdentification;
         
         for (var j = 0; j < resp.domains[i].moderators.length; j++) {
           resp.domains[i].moderators[j].timeAgo = global.timeSince(
@@ -109,6 +111,7 @@
 
   // Updates a domain with the backend.
   global.domainUpdate = function(domain, callback) {
+    domain.requireIdentification = !domain.allowAnonymous;
     var json = {
       "ownerToken": global.cookieGet("commentoOwnerToken"),
       "domain": domain,

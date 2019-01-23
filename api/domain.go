@@ -14,5 +14,6 @@ type domain struct {
 	AutoSpamFilter        bool        `json:"autoSpamFilter"`
 	RequireModeration     bool        `json:"requireModeration"`
 	RequireIdentification bool        `json:"requireIdentification"`
+	ModerateAllAnonymous  bool        `json:"moderateAllAnonymous"`
 	Moderators            []moderator `json:"moderators"`
 }

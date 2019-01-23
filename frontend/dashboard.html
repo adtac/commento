@@ -205,10 +205,18 @@
               </div>
 
               <div class="row no-border round-check">
-                <input type="checkbox" class="switch" v-model="domains[cd].requireIdentification" id="require-identification">
-                <label for="require-identification">Allow anonymous comments</label>
+                <input type="checkbox" class="switch" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
+                <label for="allow-anonymous">Allow anonymous comments</label>
                 <div class="pitch">
                   Enabling this would require all commenters to authenticate themselves (using their Google account, for example). Disabling would allow anonymous comments.
+                </div>
+              </div>
+
+              <div class="row no-border round-check indent" v-if="domains[cd].allowAnonymous">
+                <input type="checkbox" class="switch" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
+                <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
+                <div class="pitch">
+                  Enabling this would require a moderator to approve anonymous comments. This is recommended as a lot of spam is often from anonymous comments.
                 </div>
               </div>
 
