@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"os"
+	"text/template"
 )
 
 var headerTemplate *template.Template
@@ -20,9 +20,9 @@ var templates map[string]*template.Template
 func smtpTemplatesLoad() error {
 	var err error
 	headerTemplate, err = template.New("header").Parse(`MIME-Version: 1.0
-Content-Type: text/html; charset=UTF-8
-From: {{.FromAddress}}
+From: Commento <{{.FromAddress}}>
 To: {{.ToName}} <{{.ToAddress}}>
+Content-Type: text/plain; charset=UTF-8
 Subject: {{.Subject}}
 
 `)
@@ -39,9 +39,9 @@ Subject: {{.Subject}}
 	for _, name := range names {
 		var err error
 		templates[name] = template.New(name)
-		templates[name], err = template.ParseFiles(fmt.Sprintf("%s/templates/%s.html", os.Getenv("STATIC"), name))
+		templates[name], err = template.ParseFiles(fmt.Sprintf("%s/templates/%s.txt", os.Getenv("STATIC"), name))
 		if err != nil {
-			logger.Errorf("cannot parse %s/templates/%s.html: %v", os.Getenv("STATIC"), name, err)
+			logger.Errorf("cannot parse %s/templates/%s.txt: %v", os.Getenv("STATIC"), name, err)
 			return errorMalformedTemplate
 		}
 	}

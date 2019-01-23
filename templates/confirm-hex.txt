@@ -1,0 +1,7 @@
+Hi,
+
+You recently registered a new Commento account with this email address. If you wish to complete registration, use the link below:
+
+{{.Origin}}/api/owner/confirm-hex?confirmHex={{.ConfirmHex}}
+
+If you did not do initiate this, you can ignore this email.
