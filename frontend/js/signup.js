@@ -35,7 +35,7 @@
       }
 
       if (resp.confirmEmail) {
-        document.locatidocumenton = global.origin + "/confirm-email";
+        document.location = global.origin + "/confirm-email";
       } else {
         document.location = global.origin + "/login?signedUp=true";
       }
