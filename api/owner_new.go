@@ -16,6 +16,10 @@ func ownerNew(email string, name string, password string) (string, error) {
 		return "", errorNewOwnerForbidden
 	}
 
+	if _, err := ownerGetByEmail(email); err == nil {
+		return "", errorEmailAlreadyExists
+	}
+
 	ownerHex, err := randomHex(32)
 	if err != nil {
 		logger.Errorf("cannot generate ownerHex: %v", err)
