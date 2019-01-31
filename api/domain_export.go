@@ -123,6 +123,11 @@ func domainExportBeginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !smtpConfigured {
+		bodyMarshal(w, response{"success": false, "message": errorSmtpNotConfigured.Error()})
+		return
+	}
+
 	o, err := ownerGetByOwnerToken(*x.OwnerToken)
 	if err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
