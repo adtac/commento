@@ -139,5 +139,5 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state})
+	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state, "html": markdownToHtml(*x.Markdown)})
 }

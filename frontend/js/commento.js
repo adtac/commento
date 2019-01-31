@@ -46,6 +46,7 @@
   var ID_TEXTAREA = "commento-textarea-";
   var ID_CARD = "commento-comment-card-";
   var ID_BODY = "commento-comment-body-";
+  var ID_TEXT = "commento-comment-text-";
   var ID_SUBTITLE = "commento-comment-subtitle-";
   var ID_TIMEAGO = "commento-comment-timeago-";
   var ID_SCORE = "commento-comment-score-";
@@ -72,7 +73,7 @@
   var autoInit;
   var isAuthenticated = false;
   var comments = [];
-  var commenters = [];
+  var commenters = {};
   var requireIdentification = true;
   var isModerator = false;
   var isFrozen = false;
@@ -84,6 +85,7 @@
   var configuredOauths = [];
   var loginBoxType = "signup";
   var oauthButtonsShown = false;
+  var selfHex = undefined;
 
 
   function $(id) {
@@ -96,13 +98,18 @@
   }
 
 
+  function prepend(root, el) {
+    root.prepend(el);
+  }
+
+
   function append(root, el) {
     root.appendChild(el);
   }
 
 
-  function prepend(root, el) {
-    root.prepend(el);
+  function insertAfter(el1, el2) {
+    el1.parentNode.insertBefore(el2, el1.nextSibling);
   }
 
 
@@ -239,12 +246,15 @@
         return;
       }
 
+      commenters[resp.commenter.commenterHex] = resp.commenter;
+      selfHex = resp.commenter.commenterHex;
+
       var loggedContainer = create("div");
       var loggedInAs = create("div");
       var name = create("a");
       var avatar;
       var logout = create("div");
-      var color = colorGet(resp.commenter.name);
+      var color = colorGet(resp.commenter.commenterHex + "-" + resp.commenter.name);
 
       loggedContainer.id = ID_LOGGED_CONTAINER;
 
@@ -354,7 +364,7 @@
       stickyCommentHex = resp.attributes.stickyCommentHex;
 
       comments = resp.comments;
-      commenters = resp.commenters;
+      commenters = Object.assign({}, commenters, resp.commenters)
       configuredOauths = resp.configuredOauths;
 
       cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
@@ -495,11 +505,13 @@
 
 
   global.commentNew = function(id) {
+    var textareaSuperContainer = $(ID_SUPER_CONTAINER + id);
     var textarea = $(ID_TEXTAREA + id);
+    var replyButton = $(ID_REPLY + id);
 
-    var comment = textarea.value;
+    var markdown = textarea.value;
 
-    if (comment === "") {
+    if (markdown === "") {
       classAdd(textarea, "red-border");
       return;
     } else {
@@ -511,7 +523,7 @@
       "domain": location.host,
       "path": location.pathname,
       "parentHex": id,
-      "markdown": comment,
+      "markdown": markdown,
     };
 
     post(origin + "/api/comment/new", json, function(resp) {
@@ -520,27 +532,51 @@
         return;
       }
 
-      $(ID_TEXTAREA + id).value = "";
+      var message = "";
+      if (resp.state === "unapproved") {
+        message = "Your comment is under moderation.";
+      } else if (resp.state === "flagged") {
+        message = "Your comment was flagged as spam and is under moderation.";
+      }
 
-      commentsGet(function() {
-        $(ID_COMMENTS_AREA).innerHTML = "";
-        commentsRender();
-
-        var message = "";
-        if (resp.state === "unapproved") {
-          message = "Your comment is under moderation.";
-        } else if (resp.state === "flagged") {
-          message = "Your comment was flagged as spam and is under moderation.";
+      if (message !== "") {
+        if (id === "root") {
+          prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
+        } else {
+          append($(ID_BODY + id), messageCreate(message));
         }
+      }
+      
+      var newCard = commentsRecurse({
+        "root": [{
+          "commentHex": resp.commentHex,
+          "commenterHex": selfHex,
+          "markdown": markdown,
+          "html": resp.html,
+          "parentHex": "root",
+          "score": 0,
+          "state": "approved",
+          "direction": 0,
+          "creationDate": (new Date()).toISOString(),
+        }],
+      }, "root")
 
-        if (message !== "") {
-          if (id === "root") {
-            prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
-          } else {
-            append($(ID_BODY + id), messageCreate(message));
-          }
-        }
-      });
+      if (id !== "root") {
+        textareaSuperContainer.replaceWith(newCard);
+
+        shownReply[id] = false;
+        shownSubmitButton[id] = false;
+
+        classAdd(replyButton, "option-reply");
+        classRemove(replyButton, "option-cancel");
+
+        replyButton.title = "Reply to this comment";
+
+        onclick(replyButton, global.replyShow, id)
+      } else {
+        textarea.value = "";
+        insertAfter(textareaSuperContainer, newCard);
+      }
     });
   }
 
@@ -630,6 +666,7 @@
       var timeago = create("div");
       var score = create("div");
       var body = create("div");
+      var text = create("div");
       var options = create("div");
       var edit = create("button");
       var reply = create("button");
@@ -651,6 +688,7 @@
 
       card.id = ID_CARD + comment.commentHex;
       body.id = ID_BODY + comment.commentHex;
+      text.id = ID_TEXT + comment.commentHex;
       subtitle.id = ID_SUBTITLE + comment.commentHex;
       timeago.id = ID_TIMEAGO + comment.commentHex;
       score.id = ID_SCORE + comment.commentHex;
@@ -688,7 +726,7 @@
 
       card.style["borderLeft"] = "2px solid " + color;
       name.innerText = commenter.name;
-      body.innerHTML = comment.html;
+      text.innerHTML = comment.html;
       timeago.innerHTML = timeDifference((new Date()).getTime(), Date.parse(comment.creationDate));
       score.innerText = scorify(comment.score);
 
@@ -813,6 +851,7 @@
       append(header, avatar);
       append(header, name);
       append(header, subtitle);
+      append(body, text);
       append(contents, body);
       if (mobileView) {
         append(contents, options);
@@ -942,8 +981,8 @@
       return;
     }
 
-    var body = $(ID_BODY + id);
-    append(body, textareaCreate(id));
+    var text = $(ID_TEXT + id);
+    insertAfter(text, textareaCreate(id));
     shownReply[id] = true;
 
     var replyButton = $(ID_REPLY + id);
