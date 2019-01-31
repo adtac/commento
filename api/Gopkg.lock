@@ -116,10 +116,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:bea0314c10bd362ab623af4880d853b5bad3b63d0ab9945c47e461b8d04203ed"
+  digest = "1:82e6e4dc5ab71680d89684e4649be630fdeeaf81feb8e88e4a56273a0cd4d966"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
+    "github",
     "google",
     "internal",
     "jws",
@@ -161,6 +162,7 @@
     "github.com/russross/blackfriday",
     "golang.org/x/crypto/bcrypt",
     "golang.org/x/oauth2",
+    "golang.org/x/oauth2/github",
     "golang.org/x/oauth2/google",
   ]
   solver-name = "gps-cdcl"

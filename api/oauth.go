@@ -11,5 +11,9 @@ func oauthConfigure() error {
 		return err
 	}
 
+	if err := githubOauthConfigure(); err != nil {
+		return err
+	}
+
 	return nil
 }

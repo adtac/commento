@@ -269,6 +269,8 @@
         avatar = create("img");
         if (resp.commenter.provider === "google") {
           attrSet(avatar, "src", resp.commenter.photo + "?sz=50");
+        } else if (resp.commenter.provider === "github") {
+          attrSet(avatar, "src", resp.commenter.photo + "&s=50");
         } else {
           attrSet(avatar, "src", resp.commenter.photo);
         }
@@ -699,6 +701,8 @@
         avatar = create("img");
         if (commenter.provider === "google") {
           attrSet(avatar, "src", commenter.photo + "?sz=50");
+        } else if (commenter.provider === "github") {
+          attrSet(avatar, "src", commenter.photo + "&s=50");
         } else {
           attrSet(avatar, "src", commenter.photo);
         }

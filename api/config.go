@@ -47,6 +47,9 @@ func configParse() error {
 
 		"GOOGLE_KEY":    "",
 		"GOOGLE_SECRET": "",
+
+		"GITHUB_KEY":    "",
+		"GITHUB_SECRET": "",
 	}
 
 	for key, value := range defaults {
