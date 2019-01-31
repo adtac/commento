@@ -11,7 +11,7 @@ func domainExportCleanupBegin() error {
 				DELETE FROM exports
 				WHERE creationDate < $1;
 			`
-			_, err := db.Exec(statement, time.Now().UTC().AddDate(0, -7, 0))
+			_, err := db.Exec(statement, time.Now().UTC().AddDate(0, 0, -7))
 			if err != nil {
 				logger.Errorf("error cleaning up export rows: %v", err)
 				return
