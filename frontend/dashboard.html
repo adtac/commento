@@ -82,27 +82,27 @@
       <!-- Installation -->
       <div id="installation-view" class="view hidden">
         <div class="view-inside">
-          <div class="large-view">
+          <div class="mid-view">
             <div class="tabs-container">
               <div class="tab">
                 <ul class="tabs">
-                  <li class="tab-link original current" data-tab="install-tab-1">Universal Snippet</li>
+                  <li class="tab-link original current" data-tab="installation-tab-1">Universal Snippet</li>
                 </ul>
 
-                <div id="install-tab-1" class="content original current">
-                  <div class="import-text">
+                <div id="installation-tab-1" class="content original current">
+                  <div class="normal-text">
                     Copy the following piece of HTML code and paste it where you'd like Commento to load.
                   </div>
 
                   <pre><code id="code-div" class="html"></code></pre>
 
-                  <div class="import-text">
+                  <div class="normal-text">
                     And that's it. All your settings, themes, and comments would be automagically loaded. Commento is mobile-responsive too, as it simply fills the container it is put in.
                   </div>
                   
                   <br>
 
-                  <div class="import-text">
+                  <div class="normal-text">
                     Read the Commento documentation <a href="https://docs.commento.io/configuration/">on configuration</a>.
                   </div>
                 </div>
@@ -120,7 +120,7 @@
               Analytics
             </div>
 
-            <div class="import-text">
+            <div class="normal-text">
               Anonymous statistics such as monthly pageviews and number of comments
             </div>
 
@@ -154,7 +154,7 @@
       <!-- moderation -->
       <div id="moderation-view" class="view hidden">
         <div class="view-inside">
-          <div class="small-view small-mid-view">
+          <div class="mid-view">
             <div class="tabs-container">
               <div class="tab">
                 <ul class="tabs">
@@ -231,20 +231,42 @@
       <!-- Configure Domain -->
       <div id="general-view" class="view hidden">
         <div class="view-inside">
-          <div class="small-mid-view">
-            <div class="center center-title">
-              Configure Domain
-            </div>
-            <div class="box">
-              <div class="row">
-                <div class="label">Website Name</div>
-                <input class="input gray-input" id="cur-domain-name" type="text" :placeholder="domains[cd].origName" v-model="domains[cd].name">
-              </div>
+          <div class="mid-view">
+            <div class="tabs-container">
+              <div class="tab">
+                <ul class="tabs">
+                  <li class="tab-link original current" data-tab="configure-tab-1">General</li>
+                  <li class="tab-link" data-tab="configure-tab-2">Email Settings</li>
+                  <li class="tab-link" data-tab="configure-tab-3">Export Data</li>
+                </ul>
 
-              <div id="new-domain-error" class="modal-error-box"></div>
-            </div>
-            <div class="center">
-              <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
+                <div id="configure-tab-1" class="content original current">
+                  <div class="box">
+                    <div class="row">
+                      <div class="label">Website Name</div>
+                      <input class="input gray-input" id="cur-domain-name" type="text" :placeholder="domains[cd].origName" v-model="domains[cd].name">
+                    </div>
+                  </div>
+                  <div class="center">
+                    <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
+                  </div>
+                </div>
+
+                <div id="configure-tab-2" class="content">
+                </div>
+
+                <div id="configure-tab-3" class="content">
+                  <div class="normal-text">
+                    You can export an archive of this domain's data (which includes all comments and commenters) in the JSON format. To initiate and queue an archive request, click the button below. You will receive an email containing the archive once it's ready.<br><br>
+
+                    Please note that this requires valid SMTP settings in order to send emails.<br><br>
+
+                    <div class="center">
+                      <button id="domain-export-button" onclick="window.commento.domainExportBegin()" class="button">Initiate Data Export</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -253,7 +275,7 @@
       <!-- Import Comments -->
       <div id="import-view" class="view hidden">
         <div class="view-inside">
-          <div class="large-view">
+          <div class="mid-view">
             <div class="tabs-container">
               <div class="tab">
                 <ul class="tabs">
@@ -261,7 +283,7 @@
                 </ul>
 
                 <div id="install-tab-1" class="content original current">
-                  <div class="import-text">
+                  <div class="normal-text">
                     If you're currently using Disqus, you can import all comments into Commento:
                     <ul>
                       <li>

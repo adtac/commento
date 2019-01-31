@@ -11,6 +11,7 @@ func main() {
 	exitIfError(markdownRendererCreate())
 	exitIfError(sigintCleanupSetup())
 	exitIfError(versionCheckStart())
+	exitIfError(domainExportCleanupBegin())
 
 	exitIfError(routesServe())
 }

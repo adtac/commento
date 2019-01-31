@@ -66,6 +66,7 @@ const jsCompileMap = {
     "js/dashboard-statistics.js",
     "js/dashboard-import.js",
     "js/dashboard-danger.js",
+    "js/dashboard-export.js",
   ],
   "js/logout.js": [
     "js/constants.js",

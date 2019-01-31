@@ -31,7 +31,7 @@ Subject: {{.Subject}}
 		return errorMalformedTemplate
 	}
 
-	names := []string{"confirm-hex", "reset-hex"}
+	names := []string{"confirm-hex", "reset-hex", "domain-export", "domain-export-error"}
 
 	templates = make(map[string]*template.Template)
 

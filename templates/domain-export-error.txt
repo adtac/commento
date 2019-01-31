@@ -1,0 +1,3 @@
+You recently requested a data export of your Commento domain {{.Domain}}. An
+error was encountered while processing the request. Please contact support to
+resolve this issue.

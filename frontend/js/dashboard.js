@@ -30,8 +30,8 @@
       },
       {
         "id": "general",
-        "text": "General Settings",
-        "meaning": "Names, emails, and general settings",
+        "text": "General",
+        "meaning": "Email settings, data export",
         "selected": false,
         "open": global.generalOpen,
       },

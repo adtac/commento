@@ -375,10 +375,10 @@ body {
   }
 }
 
-.import-text {
-  font-size: 15px;
+.normal-text {
+  font-size: 14px;
   color: $gray-7;
-  line-height: 25px;
+  line-height: 22px;
 
   a {
     color: $blue-6;
@@ -391,7 +391,7 @@ body {
 
   li {
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 
   li::before {
