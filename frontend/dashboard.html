@@ -119,6 +119,11 @@
             <div class="center center-title">
               Analytics
             </div>
+
+            <div class="import-text">
+              Anonymous statistics such as monthly pageviews and number of comments
+            </div>
+
             <div class="stat">
               <div class="number">
                 <div class="digits gray-digits">{{domains[cd].viewsLast30Days.zeros}}</div>
@@ -149,18 +154,57 @@
       <!-- moderation -->
       <div id="moderation-view" class="view hidden">
         <div class="view-inside">
-          <div class="small-view mid-view">
+          <div class="small-view small-mid-view">
             <div class="tabs-container">
               <div class="tab">
                 <ul class="tabs">
-                  <li class="tab-link original current" data-tab="mod-tab-1">Moderator List</li>
+                  <li class="tab-link original current" data-tab="mod-tab-1">General</li>
+                  <li class="tab-link" data-tab="mod-tab-2">Add/Remove Moderators</li>
                 </ul>
 
                 <div id="mod-tab-1" class="content original current">
-                  <div class="pitch">
-                    Moderators have the power to approve and delete comments. To make someone a moderator, add their email address down below. Once added, shiny new buttons will appear on each comment for that person on each page when they log in.<br><br>
+                  <div class="row no-border round-check">
+                    <input type="checkbox" class="switch" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
+                    <label for="spam-filtering">Automatic spam filtering</label>
+                    <div class="pitch">
+                      Commento uses Akismet's advanced spam detection to automatically identify and remove spam comments. This is strongly recommended. Requires backend configuration.
+                    </div>
+                  </div>
 
-                    You're still the only administrator and you're the only person who can add and remove moderators. Moderators do not have access to this dashboard. Their access is restricted to pages on your website.
+                  <div class="row no-border round-check">
+                    <input type="checkbox" class="switch" v-model="domains[cd].requireModeration" id="require-moderation">
+                    <label for="require-moderation">Require all comments to be approved manually</label>
+                    <div class="pitch">
+                      Enabling this would require a moderator to approve all comments. This is generally recommended if your site doesn't receive too much traffic.
+                    </div>
+                  </div>
+
+                  <div class="row no-border round-check">
+                    <input type="checkbox" class="switch" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
+                    <label for="allow-anonymous">Allow anonymous comments</label>
+                    <div class="pitch">
+                      Enabling this would allow your readers to comment anonymously. Disabling would require the to authenticate themselves (using their Google account, for example). Recommended.
+                    </div>
+                  </div>
+
+                  <div class="row no-border round-check indent" v-if="domains[cd].allowAnonymous">
+                    <input type="checkbox" class="switch" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
+                    <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
+                    <div class="pitch">
+                      Enabling this would require a moderator to approve all anonymous comments. This is recommended if most of your spam comments are from anonymous users.
+                    </div>
+                  </div>
+
+                  <div class="center">
+                    <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
+                  </div>
+                </div>
+
+                <div id="mod-tab-2" class="content">
+                  <div class="pitch">
+                    Moderators have the power to approve/delete comments and lock threads. Once you add an user as a moderator, shiny new buttons will appear on each comment on each page when they log in.<br><br>
+
+                    You're still the only administrator and the only person who can add and remove moderators. Moderators do not have access to this dashboard. Their access is restricted to pages on your website.
                   </div>
                   <div class="commento-email-container">
                     <div class="commento-email">
@@ -197,38 +241,6 @@
                 <input class="input gray-input" id="cur-domain-name" type="text" :placeholder="domains[cd].origName" v-model="domains[cd].name">
               </div>
 
-              <div class="row no-border round-check">
-                <input type="checkbox" class="switch" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
-                <label for="spam-filtering">Automatic spam filtering</label>
-                <div class="pitch">
-                  Commento uses Akismet's advanced spam detection to automatically identify and remove spam comments. We strongly recommended you have this enabled.
-                </div>
-              </div>
-
-              <div class="row no-border round-check">
-                <input type="checkbox" class="switch" v-model="domains[cd].requireModeration" id="require-moderation">
-                <label for="require-moderation">Require all comments to be approved manually</label>
-                <div class="pitch">
-                  Enabling this would require a moderator to approve every comment. Moderators can manually delete comments even if this is not enabled.
-                </div>
-              </div>
-
-              <div class="row no-border round-check">
-                <input type="checkbox" class="switch" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
-                <label for="allow-anonymous">Allow anonymous comments</label>
-                <div class="pitch">
-                  Enabling this would allow your readers to comment anonymously. Disabling would require the to authenticate themselves (using their Google account, for example).
-                </div>
-              </div>
-
-              <div class="row no-border round-check indent" v-if="domains[cd].allowAnonymous">
-                <input type="checkbox" class="switch" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
-                <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
-                <div class="pitch">
-                  Enabling this would require a moderator to approve anonymous comments. This is recommended as a lot of spam is often from anonymous comments.
-                </div>
-              </div>
-
               <div id="new-domain-error" class="modal-error-box"></div>
             </div>
             <div class="center">
@@ -250,14 +262,14 @@
 
                 <div id="install-tab-1" class="content original current">
                   <div class="import-text">
-                    If you're currently using Disqus and want to import all your comments into Commento, you can do so:
+                    If you're currently using Disqus, you can import all comments into Commento:
                     <ul>
                       <li>
-                        Go to <a href="http://disqus.com/admin/discussions/export/">the admin export section</a> in Disqus and click on <b>Export Comments</b>. This should start the process of exporting your comments.
+                        Go to <a href="http://disqus.com/admin/discussions/export/">the admin export section</a> in Disqus and click on <b>Export Comments</b>. This should start the process of exporting your comments in the background.
                       </li>
 
                       <li>
-                        After a while, you'll receive an email from Disqus with a link to a compressed archive of all comments and associated data. Copy and paste that link here and start the import process:
+                        You'll receive an email from Disqus with a link to a compressed archive of all comments and associated data. Copy and paste that link here to start the import process:
 
                         <br><br>
 
@@ -267,14 +279,23 @@
                             <button id="disqus-import-button" class="commento-email-button" onclick="window.commento.importDisqus()">Import</button>
                           </div>
                         </div>
+                        <!--
                         <div class="subtext-container">
                           <div class="subtext">
-                            <div>Note: it is strongly recommended you do this only once. Multiple imports for the same domain may have unintended effects.</div>
+                            <div>By using this service, you grant Commento the permission to download and process your Disqus information.</div>
                           </div>
                         </div>
+                        -->
+
+                        <br>
                       </li>
+
                       <li>
-                        We'll automatically download this file, extract it, parse it and import comments into Commento. The URL information will be preserved. By using this service, you grant Commento the permission to download and process your Disqus information.
+                        Commento will automatically download this file, extract it, parse it and import comments into Commento. URL information, comment authors, text formatting, and nested replies will be preserved.
+                      </li>
+                        
+                      <li>
+                        It is strongly recommended you do this only once. Importing multiple times may have unintended effects.
                       </li>
                     </ul>
                   </div>

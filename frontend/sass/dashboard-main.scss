@@ -88,7 +88,7 @@ body {
 
   .content{
     display: none;
-    padding: 25px;
+    padding: 12px;
 
     .pitch {
       color: $gray-6;
@@ -201,8 +201,9 @@ body {
   }
 
   .pitch {
-    font-size: 13px;
-    color: #a0a0a0;
+    font-size: 14px;
+    color: #a5a5a5;
+    line-height: 20px !important;
   }
 }
 
@@ -283,7 +284,7 @@ body {
     .small-mid-view {
       font-size: 15px;
       width: 70%;
-      max-width: 500px;
+      max-width: 600px;
     }
 
     .mid-view {
@@ -540,7 +541,8 @@ body {
 .row {
   padding-left: 8px;
   padding-right: 8px;
-  margin-bottom: 32px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   border-bottom: 1px solid $gray-2;
 
   .label {
@@ -624,6 +626,7 @@ body {
 }
 
 .indent {
+  margin-top: 0px;
   padding-left: 32px;
 }
 
@@ -693,7 +696,7 @@ body {
 
   .text {
     text-transform: uppercase;
-    color: $gray-5;
+    color: $gray-6;
   }
 }
 
