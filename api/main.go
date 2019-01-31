@@ -12,6 +12,7 @@ func main() {
 	exitIfError(sigintCleanupSetup())
 	exitIfError(versionCheckStart())
 	exitIfError(domainExportCleanupBegin())
+	exitIfError(viewsCleanupBegin())
 
 	exitIfError(routesServe())
 }
