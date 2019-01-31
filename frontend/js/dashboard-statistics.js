@@ -98,10 +98,10 @@
         series: [comments],
       }, options);
 
-      data.domains[data.cd].viewsLast30Days = numberify(views.reduce(function(a, b) {
+      data.domains[data.cd].viewsLast30Days = global.numberify(views.reduce(function(a, b) {
         return a + b; 
       }, 0));
-      data.domains[data.cd].commentsLast30Days = numberify(comments.reduce(function(a, b) {
+      data.domains[data.cd].commentsLast30Days = global.numberify(comments.reduce(function(a, b) {
         return a + b; 
       }, 0));
     });
