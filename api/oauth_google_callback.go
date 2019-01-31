@@ -39,7 +39,14 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c, err := commenterGetByEmail("google", user["email"].(string))
+	if user["email"] == nil {
+		fmt.Fprintf(w, "Error: no email address returned by Github")
+		return
+	}
+
+	email := user["email"].(string)
+
+	c, err := commenterGetByEmail("google", email)
 	if err != nil && err != errorNoSuchCommenter {
 		fmt.Fprintf(w, "Error: %s", err.Error())
 		return
@@ -49,14 +56,6 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: in case of returning users, update the information we have on record?
 	if err == errorNoSuchCommenter {
-		var email string
-		if _, ok := user["email"]; ok {
-			email = user["email"].(string)
-		} else {
-			fmt.Fprintf(w, "Error: %s", errorInvalidEmail.Error())
-			return
-		}
-
 		var link string
 		if val, ok := user["link"]; ok {
 			link = val.(string)
