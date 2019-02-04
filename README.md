@@ -4,6 +4,10 @@
 
 <p align="center"><b>A bloat-free and privacy-focused discussion platform.</b></p>
 
+<table align="center"><tr><td>
+<p align="center">:warning: &nbsp; <b>This is a mirror. All development takes place <a href="https://gitlab.com/commento/commento">on Gitlab</a>.</b></p>
+<div>You're viewing the Github mirror of the <code>master</code> branch. All development and discussion takes place on <a href="https://gitlab.com/commento/commento">on Gitlab</a>, not on Github. Please submit all issues and patches over there.</div></td></tr></table>
+
 ### What is Commento?
 
 Commento allows you to foster discussion on your website &ndash; if you have a blog, you can embed Commento if you want your readers to add comments. It's fast and bloat-free, has a modern interface, and is reasonably secure. Unlike most alternatives, Commento is lightweight and privacy-focused; I'll never sell your data, show ads, embed third-party tracking scripts, or inject affiliate links.
