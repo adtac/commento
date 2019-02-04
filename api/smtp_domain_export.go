@@ -7,8 +7,8 @@ import (
 )
 
 type domainExportPlugs struct {
-	Origin     string
-	Domain string
+	Origin    string
+	Domain    string
 	ExportHex string
 }
 

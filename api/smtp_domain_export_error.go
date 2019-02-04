@@ -7,7 +7,7 @@ import (
 )
 
 type domainExportErrorPlugs struct {
-	Origin     string
+	Origin string
 	Domain string
 }
 

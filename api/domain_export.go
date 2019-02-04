@@ -1,8 +1,8 @@
 package main
 
 import (
-	"net/http"
 	"encoding/json"
+	"net/http"
 	"time"
 )
 
@@ -16,8 +16,8 @@ func domainExportBeginError(email string, toName string, domain string, err erro
 
 func domainExportBegin(email string, toName string, domain string) {
 	type dataExport struct {
-		Version int `json:"version"`
-		Comments []comment `json:"comments"`
+		Version    int         `json:"version"`
+		Comments   []comment   `json:"comments"`
 		Commenters []commenter `json:"commenters"`
 	}
 
@@ -114,7 +114,7 @@ func domainExportBegin(email string, toName string, domain string) {
 func domainExportBeginHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		OwnerToken *string `json:"ownerToken"`
-		Domain *string `json:"domain"`
+		Domain     *string `json:"domain"`
 	}
 
 	var x request
@@ -145,7 +145,7 @@ func domainExportBeginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	go domainExportBegin(o.Email, o.Name, *x.Domain);
+	go domainExportBegin(o.Email, o.Name, *x.Domain)
 
 	bodyMarshal(w, response{"success": true})
 }

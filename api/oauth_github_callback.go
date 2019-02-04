@@ -14,7 +14,7 @@ func githubGetPrimaryEmail(accessToken string) (string, error) {
 
 	contents, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "",  errorCannotReadResponse
+		return "", errorCannotReadResponse
 	}
 
 	user := []map[string]interface{}{}
@@ -24,7 +24,7 @@ func githubGetPrimaryEmail(accessToken string) (string, error) {
 	}
 
 	nonPrimaryEmail := ""
-	for _, email := range(user) {
+	for _, email := range user {
 		nonPrimaryEmail = email["email"].(string)
 		if email["primary"].(bool) {
 			return email["email"].(string), nil
