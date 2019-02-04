@@ -18,9 +18,9 @@ type disqusThread struct {
 
 type disqusAuthor struct {
 	XMLName     xml.Name `xml:"author"`
-	IsAnonymous bool     `xml:"isAnonymous"`
 	Name        string   `xml:"name"`
-	Email       string   `xml:"email"`
+	IsAnonymous bool     `xml:"isAnonymous"`
+	Username    string   `xml:"username"`
 }
 
 type disqusThreadId struct {
@@ -43,7 +43,6 @@ type disqusPost struct {
 	Id           string         `xml:"http://disqus.com/disqus-internals id,attr"`
 	ThreadId     disqusThreadId `xml:"thread"`
 	ParentId     disqusParentId `xml:"parent"`
-	PostId       disqusPostId   `xml:"post"`
 	Message      string         `xml:"message"`
 	CreationDate time.Time      `xml:"createdAt"`
 	IsDeleted    bool           `xml:"isDeleted"`
@@ -98,24 +97,26 @@ func domainImportDisqus(domain string, url string) (int, error) {
 
 	// Map Disqus emails to commenterHex (if not available, create a new one
 	// with a random password that can be reset later).
-	commenterHex := make(map[string]string)
+	commenterHex := map[string]string{}
 	for _, post := range x.Posts {
 		if post.IsDeleted || post.IsSpam {
 			continue
 		}
 
-		if _, ok := commenterHex[post.Author.Email]; ok {
+		email := post.Author.Username + "@disqus.com"
+
+		if _, ok := commenterHex[email]; ok {
 			continue
 		}
 
-		c, err := commenterGetByEmail("commento", post.Author.Email)
+		c, err := commenterGetByEmail("commento", email)
 		if err != nil && err != errorNoSuchCommenter {
 			logger.Errorf("cannot get commenter by email: %v", err)
 			return 0, errorInternal
 		}
 
 		if err == nil {
-			commenterHex[post.Author.Email] = c.CommenterHex
+			commenterHex[email] = c.CommenterHex
 			continue
 		}
 
@@ -125,7 +126,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 			return 0, errorInternal
 		}
 
-		commenterHex[post.Author.Email], err = commenterNew(post.Author.Email, post.Author.Name, "undefined", "undefined", "commento", randomPassword)
+		commenterHex[email], err = commenterNew(email, post.Author.Name, "undefined", "undefined", "commento", randomPassword)
 		if err != nil {
 			return 0, err
 		}
@@ -134,10 +135,15 @@ func domainImportDisqus(domain string, url string) (int, error) {
 	// For each Disqus post, create a Commento comment. Attempt to convert the
 	// HTML to markdown.
 	numImported := 0
-	disqusIdMap := make(map[string]string)
+	disqusIdMap := map[string]string{}
 	for _, post := range x.Posts {
 		if post.IsDeleted || post.IsSpam {
 			continue
+		}
+
+		cHex := "anonymous"
+		if !post.Author.IsAnonymous {
+			cHex = commenterHex[post.Author.Username+"@disqus.com"]
 		}
 
 		parentHex := "root"
@@ -148,7 +154,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 		// TODO: restrict the list of tags to just the basics: <a>, <b>, <i>, <code>
 		// Especially remove <img> (convert it to <a>).
 		commentHex, err := commentNew(
-			commenterHex[post.Author.Email],
+			cHex,
 			domain,
 			pathStrip(threads[post.ThreadId.Id].URL),
 			parentHex,
@@ -159,7 +165,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 			return numImported, err
 		}
 
-		disqusIdMap[post.PostId.Id] = commentHex
+		disqusIdMap[post.Id] = commentHex
 		numImported += 1
 	}
 
