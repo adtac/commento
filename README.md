@@ -6,7 +6,7 @@
 
 <table align="center"><tr><td>
 <p align="center">:warning: &nbsp; <b>This is a mirror. All development takes place <a href="https://gitlab.com/commento/commento">on Gitlab</a>.</b></p>
-<div>You're viewing the Github mirror of the <code>master</code> branch. All development and discussion takes place on <a href="https://gitlab.com/commento/commento">on Gitlab</a>, not on Github. Please submit all issues and patches over there.</div></td></tr></table>
+<div>You're viewing the Github mirror of the <code>master</code> branch. All development and discussion takes place <a href="https://gitlab.com/commento/commento">on Gitlab</a>, not on Github. Please submit all issues and patches over there.</div></td></tr></table>
 
 ### What is Commento?
 
