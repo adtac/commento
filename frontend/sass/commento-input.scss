@@ -48,46 +48,6 @@ textarea {
   }
 }
 
-.commento-oauth-buttons-container {
-  display: flex;
-  justify-content: center;
-}
-
-.commento-oauth-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  z-index: 1;
-}
-
-.commento-oauth-buttons {
-  display: contents;
-}
-
-.commento-google-button {
-  background: #dd4b39;
-  text-transform: uppercase;
-  font-size: 13px;
-}
-
-.commento-github-button {
-  background: #000000;
-  text-transform: uppercase;
-  font-size: 13px;
-}
-
-.commento-anonymous-button {
-  display: block;
-  color: $blue-6;
-  font-weight: 700;
-  margin-top: 12px;
-  font-size: 12px;
-  cursor: pointer;
-  text-align: center;
-  text-transform: uppercase;
-}
-
 .commento-blurred-textarea {
   list-style: none;
   display: flex;

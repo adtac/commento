@@ -1,0 +1,27 @@
+@import "colors-main.scss";
+
+.commento-oauth-buttons-container {
+  display: flex;
+  justify-content: center;
+
+  .commento-oauth-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    display: contents;
+
+    .commento-google-button {
+      background: #dd4b39;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .commento-github-button {
+      background: #000000;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+  }
+}
