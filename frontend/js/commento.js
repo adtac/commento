@@ -35,7 +35,6 @@
   var ID_LOGIN_BOX_HR = "commento-login-box-hr";
   var ID_LOGIN_BOX_OAUTH_PRETEXT = "commento-login-box-oauth-pretext";
   var ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER = "commento-login-box-oauth-buttons-container";
-  var ID_LOGIN_BOX_ANONYMOUS_BUTTON = "commento-login-box-anonymous-button";
   var ID_MOD_TOOLS = "commento-mod-tools";
   var ID_MOD_TOOLS_LOCK_BUTTON = "commento-mod-tools-lock-button";
   var ID_ERROR = "commento-error";
@@ -44,6 +43,7 @@
   var ID_SUPER_CONTAINER = "commento-textarea-super-container-";
   var ID_TEXTAREA_CONTAINER = "commento-textarea-container-";
   var ID_TEXTAREA = "commento-textarea-";
+  var ID_ANONYMOUS_CHECKBOX = "commento-anonymous-checkbox-";
   var ID_CARD = "commento-comment-card-";
   var ID_BODY = "commento-comment-body-";
   var ID_TEXT = "commento-comment-text-";
@@ -77,13 +77,12 @@
   var requireIdentification = true;
   var isModerator = false;
   var isFrozen = false;
-  var shownSubmitButton = {"root": false};
   var chosenAnonymous = false;
   var isLocked = false;
   var stickyCommentHex = "none";
   var shownReply = {};
   var configuredOauths = [];
-  var loginBoxType = "signup";
+  var loginBoxType = "login";
   var oauthButtonsShown = false;
   var selfHex = undefined;
 
@@ -226,6 +225,57 @@
     refreshAll();
   }
 
+  function selfLoad(commenter) {
+    commenters[commenter.commenterHex] = commenter;
+    selfHex = commenter.commenterHex;
+
+    var loggedContainer = create("div");
+    var loggedInAs = create("div");
+    var name = create("a");
+    var avatar;
+    var logout = create("div");
+    var color = colorGet(commenter.commenterHex + "-" + commenter.name);
+
+    loggedContainer.id = ID_LOGGED_CONTAINER;
+
+    classAdd(loggedContainer, "logged-container");
+    classAdd(loggedInAs, "logged-in-as");
+    classAdd(name, "name");
+    classAdd(logout, "logout");
+
+    name.innerText = commenter.name;
+    logout.innerText = "Logout";
+
+    onclick(logout, global.logout);
+
+    attrSet(loggedContainer, "style", "display: none");
+    attrSet(name, "href", commenter.link);
+    if (commenter.photo === "undefined") {
+      avatar = create("div");
+      avatar.style["background"] = color;
+      avatar.innerHTML = commenter.name[0].toUpperCase();
+      classAdd(avatar, "avatar");
+    } else {
+      avatar = create("img");
+      if (commenter.provider === "google") {
+        attrSet(avatar, "src", commenter.photo + "?sz=50");
+      } else if (commenter.provider === "github") {
+        attrSet(avatar, "src", commenter.photo + "&s=50");
+      } else {
+        attrSet(avatar, "src", commenter.photo);
+      }
+      classAdd(avatar, "avatar-img");
+    }
+
+    append(loggedInAs, avatar);
+    append(loggedInAs, name);
+    append(loggedContainer, loggedInAs);
+    append(loggedContainer, logout);
+    prepend(root, loggedContainer);
+
+    isAuthenticated = true;
+  }
+
 
   function selfGet(callback) {
     var commenterToken = commenterTokenGet();
@@ -246,54 +296,7 @@
         return;
       }
 
-      commenters[resp.commenter.commenterHex] = resp.commenter;
-      selfHex = resp.commenter.commenterHex;
-
-      var loggedContainer = create("div");
-      var loggedInAs = create("div");
-      var name = create("a");
-      var avatar;
-      var logout = create("div");
-      var color = colorGet(resp.commenter.commenterHex + "-" + resp.commenter.name);
-
-      loggedContainer.id = ID_LOGGED_CONTAINER;
-
-      classAdd(loggedContainer, "logged-container");
-      classAdd(loggedInAs, "logged-in-as");
-      classAdd(name, "name");
-      classAdd(logout, "logout");
-
-      name.innerText = resp.commenter.name;
-      logout.innerText = "Logout";
-
-      onclick(logout, global.logout);
-
-      attrSet(loggedContainer, "style", "display: none");
-      attrSet(name, "href", resp.commenter.link);
-      if (resp.commenter.photo === "undefined") {
-        avatar = create("div");
-        avatar.style["background"] = color;
-        avatar.innerHTML = resp.commenter.name[0].toUpperCase();
-        classAdd(avatar, "avatar");
-      } else {
-        avatar = create("img");
-        if (resp.commenter.provider === "google") {
-          attrSet(avatar, "src", resp.commenter.photo + "?sz=50");
-        } else if (resp.commenter.provider === "github") {
-          attrSet(avatar, "src", resp.commenter.photo + "&s=50");
-        } else {
-          attrSet(avatar, "src", resp.commenter.photo);
-        }
-        classAdd(avatar, "avatar-img");
-      }
-
-      append(loggedInAs, avatar);
-      append(loggedInAs, name);
-      append(loggedContainer, loggedInAs);
-      append(loggedContainer, logout);
-      append(root, loggedContainer);
-
-      isAuthenticated = true;
+      selfLoad(resp.commenter);
 
       call(callback);
     });
@@ -407,60 +410,42 @@
     var textareaSuperContainer = create("div");
     var textareaContainer = create("div");
     var textarea = create("textarea");
+    var anonymousCheckboxContainer = create("div");
+    var anonymousCheckbox = create("input");
+    var anonymousCheckboxLabel = create("label");
+    var submitButton = create("button");
 
     textareaSuperContainer.id = ID_SUPER_CONTAINER + id;
     textareaContainer.id = ID_TEXTAREA_CONTAINER + id;
     textarea.id = ID_TEXTAREA + id;
+    anonymousCheckbox.id = ID_ANONYMOUS_CHECKBOX + id;
+    submitButton.id = ID_SUBMIT_BUTTON + id;
 
     classAdd(textareaContainer, "textarea-container");
+    classAdd(anonymousCheckboxContainer, "round-check");
+    classAdd(anonymousCheckboxContainer, "anonymous-checkbox-container");
+    classAdd(submitButton, "button");
+    classAdd(submitButton, "submit-button");
+    classAdd(textareaSuperContainer, "button-margin");
 
-    if (!isAuthenticated && !chosenAnonymous) {
-      var buttonsContainer = create("div");
-      var question = create("div");
-      var buttons = create("div");
-      var createButton = create("div");
-      var loginButton = create("div");
-      var anonymousButton = create("div");
+    attrSet(textarea, "placeholder", "Add a comment");
+    attrSet(anonymousCheckbox, "type", "checkbox");
+    attrSet(anonymousCheckboxLabel, "for", ID_ANONYMOUS_CHECKBOX + id);
 
-      classAdd(buttonsContainer, "account-buttons-container");
-      classAdd(question, "account-buttons-question");
-      classAdd(buttons, "account-buttons");
-      classAdd(createButton, "button");
-      classAdd(createButton, "create-button");
-      classAdd(loginButton, "button");
-      classAdd(loginButton, "login-button");
-      classAdd(anonymousButton, "anonymous-button");
-
-      onclick(createButton, global.loginBoxShow);
-      onclick(loginButton, global.loginBoxShow);
-      onclick(loginButton, global.loginSwitch);
-      onclick(anonymousButton, global.anonymousChoose);
-
-      attrSet(textarea, "disabled", true);
-
-      createButton.innerText = "Create an Account";
-      loginButton.innerText = "Login";
-      anonymousButton.innerText = "Comment anonymously";
-      question.innerText = "Want to add to the discussion?";
-
-      append(buttons, createButton);
-      append(buttons, loginButton);
-      append(buttonsContainer, buttons);
-      if (!requireIdentification) {
-        append(buttonsContainer, anonymousButton);
-      }
-      append(textareaContainer, question);
-      append(textareaContainer, buttonsContainer);
-    } else {
-      onclick(textarea, global.showSubmitButton, id);
-
-      attrSet(textarea, "placeholder", "Join the discussion!");
-    }
+    anonymousCheckboxLabel.innerText = "Comment anonymously";
+    submitButton.innerText = "Add Comment";
 
     textarea.oninput = autoExpander(textarea);
+    onclick(submitButton, submitAccountDecide, id);
 
     append(textareaContainer, textarea);
     append(textareaSuperContainer, textareaContainer);
+    append(anonymousCheckboxContainer, anonymousCheckbox);
+    append(anonymousCheckboxContainer, anonymousCheckboxLabel);
+    append(textareaSuperContainer, submitButton);
+    if (!requireIdentification) {
+      append(textareaSuperContainer, anonymousCheckboxContainer);
+    }
 
     return textareaSuperContainer;
   }
@@ -504,7 +489,7 @@
   }
 
 
-  global.commentNew = function(id) {
+  global.commentNew = function(id, commenterToken, callback) {
     var textareaSuperContainer = $(ID_SUPER_CONTAINER + id);
     var textarea = $(ID_TEXTAREA + id);
     var replyButton = $(ID_REPLY + id);
@@ -544,7 +529,7 @@
       }
       
       var commenterHex = selfHex;
-      if (commenterHex === undefined && commenterTokenGet() === "anonymous") {
+      if (commenterHex === undefined || commenterToken === "anonymous") {
         commenterHex = "anonymous";
       }
 
@@ -566,7 +551,6 @@
         textareaSuperContainer.replaceWith(newCard);
 
         shownReply[id] = false;
-        shownSubmitButton[id] = false;
 
         classAdd(replyButton, "option-reply");
         classRemove(replyButton, "option-cancel");
@@ -578,6 +562,8 @@
         textarea.value = "";
         insertAfter(textareaSuperContainer, newCard);
       }
+
+      call(callback);
     });
   }
 
@@ -802,15 +788,11 @@
       if (isAuthenticated) {
         upDownOnclickSet(upvote, downvote, comment.commentHex, comment.direction);
       } else {
-        onclick(upvote, global.loginBoxShow);
-        onclick(downvote, global.loginBoxShow);
+        onclick(upvote, global.loginBoxShow, null);
+        onclick(downvote, global.loginBoxShow, null);
       }
 
-      if (isAuthenticated || chosenAnonymous) {
-        onclick(reply, global.replyShow, comment.commentHex);
-      } else {
-        onclick(reply, global.loginBoxShow);
-      }
+      onclick(reply, global.replyShow, comment.commentHex);
 
       if (commenter.link !== "undefined" && commenter.link !== "https://undefined" && commenter.link !== "") {
         attrSet(name, "href", commenter.link);
@@ -869,8 +851,6 @@
       append(card, header);
       append(card, contents);
       append(cards, card);
-
-      shownSubmitButton[comment.commentHex] = false;
     });
 
     return cards;
@@ -1003,7 +983,6 @@
 
     el.remove();
     shownReply[id] = false;
-    shownSubmitButton[id] = false;
 
     classAdd(replyButton, "option-reply");
     classRemove(replyButton, "option-cancel");
@@ -1069,39 +1048,44 @@
   }
 
 
-  global.showSubmitButton = function(id) {
-    if (id in shownSubmitButton && shownSubmitButton[id]) {
+  function submitAuthenticated(id) {
+    if (isAuthenticated) {
+      global.commentNew(id, commenterTokenGet());
       return;
     }
 
-    shownSubmitButton[id] = true;
-
-    var el = $(ID_SUPER_CONTAINER + id);
-
-    var submit = create("button");
-
-    submit.id = ID_SUBMIT_BUTTON + id;
-
-    submit.innerText = "Add Comment";
-
-    classAdd(submit, "button");
-    classAdd(submit, "submit-button");
-    classAdd(el, "button-margin");
-
-    onclick(submit, global.commentNew, id);
-
-    append(el, submit);
+    global.loginBoxShow(id);
+    return;
   }
 
 
-  global.anonymousChoose = function() {
-    cookieSet("commentoCommenterToken", "anonymous");
+  function submitAnonymous(id) {
     chosenAnonymous = true;
-    refreshAll();
+    global.commentNew(id, "anonymous");
   }
 
 
-  global.commentoAuth = function(provider) {
+  function submitAccountDecide(id) {
+    if (requireIdentification) {
+      submitAuthenticated(id);
+      return;
+    }
+
+    var anonymousCheckbox = $(ID_ANONYMOUS_CHECKBOX + id);
+
+    if (!anonymousCheckbox.checked) {
+      submitAuthenticated(id);
+      return;
+    } else {
+      submitAnonymous(id);
+      return;
+    }
+  }
+
+
+  global.commentoAuth = function(data) {
+    var provider = data.provider;
+    var id = data.id;
     var popup = window.open("", "_blank");
 
     get(origin + "/api/commenter/token/new", function(resp) {
@@ -1116,8 +1100,17 @@
 
       var interval = setInterval(function() {
         if (popup.closed) {
-          refreshAll();
           clearInterval(interval);
+          selfGet(function() {
+            var loggedContainer = $(ID_LOGGED_CONTAINER);
+            if (loggedContainer) {
+              attrSet(loggedContainer, "style", "");
+            }
+
+            global.commentNew(id, resp.commenterToken, function() {
+              global.loginBoxClose();
+            });
+          });
         }
       }, 250);
     });
@@ -1126,7 +1119,6 @@
 
   function refreshAll(callback) {
     $(ID_ROOT).innerHTML = "";
-    shownSubmitButton = {"root": false};
     shownReply = {};
     global.main(callback);
   }
@@ -1141,7 +1133,7 @@
   }
 
 
-  global.signupRender = function() {
+  global.popupRender = function(id) {
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
     var loginBox = create("div");
     var header = create("div");
@@ -1156,7 +1148,6 @@
     var oauthPretext = create("div");
     var oauthButtonsContainer = create("div");
     var oauthButtons = create("div");
-    var anonymousButton = create("div");
     var close = create("div");
 
     loginBox.id = ID_LOGIN_BOX;
@@ -1169,9 +1160,6 @@
     hr.id = ID_LOGIN_BOX_HR;
     oauthPretext.id = ID_LOGIN_BOX_OAUTH_PRETEXT;
     oauthButtonsContainer.id = ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER;
-    anonymousButton.id = ID_LOGIN_BOX_ANONYMOUS_BUTTON;
-
-    header.innerText = "Create an account to join the discussion!";
 
     classAdd(loginBoxContainer, "login-box-container");
     classAdd(loginBox, "login-box");
@@ -1186,19 +1174,17 @@
     classAdd(oauthPretext, "login-box-subtitle");
     classAdd(oauthButtonsContainer, "oauth-buttons-container");
     classAdd(oauthButtons, "oauth-buttons");
-    classAdd(anonymousButton, "anonymous-button");
     classAdd(close, "login-box-close");
     classAdd(root, "root-min-height");
 
+    header.innerText = "Create an account to continue";
     emailButton.innerText = "Continue";
     loginLink.innerText = "Already have an account? Log in.";
-    subtitle.innerText = "Sign up with your email to vote and comment.";
+    subtitle.innerText = "Sign up with your email to comment and receive email notifications.";
     oauthPretext.innerText = "Or proceed with social login.";
-    anonymousButton.innerText = "Comment anonymously";
 
-    onclick(emailButton, global.passwordAsk);
-    onclick(loginLink, global.loginSwitch);
-    onclick(anonymousButton, global.anonymousChoose);
+    onclick(emailButton, global.passwordAsk, id);
+    onclick(loginLink, global.loginSwitch, id);
     onclick(close, global.loginBoxClose);
 
     attrSet(loginBoxContainer, "style", "display: none; opacity: 0;");
@@ -1214,7 +1200,7 @@
 
       button.innerText = configuredOauths[i];
 
-      onclick(button, global.commentoAuth, configuredOauths[i]); 
+      onclick(button, global.commentoAuth, {"provider": configuredOauths[i], "id": id});
 
       append(oauthButtons, button);
     }
@@ -1235,9 +1221,6 @@
       append(loginBox, oauthPretext);
       append(oauthButtonsContainer, oauthButtons);
       append(loginBox, oauthButtonsContainer);
-      if (!requireIdentification) {
-        append(loginBox, anonymousButton);
-      }
       oauthButtonsShown = true;
     } else {
       oauthButtonsShown = false;
@@ -1251,7 +1234,7 @@
   }
 
 
-  global.loginSwitch = function(leaveOauth) {
+  global.loginSwitch = function(id) {
     var header = $(ID_LOGIN_BOX_HEADER);
     var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
     var loginLink = $(ID_LOGIN_BOX_LOGIN_LINK);
@@ -1263,11 +1246,11 @@
     loginLink.innerText = "Don't have an account? Sign up.";
     subtitle.innerText = "Enter your email address to start with.";
 
-    onclick(loginLink, global.signupSwitch);
+    onclick(loginLink, global.signupSwitch, id);
 
     loginBoxType = "login";
 
-    if (ouathButtonsShown && leaveOauth !== true && configuredOauths.length > 0) {
+    if (ouathButtonsShown && configuredOauths.length > 0) {
       remove(hr);
       remove(oauthPretext);
       remove(oauthButtonsContainer);
@@ -1276,13 +1259,13 @@
   }
 
 
-  global.signupSwitch = function() {
+  global.signupSwitch = function(id) {
     global.loginBoxClose();
-    global.loginBoxShow();
+    global.loginBoxShow(id);
   }
 
 
-  function loginUP(username, password) {
+  function loginUP(username, password, id) {
     var json = {
       "email": username,
       "password": password,
@@ -1296,20 +1279,29 @@
       }
 
       cookieSet("commentoCommenterToken", resp.commenterToken);
-      refreshAll();
+
+      selfLoad(resp.commenter);
+      var loggedContainer = $(ID_LOGGED_CONTAINER);
+      if (loggedContainer) {
+        attrSet(loggedContainer, "style", "");
+      }
+
+      global.commentNew(id, resp.commenterToken, function() {
+        global.loginBoxClose();
+      });
     });
   }
 
 
-  global.login = function() {
+  global.login = function(id) {
     var email = $(ID_LOGIN_BOX_EMAIL_INPUT);
     var password = $(ID_LOGIN_BOX_PASSWORD_INPUT);
 
-    loginUP(email.value, password.value);
+    loginUP(email.value, password.value, id);
   }
 
 
-  global.signup = function() {
+  global.signup = function(id) {
     var email = $(ID_LOGIN_BOX_EMAIL_INPUT);
     var name = $(ID_LOGIN_BOX_NAME_INPUT);
     var website = $(ID_LOGIN_BOX_WEBSITE_INPUT);
@@ -1329,12 +1321,12 @@
         return
       }
 
-      loginUP(email.value, password.value);
+      loginUP(email.value, password.value, id);
     });
   }
 
 
-  global.passwordAsk = function() {
+  global.passwordAsk = function(id) {
     var loginBox = $(ID_LOGIN_BOX);
     var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
     var emailButton = $(ID_LOGIN_BOX_EMAIL_BUTTON);
@@ -1342,11 +1334,6 @@
     var hr = $(ID_LOGIN_BOX_HR);
     var oauthButtonsContainer = $(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER);
     var oauthPretext = $(ID_LOGIN_BOX_OAUTH_PRETEXT);
-    var anonymousButton = null;
-    if (!requireIdentification){
-      ;
-    }
-    anonymousButton = $(ID_LOGIN_BOX_ANONYMOUS_BUTTON);
     
     remove(emailButton);
     remove(loginLinkContainer);
@@ -1357,20 +1344,19 @@
         remove(oauthButtonsContainer);
       }
     }
-    remove(anonymousButton);
 
-    var order, id, type, placeholder;
+    var order, fid, type, placeholder;
 
     if (loginBoxType === "signup") {
-      var order = ["name", "website", "password"];
-      var id = [ID_LOGIN_BOX_NAME_INPUT, ID_LOGIN_BOX_WEBSITE_INPUT, ID_LOGIN_BOX_PASSWORD_INPUT];
-      var type = ["text", "text", "password"];
-      var placeholder = ["Real Name", "Website (Optional)", "Password"];
+      order = ["name", "website", "password"];
+      fid = [ID_LOGIN_BOX_NAME_INPUT, ID_LOGIN_BOX_WEBSITE_INPUT, ID_LOGIN_BOX_PASSWORD_INPUT];
+      type = ["text", "text", "password"];
+      placeholder = ["Real Name", "Website (Optional)", "Password"];
     } else {
-      var order = ["password"];
-      var id = [ID_LOGIN_BOX_PASSWORD_INPUT];
-      var type = ["password"];
-      var placeholder = ["Password"];
+      order = ["password"];
+      fid = [ID_LOGIN_BOX_PASSWORD_INPUT];
+      type = ["password"];
+      placeholder = ["Password"];
     }
 
     if (loginBoxType === "signup") {
@@ -1384,7 +1370,7 @@
       var field = create("div");
       var fieldInput = create("input");
 
-      fieldInput.id = id[i];
+      fieldInput.id = fid[i];
 
       classAdd(fieldContainer, "email-container");
       classAdd(field, "email");
@@ -1403,9 +1389,9 @@
         fieldButton.innerText = loginBoxType;
 
         if (loginBoxType === "signup") {
-          onclick(fieldButton, global.signup);
+          onclick(fieldButton, global.signup, id);
         } else {
-          onclick(fieldButton, global.login);
+          onclick(fieldButton, global.login, id);
         }
 
         append(field, fieldButton);
@@ -1564,11 +1550,11 @@
   }
 
 
-  global.loginBoxShow = function() {
+  global.loginBoxShow = function(id) {
     var mainArea = $(ID_MAIN_AREA);
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
 
-    global.signupRender();
+    global.popupRender(id);
 
     classAdd(mainArea, "blurred");
     

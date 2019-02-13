@@ -1,4 +1,5 @@
 @import "colors-main.scss";
+@import "checkbox.scss";
 
 textarea,
 input[type=text] {
@@ -52,9 +53,7 @@ textarea {
   justify-content: center;
 }
 
-.commento-oauth-buttons,
-.commento-account-buttons,
-.commento-account-buttons-container {
+.commento-oauth-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -62,32 +61,8 @@ textarea {
   z-index: 1;
 }
 
-.commento-account-buttons {
-  position: static;
-  flex-direction: row;
-}
-
-.commento-account-buttons-container {
-  top: 45px;
-  padding-bottom: 10px;
-}
-
 .commento-oauth-buttons {
   display: contents;
-}
-
-.commento-account-buttons-question {
-  position: absolute;
-  top: 10px;
-  display: block;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
-  padding: 6px;
-  color: $gray-8;
-  outline: none;
 }
 
 .commento-google-button {
@@ -135,23 +110,9 @@ textarea {
   width: fit-content;
 }
 
-.commento-create-button {
-  width: 150px;
-  background: $pink-9;
-  text-transform: uppercase;
-  font-size: 12px;
-}
-
-.commento-login-button {
-  width: 50px;
-  background: $cyan-9;
-  text-transform: uppercase;
-  font-size: 12px;
-}
-
 .commento-submit-button {
   float: right;
-  background: $indigo-7;
+  background: $blue-8;
   text-transform: uppercase;
   font-size: 12px;
 }
@@ -166,4 +127,25 @@ textarea {
 
 .commento-button-margin {
   padding-bottom: 60px;
+}
+
+.commento-anonymous-checkbox-container {
+  float: right;
+  margin: 20px 16px;
+
+  input[type="checkbox"] + label {
+    padding-left: 24px;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $gray-7;
+  }
+
+  input[type="checkbox"] + label:before {
+    margin-top: 1px;
+  }
+
+  input[type="checkbox"] + label:after {
+    margin-top: -1px;
+  }
 }
