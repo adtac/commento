@@ -14,7 +14,7 @@ input[type=text]::placeholder {
 }
 
 textarea::placeholder {
-  color: #aaa;
+  color: $gray-6;
   font-size: 20px;
   display: flex;
   line-height: 110px;
