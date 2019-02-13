@@ -163,32 +163,32 @@
                 </ul>
 
                 <div id="mod-tab-1" class="content original current">
-                  <div class="row no-border round-check">
-                    <input type="checkbox" class="switch" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
+                  <div class="row no-border commento-round-check">
+                    <input type="checkbox" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
                     <label for="spam-filtering">Automatic spam filtering</label>
                     <div class="pitch">
                       Commento uses Akismet's advanced spam detection to automatically identify and remove spam comments. This is strongly recommended. Requires backend configuration.
                     </div>
                   </div>
 
-                  <div class="row no-border round-check">
-                    <input type="checkbox" class="switch" v-model="domains[cd].requireModeration" id="require-moderation">
+                  <div class="row no-border commento-round-check">
+                    <input type="checkbox" v-model="domains[cd].requireModeration" id="require-moderation">
                     <label for="require-moderation">Require all comments to be approved manually</label>
                     <div class="pitch">
                       Enabling this would require a moderator to approve all comments. This is generally recommended if your site doesn't receive too much traffic.
                     </div>
                   </div>
 
-                  <div class="row no-border round-check">
-                    <input type="checkbox" class="switch" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
+                  <div class="row no-border commento-round-check">
+                    <input type="checkbox" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
                     <label for="allow-anonymous">Allow anonymous comments</label>
                     <div class="pitch">
                       Enabling this would allow your readers to comment anonymously. Disabling would require the to authenticate themselves (using their Google account, for example). Recommended.
                     </div>
                   </div>
 
-                  <div class="row no-border round-check indent" v-if="domains[cd].allowAnonymous">
-                    <input type="checkbox" class="switch" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
+                  <div class="row no-border commento-round-check indent" v-if="domains[cd].allowAnonymous">
+                    <input type="checkbox" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
                     <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
                     <div class="pitch">
                       Enabling this would require a moderator to approve all anonymous comments. This is recommended if most of your spam comments are from anonymous users.
