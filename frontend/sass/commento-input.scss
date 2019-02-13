@@ -58,31 +58,12 @@ textarea {
   will-change: transform;
 }
 
-.commento-approve-button,
-.commento-delete-button,
-.commento-submit-button {
-  margin-top: 10px;
-  font-size: 14px;
-  width: -moz-fit-content;
-  width: -webkit-fit-content;
-  width: -ms-fit-content;
-  width: -o-fit-content;
-  width: fit-content;
-}
-
 .commento-submit-button {
   float: right;
   background: $blue-8;
   text-transform: uppercase;
   font-size: 12px;
-}
-
-.commento-approve-button {
-  background: $green-7;
-}
-
-.commento-delete-button {
-  background: $red-7;
+  margin-top: 10px;
 }
 
 .commento-button-margin {
