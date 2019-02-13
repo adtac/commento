@@ -82,7 +82,7 @@
   var stickyCommentHex = "none";
   var shownReply = {};
   var configuredOauths = [];
-  var loginBoxType = "login";
+  var popupBoxType = "login";
   var oauthButtonsShown = false;
   var selfHex = undefined;
 
@@ -1072,6 +1072,15 @@
     }
 
     var anonymousCheckbox = $(ID_ANONYMOUS_CHECKBOX + id);
+    var textarea = $(ID_TEXTAREA + id);
+    var markdown = textarea.value;
+
+    if (markdown === "") {
+      classAdd(textarea, "red-border");
+      return;
+    } else {
+      classRemove(textarea, "red-border");
+    }
 
     if (!anonymousCheckbox.checked) {
       submitAuthenticated(id);
@@ -1177,14 +1186,14 @@
     classAdd(close, "login-box-close");
     classAdd(root, "root-min-height");
 
-    header.innerText = "Create an account to continue";
+    header.innerText = "Login to continue";
+    loginLink.innerText = "Don't have an account? Sign up.";
+    subtitle.innerText = "Enter your email address to start with.";
     emailButton.innerText = "Continue";
-    loginLink.innerText = "Already have an account? Log in.";
-    subtitle.innerText = "Sign up with your email to comment and receive email notifications.";
     oauthPretext.innerText = "Or proceed with social login.";
 
     onclick(emailButton, global.passwordAsk, id);
-    onclick(loginLink, global.loginSwitch, id);
+    onclick(loginLink, global.popupSwitch);
     onclick(close, global.loginBoxClose);
 
     attrSet(loginBoxContainer, "style", "display: none; opacity: 0;");
@@ -1228,40 +1237,28 @@
 
     append(loginBox, close);
 
-    loginBoxType = "signup";
+    popupBoxType = "login";
     loginBoxContainer.innerHTML = "";
     append(loginBoxContainer, loginBox);
   }
 
 
-  global.loginSwitch = function(id) {
+  global.popupSwitch = function() {
     var header = $(ID_LOGIN_BOX_HEADER);
     var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
     var loginLink = $(ID_LOGIN_BOX_LOGIN_LINK);
-    var hr = $(ID_LOGIN_BOX_HR);
-    var oauthButtonsContainer = $(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER);
-    var oauthPretext = $(ID_LOGIN_BOX_OAUTH_PRETEXT);
 
-    header.innerText = "Login to continue";
-    loginLink.innerText = "Don't have an account? Sign up.";
-    subtitle.innerText = "Enter your email address to start with.";
-
-    onclick(loginLink, global.signupSwitch, id);
-
-    loginBoxType = "login";
-
-    if (ouathButtonsShown && configuredOauths.length > 0) {
-      remove(hr);
-      remove(oauthPretext);
-      remove(oauthButtonsContainer);
-      oauthButtonsShown = false;
+    if (popupBoxType === "login") {
+      header.innerText = "Create an account to continue";
+      loginLink.innerText = "Already have an account? Log in.";
+      subtitle.innerText = "Sign up with your email to comment and receive email notifications.";
+      popupBoxType = "signup";
+    } else {
+      header.innerText = "Login to continue";
+      loginLink.innerText = "Don't have an account? Sign up.";
+      subtitle.innerText = "Enter your email address to start with.";
+      popupBoxType = "login";
     }
-  }
-
-
-  global.signupSwitch = function(id) {
-    global.loginBoxClose();
-    global.loginBoxShow(id);
   }
 
 
@@ -1347,7 +1344,7 @@
 
     var order, fid, type, placeholder;
 
-    if (loginBoxType === "signup") {
+    if (popupBoxType === "signup") {
       order = ["name", "website", "password"];
       fid = [ID_LOGIN_BOX_NAME_INPUT, ID_LOGIN_BOX_WEBSITE_INPUT, ID_LOGIN_BOX_PASSWORD_INPUT];
       type = ["text", "text", "password"];
@@ -1359,7 +1356,7 @@
       placeholder = ["Password"];
     }
 
-    if (loginBoxType === "signup") {
+    if (popupBoxType === "signup") {
       subtitle.innerText = "Finish the rest of your profile to complete."
     } else {
       subtitle.innerText = "Enter your password to log in."
@@ -1386,9 +1383,9 @@
       if (order[i] === "password") {
         var fieldButton = create("button");
         classAdd(fieldButton, "email-button");
-        fieldButton.innerText = loginBoxType;
+        fieldButton.innerText = popupBoxType;
 
-        if (loginBoxType === "signup") {
+        if (popupBoxType === "signup") {
           onclick(fieldButton, global.signup, id);
         } else {
           onclick(fieldButton, global.login, id);
@@ -1400,7 +1397,7 @@
       append(loginBox, fieldContainer);
     }
 
-    if (loginBoxType === "signup") {
+    if (popupBoxType === "signup") {
       $(ID_LOGIN_BOX_NAME_INPUT).focus();
     } else {
       $(ID_LOGIN_BOX_PASSWORD_INPUT).focus();
