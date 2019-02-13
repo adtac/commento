@@ -23,8 +23,7 @@
   var ID_MAIN_AREA = "commento-main-area";
   var ID_LOGIN_BOX_CONTAINER = "commento-login-box-container";
   var ID_LOGIN_BOX = "commento-login-box";
-  var ID_LOGIN_BOX_HEADER = "commento-login-box-header";
-  var ID_LOGIN_BOX_SUBTITLE = "commento-login-box-subtitle";
+  var ID_LOGIN_BOX_EMAIL_SUBTITLE = "commento-login-box-email-subtitle";
   var ID_LOGIN_BOX_EMAIL_INPUT = "commento-login-box-email-input";
   var ID_LOGIN_BOX_PASSWORD_INPUT = "commento-login-box-password-input";
   var ID_LOGIN_BOX_NAME_INPUT = "commento-login-box-name-input";
@@ -1145,52 +1144,48 @@
   global.popupRender = function(id) {
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
     var loginBox = create("div");
-    var header = create("div");
-    var subtitle = create("div");
+    var oauthSubtitle = create("div");
+    var oauthButtonsContainer = create("div");
+    var oauthButtons = create("div");
+    var hr = create("hr");
+    var emailSubtitle = create("div");
     var emailContainer = create("div");
     var email = create("div");
     var emailInput = create("input");
     var emailButton = create("button");
     var loginLinkContainer = create("div");
     var loginLink = create("a");
-    var hr = create("hr");
-    var oauthPretext = create("div");
-    var oauthButtonsContainer = create("div");
-    var oauthButtons = create("div");
     var close = create("div");
 
     loginBox.id = ID_LOGIN_BOX;
-    header.id = ID_LOGIN_BOX_HEADER;
-    subtitle.id = ID_LOGIN_BOX_SUBTITLE;
+    emailSubtitle.id = ID_LOGIN_BOX_EMAIL_SUBTITLE;
     emailInput.id = ID_LOGIN_BOX_EMAIL_INPUT;
     emailButton.id = ID_LOGIN_BOX_EMAIL_BUTTON;
     loginLink.id = ID_LOGIN_BOX_LOGIN_LINK;
     loginLinkContainer.id = ID_LOGIN_BOX_LOGIN_LINK_CONTAINER;
     hr.id = ID_LOGIN_BOX_HR;
-    oauthPretext.id = ID_LOGIN_BOX_OAUTH_PRETEXT;
+    oauthSubtitle.id = ID_LOGIN_BOX_OAUTH_PRETEXT;
     oauthButtonsContainer.id = ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER;
 
     classAdd(loginBoxContainer, "login-box-container");
     classAdd(loginBox, "login-box");
-    classAdd(header, "login-box-header");
-    classAdd(subtitle, "login-box-subtitle");
+    classAdd(emailSubtitle, "login-box-subtitle");
     classAdd(emailContainer, "email-container");
     classAdd(email, "email");
     classAdd(emailInput, "input");
     classAdd(emailButton, "email-button");
     classAdd(loginLinkContainer, "login-link-container");
     classAdd(loginLink, "login-link");
-    classAdd(oauthPretext, "login-box-subtitle");
+    classAdd(oauthSubtitle, "login-box-subtitle");
     classAdd(oauthButtonsContainer, "oauth-buttons-container");
     classAdd(oauthButtons, "oauth-buttons");
     classAdd(close, "login-box-close");
     classAdd(root, "root-min-height");
 
-    header.innerText = "Login to continue";
     loginLink.innerText = "Don't have an account? Sign up.";
-    subtitle.innerText = "Enter your email address to start with.";
+    emailSubtitle.innerText = "Login with your email address";
     emailButton.innerText = "Continue";
-    oauthPretext.innerText = "Or proceed with social login.";
+    oauthSubtitle.innerText = "Proceed with social login";
 
     onclick(emailButton, global.passwordAsk, id);
     onclick(loginLink, global.popupSwitch);
@@ -1214,9 +1209,17 @@
       append(oauthButtons, button);
     }
 
-    append(loginBox, header);
-    append(loginBox, subtitle);
+    if (configuredOauths.length > 0) {
+      append(loginBox, oauthSubtitle);
+      append(oauthButtonsContainer, oauthButtons);
+      append(loginBox, oauthButtonsContainer);
+      append(loginBox, hr);
+      oauthButtonsShown = true;
+    } else {
+      oauthButtonsShown = false;
+    }
 
+    append(loginBox, emailSubtitle);
     append(email, emailInput);
     append(email, emailButton);
     append(emailContainer, email);
@@ -1224,16 +1227,6 @@
 
     append(loginLinkContainer, loginLink);
     append(loginBox, loginLinkContainer);
-
-    if (configuredOauths.length > 0) {
-      append(loginBox, hr);
-      append(loginBox, oauthPretext);
-      append(oauthButtonsContainer, oauthButtons);
-      append(loginBox, oauthButtonsContainer);
-      oauthButtonsShown = true;
-    } else {
-      oauthButtonsShown = false;
-    }
 
     append(loginBox, close);
 
@@ -1244,19 +1237,16 @@
 
 
   global.popupSwitch = function() {
-    var header = $(ID_LOGIN_BOX_HEADER);
-    var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
+    var emailSubtitle = $(ID_LOGIN_BOX_EMAIL_SUBTITLE);
     var loginLink = $(ID_LOGIN_BOX_LOGIN_LINK);
 
     if (popupBoxType === "login") {
-      header.innerText = "Create an account to continue";
       loginLink.innerText = "Already have an account? Log in.";
-      subtitle.innerText = "Sign up with your email to comment and receive email notifications.";
+      emailSubtitle.innerText = "Create an account";
       popupBoxType = "signup";
     } else {
-      header.innerText = "Login to continue";
       loginLink.innerText = "Don't have an account? Sign up.";
-      subtitle.innerText = "Enter your email address to start with.";
+      emailSubtitle.innerText = "Login with your email address";
       popupBoxType = "login";
     }
   }
@@ -1325,7 +1315,7 @@
 
   global.passwordAsk = function(id) {
     var loginBox = $(ID_LOGIN_BOX);
-    var subtitle = $(ID_LOGIN_BOX_SUBTITLE);
+    var subtitle = $(ID_LOGIN_BOX_EMAIL_SUBTITLE);
     var emailButton = $(ID_LOGIN_BOX_EMAIL_BUTTON);
     var loginLinkContainer = $(ID_LOGIN_BOX_LOGIN_LINK_CONTAINER);
     var hr = $(ID_LOGIN_BOX_HR);
