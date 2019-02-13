@@ -1,3 +1,5 @@
+@import "colors-main.scss";
+
 .commento-card {
   @import "commento-options.scss"; // SVG buttons to the right of each comment
 
@@ -90,4 +92,35 @@
   .commento-moderation {
     height: 48px;
   }
+}
+
+.commento-dark-card {
+  background: $yellow-0;
+}
+
+// do not place this inside .commento-card as this is used by logged-container
+// as well
+.commento-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 22px;
+  float: left;
+  margin-right: 10px;
+  border: 0px transparent;
+}
+
+.commento-avatar-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: left;
+  margin-right: 10px;
 }
