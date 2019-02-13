@@ -1,0 +1,77 @@
+@import "colors-main.scss";
+
+.round-check {
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input[type="checkbox"] + label {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  input[type="checkbox"] + label:last-child { margin-bottom: 0; }
+
+  input[type="checkbox"] + label:before {
+    content: '';
+    display: block;
+    width: 13px;
+    height: 13px;
+    margin-top: 2px;
+    background: $gray-0;
+    border: 1px solid $gray-3;
+    border-radius: 3px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: all .15s;
+  }
+
+  input[type="checkbox"]:disabled + label:before {
+    background: $gray-0;
+    border: 1px solid $gray-4;
+    opacity: 0.4;
+  }
+
+  input[type="checkbox"]:checked + label:before {
+    background: $blue-6;
+    border: 1px solid $blue-6;
+  }
+
+  input[type="checkbox"] + label:after {
+    position: absolute;
+    left: -7px;
+    top: 4px;
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 7px;
+    transform: rotate(45deg);
+    margin-left: 12px;
+    margin-right: 12px;
+    border: solid transparent;
+    border-width: 0 2px 2px 0;
+  }
+
+  input[type="checkbox"]:disabled + label:after {
+    border: solid transparent;
+    border-width: 0 2px 2px 0;
+  }
+
+  input[type="checkbox"]:checked + label:after {
+    border: solid $gray-0;
+    border-width: 0 2px 2px 0;
+  }
+
+  .pitch {
+    font-size: 14px;
+    color: #a5a5a5;
+    line-height: 20px !important;
+  }
+}
