@@ -67,5 +67,12 @@ func commenterLoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "commenterToken": commenterToken})
+	// TODO: modify commenterLogin to directly return c?
+	c, err := commenterGetByCommenterToken(commenterToken)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	bodyMarshal(w, response{"success": true, "commenterToken": commenterToken, "commenter": c})
 }
