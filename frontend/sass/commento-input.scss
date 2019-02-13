@@ -90,27 +90,6 @@ textarea {
   outline: none;
 }
 
-.commento-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-  font-weight: bold;
-  line-height: 24px;
-  font-size: 14px;
-  padding: 6px;
-  padding-left: 8px;
-  padding-right: 8px;
-  box-shadow: 0 4px 6px rgba(50,50,93,.11),0 1px 3px rgba(0,0,0,.08);
-  border: 1px solid transparent;
-  border-radius: 3px;
-  color: #fff;
-  width: 100px;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
 .commento-google-button {
   background: #dd4b39;
   text-transform: uppercase;

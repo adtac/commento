@@ -1,0 +1,42 @@
+@import "colors-main.scss";
+
+code {
+  background: $red-1;
+  font-family: monospace;
+  line-height: 1.5;
+  color: $red-6;
+  padding: 2px;
+  margin: 2px;
+}
+
+a {
+  color: $blue-6;
+  border-bottom: 1px solid $blue-6;
+  outline: none;
+  text-decoration: none;
+}
+
+a:focus {
+  box-shadow: 0 0 0 1px rgba(87, 85, 217, .2);
+}
+
+.commento-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 24px;
+  font-size: 14px;
+  padding: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11),0 1px 3px rgba(0,0,0,.08);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #fff;
+  width: 100px;
+  margin-left: 5px;
+  margin-right: 5px;
+}

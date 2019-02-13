@@ -17,13 +17,12 @@
   }
 
   @import "colors-main.scss";
-
-  @import "commento-tags.scss";
-  @import "commento-footer.scss";
-  @import "commento-input.scss";
-  @import "commento-logged.scss";
-  @import "commento-buttons.scss";
-  @import "commento-login.scss";
+  @import "commento-common.scss";
+  @import "commento-logged.scss";  // Logged in as <name>
+  @import "commento-input.scss";   // Textarea decorations
+  @import "commento-card.scss";    // Each comment card
+  @import "commento-login.scss";   // Popup box when logging in
+  @import "commento-footer.scss";  // Powered by Commento
 
   .commento-hidden {
     display: none;
@@ -106,97 +105,5 @@
     align-items: center;
     float: left;
     margin-right: 10px;
-  }
-
-  .commento-card {
-    padding: 12px 0px 0px 12px;
-    margin-top: 16px;
-    border-top: 1px solid #f0f0f0;
-
-    .commento-header {
-      padding-bottom: 4px;
-    }
-
-    .commento-avatar::after {
-      content:"";
-      display:block;
-    }
-
-    .commento-name {
-      font-weight: 700;
-      font-size: 14px;
-      color: #555;
-      border: none;
-      display: block;
-      z-index: 1;
-      margin-left: 48px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: fit-content;
-    }
-
-    .commento-flagged::after {
-      content: "Flagged";
-      text-transform: uppercase;
-      font-size: 10px;
-      background: $red-7;
-      color: white;
-      margin-left: 8px;
-      padding: 2px 6px 2px 6px;
-      border-radius: 100px;
-    }
-
-    .commento-subtitle {
-      display: block;
-      color: #999;
-      font-size: 12px;
-      margin-left: 48px;
-    }
-
-    .commento-timeago {
-      display: inline;
-      color: #888;
-      font-size: 12px;
-    }
-
-    .commento-score {
-      display: inline;
-      color: #888;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .commento-timeago::before {
-      content: "\00a0 \00a0 \00b7 \00a0 \00a0";
-    }
-
-    .commento-body {
-      p {
-        margin-top: 6px;
-        margin-bottom: 6px;
-      }
-    }
-
-    .commento-options {
-      float: right;
-      position: relative;
-      height: 38px;
-      z-index: 2;
-    }
-
-    .commento-options-mobile {
-      margin-right: 12px;
-    }
-
-    .commento-options-clearfix {
-      height: 38px;
-      width: 1px;
-      display: block;
-    }
-
-    .commento-moderation {
-      height: 48px;
-    }
   }
 }
