@@ -540,17 +540,18 @@
       }
 
       if (message !== "") {
-        if (id === "root") {
-          prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
-        } else {
-          append($(ID_BODY + id), messageCreate(message));
-        }
+        prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
       }
       
+      var commenterHex = selfHex;
+      if (commenterHex === undefined && commenterTokenGet() === "anonymous") {
+        commenterHex = "anonymous";
+      }
+
       var newCard = commentsRecurse({
         "root": [{
           "commentHex": resp.commentHex,
-          "commenterHex": selfHex,
+          "commenterHex": commenterHex,
           "markdown": markdown,
           "html": resp.html,
           "parentHex": "root",
