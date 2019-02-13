@@ -1,0 +1,24 @@
+@import "colors-main.scss";
+
+.commento-mod-tools {
+  margin-bottom: 16px;
+
+  button {
+    text-transform: uppercase;
+    color: $gray-7;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-left: 12px;
+    background: none;
+    border: none;
+  }
+}
+
+.commento-mod-tools::before {
+  content: "Moderator Tools";
+  text-transform: uppercase;
+  color: $indigo-8;
+  font-size: 13px;
+  font-weight: 700;
+}

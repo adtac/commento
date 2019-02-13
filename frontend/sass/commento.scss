@@ -18,12 +18,13 @@
 
   @import "colors-main.scss";
   @import "commento-common.scss";
-  @import "commento-logged.scss";  // Logged in as <name>
-  @import "commento-input.scss";   // Textarea decorations
-  @import "commento-oauth.scss";   // OAuth buttons
-  @import "commento-card.scss";    // Each comment card
-  @import "commento-login.scss";   // Popup box when logging in
-  @import "commento-footer.scss";  // Powered by Commento
+  @import "commento-logged.scss";     // Logged in as <name>
+  @import "commento-mod-tools.scss";  // Moderator tools and buttons
+  @import "commento-input.scss";      // Textarea, anonymous checkbox, submit button
+  @import "commento-oauth.scss";      // OAuth buttons
+  @import "commento-card.scss";       // Each comment card
+  @import "commento-login.scss";      // Popup box when logging in
+  @import "commento-footer.scss";     // Powered by Commento
 
   .commento-hidden {
     display: none;
@@ -43,29 +44,6 @@
     height: 32px;
     text-align: center;
     color: $red-7;
-    font-weight: 700;
-  }
-
-  .commento-mod-tools {
-    margin-bottom: 16px;
-
-    button {
-      text-transform: uppercase;
-      color: $gray-7;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-left: 12px;
-      background: none;
-      border: none;
-    }
-  }
-
-  .commento-mod-tools::before {
-    content: "Moderator Tools";
-    text-transform: uppercase;
-    color: $indigo-8;
-    font-size: 13px;
     font-weight: 700;
   }
 
