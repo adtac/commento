@@ -346,8 +346,8 @@
   function commentsGet(callback) {
     var json = {
       "commenterToken": commenterTokenGet(),
-      "domain": location.host,
-      "path": location.pathname,
+      "domain": parent.location.host,
+      "path": parent.location.pathname,
     };
 
     post(origin + "/api/comment/list", json, function(resp) {
@@ -520,8 +520,8 @@
 
     var json = {
       "commenterToken": commenterTokenGet(),
-      "domain": location.host,
-      "path": location.pathname,
+      "domain": parent.location.host,
+      "path": parent.location.pathname,
       "parentHex": id,
       "markdown": markdown,
     };
@@ -1429,8 +1429,8 @@
 
     var json = {
       "commenterToken": commenterTokenGet(),
-      "domain": location.host,
-      "path": location.pathname,
+      "domain": parent.location.host,
+      "path": parent.location.pathname,
       "attributes": attributes,
     };
 
