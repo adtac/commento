@@ -1523,6 +1523,7 @@
     attrSet(footer, "style", "");
 
     nameWidthFix();
+    loadHash();
   }
 
 
@@ -1566,6 +1567,19 @@
           ID_ROOT = "commento";
         }
       }
+    }
+  }
+
+
+  function loadHash() {
+    if (window.location.hash && window.location.hash.startsWith("#commento-")) {
+      var el = $(ID_CARD + window.location.hash.split("-")[1]);
+      if (el === null) {
+        return;
+      }
+
+      classAdd(el, "highlighted");
+      el.scrollIntoView(true);
     }
   }
 
