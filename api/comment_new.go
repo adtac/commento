@@ -144,5 +144,11 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state, "html": markdownToHtml(*x.Markdown)})
+	// TODO: reuse html in commentNew and do only one markdown to HTML conversion?
+	html := markdownToHtml(*x.Markdown)
+
+	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state, "html": html})
+	if smtpConfigured {
+		go emailNotificationNew(d, path, commenterHex, commentHex, *x.ParentHex, state)
+	}
 }

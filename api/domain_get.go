@@ -8,7 +8,7 @@ func domainGet(dmn string) (domain, error) {
 	}
 
 	statement := `
-    SELECT domain, ownerHex, name, creationDate, state, importedComments, autoSpamFilter, requireModeration, requireIdentification, moderateAllAnonymous
+    SELECT domain, ownerHex, name, creationDate, state, importedComments, autoSpamFilter, requireModeration, requireIdentification, moderateAllAnonymous, emailNotificationPolicy
 		FROM domains
 		WHERE domain = $1;
 	`
@@ -16,7 +16,7 @@ func domainGet(dmn string) (domain, error) {
 
 	var err error
 	d := domain{}
-	if err = row.Scan(&d.Domain, &d.OwnerHex, &d.Name, &d.CreationDate, &d.State, &d.ImportedComments, &d.AutoSpamFilter, &d.RequireModeration, &d.RequireIdentification, &d.ModerateAllAnonymous); err != nil {
+	if err = row.Scan(&d.Domain, &d.OwnerHex, &d.Name, &d.CreationDate, &d.State, &d.ImportedComments, &d.AutoSpamFilter, &d.RequireModeration, &d.RequireIdentification, &d.ModerateAllAnonymous, &d.EmailNotificationPolicy); err != nil {
 		return d, errorNoSuchDomain
 	}
 

@@ -8,4 +8,5 @@ type page struct {
 	IsLocked         bool   `json:"isLocked"`
 	CommentCount     int    `json:"commentCount"`
 	StickyCommentHex string `json:"stickyCommentHex"`
+	Title            string `json:"title"`
 }

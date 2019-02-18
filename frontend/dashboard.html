@@ -160,6 +160,7 @@
                 <ul class="tabs">
                   <li class="tab-link original current" data-tab="mod-tab-1">General</li>
                   <li class="tab-link" data-tab="mod-tab-2">Add/Remove Moderators</li>
+                  <li class="tab-link" data-tab="mod-tab-3">Email Settings</li>
                 </ul>
 
                 <div id="mod-tab-1" class="content original current">
@@ -201,7 +202,7 @@
                 </div>
 
                 <div id="mod-tab-2" class="content">
-                  <div class="pitch">
+                  <div class="normal-text">
                     Moderators have the power to approve/delete comments and lock threads. Once you add an user as a moderator, shiny new buttons will appear on each comment on each page when they log in.<br><br>
 
                     You're still the only administrator and the only person who can add and remove moderators. Moderators do not have access to this dashboard. Their access is restricted to pages on your website.
@@ -222,6 +223,31 @@
                     </div>
                   </div>
                 </div>
+
+                <div id="mod-tab-3" class="content">
+                  <div class="normal-text">
+                    You can enable email notifications to notify your moderators when a new comment is posted or when a comment is pending moderation. Commento tries to be smart about how often an email is sent. Emails will be delayed and batched until you go 10 minutes without one. This requires valid SMTP settings in order to send emails.<br><br>
+                  </div>
+                  <div class="question">
+                    When do you want emails sent to moderators?
+                  </div>
+                  <div class="row no-border commento-round-check indent">
+                    <input type="radio" id="email-all" value="all" v-model="domains[cd].emailNotificationPolicy">
+                    <label for="email-all">Whenever a new comment is created</label>
+                  </div>
+                  <div class="row no-border commento-round-check indent">
+                    <input type="radio" id="email-pending-moderation" value="pending-moderation" v-model="domains[cd].emailNotificationPolicy">
+                    <label for="email-pending-moderation">Only for comments pending moderation</label>
+                  </div>
+                  <div class="row no-border commento-round-check indent">
+                    <input type="radio" id="email-none" value="none" v-model="domains[cd].emailNotificationPolicy">
+                    <label for="email-none">Do not email moderators</label>
+                  </div>
+                  <br>
+                  <div class="center">
+                    <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -236,8 +262,7 @@
               <div class="tab">
                 <ul class="tabs">
                   <li class="tab-link original current" data-tab="configure-tab-1">General</li>
-                  <!-- <li class="tab-link" data-tab="configure-tab-2">Email Settings</li> -->
-                  <li class="tab-link" data-tab="configure-tab-3">Export Data</li>
+                  <li class="tab-link" data-tab="configure-tab-2">Export Data</li>
                 </ul>
 
                 <div id="configure-tab-1" class="content original current">
@@ -252,12 +277,7 @@
                   </div>
                 </div>
 
-                <!--
                 <div id="configure-tab-2" class="content">
-                </div>
-                -->
-
-                <div id="configure-tab-3" class="content">
                   <div class="normal-text">
                     You can export an archive of this domain's data (which includes all comments and commenters) in the JSON format. To initiate and queue an archive request, click the button below. You will receive an email containing the archive once it's ready.<br><br>
 

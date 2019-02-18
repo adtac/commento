@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+var goMigrations = map[string](func() error){
+	"20190213033530-email-notifications.sql": migrateEmails,
+}
+
 func migrate() error {
 	return migrateFromDir(os.Getenv("STATIC") + "/db")
 }
@@ -67,6 +71,13 @@ func migrateFromDir(dir string) error {
 				if err != nil {
 					logger.Errorf("cannot insert filename into the migrations table: %v", err)
 					return err
+				}
+
+				if fn, ok := goMigrations[file.Name()]; ok {
+					if err = fn(); err != nil {
+						logger.Errorf("cannot execute Go migration associated with SQL %s: %v", f, err)
+						return err
+					}
 				}
 
 				completed++

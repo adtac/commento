@@ -27,6 +27,10 @@ func commenterNew(email string, name string, link string, photo string, provider
 		return "", errorEmailAlreadyExists
 	}
 
+	if err := emailNew(email); err != nil {
+		return "", errorInternal
+	}
+
 	commenterHex, err := randomHex(32)
 	if err != nil {
 		return "", errorInternal

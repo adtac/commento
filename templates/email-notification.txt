@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no,initial-scale=1">
+    <title>You have {{ .Subject }}</title>
+    <style type="text/css">
+      @media only screen and (max-width:600px) {
+          .options {
+            float: none;
+            margin-bottom: 16px;
+            text-align: right;
+          }
+          .options::before {
+            content: "Options:";
+            float: left;
+            text-transform: uppercase;
+            color: #495057;
+            font-size: 12px;
+            font-weight: bold;
+          }
+          .option {
+            padding: 6px 8px;
+            margin: 10px 5px;
+            color: white;
+            border-radius: 2px;
+          }
+          .green {
+            background: #2f9e44;
+          }
+          .red {
+            background: #f03e3e;
+          }
+          .blue {
+            background: #1c7ed6;
+          }
+          .gray {
+            background: #495057;
+          }
+          .header {
+            padding-right: 0px;
+          }
+          .logo {
+            display: block;
+            float: none;
+            text-align: center;
+            width: 100%;
+            margin: 0px 8px 16px 0px;
+          }
+          .unsubscribe {
+            max-width: 100%;
+            width: 100%;
+            text-align: left;
+            margin-left: 8px;
+          }
+        }
+    </style>
+  </head>
+  <body class="content" style="font-size:14px;background:white;font-family:sans-serif;padding:0px;margin:0px;">
+    <div class="h1" style="font-weight:bold;text-align:center;margin-top:12px;padding:8px;font-size:24px;">You have {{ .Subject }}</div>
+    <div class="comments-container" style="display:flex;justify-content:center;">
+      <div class="comments" style="max-width:600px;width:calc(100% - 20px);margin-top:16px;border-top:1px solid #eee;">
+        {{ with .Notifications }}
+          {{ range . }}
+
+        <div class="comment" style="border-radius:2px;width:calc(100% - 32px);padding:16px;margin:8px 0px 8px 0px;border-bottom:1px solid #eee;">
+          <div class="options" style="float:right;">
+            {{ if eq .Kind "pending-moderation" }}
+                  <a href="{{ $.Origin }}/api/moderate/email?commentHex={{ .CommentHex }}&action=approve&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option green" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#2f9e44;">Approve</a>
+            {{ end }}
+                {{ if ne .Kind "reply" }}
+                  <a href="{{ $.Origin }}/api/moderate/email?commentHex={{ .CommentHex }}&action=delete&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option red" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#f03e3e;">Delete</a>
+            {{ end }}
+                <a href="http://{{ .Domain }}{{ .Path }}#commento-{{ .CommentHex }}" class="option gray" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#495057;">Context</a>
+          </div>
+          <div class="header" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px;">
+            <div class="name" style="display:inline;font-size:14px;font-weight:bold;color:#1e2127;">{{ .CommenterName }}</div>
+             on
+                <a href="http://{{ .Domain }}{{ .Path }}" class="page" style="margin-bottom:10px;text-decoration:none;color:#228be6;">"{{ .Title }}"</a>
+          </div>
+          <div class="text" style="line-height:20px;padding:10px;">
+            {{ .Html }}
+              </div>
+        </div>
+        {{ end }}
+        {{ end }}
+
+        <div class="footer" style="width:100%;margin-top:16px;">
+          <a href="https://commento.io" class="logo" style="float:right;font-weight:bold;color:#868e96;font-size:13px;text-decoration:none;">Powered by Commento</a>
+          <div class="unsubscribe" style="color:#868e96;font-size:13px;text-align:left;max-width:300px;margin-bottom:16px;">
+            {{ if eq .Kind "reply" }}
+              You've received this email because you opted in to receive email notifications for comment replies. To unsubscribe, <a href="{{ .Origin }}/unsubscribe?unsubscribeSecretHex={{ .UnsubscribeSecretHex }}" style="color:#868e96;font-weight:bold;text-decoration:none;">click here</a>.
+            {{ end }}
+            {{ if eq .Kind "pending-moderation" }}
+              You've received this email because the domain owner chose to notify moderators of comments pending moderation by email. To unsubscribe, <a href="{{ .Origin }}/unsubscribe?unsubscribeSecretHex={{ .UnsubscribeSecretHex }}" style="color:#868e96;font-weight:bold;text-decoration:none;">click here</a>.
+            {{ end }}
+            {{ if eq .Kind "all" }}
+              You've received this email because the domain owner chose to notify moderators for all new comments by email. To unsubscribe, <a href="{{ .Origin }}/unsubscribe?unsubscribeSecretHex={{ .UnsubscribeSecretHex }}" style="color:#868e96;font-weight:bold;text-decoration:none;">click here</a>.
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

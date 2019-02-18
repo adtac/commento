@@ -46,3 +46,24 @@ func ownerGetByOwnerToken(ownerToken string) (owner, error) {
 
 	return o, nil
 }
+
+func ownerGetByOwnerHex(ownerHex string) (owner, error) {
+	if ownerHex == "" {
+		return owner{}, errorMissingField
+	}
+
+	statement := `
+    SELECT ownerHex, email, name, confirmedEmail, joinDate
+		FROM owners
+		WHERE ownerHex = $1;
+	`
+	row := db.QueryRow(statement, ownerHex)
+
+	var o owner
+	if err := row.Scan(&o.OwnerHex, &o.Email, &o.Name, &o.ConfirmedEmail, &o.JoinDate); err != nil {
+		logger.Errorf("cannot scan owner: %v\n", err)
+		return owner{}, errorInternal
+	}
+
+	return o, nil
+}

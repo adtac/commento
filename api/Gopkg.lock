@@ -161,6 +161,7 @@
     "github.com/op/go-logging",
     "github.com/russross/blackfriday",
     "golang.org/x/crypto/bcrypt",
+    "golang.org/x/net/html",
     "golang.org/x/oauth2",
     "golang.org/x/oauth2/github",
     "golang.org/x/oauth2/google",

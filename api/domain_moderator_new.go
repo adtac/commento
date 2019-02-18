@@ -10,6 +10,11 @@ func domainModeratorNew(domain string, email string) error {
 		return errorMissingField
 	}
 
+	if err := emailNew(email); err != nil {
+		logger.Errorf("cannot create email when creating moderator: %v", err)
+		return errorInternal
+	}
+
 	statement := `
 		INSERT INTO
 		moderators (domain, email, addDate)
