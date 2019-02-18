@@ -41,8 +41,8 @@ func emailModerateHandler(w http.ResponseWriter, r *http.Request) {
 
 	isModerator, err := isDomainModerator(domain, e.Email)
 	if err != nil {
-		logger.Errorf("error checking if %s is a moderator: %v", err)
-		fmt.Fprintf(w, "error checking if %s is a moderator: %v", err)
+		logger.Errorf("error checking if %s is a moderator: %v", e.Email, err)
+		fmt.Fprintf(w, "error checking if %s is a moderator: %v", e.Email, err)
 		return
 	}
 
