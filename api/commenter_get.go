@@ -66,5 +66,6 @@ func commenterGetByCommenterToken(commenterToken string) (commenter, error) {
 		return commenter{}, errorNoSuchToken
 	}
 
+	// TODO: use a join instead of two queries?
 	return commenterGetByHex(commenterHex)
 }
