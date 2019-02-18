@@ -1,5 +1,19 @@
 @import "colors-main.scss";
 
+.commento-login {
+  width: 100%;
+
+  .commento-login-text {
+    text-align: right;
+    margin-right: 16px;
+    height: 38px;
+    color: $gray-6;
+    font-weight: bold;
+    cursor: pointer;
+    display: block;
+  }
+}
+
 .commento-logged-container {
   width: 100%;
   text-align: left;

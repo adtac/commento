@@ -21,6 +21,7 @@
 
   var ID_ROOT = "commento";
   var ID_MAIN_AREA = "commento-main-area";
+  var ID_LOGIN = "commento-login";
   var ID_LOGIN_BOX_CONTAINER = "commento-login-box-container";
   var ID_LOGIN_BOX = "commento-login-box";
   var ID_LOGIN_BOX_EMAIL_SUBTITLE = "commento-login-box-email-subtitle";
@@ -451,22 +452,39 @@
 
 
   function rootCreate(callback) {
+    var login = create("div");
+    var loginText = create("div");
     var mainArea = $(ID_MAIN_AREA);
     var commentsArea = create("div");
 
+    login.id = ID_LOGIN;
     commentsArea.id = ID_COMMENTS_AREA;
 
+    classAdd(login, "login");
+    classAdd(loginText, "login-text");
     classAdd(commentsArea, "comments");
 
+    loginText.innerText = "Login";
     commentsArea.innerHTML = "";
+
+    onclick(loginText, global.loginBoxShow, null);
+
+    append(login, loginText);
 
     if (isLocked || isFrozen) {
       if (isAuthenticated || chosenAnonymous) {
         append(mainArea, messageCreate("This thread is locked. You cannot add new comments."));
+        remove($(ID_LOGIN));
       } else {
+        append(mainArea, login);
         append(mainArea, textareaCreate("root"));
       }
     } else {
+      if (!isAuthenticated) {
+        append(mainArea, login);
+      } else {
+        remove($(ID_LOGIN));
+      }
       append(mainArea, textareaCreate("root"));
     }
 
