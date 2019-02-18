@@ -52,6 +52,7 @@ COPY --from=frontend-build /commento/frontend/build/prod/*.html /commento/
 COPY --from=frontend-build /commento/frontend/build/prod/css/*.css /commento/css/
 COPY --from=frontend-build /commento/frontend/build/prod/js/*.js /commento/js/
 COPY --from=frontend-build /commento/frontend/build/prod/images/* /commento/images/
+COPY --from=frontend-build /commento/frontend/build/prod/fonts/* /commento/fonts/
 COPY --from=templates-build /commento/templates/build/prod/templates/ /commento/templates/
 COPY --from=db-build /commento/db/build/prod/db/ /commento/db/
 
