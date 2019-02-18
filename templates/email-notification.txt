@@ -65,10 +65,10 @@
         <div class="comment" style="border-radius:2px;width:calc(100% - 32px);padding:16px;margin:8px 0px 8px 0px;border-bottom:1px solid #eee;">
           <div class="options" style="float:right;">
             {{ if eq .Kind "pending-moderation" }}
-                  <a href="{{ $.Origin }}/api/moderate/email?commentHex={{ .CommentHex }}&action=approve&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option green" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#2f9e44;">Approve</a>
+                  <a href="{{ $.Origin }}/api/email/moderate?commentHex={{ .CommentHex }}&action=approve&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option green" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#2f9e44;">Approve</a>
             {{ end }}
                 {{ if ne .Kind "reply" }}
-                  <a href="{{ $.Origin }}/api/moderate/email?commentHex={{ .CommentHex }}&action=delete&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option red" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#f03e3e;">Delete</a>
+                  <a href="{{ $.Origin }}/api/email/moderate?commentHex={{ .CommentHex }}&action=delete&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option red" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#f03e3e;">Delete</a>
             {{ end }}
                 <a href="http://{{ .Domain }}{{ .Path }}#commento-{{ .CommentHex }}" class="option gray" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#495057;">Context</a>
           </div>

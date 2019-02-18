@@ -30,6 +30,7 @@ func apiRouterInit(router *mux.Router) error {
 
 	router.HandleFunc("/api/email/get", emailGetHandler).Methods("POST")
 	router.HandleFunc("/api/email/update", emailUpdateHandler).Methods("POST")
+	router.HandleFunc("/api/email/moderate", emailModerateHandler).Methods("GET")
 
 	router.HandleFunc("/api/oauth/google/redirect", googleRedirectHandler).Methods("GET")
 	router.HandleFunc("/api/oauth/google/callback", googleCallbackHandler).Methods("GET")
