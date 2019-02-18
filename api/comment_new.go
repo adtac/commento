@@ -94,7 +94,7 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		if isSpam(*x.Domain, getIp(r), getUserAgent(r), "Anonymous", "", "", *x.Markdown) {
 			state = "flagged"
 		} else {
-			if d.ModerateAllAnonymous {
+			if d.ModerateAllAnonymous || d.RequireModeration {
 				state = "unapproved"
 			} else {
 				state = "approved"
