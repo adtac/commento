@@ -1,0 +1,49 @@
+@import "checkbox.scss";
+@import "button.scss";
+
+.unsubscribe-container {
+  margin-top: 72px;
+  display: flex;
+  justify-content: center;
+
+  .unsubscribe {
+    max-width: 600px;
+    width: 100%;
+
+    .loading {
+      font-size: 32px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .err {
+      color: $red-6;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .msg {
+      color: $green-6;
+      font-weight: bold;
+      margin-bottom: 12px;
+      height: 20px;
+    }
+
+    .checkboxes {
+      .email {
+        margin-bottom: 32px;
+        font-size: 21px;
+        font-weight: bold;
+      }
+      
+      .email::before {
+        content: "Changing email notifications for ";
+        font-weight: normal;
+      }
+
+      .row {
+        margin-bottom: 24px;
+      }
+    }
+  }
+}

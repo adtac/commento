@@ -74,6 +74,12 @@ const jsCompileMap = {
     "js/logout.js"
   ],
   "js/commento.js": ["js/commento.js"],
+  "js/unsubscribe.js": [
+    "js/constants.js",
+    "js/utils.js",
+    "js/http.js",
+    "js/unsubscribe.js",
+  ],
 };
 
 gulp.task("scss-devel", function () {

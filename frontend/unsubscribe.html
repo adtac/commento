@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0">
+    <script src="[[[.CdnPrefix]]]/js/jquery.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/unsubscribe.js"></script>
+    <link rel="icon" href="[[[.CdnPrefix]]]/images/120x120.png">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/unsubscribe.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700|Source+Sans+Pro:200,300,400,700" rel="stylesheet">
+    <title>Commento: Unsubscribe</title>
+  </head>
+
+  <div class="navbar">
+    <a href="[[[.Origin]]]/" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.commento.emailGet();
+  };
+  </script>
+
+  <div class="unsubscribe-container">
+    <div class="unsubscribe">
+      <div class="err"></div>
+      <div class="loading">Loading...</div>
+      <div class="checkboxes" style="display: none">
+        <div class="email" id="email"></div>
+        <div class="row no-border commento-round-check indent" id="mod-checkbox">
+          <input type="checkbox" id="moderator" value="moderator">
+          <label for="moderator">Email me moderator-related notifications</label>
+          <div class="pitch">
+            If you're a moderator of any domain, depending on each domain's moderator email policy, you may receive emails when a new comment is posted or when a comment is pending moderation. Unchecking this override those settings for you.
+          </div>
+        </div>
+        <div class="row no-border commento-round-check indent" id="reply-checkbox">
+          <input type="checkbox" id="reply" value="reply">
+          <label for="reply">Email me when someone replies to my comment</label>
+          <div class="pitch">
+            When someone replies to your comment, you can choose to receive a notification. These emails will be batched and delayed (by 10 minutes) so that your inbox won't get overwhelmed.
+          </div>
+        </div>
+        <div class="msg"></div>
+        <button id="save-button" class="button" onclick="window.commento.emailUpdate()">Update</button>
+      </div>
+    </div>
+  </div>
+
+  [[[.Footer]]]
+</html>

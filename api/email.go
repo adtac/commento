@@ -5,10 +5,10 @@ import (
 )
 
 type email struct {
-	Email                      string
-	UnsubscribeSecretHex       string
-	LastEmailNotificationDate  time.Time
-	PendingEmails              int
-	SendReplyNotifications     bool
-	SendModeratorNotifications bool
+	Email                      string `json:"email"`
+	UnsubscribeSecretHex       string `json:"unsubscribeSecretHex"`
+	LastEmailNotificationDate  time.Time `json:"lastEmailNotificationDate"`
+	PendingEmails              int `json:"-"`
+	SendReplyNotifications     bool `json:"sendReplyNotifications"`
+	SendModeratorNotifications bool `json:"sendModeratorNotifications"`
 }

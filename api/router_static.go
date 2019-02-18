@@ -98,6 +98,7 @@ func staticRouterInit(router *mux.Router) error {
 		"/reset-password",
 		"/signup",
 		"/confirm-email",
+		"/unsubscribe",
 		"/dashboard",
 		"/logout",
 	}
