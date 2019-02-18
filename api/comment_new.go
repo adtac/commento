@@ -77,6 +77,11 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if d.RequireIdentification && *x.CommenterToken == "anonymous" {
+		bodyMarshal(w, response{"success": false, "message": errorNotAuthorised.Error()})
+		return
+	}
+
 	// logic: (empty column indicates the value doesn't matter)
 	// | anonymous | moderator | requireIdentification | requireModeration | moderateAllAnonymous | approved? |
 	// |-----------+-----------+-----------------------+-------------------+----------------------+-----------|
