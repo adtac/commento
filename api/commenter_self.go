@@ -21,5 +21,11 @@ func commenterSelfHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "commenter": c})
+	e, err := emailGet(c.Email)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	bodyMarshal(w, response{"success": true, "commenter": c, "email": e})
 }
