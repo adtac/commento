@@ -75,7 +75,7 @@ func staticRouterInit(router *mux.Router) error {
 		return err
 	}
 
-	for _, dir := range []string{"/js", "/css", "/images"} {
+	for _, dir := range []string{"/js", "/css", "/images", "/fonts"} {
 		files, err := ioutil.ReadDir(os.Getenv("STATIC") + dir)
 		if err != nil {
 			logger.Errorf("cannot read directory %s%s: %v", os.Getenv("STATIC"), dir, err)

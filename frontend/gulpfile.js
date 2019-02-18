@@ -14,6 +14,8 @@ const develPath = "build/devel/";
 const prodPath = "build/prod/";
 const scssSrc = "./sass/*.scss";
 const cssDir = "css/";
+const fontsDir = "fonts/";
+const fontsGlob = fontsDir + "**/*";
 const imagesDir = "images/";
 const imagesGlob = imagesDir + "**/*";
 const jsDir = "js/";
@@ -107,6 +109,14 @@ gulp.task("html-prod", function () {
     .pipe(gulp.dest(prodPath))
 });
 
+gulp.task("fonts-devel", function () {
+  gulp.src([fontsGlob]).pipe(gulp.dest(develPath + fontsDir));
+});
+
+gulp.task("fonts-prod", function () {
+  gulp.src([fontsGlob]).pipe(gulp.dest(prodPath + fontsDir));
+});
+
 gulp.task("images-devel", function () {
   gulp.src([imagesGlob]).pipe(gulp.dest(develPath + imagesDir));
 });
@@ -142,5 +152,5 @@ gulp.task("lint", function () {
     .pipe(eslint.failAfterError())
 });
 
-gulp.task("devel", ["scss-devel", "html-devel", "images-devel", "lint", "js-devel"]);
-gulp.task("prod", ["scss-prod", "html-prod", "images-prod", "lint", "js-prod"]);
+gulp.task("devel", ["scss-devel", "html-devel", "fonts-devel", "images-devel", "lint", "js-devel"]);
+gulp.task("prod", ["scss-prod", "html-prod", "fonts-prod", "images-prod", "lint", "js-prod"]);
