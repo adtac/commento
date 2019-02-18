@@ -19,8 +19,6 @@ services:
       POSTGRES_DB: commento
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - 5432:5432
     networks:
       - db_network
     volumes:
