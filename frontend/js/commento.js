@@ -1133,9 +1133,14 @@
               attrSet(loggedContainer, "style", "");
             }
 
-            global.commentNew(id, resp.commenterToken, function() {
+            remove($(ID_LOGIN));
+            if (id !== null) {
+              global.commentNew(id, resp.commenterToken, function() {
+                global.loginBoxClose();
+              });
+            } else {
               global.loginBoxClose();
-            });
+            }
           });
         }
       }, 250);
@@ -1291,9 +1296,14 @@
         attrSet(loggedContainer, "style", "");
       }
 
-      global.commentNew(id, resp.commenterToken, function() {
+      remove($(ID_LOGIN));
+      if (id !== null) {
+        global.commentNew(id, resp.commenterToken, function() {
+          global.loginBoxClose();
+        });
+      } else {
         global.loginBoxClose();
-      });
+      }
     });
   }
 
