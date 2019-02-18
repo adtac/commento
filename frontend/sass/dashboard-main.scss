@@ -326,9 +326,10 @@ body {
 }
 
 .normal-text {
-  font-size: 14px;
+  font-size: 15px;
   color: $gray-7;
   line-height: 22px;
+  margin-bottom: 8px;
 
   a {
     color: $blue-6;
@@ -373,6 +374,12 @@ body {
       text-align: center;
     }
   }
+}
+
+.question {
+  font-size: 15px;
+  color: $gray-7;
+  margin-bottom: 10px;
 }
 
 .float-right {

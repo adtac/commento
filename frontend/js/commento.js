@@ -1578,7 +1578,7 @@
         return;
       }
 
-      classAdd(el, "highlighted");
+      classAdd(el, "highlighted-card");
       el.scrollIntoView(true);
     }
   }
