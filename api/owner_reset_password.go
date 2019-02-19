@@ -18,8 +18,9 @@ func ownerResetPassword(resetHex string, password string) error {
 
 	statement := `
 		UPDATE owners SET passwordHash=$1
-		WHERE email IN (
-			SELECT email FROM ownerResetHexes
+		WHERE ownerHex = (
+			SELECT ownerHex
+			FROM ownerResetHexes
 			WHERE resetHex=$2
 		);
 	`
