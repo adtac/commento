@@ -7,8 +7,11 @@
 .commento-root {
   overflow-x: hidden;
   padding: 0px;
+  all: unset;
 
   * {
+    all: unset;
+    display: block;
     font-family: "Source Sans Pro", "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
     font-size: 15px;
     line-height: 1.5;
