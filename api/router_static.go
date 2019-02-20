@@ -116,7 +116,7 @@ func staticRouterInit(router *mux.Router) error {
 		if path.Ext(p) != "" {
 			contentType[p] = mime.TypeByExtension(path.Ext(p))
 		} else {
-			contentType[p] = mime.TypeByExtension("html")
+			contentType[p] = "text/html; charset=utf-8"
 		}
 
 		router.HandleFunc(p, func(w http.ResponseWriter, r *http.Request) {
