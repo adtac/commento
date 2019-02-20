@@ -85,6 +85,7 @@
   var popupBoxType = "login";
   var oauthButtonsShown = false;
   var selfHex = undefined;
+  var mobileView = null;
 
 
   function $(id) {
@@ -661,7 +662,6 @@
 
     var cards = create("div");
     cur.forEach(function(comment) {
-      var mobileView = root.getBoundingClientRect()["width"] < 450;
       var commenter = commenters[comment.commenterHex];
       var avatar;
       var card = create("div");
@@ -1617,6 +1617,10 @@
     if (root === null) {
       console.log("[commento] error: no root element with ID '" + ID_ROOT + "' found");
       return;
+    }
+
+    if (mobileView === null) {
+      mobileView = root.getBoundingClientRect()["width"] < 450;
     }
 
     classAdd(root, "root");
