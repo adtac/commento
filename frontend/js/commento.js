@@ -1527,7 +1527,7 @@
     if (cssOverride === undefined) {
       global.allShow();
     } else {
-      cssLoad(cssOverride, "window.allShow()");
+      cssLoad(cssOverride, "window.commento.allShow()");
     }
   }
 
