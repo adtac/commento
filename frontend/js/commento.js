@@ -522,7 +522,7 @@
     }
 
     var json = {
-      "commenterToken": commenterTokenGet(),
+      "commenterToken": commenterToken,
       "domain": parent.location.host,
       "path": parent.location.pathname,
       "parentHex": id,
