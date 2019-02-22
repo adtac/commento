@@ -5,40 +5,6 @@
     <title>You have {{ .Subject }}</title>
     <style type="text/css">
       @media only screen and (max-width:600px) {
-          .options {
-            float: none;
-            margin-bottom: 16px;
-            text-align: right;
-          }
-          .options::before {
-            content: "Options:";
-            float: left;
-            text-transform: uppercase;
-            color: #495057;
-            font-size: 12px;
-            font-weight: bold;
-          }
-          .option {
-            padding: 6px 8px;
-            margin: 10px 5px;
-            color: white;
-            border-radius: 2px;
-          }
-          .green {
-            background: #2f9e44;
-          }
-          .red {
-            background: #f03e3e;
-          }
-          .blue {
-            background: #1c7ed6;
-          }
-          .gray {
-            background: #495057;
-          }
-          .header {
-            padding-right: 0px;
-          }
           .logo {
             display: block;
             float: none;
