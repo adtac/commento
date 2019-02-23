@@ -57,6 +57,10 @@ func githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, err := http.Get("https://api.github.com/user?access_token=" + token.AccessToken)
+	if err != nil {
+		fmt.Fprintf(w, "Error: %s", err.Error())
+		return
+	}
 	defer resp.Body.Close()
 
 	contents, err := ioutil.ReadAll(resp.Body)
@@ -80,6 +84,23 @@ func githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		email = user["email"].(string)
 	}
 
+	if user["name"] == nil {
+		fmt.Fprintf(w, "Error: no name returned by Github")
+		return
+	}
+
+	name := user["name"].(string)
+
+	link := "undefined"
+	if user["html_url"] != nil {
+		link = user["html_url"].(string)
+	}
+
+	photo := "undefined"
+	if user["avatar_url"] != nil {
+		photo = user["avatar_url"].(string)
+	}
+
 	c, err := commenterGetByEmail("github", email)
 	if err != nil && err != errorNoSuchCommenter {
 		fmt.Fprintf(w, "Error: %s", err.Error())
@@ -90,14 +111,7 @@ func githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: in case of returning users, update the information we have on record?
 	if err == errorNoSuchCommenter {
-		var link string
-		if val, ok := user["html_url"]; ok {
-			link = val.(string)
-		} else {
-			link = "undefined"
-		}
-
-		commenterHex, err = commenterNew(email, user["name"].(string), link, user["avatar_url"].(string), "github", "")
+		commenterHex, err = commenterNew(email, name, link, photo, "github", "")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return
