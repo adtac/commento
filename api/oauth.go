@@ -11,11 +11,11 @@ func oauthConfigure() error {
 		return err
 	}
 
-	if err := githubOauthConfigure(); err != nil {
+	if err := twitterOauthConfigure(); err != nil {
 		return err
 	}
 
-	if err := twitterOauthConfigure(); err != nil {
+	if err := githubOauthConfigure(); err != nil {
 		return err
 	}
 
