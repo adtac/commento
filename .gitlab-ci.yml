@@ -50,8 +50,8 @@ aws-upload-tags:
     - export PATH=$PATH:/go/bin
     - cd /go/src/$CI_PROJECT_NAME
     - make prod
-    - cd build/prod && tar -zcvf /commento-linux-amd64-$(git describe --tags).tgz .
-    - aws s3 cp /commento-linux-amd64-$(git describe --tags).tgz s3://commento-release/
+    - cd build/prod && tar -zcvf /commento-linux-amd64-$(git describe --tags).tar.gz .
+    - aws s3 cp /commento-linux-amd64-$(git describe --tags).tar.gz s3://commento-release/
 
 build-docker:
   stage: build-docker
