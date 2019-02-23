@@ -743,6 +743,9 @@
       if (isModerator && comment.state !== "approved") {
         classAdd(card, "dark-card");
       }
+      if (commenter.isModerator) {
+        classAdd(name, "moderator");
+      }
       if (comment.state === "flagged") {
         classAdd(name, "flagged");
       }

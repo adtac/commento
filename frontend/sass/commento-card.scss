@@ -42,6 +42,17 @@
     border-radius: 100px;
   }
 
+  .commento-moderator::after {
+    content: "Moderator";
+    text-transform: uppercase;
+    font-size: 10px;
+    background: $green-7;
+    color: white;
+    margin-left: 8px;
+    padding: 2px 6px 2px 6px;
+    border-radius: 100px;
+  }
+
   .commento-subtitle {
     display: block;
     color: #999;

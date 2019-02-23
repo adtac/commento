@@ -119,25 +119,24 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	commenterHex := "anonymous"
-	isModerator := false
-	if *x.CommenterToken != "anonymous" {
-		c, err := commenterGetByCommenterToken(*x.CommenterToken)
-		if err != nil {
-			if err == errorNoSuchToken {
-				commenterHex = "anonymous"
-			} else {
-				bodyMarshal(w, response{"success": false, "message": err.Error()})
-				return
-			}
+	c, err := commenterGetByCommenterToken(*x.CommenterToken)
+	if err != nil {
+		if err == errorNoSuchToken {
+			commenterHex = "anonymous"
 		} else {
-			commenterHex = c.CommenterHex
+			bodyMarshal(w, response{"success": false, "message": err.Error()})
+			return
 		}
+	} else {
+		commenterHex = c.CommenterHex
+	}
 
-		for _, mod := range d.Moderators {
-			if mod.Email == c.Email {
-				isModerator = true
-				break
-			}
+	isModerator := false
+	modList := map[string]bool{}
+	for _, mod := range d.Moderators {
+		modList[mod.Email] = true
+		if mod.Email == c.Email {
+			isModerator = true
 		}
 	}
 
@@ -149,11 +148,20 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	_commenters := map[string]commenter{}
+	for commenterHex, cr := range commenters {
+		if _, ok := modList[cr.Email]; ok {
+			cr.IsModerator = true
+		}
+		cr.Email = ""
+		_commenters[commenterHex] = cr
+	}
+
 	bodyMarshal(w, response{
 		"success":               true,
 		"domain":                domain,
 		"comments":              comments,
-		"commenters":            commenters,
+		"commenters":            _commenters,
 		"requireModeration":     d.RequireModeration,
 		"requireIdentification": d.RequireIdentification,
 		"isFrozen":              d.State == "frozen",
