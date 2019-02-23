@@ -124,11 +124,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:82e6e4dc5ab71680d89684e4649be630fdeeaf81feb8e88e4a56273a0cd4d966"
+  digest = "1:341ceeee37101c62dae441691406bf4ecc71bbeb7b424417879fe88d9f88f487"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
     "github",
+    "gitlab",
     "google",
     "internal",
     "jws",
@@ -173,6 +174,7 @@
     "golang.org/x/net/html",
     "golang.org/x/oauth2",
     "golang.org/x/oauth2/github",
+    "golang.org/x/oauth2/gitlab",
     "golang.org/x/oauth2/google",
   ]
   solver-name = "gps-cdcl"

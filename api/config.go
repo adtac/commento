@@ -53,6 +53,9 @@ func configParse() error {
 
 		"TWITTER_KEY":    "",
 		"TWITTER_SECRET": "",
+
+		"GITLAB_KEY":    "",
+		"GITLAB_SECRET": "",
 	}
 
 	for key, value := range defaults {

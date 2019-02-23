@@ -19,5 +19,9 @@ func oauthConfigure() error {
 		return err
 	}
 
+	if err := gitlabOauthConfigure(); err != nil {
+		return err
+	}
+
 	return nil
 }
