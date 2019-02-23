@@ -50,6 +50,9 @@ func configParse() error {
 
 		"GITHUB_KEY":    "",
 		"GITHUB_SECRET": "",
+
+		"TWITTER_KEY":    "",
+		"TWITTER_SECRET": "",
 	}
 
 	for key, value := range defaults {

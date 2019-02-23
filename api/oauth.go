@@ -15,5 +15,9 @@ func oauthConfigure() error {
 		return err
 	}
 
+	if err := twitterOauthConfigure(); err != nil {
+		return err
+	}
+
 	return nil
 }

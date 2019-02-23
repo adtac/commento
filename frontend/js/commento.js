@@ -262,6 +262,8 @@
         attrSet(avatar, "src", commenter.photo + "?sz=50");
       } else if (commenter.provider === "github") {
         attrSet(avatar, "src", commenter.photo + "&s=50");
+      } else if (commenter.provider === "twitter") {
+        attrSet(avatar, "src", commenter.photo + "?size=normal");
       } else {
         attrSet(avatar, "src", commenter.photo);
       }
@@ -745,6 +747,8 @@
           attrSet(avatar, "src", commenter.photo + "?sz=50");
         } else if (commenter.provider === "github") {
           attrSet(avatar, "src", commenter.photo + "&s=50");
+        } else if (commenter.provider === "twitter") {
+          attrSet(avatar, "src", commenter.photo + "?size=normal");
         } else {
           attrSet(avatar, "src", commenter.photo);
         }

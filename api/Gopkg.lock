@@ -26,6 +26,14 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:d03d0fae6a7a80e89c540787a69ab6e0d3b773fdb3303c0b3d96a15490c6ef32"
+  name = "github.com/gomodule/oauth1"
+  packages = ["oauth"]
+  pruneopts = "UT"
+  revision = "9a59ed3b0a84f454c260f2f8f82918223fc5630f"
+
+[[projects]]
   digest = "1:c79fb010be38a59d657c48c6ba1d003a8aa651fa56b579d959d74573b7dff8e1"
   name = "github.com/gorilla/context"
   packages = ["."]
@@ -153,6 +161,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/adtac/go-akismet/akismet",
+    "github.com/gomodule/oauth1/oauth",
     "github.com/gorilla/handlers",
     "github.com/gorilla/mux",
     "github.com/lib/pq",
