@@ -58,11 +58,27 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := res["name"].(string)
-	handle := res["screen_name"].(string)
-	link := "https://twitter.com/" + handle
-	photo := "https://twitter.com/" + handle + "/profile_image"
+	if res["email"] == nil {
+		fmt.Fprintf(w, "Error: no email address returned by Twitter")
+		return
+	}
+
 	email := res["email"].(string)
+
+	if res["name"] == nil {
+		fmt.Fprintf(w, "Error: no name returned by Twitter")
+		return
+	}
+
+	name := res["name"].(string)
+
+	link := "undefined"
+	photo := "undefined"
+	if res["handle"] != nil {
+		handle := res["screen_name"].(string)
+		link = "https://twitter.com/" + handle
+		photo = "https://twitter.com/" + handle + "/profile_image"
+	}
 
 	c, err := commenterGetByEmail("twitter", email)
 	if err != nil && err != errorNoSuchCommenter {
