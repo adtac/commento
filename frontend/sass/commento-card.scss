@@ -28,6 +28,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: fit-content;
+    cursor: pointer;
   }
 
   .commento-flagged::after {
