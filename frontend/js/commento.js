@@ -1610,14 +1610,18 @@
 
 
   function loadHash() {
-    if (window.location.hash && window.location.hash.startsWith("#commento-")) {
-      var el = $(ID_CARD + window.location.hash.split("-")[1]);
-      if (el === null) {
-        return;
-      }
+    if (window.location.hash) {
+      if (window.location.hash.startsWith("#commento-")) {
+        var el = $(ID_CARD + window.location.hash.split("-")[1]);
+        if (el === null) {
+          return;
+        }
 
-      classAdd(el, "highlighted-card");
-      el.scrollIntoView(true);
+        classAdd(el, "highlighted-card");
+        el.scrollIntoView(true);
+      } else if (window.location.hash.startsWith("#commento")) {
+        root.scrollIntoView(true);
+      }
     }
   }
 
