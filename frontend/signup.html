@@ -24,38 +24,40 @@
 
   <div class="auth-form-container">
     <div class="auth-form">
-      <div class="form-title">
-        Create an account
-      </div>
+      <form onsubmit="window.commento.signup(event)">
+        <div class="form-title">
+          Create an account
+        </div>
 
-      <div class="row">
-        <div class="label">Email Address</div>
-        <input class="input" type="text" name="email" id="email" placeholder="example@example.com">
-      </div>
+        <div class="row">
+          <div class="label">Email Address</div>
+          <input class="input" type="text" name="email" id="email" placeholder="example@example.com">
+        </div>
 
-      <div class="row">
-        <div class="label">Full Name</div>
-        <input class="input" type="text" name="name" id="name" placeholder="Full Name">
-      </div>
+        <div class="row">
+          <div class="label">Full Name</div>
+          <input class="input" type="text" name="name" id="name" placeholder="Full Name">
+        </div>
 
-      <div class="row">
-        <div class="label">Password</div>
-        <input class="input" type="password" name="password" id="password" placeholder="">
-      </div>
+        <div class="row">
+          <div class="label">Password</div>
+          <input class="input" type="password" name="password" id="password" placeholder="">
+        </div>
 
-      <div class="row">
-        <div class="label">Confirm Password</div>
-        <input class="input" type="password" name="password2" id="password2" placeholder="">
-      </div>
+        <div class="row">
+          <div class="label">Confirm Password</div>
+          <input class="input" type="password" name="password2" id="password2" placeholder="">
+        </div>
 
-      <input type="hidden" name="plan" id="plan" value="">
+        <input type="hidden" name="plan" id="plan" value="">
 
-      <div class="err" id="err"></div>
+        <div class="err" id="err"></div>
 
-      <p class="cent">
-      </p>
+        <p class="cent">
+        </p>
 
-      <button id="signup-button" class="button" onclick="window.commento.signup()">Sign up</button>
+        <button id="signup-button" class="button" type="submit">Sign up</button>
+      </form>
 
       <a class="link" href="[[[.Origin]]]/login">Already have an account? Login instead.</a>
     </div>

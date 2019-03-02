@@ -1,7 +1,9 @@
 (function (global, document) {
   "use strict";
 
-  global.resetPassword = function() {
+  global.resetPassword = function(event) {
+    event.preventDefault();
+
     var allOk = global.unfilledMark(["#password", "#password2"], function(el) {
       el.css("border-bottom", "1px solid red");
     });

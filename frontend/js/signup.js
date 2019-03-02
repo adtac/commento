@@ -4,7 +4,9 @@
   // Signs up the user and redirects to either the login page or the email
   // confirmation, depending on whether or not SMTP is configured in the
   // backend.
-  global.signup = function() {
+  global.signup = function(event) {
+    event.preventDefault();
+
     if ($("#password").val() !== $("#password2").val()) {
       global.textSet("#err", "The two passwords don't match");
       return;

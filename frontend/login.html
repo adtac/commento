@@ -25,24 +25,26 @@
 
   <div class="auth-form-container">
     <div class="auth-form">
-      <div class="form-title">
-        Login to continue
-      </div>
+      <form onsubmit="window.commento.login(event)">
+        <div class="form-title">
+          Login to continue
+        </div>
 
-      <div class="row">
-        <div class="label">Email Address</div>
-        <input class="input" type="text" name="email" id="email" placeholder="example@example.com">
-      </div>
+        <div class="row">
+          <div class="label">Email Address</div>
+          <input class="input" type="text" name="email" id="email" placeholder="example@example.com">
+        </div>
 
-      <div class="row">
-        <div class="label">Password</div>
-        <input class="input" type="password" name="password" id="password" placeholder="">
-      </div>
+        <div class="row">
+          <div class="label">Password</div>
+          <input class="input" type="password" name="password" id="password" placeholder="">
+        </div>
 
-      <div class="err" id="err"></div>
-      <div class="msg" id="msg"></div>
+        <div class="err" id="err"></div>
+        <div class="msg" id="msg"></div>
 
-      <button id="button" class="button" onclick="window.commento.login()">Login</button>
+        <button id="button" class="button" type="submit">Login</button>
+      </form>
 
       <a class="link" href="[[[.Origin]]]/forgot">Trouble logging in? Reset your password.</a>
       <a class="link" href="[[[.Origin]]]/signup">Don't have an account yet? Sign up.</a>

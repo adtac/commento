@@ -43,7 +43,9 @@
 
 
   // Logs the user in and redirects to the dashboard.
-  global.login = function() {
+  global.login = function(event) {
+    event.preventDefault();
+
     var allOk = global.unfilledMark(["#email", "#password"], function(el) {
       el.css("border-bottom", "1px solid red");
     });

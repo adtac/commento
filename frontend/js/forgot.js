@@ -4,7 +4,9 @@
   (document);
 
   // Talks to the API and sends an reset email.
-  global.sendResetHex = function() {
+  global.sendResetHex = function(event) {
+    event.preventDefault();
+
     var allOk = global.unfilledMark(["#email"], function(el) {
       el.css("border-bottom", "1px solid red");
     });
