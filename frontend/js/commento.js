@@ -328,7 +328,6 @@
     var footer = create("div");
     var aContainer = create("div");
     var a = create("a");
-    var img = create("img");
     var text = create("span");
 
     footer.id = ID_FOOTER;
@@ -336,21 +335,18 @@
     classAdd(footer, "footer");
     classAdd(aContainer, "logo-container");
     classAdd(a, "logo");
-    classAdd(img, "logo-svg");
     classAdd(text, "logo-text");
 
-    attrSet(footer, "style", "display: none");
     attrSet(a, "href", "https://commento.io");
     attrSet(a, "target", "_blank");
-    attrSet(img, "src", cdn + "/images/logo.svg");
 
-    text.innerText = "Powered by Commento";
+    text.innerText = "Commento";
 
-    append(a, img);
     append(a, text);
     append(aContainer, a);
     append(footer, aContainer);
-    append(root, footer);
+
+    return footer;
   }
 
 
