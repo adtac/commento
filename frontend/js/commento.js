@@ -977,6 +977,10 @@
     post(origin + "/api/comment/vote", json, function(resp) {
       if (!resp.success) {
         errorShow(resp.message);
+        classRemove(upvote, "upvoted");
+        classRemove(downvote, "downvoted");
+        score.innerText = scorify(parseInt(score.innerText.replace(/[^\d-.]/g, "")) - newDirection + oldDirection);
+        upDownOnclickSet(upvote, downvote, commentHex, oldDirection);
         return;
       }
     });
