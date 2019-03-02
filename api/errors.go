@@ -44,3 +44,4 @@ var errorNewOwnerForbidden = errors.New("New user registrations are forbidden an
 var errorThreadLocked = errors.New("This thread is locked. You cannot add new comments.")
 var errorDatabaseMigration = errors.New("Encountered error applying database migration.")
 var errorNoSuchUnsubscribeSecretHex = errors.New("Invalid unsubscribe link.")
+var errorEmptyPaths = errors.New("Empty paths field.")
