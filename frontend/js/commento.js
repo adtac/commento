@@ -148,6 +148,19 @@
   }
 
 
+  function removeAllEventListeners(node) {
+    if (node !== null) {
+      var replacement = node.cloneNode(true);
+      if (node.parentNode !== null) {
+        node.parentNode.replaceChild(replacement, node);
+        return replacement;
+      }
+    }
+
+    return node;
+  }
+
+
   function onclick(node, f, arg) {
     node.addEventListener("click", function() {
       f(arg);
@@ -794,7 +807,9 @@
       onclick(sticky, global.commentSticky, comment.commentHex);
 
       if (isAuthenticated) {
-        upDownOnclickSet(upvote, downvote, comment.commentHex, comment.direction);
+        var upDown = upDownOnclickSet(upvote, downvote, comment.commentHex, comment.direction);
+        upvote = upDown[0];
+        downvote = upDown[1];
       } else {
         onclick(upvote, global.loginBoxShow, null);
         onclick(downvote, global.loginBoxShow, null);
@@ -916,6 +931,9 @@
 
 
   function upDownOnclickSet(upvote, downvote, commentHex, direction) {
+    upvote = removeAllEventListeners(upvote);
+    downvote = removeAllEventListeners(downvote);
+
     if (direction > 0) {
       onclick(upvote, global.vote, [commentHex, [1, 0]]);
       onclick(downvote, global.vote, [commentHex, [1, -1]]);
@@ -926,6 +944,8 @@
       onclick(upvote, global.vote, [commentHex, [0, 1]]);
       onclick(downvote, global.vote, [commentHex, [0, -1]]);
     }
+
+    return [upvote, downvote];
   }
 
 
@@ -944,7 +964,9 @@
       "direction": newDirection,
     };
 
-    upDownOnclickSet(upvote, downvote, commentHex, newDirection);
+    var upDown = upDownOnclickSet(upvote, downvote, commentHex, newDirection);
+    upvote = upDown[0];
+    downvote = upDown[1];
 
     classRemove(upvote, "upvoted");
     classRemove(downvote, "downvoted");
