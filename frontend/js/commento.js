@@ -374,8 +374,6 @@
       commenters = Object.assign({}, commenters, resp.commenters)
       configuredOauths = resp.configuredOauths;
 
-      cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
-
       call(callback);
     });
   }
@@ -1545,7 +1543,6 @@
     var mainArea = $(ID_MAIN_AREA);
     var modTools = $(ID_MOD_TOOLS);
     var loggedContainer = $(ID_LOGGED_CONTAINER);
-    var footer = $(ID_FOOTER);
 
     attrSet(mainArea, "style", "");
 
@@ -1556,8 +1553,6 @@
     if (loggedContainer) {
       attrSet(loggedContainer, "style", "");
     }
-
-    attrSet(footer, "style", "");
 
     nameWidthFix();
     loadHash();
@@ -1640,12 +1635,15 @@
 
     mainAreaCreate();
 
+    var footer = footerLoad();
+    cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
+
     selfGet(function() {
       commentsGet(function() {
         modToolsCreate();
         rootCreate(function() {
           commentsRender();
-          footerLoad();
+          append(root, footer);
           attrSet(root, "style", "");
           call(callback);
         });
