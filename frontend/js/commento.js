@@ -690,6 +690,7 @@
       } else {
         name = create("div");
       }
+      var date = new Date(comment.creationDate);
 
       card.id = ID_CARD + comment.commentHex;
       body.id = ID_BODY + comment.commentHex;
@@ -728,11 +729,12 @@
       } else {
         sticky.title = "Sticky";
       }
+      timeago.title = date.toString();
 
       card.style["borderLeft"] = "2px solid " + color;
       name.innerText = commenter.name;
       text.innerHTML = comment.html;
-      timeago.innerHTML = timeDifference((new Date()).getTime(), Date.parse(comment.creationDate));
+      timeago.innerHTML = timeDifference((new Date()).getTime(), date);
       score.innerText = scorify(comment.score);
 
       if (commenter.photo === "undefined") {
