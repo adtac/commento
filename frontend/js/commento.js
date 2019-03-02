@@ -1559,9 +1559,6 @@
     if (loggedContainer) {
       attrSet(loggedContainer, "style", "");
     }
-
-    nameWidthFix();
-    loadHash();
   }
 
 
@@ -1655,6 +1652,8 @@
           commentsRender();
           append(root, footer);
           attrSet(root, "style", "");
+          nameWidthFix();
+          loadHash();
           call(callback);
         });
       });
