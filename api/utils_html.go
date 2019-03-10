@@ -6,6 +6,10 @@ import (
 )
 
 func htmlTitleRecurse(h *html.Node) string {
+	if h == nil || h.FirstChild == nil {
+		return ""
+	}
+
 	if h.Type == html.ElementNode && h.Data == "title" {
 		return h.FirstChild.Data
 	}
