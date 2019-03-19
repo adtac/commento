@@ -1,14 +1,6 @@
 (function(global, document) {
   "use strict";
 
-  if (global.commento === undefined) {
-    console.log("[commento] error: window.commento namespace not defined; maybe there's a mismatch in version between the backend and the frontend?");
-    return;
-  } else {
-    global = global.commento;
-  }
-
-
   // Do not use other files like utils.js and http.js in the gulpfile to build
   // commento.js for the following reasons:
   //   - We don't use jQuery in the actual JavaScript payload because we need
@@ -1704,4 +1696,4 @@
   readyLoad();
 
 
-}(window, document));
+}(window.commento, document));
