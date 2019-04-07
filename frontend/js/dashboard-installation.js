@@ -6,8 +6,8 @@
   // Opens the installation view.
   global.installationOpen = function() {
     var html = "" +
+               "<script defer src=\"" + global.cdn + "/js/commento.js\"><\/script>\n" +
                "<div id=\"commento\"></div>\n" +
-               "<script src=\"" + global.cdn + "/js/commento.js\"><\/script>\n" +
                "";
 
     $("#code-div").text(html);
