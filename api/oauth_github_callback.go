@@ -84,12 +84,10 @@ func githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		email = user["email"].(string)
 	}
 
-	if user["name"] == nil {
-		fmt.Fprintf(w, "Error: no name returned by Github")
-		return
+	name := user["login"].(string)
+	if user["name"] != nil {
+		name = user["name"].(string)
 	}
-
-	name := user["name"].(string)
 
 	link := "undefined"
 	if user["html_url"] != nil {
