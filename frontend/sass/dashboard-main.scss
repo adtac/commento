@@ -3,47 +3,6 @@
 @import "checkbox.scss";
 @import "button.scss";
 
-.subscription-nag {
-  position: absolute;
-  top: 16px;
-  left: calc(50% - 200px);
-  height: 40px;
-  width: 400px;
-  border-radius: 3px;
-  -webkit-box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  -moz-box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  background: $gray-7;
-  color: $gray-0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 10000;
-  animation: shake .5s linear;
-  -webkit-animation: shake .5s linear;
-  animation-delay: 1s;
-  -webkit-animation-delay: 1s;
-}
-
-@-webkit-keyframes shake {
-  8%, 41% {
-    -webkit-transform: translateX(-5px);
-  }
-  25%, 58% {
-    -webkit-transform: translateX(5px);
-  }
-  75% {
-    -webkit-transform: translateX(-2px);
-  }
-  92% {
-    -webkit-transform: translateX(2px);
-  }
-  0%, 100% {
-    -webkit-transform: translateX(0);
-  }
-}
-
 .global-error, .global-ok {
   position: absolute;
   bottom: 0px;
