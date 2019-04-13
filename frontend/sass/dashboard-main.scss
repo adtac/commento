@@ -30,9 +30,12 @@ body {
     margin: 0px;
     padding: 0px;
     list-style: none;
-    border-bottom: 1px solid $gray-4;
+    border-bottom: 1px solid $gray-1;
 
     li {
+      font-weight: bold;
+      color: $gray-7;
+      font-size: 14px;
       background: none;
       display: inline-block;
       padding: 10px 15px;
@@ -42,8 +45,14 @@ body {
     }
 
     li.current {
-      border-bottom: 1px solid $blue-6;
       transition: all 0.1s;
+      background: $gray-1;
+      color: $blue-7;
+    }
+
+    li.current:hover {
+      background: $gray-1;
+      color: $blue-7;
     }
   }
 
@@ -63,6 +72,38 @@ body {
 
   .content.current{
     display: inherit;
+  }
+}
+
+.action-buttons-container {
+  .action-buttons {
+    .action-button {
+      padding: 8px 16px 8px 16px;
+      display: flex;
+      border: 1px solid $gray-2;
+      margin: 8px;
+
+      .left {
+        padding: 8px;
+
+        .title {
+          font-weight: bold;
+          color: $gray-7;
+          font-size: 14px;
+        }
+
+        .subtitle {
+          color: $gray-6;
+          font-size: 14px;
+        }
+      }
+
+      .right {
+        float: right;
+        height: 100%;
+        margin: auto;
+      }
+    }
   }
 }
 
@@ -240,7 +281,7 @@ body {
     }
 
     .setting-subtitle {
-      color: $gray-5;
+      color: $gray-6;
     }
 
     .super-setting {
@@ -265,23 +306,17 @@ body {
 
   .pane-setting:hover {
     color: $gray-6;
-    -webkit-box-shadow: inset -2px 0px 0 -1px $gray-4;
-    -moz-box-shadow: inset -2px 0px 0 -1px $gray-4;
-    box-shadow: inset -2px 0px 0 -1px $gray-4;
+    background: $gray-1;
   }
 
   .selected {
-    color: $blue-6;
-    -webkit-box-shadow: inset -2px 0px 0 -1px $blue-6;
-    -moz-box-shadow: inset -2px 0px 0 -1px $blue-6;
-    box-shadow: inset -2px 0px 0 -1px $blue-6;
+    color: $blue-7;
+    background: $gray-2;
   }
 
   .selected:hover {
     color: $blue-7;
-    -webkit-box-shadow: inset -2px 0px 0 -1px $blue-6;
-    -moz-box-shadow: inset -2px 0px 0 -1px $blue-6;
-    box-shadow: inset -2px 0px 0 -1px $blue-6;
+    background: $gray-2;
   }
 }
 
@@ -626,12 +661,11 @@ foreignObject {
 }
 
 .red-button {
-  border: 1px solid $gray-3;
-  outline: none;
+  color: $red-8;
 }
 
 .red-button:hover {
-  border: 1px solid $red-6;
+  color: $red-7;
 }
 
 .green-button {
@@ -647,7 +681,7 @@ foreignObject {
 }
 
 .orange-button {
-  color: $orange-7;
+  color: $orange-8;
 }
 
 .orange-button:hover {

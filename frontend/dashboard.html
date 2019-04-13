@@ -355,39 +355,53 @@
       <div id="danger-view" class="view hidden">
         <div class="view-inside">
           <div class="mid-view">
-            <div class="tabs-container">
-              <div class="tab">
-                <ul class="tabs">
-                  <li class="tab-link original current" data-tab="danger-tab-1">Freeze Comments</li>
-                  <li class="tab-link current" data-tab="danger-tab-2">Delete Domain</li>
-                </ul>
+            <div class="center center-title">
+              Danger Zone
+            </div>
 
-                <div id="danger-tab-1" class="content original current">
-                  <div class="box" v-if="domains[cd].state == 'frozen'">
-                    <div class="box-subtitle">
-                      If you desire to re-allow comments again on your website, you can do so. You can, of course, freeze the site again in the future.
+            <div class="action-buttons-container">
+              <div class="action-buttons">
+                <div class="action-button" v-if="domains[cd].state != 'frozen'">
+                  <div class="left">
+                    <div class="title">
+                      Freeze Domain
                     </div>
-
-                    <button onclick="document.location.hash='#unfreeze-domain-modal'" class="button green-button">Unfreeze Domain</button>
+                    <div class="subtitle">
+                      Freezing your domain will disable new comments and voting temporarily. You may unfreeze the domain later.
+                    </div>
                   </div>
-
-                  <div class="box" v-if="domains[cd].state != 'frozen'">
-                    <div class="box-subtitle">
-                      If you desire to temporarily freeze new comments (domain-wide), thereby making it read-only, you can do so. You can choose to unfreeze later; this is temporary.
-                    </div>
-
-                    <button id="orange-button" onclick="document.location.hash='#freeze-domain-modal'" class="button orange-button">Freeze Domain</button>
+                  <div class="right">
+                    <button onclick="document.location.hash='#freeze-domain-modal'"
+                            class="button orange-button">Freeze</button>
                   </div>
                 </div>
-              </div>
-
-              <div id="danger-tab-2" class="content">
-                <div class="box">
-                  <div class="box-subtitle">
-                    Want to completely remove Commento from your website? This will permanently delete all comments and there is literally no way to retrieve your data once you do this.
+                <div class="action-button" v-if="domains[cd].state == 'frozen'">
+                  <div class="left">
+                    <div class="title">
+                      Unfreeze Domain
+                    </div>
+                    <div class="subtitle">
+                      Unfreezing your domain will allow readers to create new comments and vote on comments again. You may re-freeze the domain later.
+                    </div>
                   </div>
-
-                  <button id="big-red-button" class="button big-red-button" onclick="document.location.hash='#delete-domain-modal'">Delete Domain</button>
+                  <div class="right">
+                    <button onclick="document.location.hash='#unfreeze-domain-modal'"
+                            class="button green-button">Unfreeze</button>
+                  </div>
+                </div>
+                <div class="action-button">
+                  <div class="left">
+                    <div class="title">
+                      Delete Domain
+                    </div>
+                    <div class="subtitle">
+                      This will permanently delete all comments and all data associated with your domain. There is literally no way to retrieve your data once you do this. Please be certain.
+                    </div>
+                  </div>
+                  <div class="right">
+                    <button onclick="document.location.hash='#delete-domain-modal'"
+                            class="button big-red-button">Delete</button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -59,7 +59,7 @@
       {
         "id": "danger",
         "text": "Danger Zone",
-        "meaning": "Delete or freeze domain",
+        "meaning": "Here be dragons",
         "selected": false,
         "open": global.dangerOpen,
       },
