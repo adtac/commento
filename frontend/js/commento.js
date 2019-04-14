@@ -732,7 +732,14 @@
       if (commenter.photo === "undefined") {
         avatar = create("div");
         avatar.style["background"] = color;
-        avatar.innerHTML = commenter.name[0].toUpperCase();
+
+        if (comment.commenterHex === "anonymous") {
+          avatar.innerHTML = "?";
+          avatar.style["font-weight"] = "bold";
+        } else {
+          avatar.innerHTML = commenter.name[0].toUpperCase();
+        }
+
         classAdd(avatar, "avatar");
       } else {
         avatar = create("img");
