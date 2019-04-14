@@ -995,6 +995,7 @@
 
     replyButton.title = "Cancel reply";
 
+    replyButton = removeAllEventListeners(replyButton);
     onclick(replyButton, global.replyCollapse, id);
   };
 
@@ -1011,6 +1012,7 @@
 
     replyButton.title = "Reply to this comment";
 
+    replyButton = removeAllEventListeners(replyButton);
     onclick(replyButton, global.replyShow, id)
   }
 
@@ -1028,6 +1030,7 @@
 
     button.title = "Expand children";
 
+    button = removeAllEventListeners(button);
     onclick(button, global.commentUncollapse, id);
   }
 
@@ -1045,6 +1048,7 @@
 
     button.title = "Collapse children";
 
+    button = removeAllEventListeners(button);
     onclick(button, global.commentCollapse, id);
   }
 
