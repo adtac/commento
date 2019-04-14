@@ -354,6 +354,8 @@
       if (!resp.success) {
         errorShow(resp.message);
         return;
+      } else {
+        errorHide();
       }
 
       requireIdentification = resp.requireIdentification;
@@ -378,6 +380,13 @@
     el.innerText = text;
 
     attrSet(el, "style", "display: block;");
+  }
+
+
+  function errorHide() {
+    var el = $(ID_ERROR);
+
+    attrSet(el, "style", "display: none;");
   }
 
 
@@ -527,6 +536,8 @@
       if (!resp.success) {
         errorShow(resp.message);
         return;
+      } else {
+        errorHide();
       }
 
       var message = "";
@@ -886,6 +897,8 @@
       if (!resp.success) {
         errorShow(resp.message);
         return
+      } else {
+        errorHide();
       }
 
       var card = $(ID_CARD + commentHex);
@@ -909,6 +922,8 @@
       if (!resp.success) {
         errorShow(resp.message);
         return
+      } else {
+        errorHide();
       }
 
       var card = $(ID_CARD + commentHex);
@@ -982,6 +997,8 @@
         score.innerText = scorify(parseInt(score.innerText.replace(/[^\d-.]/g, "")) - newDirection + oldDirection);
         upDownOnclickSet(upvote, downvote, commentHex, oldDirection);
         return;
+      } else {
+        errorHide();
       }
     });
   }
@@ -1135,6 +1152,8 @@
       if (!resp.success) {
         errorShow(resp.message);
         return;
+      } else {
+        errorHide();
       }
 
       cookieSet("commentoCommenterToken", resp.commenterToken);
@@ -1303,6 +1322,8 @@
         global.loginBoxClose();
         errorShow(resp.message);
         return
+      } else {
+        errorHide();
       }
 
       cookieSet("commentoCommenterToken", resp.commenterToken);
@@ -1348,6 +1369,8 @@
         global.loginBoxClose();
         errorShow(resp.message);
         return
+      } else {
+        errorHide();
       }
 
       loginUP(email.value, password.value, id);
@@ -1454,6 +1477,8 @@
       if (!resp.success) {
         errorShow(resp.message);
         return
+      } else {
+        errorHide();
       }
 
       call(callback);
