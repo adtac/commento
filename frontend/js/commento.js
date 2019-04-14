@@ -566,7 +566,7 @@
           "score": 0,
           "state": "approved",
           "direction": 0,
-          "creationDate": (new Date()).toISOString(),
+          "creationDate": new Date(),
         }],
       }, "root")
 
@@ -658,13 +658,22 @@
     cur.sort(function(a, b) {
       if (a.commentHex === stickyCommentHex) {
         return -Infinity;
-      }
-      if (b.commentHex === stickyCommentHex) {
+      } else if (b.commentHex === stickyCommentHex) {
         return Infinity;
       }
-      return b.score - a.score;
+
+      if (a.score !== b.score) {
+        return b.score - a.score;
+      }
+
+      if (a.creationDate < b.creationDate) {
+        return -1;
+      } else {
+        return 1;
+      }
     });
 
+    var curTime = (new Date()).getTime();
     var cards = create("div");
     cur.forEach(function(comment) {
       var commenter = commenters[comment.commenterHex];
@@ -694,7 +703,6 @@
       } else {
         name = create("div");
       }
-      var date = new Date(comment.creationDate);
 
       card.id = ID_CARD + comment.commentHex;
       body.id = ID_BODY + comment.commentHex;
@@ -733,12 +741,12 @@
       } else {
         sticky.title = "Sticky";
       }
-      timeago.title = date.toString();
+      timeago.title = comment.creationDate.toString();
 
       card.style["borderLeft"] = "2px solid " + color;
       name.innerText = commenter.name;
       text.innerHTML = comment.html;
-      timeago.innerHTML = timeDifference((new Date()).getTime(), date);
+      timeago.innerHTML = timeDifference(curTime, comment.creationDate);
       score.innerText = scorify(comment.score);
 
       if (commenter.photo === "undefined") {
@@ -1089,6 +1097,9 @@
       if (!(parentHex in parentMap)) {
         parentMap[parentHex] = [];
       }
+
+      comment.creationDate = new Date(comment.creationDate);
+
       parentMap[parentHex].push(comment);
     });
 
