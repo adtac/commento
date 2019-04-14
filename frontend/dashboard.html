@@ -392,6 +392,20 @@
                 <div class="action-button">
                   <div class="left">
                     <div class="title">
+                      Clear All Comments
+                    </div>
+                    <div class="subtitle">
+                      This will permanently delete all comments without affecting your settings. This may be useful if you want to clear all comments after testing Commento. Cannot be reversed.
+                    </div>
+                  </div>
+                  <div class="right">
+                    <button onclick="document.location.hash='#clear-comments-modal'"
+                            class="button big-red-button">Clear</button>
+                  </div>
+                </div>
+                <div class="action-button">
+                  <div class="left">
+                    <div class="title">
                       Delete Domain
                     </div>
                     <div class="subtitle">
@@ -418,8 +432,8 @@
       <div class="modal-subtitle">
         Are you absolutely sure you want to freeze your domain, thereby making it read-only? You can choose to unfreeze later; this is temporary.
       </div>
-      <div class="modal-contents">
-        <button id="orange-button" class="button orange-button" onclick="window.commento.domainFreezeHandler()">Freeze Domain</button>
+      <div class="modal-contents center">
+        <button class="button orange-button" onclick="window.commento.domainFreezeHandler()">Freeze Domain</button>
       </div>
     </div>
   </div>
@@ -431,8 +445,21 @@
       <div class="modal-subtitle">
         Are you absolutely sure you want to unfreeze your domain? This will re-allow new comments. You can choose to freeze again in the future.
       </div>
-      <div class="modal-contents">
-        <button id="blue-button" class="button green-button" onclick="window.commento.domainUnfreezeHandler()">Unfreeze Domain</button>
+      <div class="modal-contents center">
+        <button class="button green-button" onclick="window.commento.domainUnfreezeHandler()">Unfreeze Domain</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="clear-comments-modal" class="modal-window">
+    <div class="inside">
+      <a href="#modal-close" title="Close" class="modal-close"></a>
+      <div class="modal-title">Clear Comments</div>
+      <div class="modal-subtitle">
+        Are you absolutely sure you want to clear all comments data? This is not reversible, so please be certain.
+      </div>
+      <div class="modal-contents center">
+        <button class="button big-red-button" onclick="window.commento.domainClearHandler()">Clear</button>
       </div>
     </div>
   </div>
@@ -444,8 +471,8 @@
       <div class="modal-subtitle">
         Are you absolutely sure? This will permanently delete all comments and there is literally no way to retrieve your data once you do this.
       </div>
-      <div class="modal-contents">
-        <button id="big-red-button" class="button big-red-button" onclick="window.commento.domainDeleteHandler()">Delete Domain</button>
+      <div class="modal-contents center">
+        <button class="button big-red-button" onclick="window.commento.domainDeleteHandler()">Delete Domain</button>
       </div>
     </div>
   </div>

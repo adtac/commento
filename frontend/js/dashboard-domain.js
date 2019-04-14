@@ -149,4 +149,24 @@
     });
   }
 
+
+  // Clears the comments in a domain.
+  global.domainClear = function(domain, callback) {
+    var json = {
+      "ownerToken": global.cookieGet("commentoOwnerToken"),
+      "domain": domain,
+    };
+
+    global.post(global.origin + "/api/domain/clear", json, function(resp) {
+      if (!resp.success) {
+        global.globalErrorShow(resp.message);
+        return;
+      }
+
+      if (callback !== undefined) {
+        callback(resp.success);
+      }
+    });
+  }
+
 } (window.commento, document));

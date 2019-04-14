@@ -4,51 +4,46 @@ import (
 	"net/http"
 )
 
-func domainDelete(domain string) error {
+func domainClear(domain string) error {
 	if domain == "" {
 		return errorMissingField
 	}
 
 	statement := `
-		DELETE FROM
-		domains
-		WHERE domain = $1;
+		DELETE FROM votes
+		USING comments
+		WHERE comments.commentHex = votes.commentHex AND comments.domain = $1;
 	`
 	_, err := db.Exec(statement, domain)
 	if err != nil {
-		return errorNoSuchDomain
-	}
-
-	statement = `
-		DELETE FROM views
-		WHERE views.domain = $1;
-	`
-	_, err = db.Exec(statement, domain)
-	if err != nil {
-		logger.Errorf("cannot delete views: %v", err)
+		logger.Errorf("cannot delete votes: %v", err)
 		return errorInternal
 	}
 
 	statement = `
-		DELETE FROM moderators
-		WHERE moderators.domain = $1;
+		DELETE FROM comments
+		WHERE comments.domain = $1;
 	`
 	_, err = db.Exec(statement, domain)
 	if err != nil {
-		logger.Errorf("cannot delete domain moderators: %v", err)
+		logger.Errorf(statement, domain)
 		return errorInternal
 	}
 
-	// comments, votes, and pages are handled by domainClear
-	if err = domainClear(domain); err != nil {
-		logger.Errorf("cannot clear domain: %v", err)
+	statement = `
+		DELETE FROM pages
+		WHERE pages.domain = $1;
+	`
+	_, err = db.Exec(statement, domain)
+	if err != nil {
+		logger.Errorf(statement, domain)
 		return errorInternal
 	}
 
 	return nil
 }
 
-func domainDeleteHandler(w http.ResponseWriter, r *http.Request) {
+func domainClearHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		OwnerToken *string `json:"ownerToken"`
 		Domain     *string `json:"domain"`
@@ -78,7 +73,7 @@ func domainDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = domainDelete(*x.Domain); err != nil {
+	if err = domainClear(*x.Domain); err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}

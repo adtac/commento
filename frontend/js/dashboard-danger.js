@@ -20,6 +20,18 @@
   }
 
 
+  // Clears all comments in a domain.
+  global.domainClearHandler = function() {
+    var data = global.dashboard.$data;
+
+    global.domainClear(data.domains[data.cd].domain, function(success) {
+      if (success) {
+        document.location = global.origin + "/dashboard";
+      }
+    });
+  }
+
+
   // Freezes a domain.
   global.domainFreezeHandler = function() {
     var data = global.dashboard.$data;
