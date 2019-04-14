@@ -297,6 +297,7 @@
       }
 
       selfLoad(resp.commenter);
+      global.allShow();
 
       call(callback);
     });
@@ -1307,10 +1308,7 @@
       cookieSet("commentoCommenterToken", resp.commenterToken);
 
       selfLoad(resp.commenter);
-      var loggedContainer = $(ID_LOGGED_CONTAINER);
-      if (loggedContainer) {
-        attrSet(loggedContainer, "style", "");
-      }
+      global.allShow();
 
       remove($(ID_LOGIN));
       if (id !== null) {
@@ -1657,6 +1655,7 @@
           attrSet(root, "style", "");
           nameWidthFix();
           loadHash();
+          global.allShow();
           call(callback);
         });
       });
