@@ -55,7 +55,13 @@
           count = resp.commentCounts[paths[i]];
         }
 
-        doms[i].innerText = count + " " + (count === 1 ? "comment" : "comments");
+        var useCustomCommentsText = doms[i].getAttribute("data-custom-comments-text") !== null;
+
+        if(useCustomCommentsText) {
+          doms[i].innerText = eval(doms[i].getAttribute("data-custom-comments-text"))(count);
+        } else {
+          doms[i].innerText = count + " " + (count === 1 ? "comment" : "comments");
+        }
       }
     });
   }
