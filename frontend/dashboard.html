@@ -160,31 +160,48 @@
                 <ul class="tabs">
                   <li class="tab-link original current" data-tab="mod-tab-1">General</li>
                   <li class="tab-link" data-tab="mod-tab-2">Add/Remove Moderators</li>
-                  <li class="tab-link" data-tab="mod-tab-3">Email Settings</li>
                 </ul>
 
                 <div id="mod-tab-1" class="content original current">
-                  <div class="row no-border commento-round-check">
-                    <input type="checkbox" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
-                    <label for="spam-filtering">Automatic spam filtering</label>
-                    <div class="pitch">
-                      Commento uses Akismet's advanced spam detection to automatically identify and remove spam comments. This is strongly recommended. Requires backend configuration.
+                  <div class="question">
+                    <div class="title">
+                      Comment Filtering
+                    </div>
+                    <div class="answer">
+                      <div class="row no-border commento-round-check">
+                        <input type="checkbox" v-model="domains[cd].autoSpamFilter" id="spam-filtering">
+                        <label for="spam-filtering">Automatic spam filtering</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check">
+                        <input type="checkbox" v-model="domains[cd].requireModeration" id="require-moderation">
+                        <label for="require-moderation">Require all comments to be approved manually</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check">
+                        <input type="checkbox" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
+                        <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
+                      </div>
                     </div>
                   </div>
 
-                  <div class="row no-border commento-round-check">
-                    <input type="checkbox" v-model="domains[cd].requireModeration" id="require-moderation">
-                    <label for="require-moderation">Require all comments to be approved manually</label>
-                    <div class="pitch">
-                      Enabling this would require a moderator to approve all comments. This is generally recommended if your site doesn't receive too much traffic.
+                  <div class="question">
+                    <div class="title">
+                      Email Schedule
                     </div>
-                  </div>
-
-                  <div class="row no-border commento-round-check">
-                    <input type="checkbox" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
-                    <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
-                    <div class="pitch">
-                      Enabling this would require a moderator to approve all anonymous comments. This is recommended if most of your spam comments are from anonymous users.
+                    <div class="answer">
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="email-all" value="all" v-model="domains[cd].emailNotificationPolicy">
+                        <label for="email-all">Whenever a new comment is created</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="email-pending-moderation" value="pending-moderation" v-model="domains[cd].emailNotificationPolicy">
+                        <label for="email-pending-moderation">Only for comments pending moderation</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="email-none" value="none" v-model="domains[cd].emailNotificationPolicy">
+                        <label for="email-none">Do not email moderators</label>
+                      </div>
                     </div>
                   </div>
 
@@ -213,37 +230,6 @@
                         <div class="date">added {{email.timeAgo}}</div>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <div id="mod-tab-3" class="content">
-                  <div class="normal-text">
-                    You can enable email notifications to notify your moderators when a new comment is posted or when a comment is pending moderation. Commento tries to be smart about how often an email is sent. Emails will be delayed and batched until you go 10 minutes without one. This requires valid SMTP settings in order to send emails.<br><br>
-                  </div>
-
-                  <div class="question">
-                    <div class="title">
-                      Email Schedule
-                    </div>
-                    <div class="answer">
-                      <div class="row no-border commento-round-check">
-                        <input type="radio" id="email-all" value="all" v-model="domains[cd].emailNotificationPolicy">
-                        <label for="email-all">Whenever a new comment is created</label>
-                      </div>
-                      <div class="row no-border commento-round-check">
-                        <input type="radio" id="email-pending-moderation" value="pending-moderation" v-model="domains[cd].emailNotificationPolicy">
-                        <label for="email-pending-moderation">Only for comments pending moderation</label>
-                      </div>
-                      <div class="row no-border commento-round-check">
-                        <input type="radio" id="email-none" value="none" v-model="domains[cd].emailNotificationPolicy">
-                        <label for="email-none">Do not email moderators</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <br>
-                  <div class="center">
-                    <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
                   </div>
                 </div>
               </div>
