@@ -17,4 +17,9 @@ type domain struct {
 	ModerateAllAnonymous    bool        `json:"moderateAllAnonymous"`
 	Moderators              []moderator `json:"moderators"`
 	EmailNotificationPolicy string      `json:"emailNotificationPolicy"`
+	CommentoProvider        bool        `json:"commentoProvider"`
+	GoogleProvider          bool        `json:"googleProvider"`
+	TwitterProvider         bool        `json:"twitterProvider"`
+	GithubProvider          bool        `json:"githubProvider"`
+	GitlabProvider          bool        `json:"gitlabProvider"`
 }

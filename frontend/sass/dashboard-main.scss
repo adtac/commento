@@ -372,9 +372,28 @@ body {
 }
 
 .question {
-  font-size: 15px;
-  color: $gray-7;
-  margin-bottom: 10px;
+  padding: 8px 0px 8px 0px;
+  margin: 8px 0px 8px 0px;
+  display: flex;
+  width: 100%;
+
+  .title {
+    font-weight: bold;
+    color: $gray-7;
+    font-size: 14px;
+    width: 35%;
+    padding-top: 12px;
+  }
+
+  .answer {
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.warning {
+  color: $orange-8;
+  font-weight: bold;
 }
 
 .float-right {

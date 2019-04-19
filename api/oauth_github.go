@@ -37,7 +37,7 @@ func githubOauthConfigure() error {
 		Endpoint: github.Endpoint,
 	}
 
-	configuredOauths = append(configuredOauths, "github")
+	githubConfigured = true
 
 	return nil
 }

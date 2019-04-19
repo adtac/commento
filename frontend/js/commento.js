@@ -73,7 +73,7 @@
   var isLocked = false;
   var stickyCommentHex = "none";
   var shownReply = {};
-  var configuredOauths = [];
+  var configuredOauths = {};
   var popupBoxType = "login";
   var oauthButtonsShown = false;
   var selfHex = undefined;
@@ -1266,37 +1266,49 @@
     attrSet(emailInput, "placeholder", "Email address");
     attrSet(emailInput, "type", "text");
 
-    for (var i = 0; i < configuredOauths.length; i++) {
-      var button = create("button");
+    var numOauthConfigured = 0;
+    var oauthProviders = ["google", "twitter", "github", "gitlab"];
+    oauthProviders.forEach(function(provider) {
+      console.log(provider);
+      if (configuredOauths[provider]) {
+        var button = create("button");
 
-      classAdd(button, "button");
-      classAdd(button, configuredOauths[i] + "-button");
+        classAdd(button, "button");
+        classAdd(button,  provider+ "-button");
 
-      button.innerText = configuredOauths[i];
+        button.innerText = provider;
 
-      onclick(button, global.commentoAuth, {"provider": configuredOauths[i], "id": id});
+        onclick(button, global.commentoAuth, {"provider": provider, "id": id});
 
-      append(oauthButtons, button);
-    }
+        append(oauthButtons, button);
+        numOauthConfigured++;
+      }
+    });
 
-    if (configuredOauths.length > 0) {
+    if (numOauthConfigured > 0) {
       append(loginBox, oauthSubtitle);
       append(oauthButtonsContainer, oauthButtons);
       append(loginBox, oauthButtonsContainer);
-      append(loginBox, hr);
       oauthButtonsShown = true;
     } else {
       oauthButtonsShown = false;
     }
 
-    append(loginBox, emailSubtitle);
     append(email, emailInput);
     append(email, emailButton);
     append(emailContainer, email);
-    append(loginBox, emailContainer);
 
     append(loginLinkContainer, loginLink);
-    append(loginBox, loginLinkContainer);
+
+    if (numOauthConfigured > 0 && configuredOauths["commento"]) {
+      append(loginBox, hr);
+    }
+
+    if (configuredOauths["commento"]) {
+      append(loginBox, emailSubtitle);
+      append(loginBox, emailContainer);
+      append(loginBox, loginLinkContainer);
+    }
 
     append(loginBox, close);
 

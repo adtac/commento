@@ -43,9 +43,9 @@ func twitterOauthConfigure() error {
 		},
 	}
 
-	configuredOauths = append(configuredOauths, "twitter")
-
 	twitterCredMap = make(map[string]twitterOauthState, 1e3)
+
+	twitterConfigured = true
 
 	return nil
 }

@@ -10,7 +10,23 @@ func domainList(ownerHex string) ([]domain, error) {
 	}
 
 	statement := `
-    SELECT domain, ownerHex, name, creationDate, state, importedComments, autoSpamFilter, requireModeration, requireIdentification, moderateAllAnonymous, emailNotificationPolicy
+		SELECT
+			domain,
+			ownerHex,
+			name,
+			creationDate,
+			state,
+			importedComments,
+			autoSpamFilter,
+			requireModeration,
+			requireIdentification,
+			moderateAllAnonymous,
+			emailNotificationPolicy,
+			commentoProvider,
+			googleProvider,
+			twitterProvider,
+			githubProvider,
+			gitlabProvider
 		FROM domains
 		WHERE ownerHex=$1;
 	`
@@ -24,7 +40,23 @@ func domainList(ownerHex string) ([]domain, error) {
 	domains := []domain{}
 	for rows.Next() {
 		d := domain{}
-		if err = rows.Scan(&d.Domain, &d.OwnerHex, &d.Name, &d.CreationDate, &d.State, &d.ImportedComments, &d.AutoSpamFilter, &d.RequireModeration, &d.RequireIdentification, &d.ModerateAllAnonymous, &d.EmailNotificationPolicy); err != nil {
+		if err = rows.Scan(
+			&d.Domain,
+			&d.OwnerHex,
+			&d.Name,
+			&d.CreationDate,
+			&d.State,
+			&d.ImportedComments,
+			&d.AutoSpamFilter,
+			&d.RequireModeration,
+			&d.RequireIdentification,
+			&d.ModerateAllAnonymous,
+			&d.EmailNotificationPolicy,
+			&d.CommentoProvider,
+			&d.GoogleProvider,
+			&d.TwitterProvider,
+			&d.GithubProvider,
+			&d.GitlabProvider); err != nil {
 			logger.Errorf("cannot Scan domain: %v", err)
 			return nil, errorInternal
 		}
@@ -63,5 +95,14 @@ func domainListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "domains": domains})
+	bodyMarshal(w, response{
+		"success": true,
+		"domains": domains,
+		"configuredOauths": map[string]bool{
+			"google":  googleConfigured,
+			"twitter": twitterConfigured,
+			"github":  githubConfigured,
+			"gitlab":  gitlabConfigured,
+		},
+	})
 }

@@ -36,7 +36,7 @@ func gitlabOauthConfigure() error {
 		Endpoint: gitlab.Endpoint,
 	}
 
-	configuredOauths = append(configuredOauths, "gitlab")
+	gitlabConfigured = true
 
 	return nil
 }

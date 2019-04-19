@@ -181,14 +181,6 @@
                   </div>
 
                   <div class="row no-border commento-round-check">
-                    <input type="checkbox" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
-                    <label for="allow-anonymous">Allow anonymous comments</label>
-                    <div class="pitch">
-                      Enabling this would allow your readers to comment anonymously. Disabling would require the to authenticate themselves (using their Google account, for example). Recommended.
-                    </div>
-                  </div>
-
-                  <div class="row no-border commento-round-check indent" v-if="domains[cd].allowAnonymous">
                     <input type="checkbox" v-model="domains[cd].moderateAllAnonymous" id="moderate-all-anonymous">
                     <label for="moderate-all-anonymous">Require anonymous comments to be approved manually</label>
                     <div class="pitch">
@@ -228,21 +220,27 @@
                   <div class="normal-text">
                     You can enable email notifications to notify your moderators when a new comment is posted or when a comment is pending moderation. Commento tries to be smart about how often an email is sent. Emails will be delayed and batched until you go 10 minutes without one. This requires valid SMTP settings in order to send emails.<br><br>
                   </div>
+
                   <div class="question">
-                    When do you want emails sent to moderators?
+                    <div class="title">
+                      Email Schedule
+                    </div>
+                    <div class="answer">
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="email-all" value="all" v-model="domains[cd].emailNotificationPolicy">
+                        <label for="email-all">Whenever a new comment is created</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="email-pending-moderation" value="pending-moderation" v-model="domains[cd].emailNotificationPolicy">
+                        <label for="email-pending-moderation">Only for comments pending moderation</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="email-none" value="none" v-model="domains[cd].emailNotificationPolicy">
+                        <label for="email-none">Do not email moderators</label>
+                      </div>
+                    </div>
                   </div>
-                  <div class="row no-border commento-round-check indent">
-                    <input type="radio" id="email-all" value="all" v-model="domains[cd].emailNotificationPolicy">
-                    <label for="email-all">Whenever a new comment is created</label>
-                  </div>
-                  <div class="row no-border commento-round-check indent">
-                    <input type="radio" id="email-pending-moderation" value="pending-moderation" v-model="domains[cd].emailNotificationPolicy">
-                    <label for="email-pending-moderation">Only for comments pending moderation</label>
-                  </div>
-                  <div class="row no-border commento-round-check indent">
-                    <input type="radio" id="email-none" value="none" v-model="domains[cd].emailNotificationPolicy">
-                    <label for="email-none">Do not email moderators</label>
-                  </div>
+
                   <br>
                   <div class="center">
                     <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
@@ -272,6 +270,48 @@
                       <input class="input gray-input" id="cur-domain-name" type="text" :placeholder="domains[cd].origName" v-model="domains[cd].name">
                     </div>
                   </div>
+
+                  <div class="question">
+                    <div class="title">
+                      Authentication Options
+                    </div>
+                    <div class="answer">
+                      <div class="row no-border commento-round-check">
+                        <input type="checkbox" v-model="domains[cd].allowAnonymous" id="allow-anonymous">
+                        <label for="allow-anonymous">Anonymous comments</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check">
+                        <input type="checkbox" v-model="domains[cd].commentoProvider" id="commento-provider">
+                        <label for="commento-provider">Email address login</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check" v-if="configuredOauths.google">
+                        <input type="checkbox" v-model="domains[cd].googleProvider" id="google-provider">
+                        <label for="google-provider">Google login</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check" v-if="configuredOauths.twitter">
+                        <input type="checkbox" v-model="domains[cd].twitterProvider" id="twitter-provider">
+                        <label for="twitter-provider">Twitter login</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check" v-if="configuredOauths.github">
+                        <input type="checkbox" v-model="domains[cd].githubProvider" id="github-provider">
+                        <label for="github-provider">GitHub login</label>
+                      </div>
+
+                      <div class="row no-border commento-round-check" v-if="configuredOauths.gitlab">
+                        <input type="checkbox" v-model="domains[cd].gitlabProvider" id="gitlab-provider">
+                        <label for="gitlab-provider">GitLab login</label>
+                      </div>
+
+                      <div class="warning" v-if="!domains[cd].allowAnonymous && !domains[cd].commentoProvider && !domains[cd].googleProvider && !domains[cd].twitterProvider && !domains[cd].githubProvider && !domains[cd].gitlabProvider">
+                        You have disabled all authentication options. Your readers will not be able to login, create comments, or vote.
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="center">
                     <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
                   </div>

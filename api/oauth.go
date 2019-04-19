@@ -2,11 +2,12 @@ package main
 
 import ()
 
-var configuredOauths []string
+var googleConfigured bool
+var twitterConfigured bool
+var githubConfigured bool
+var gitlabConfigured bool
 
 func oauthConfigure() error {
-	configuredOauths = []string{}
-
 	if err := googleOauthConfigure(); err != nil {
 		return err
 	}

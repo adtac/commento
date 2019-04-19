@@ -102,6 +102,8 @@
 
       global.vs("domains", resp.domains);
 
+      global.vs("configuredOauths", resp.configuredOauths);
+
       if (callback !== undefined) {
         callback();
       }

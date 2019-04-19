@@ -31,7 +31,7 @@
       {
         "id": "general",
         "text": "General",
-        "meaning": "Email settings, data export",
+        "meaning": "Names, authentication, and export",
         "selected": false,
         "open": global.generalOpen,
       },
@@ -71,6 +71,9 @@
 
       // list of domains dynamically loaded; obviously mutable
       domains: [{show: false, viewsLast30Days: global.numberify(0), commentsLast30Days: global.numberify(0), moderators: []}],
+
+      // configured oauth providers that will be filled in after a backend request
+      configuredOauths: {},
 
       // whether or not to show the settings column; mutable because we do not
       // show the column until a domain has been selected
