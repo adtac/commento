@@ -120,13 +120,13 @@
     };
 
     global.post(global.origin + "/api/domain/update", json, function(resp) {
-      if (callback !== undefined) {
-        callback(resp.success);
-      }
-
       if (!resp.success) {
         global.globalErrorShow(resp.message);
         return;
+      }
+
+      if (callback !== undefined) {
+        callback(resp.success);
       }
     });
   }
