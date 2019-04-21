@@ -16,6 +16,7 @@ func main() {
 	exitIfError(versionCheckStart())
 	exitIfError(domainExportCleanupBegin())
 	exitIfError(viewsCleanupBegin())
+	exitIfError(ssoTokenCleanupBegin())
 
 	exitIfError(routesServe())
 }
