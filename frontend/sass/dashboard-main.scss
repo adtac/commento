@@ -551,56 +551,6 @@ body {
   }
 }
 
-.theme {
-  display: block;
-  width: calc(100% - 20px);
-  border: 1px solid white;
-  -webkit-box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  -moz-box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  box-shadow: 0 7px 14px 0 rgba(50,50,93,.1), 0 3px 6px 0 rgba(0,0,0,.07);
-  border-radius: 3px;
-  padding: 10px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  background: white;
-  opacity: 0.5;
-  filter: alpha(opacity=50);
-  transition: all 0.3s;
-
-  .theme-title {
-    font-size: 24px;
-    text-align: center;
-    padding: 10px;
-  }
-
-  .theme-subtitle {
-    font-size: 15px;
-    text-align: center;
-    padding: 10px;
-    color: $gray-5;
-  }
-
-  .theme-image {
-    width: calc(100% - 40px);
-    padding: 20px;
-  }
-}
-
-.theme:hover {
-  opacity: 0.8;
-  filter: alpha(opacity=80);
-}
-
-.selectedtheme {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
-.selectedtheme:hover {
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
-
 .no-border {
   border: none;
 }
