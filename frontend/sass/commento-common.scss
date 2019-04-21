@@ -1,23 +1,21 @@
 @import "colors-main.scss";
 
 code {
-  background: $red-1;
   font-family: monospace;
-  line-height: 1.5;
-  color: $red-6;
-  padding: 2px;
-  margin: 2px;
+  font-size: 13px;
 }
 
 a {
   color: $blue-6;
-  border-bottom: 1px solid $blue-6;
   outline: none;
   text-decoration: none;
 }
 
-a:focus {
-  box-shadow: 0 0 0 1px rgba(87, 85, 217, .2);
+blockquote {
+  margin: 0 0 0 8px;
+  padding: 0 0 0 5px;
+  border-left: 2px solid $gray-5;
+  color: $gray-6;
 }
 
 .commento-button {

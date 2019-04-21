@@ -55,6 +55,8 @@
   var ID_CONTENTS = "commento-comment-contents-";
   var ID_NAME = "commento-comment-name-";
   var ID_SUBMIT_BUTTON = "commento-submit-button-";
+  var ID_MARKDOWN_BUTTON = "commento-markdown-button-";
+  var ID_MARKDOWN_HELP = "commento-markdown-help-";
   var ID_FOOTER = "commento-footer";
 
 
@@ -417,6 +419,82 @@
   };
 
 
+  function markdownHelpShow(id) {
+    var textareaSuperContainer = $(ID_SUPER_CONTAINER + id);
+    var markdownButton = $(ID_MARKDOWN_BUTTON + id);
+    var markdownHelp = create("table");
+    var italicsContainer = create("tr");
+    var italicsLeft = create("td");
+    var italicsRight = create("td");
+    var boldContainer = create("tr");
+    var boldLeft = create("td");
+    var boldRight = create("td");
+    var codeContainer = create("tr");
+    var codeLeft = create("td");
+    var codeRight = create("td");
+    var strikethroughContainer = create("tr");
+    var strikethroughLeft = create("td");
+    var strikethroughRight = create("td");
+    var hyperlinkContainer = create("tr");
+    var hyperlinkLeft = create("td");
+    var hyperlinkRight = create("td");
+    var quoteContainer = create("tr");
+    var quoteLeft = create("td");
+    var quoteRight = create("td");
+
+    markdownHelp.id = ID_MARKDOWN_HELP + id;
+
+    classAdd(markdownHelp, "markdown-help");
+
+    boldLeft.innerHTML = "<b>bold</b>";
+    boldRight.innerHTML = "surround text with <pre>**two asterisks**</pre>";
+    italicsLeft.innerHTML = "<i>italics</i>";
+    italicsRight.innerHTML = "surround text with <pre>*asterisks*</pre>";
+    codeLeft.innerHTML = "<pre>code</pre>";
+    codeRight.innerHTML = "surround text with <pre>`backticks`</pre>";
+    strikethroughLeft.innerHTML = "<strike>strikethrough</strike>";
+    strikethroughRight.innerHTML = "surround text with <pre>~~two tilde characters~~</pre>";
+    hyperlinkLeft.innerHTML = "<a href=\"https://example.com\">hyperlink</a>";
+    hyperlinkRight.innerHTML = "<pre>[hyperlink](https://example.com)</pre> or just a bare URL";
+    quoteLeft.innerHTML = "<blockquote>quote</blockquote>";
+    quoteRight.innerHTML = "prefix with <pre>&gt;</pre>";
+
+    markdownButton = removeAllEventListeners(markdownButton);
+    onclick(markdownButton, markdownHelpHide, id);
+
+    append(italicsContainer, italicsLeft);
+    append(italicsContainer, italicsRight);
+    append(markdownHelp, italicsContainer);
+    append(boldContainer, boldLeft);
+    append(boldContainer, boldRight);
+    append(markdownHelp, boldContainer);
+    append(hyperlinkContainer, hyperlinkLeft);
+    append(hyperlinkContainer, hyperlinkRight);
+    append(markdownHelp, hyperlinkContainer);
+    append(codeContainer, codeLeft);
+    append(codeContainer, codeRight);
+    append(markdownHelp, codeContainer);
+    append(strikethroughContainer, strikethroughLeft);
+    append(strikethroughContainer, strikethroughRight);
+    append(markdownHelp, strikethroughContainer);
+    append(quoteContainer, quoteLeft);
+    append(quoteContainer, quoteRight);
+    append(markdownHelp, quoteContainer);
+    append(textareaSuperContainer, markdownHelp);
+  }
+
+
+  function markdownHelpHide(id) {
+    var markdownButton = $(ID_MARKDOWN_BUTTON + id);
+    var markdownHelp = $(ID_MARKDOWN_HELP + id);
+
+    markdownButton = removeAllEventListeners(markdownButton);
+    onclick(markdownButton, markdownHelpShow, id);
+
+    remove(markdownHelp);
+  }
+
+
   function textareaCreate(id) {
     var textareaSuperContainer = create("div");
     var textareaContainer = create("div");
@@ -425,18 +503,21 @@
     var anonymousCheckbox = create("input");
     var anonymousCheckboxLabel = create("label");
     var submitButton = create("button");
+    var markdownButton = create("a");
 
     textareaSuperContainer.id = ID_SUPER_CONTAINER + id;
     textareaContainer.id = ID_TEXTAREA_CONTAINER + id;
     textarea.id = ID_TEXTAREA + id;
     anonymousCheckbox.id = ID_ANONYMOUS_CHECKBOX + id;
     submitButton.id = ID_SUBMIT_BUTTON + id;
+    markdownButton.id = ID_MARKDOWN_BUTTON + id;
 
     classAdd(textareaContainer, "textarea-container");
     classAdd(anonymousCheckboxContainer, "round-check");
     classAdd(anonymousCheckboxContainer, "anonymous-checkbox-container");
     classAdd(submitButton, "button");
     classAdd(submitButton, "submit-button");
+    classAdd(markdownButton, "markdown-button");
     classAdd(textareaSuperContainer, "button-margin");
 
     attrSet(textarea, "placeholder", "Add a comment");
@@ -445,9 +526,11 @@
 
     anonymousCheckboxLabel.innerText = "Comment anonymously";
     submitButton.innerText = "Add Comment";
+    markdownButton.innerHTML = "<b>M &#8595;</b> &nbsp; Markdown";
 
     textarea.oninput = autoExpander(textarea);
     onclick(submitButton, submitAccountDecide, id);
+    onclick(markdownButton, markdownHelpShow, id);
 
     append(textareaContainer, textarea);
     append(textareaSuperContainer, textareaContainer);
@@ -457,6 +540,7 @@
     if (!requireIdentification) {
       append(textareaSuperContainer, anonymousCheckboxContainer);
     }
+    append(textareaSuperContainer, markdownButton);
 
     return textareaSuperContainer;
   }

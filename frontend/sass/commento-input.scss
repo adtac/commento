@@ -68,7 +68,7 @@ textarea {
 }
 
 .commento-button-margin {
-  padding-bottom: 60px;
+  padding-top: 4px;
 }
 
 .commento-anonymous-checkbox-container {
@@ -89,5 +89,36 @@ textarea {
 
   input[type="checkbox"] + label:after {
     margin-top: -1px;
+  }
+}
+
+.commento-markdown-button {
+  color: $gray-6;
+  margin: 0px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: none;
+  line-height: 58px;
+  font-weight: 400;
+  cursor: pointer;
+
+  b {
+    font-size: 12px;
+  }
+}
+
+.commento-markdown-help {
+  border: 1px solid $gray-3;
+  padding: 8px;
+
+  tr {
+    td {
+      padding: 0px 6px;
+      pre {
+        display: inline;
+        font-family: monospace;
+        font-size: 13px;
+      }
+    }
   }
 }
