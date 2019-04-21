@@ -237,7 +237,12 @@
 
     var loggedContainer = create("div");
     var loggedInAs = create("div");
-    var name = create("a");
+    var name;
+    if (commenter.link !== "undefined") {
+      name = create("a");
+    } else {
+      name = create("div");
+    }
     var avatar;
     var logout = create("div");
     var color = colorGet(commenter.commenterHex + "-" + commenter.name);
@@ -255,7 +260,9 @@
     onclick(logout, global.logout);
 
     attrSet(loggedContainer, "style", "display: none");
-    attrSet(name, "href", commenter.link);
+    if (commenter.link !== "undefined") {
+      attrSet(name, "href", commenter.link);
+    }
     if (commenter.photo === "undefined") {
       avatar = create("div");
       avatar.style["background"] = color;
