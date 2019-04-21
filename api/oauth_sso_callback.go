@@ -32,7 +32,7 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if payload.Domain == "" || payload.Token == "" || payload.Email == "" || payload.Name == "" {
+	if payload.Token == "" || payload.Email == "" || payload.Name == "" {
 		fmt.Fprintf(w, "Error: %s\n", errorMissingField.Error())
 		return
 	}
@@ -45,7 +45,13 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		payload.Photo = "undefined"
 	}
 
-	d, err := domainGet(payload.Domain)
+	domain, commenterToken, err := ssoTokenExtract(payload.Token)
+	if err != nil {
+		fmt.Fprintf(w, "Error: %s\n", err.Error())
+		return
+	}
+
+	d, err := domainGet(domain)
 	if err != nil {
 		if err == errorNoSuchDomain {
 			fmt.Fprintf(w, "Error: %s\n", err.Error())
@@ -76,13 +82,13 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = commenterGetByCommenterToken(payload.Token)
+	_, err = commenterGetByCommenterToken(commenterToken)
 	if err != nil && err != errorNoSuchToken {
 		fmt.Fprintf(w, "Error: %s\n", err.Error())
 		return
 	}
 
-	c, err := commenterGetByEmail("sso:"+d.Domain, payload.Email)
+	c, err := commenterGetByEmail("sso:"+domain, payload.Email)
 	if err != nil && err != errorNoSuchCommenter {
 		fmt.Fprintf(w, "Error: %s\n", err.Error())
 		return
@@ -92,7 +98,7 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: in case of returning users, update the information we have on record?
 	if err == errorNoSuchCommenter {
-		commenterHex, err = commenterNew(payload.Email, payload.Name, payload.Link, payload.Photo, "sso:"+d.Domain, "")
+		commenterHex, err = commenterNew(payload.Email, payload.Name, payload.Link, payload.Photo, "sso:"+domain, "")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return
@@ -101,7 +107,7 @@ func ssoCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		commenterHex = c.CommenterHex
 	}
 
-	if err = commenterSessionUpdate(payload.Token, commenterHex); err != nil {
+	if err = commenterSessionUpdate(commenterToken, commenterHex); err != nil {
 		fmt.Fprintf(w, "Error: %s\n", err.Error())
 		return
 	}

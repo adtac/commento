@@ -15,7 +15,7 @@ func apiRouterInit(router *mux.Router) error {
 	router.HandleFunc("/api/domain/new", domainNewHandler).Methods("POST")
 	router.HandleFunc("/api/domain/delete", domainDeleteHandler).Methods("POST")
 	router.HandleFunc("/api/domain/clear", domainClearHandler).Methods("POST")
-	router.HandleFunc("/api/domain/sso/new", domainSsoNewHandler).Methods("POST")
+	router.HandleFunc("/api/domain/sso/new", domainSsoSecretNewHandler).Methods("POST")
 	router.HandleFunc("/api/domain/list", domainListHandler).Methods("POST")
 	router.HandleFunc("/api/domain/update", domainUpdateHandler).Methods("POST")
 	router.HandleFunc("/api/domain/moderator/new", domainModeratorNewHandler).Methods("POST")

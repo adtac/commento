@@ -53,9 +53,15 @@ func ssoRedirectHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tokenBytes, err := hex.DecodeString(commenterToken)
+	token, err := ssoTokenNew(domain, commenterToken)
 	if err != nil {
-		logger.Errorf("cannot decode hex commenterToken: %v", err)
+		fmt.Fprintf(w, "Error: %s\n", err.Error())
+		return
+	}
+
+	tokenBytes, err := hex.DecodeString(token)
+	if err != nil {
+		logger.Errorf("cannot decode hex token: %v", err)
 		fmt.Fprintf(w, "Error: %s\n", errorInternal.Error())
 		return
 	}
@@ -74,7 +80,7 @@ func ssoRedirectHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	q := u.Query()
-	q.Set("token", commenterToken)
+	q.Set("token", token)
 	q.Set("hmac", signature)
 	u.RawQuery = q.Encode()
 

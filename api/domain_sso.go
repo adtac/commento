@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func domainSsoNew(domain string) (string, error) {
+func domainSsoSecretNew(domain string) (string, error) {
 	if domain == "" {
 		return "", errorMissingField
 	}
@@ -29,7 +29,7 @@ func domainSsoNew(domain string) (string, error) {
 	return ssoSecret, nil
 }
 
-func domainSsoNewHandler(w http.ResponseWriter, r *http.Request) {
+func domainSsoSecretNewHandler(w http.ResponseWriter, r *http.Request) {
 	type request struct {
 		OwnerToken *string `json:"ownerToken"`
 		Domain     *string `json:"domain"`
@@ -59,7 +59,7 @@ func domainSsoNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ssoSecret, err := domainSsoNew(domain)
+	ssoSecret, err := domainSsoSecretNew(domain)
 	if err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
