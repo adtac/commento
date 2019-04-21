@@ -2,6 +2,7 @@ package main
 
 func main() {
 	exitIfError(loggerCreate())
+	exitIfError(versionPrint())
 	exitIfError(configParse())
 	exitIfError(dbConnect(5))
 	exitIfError(migrate())

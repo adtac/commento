@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+func versionPrint() error {
+	logger.Infof("starting Commento %s", version)
+	return nil
+}
+
 func versionCheckStart() error {
 	go func() {
 		printedError := false
