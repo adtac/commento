@@ -1214,10 +1214,14 @@
   global.popupRender = function(id) {
     var loginBoxContainer = $(ID_LOGIN_BOX_CONTAINER);
     var loginBox = create("div");
+    var ssoSubtitle = create("div");
+    var ssoButtonContainer = create("div");
+    var ssoButton = create("div");
+    var hr1 = create("hr");
     var oauthSubtitle = create("div");
     var oauthButtonsContainer = create("div");
     var oauthButtons = create("div");
-    var hr = create("hr");
+    var hr2 = create("hr");
     var emailSubtitle = create("div");
     var emailContainer = create("div");
     var email = create("div");
@@ -1233,7 +1237,7 @@
     emailButton.id = ID_LOGIN_BOX_EMAIL_BUTTON;
     loginLink.id = ID_LOGIN_BOX_LOGIN_LINK;
     loginLinkContainer.id = ID_LOGIN_BOX_LOGIN_LINK_CONTAINER;
-    hr.id = ID_LOGIN_BOX_HR;
+    hr2.id = ID_LOGIN_BOX_HR;
     oauthSubtitle.id = ID_LOGIN_BOX_OAUTH_PRETEXT;
     oauthButtonsContainer.id = ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER;
 
@@ -1246,6 +1250,9 @@
     classAdd(emailButton, "email-button");
     classAdd(loginLinkContainer, "login-link-container");
     classAdd(loginLink, "login-link");
+    classAdd(ssoSubtitle, "login-box-subtitle");
+    classAdd(ssoButtonContainer, "oauth-buttons-container");
+    classAdd(ssoButton, "oauth-buttons");
     classAdd(oauthSubtitle, "login-box-subtitle");
     classAdd(oauthButtonsContainer, "oauth-buttons-container");
     classAdd(oauthButtons, "oauth-buttons");
@@ -1256,6 +1263,7 @@
     emailSubtitle.innerText = "Login with your email address";
     emailButton.innerText = "Continue";
     oauthSubtitle.innerText = "Proceed with social login";
+    ssoSubtitle.innerText = "Proceed with " + parent.location.host + " authentication";
 
     onclick(emailButton, global.passwordAsk, id);
     onclick(loginLink, global.popupSwitch);
@@ -1274,7 +1282,7 @@
         var button = create("button");
 
         classAdd(button, "button");
-        classAdd(button,  provider+ "-button");
+        classAdd(button, provider + "-button");
 
         button.innerText = provider;
 
@@ -1284,6 +1292,26 @@
         numOauthConfigured++;
       }
     });
+
+    if (configuredOauths["sso"]) {
+      var button = create("button");
+
+      classAdd(button, "button");
+      classAdd(button, "sso-button");
+
+      button.innerText = "Login with Single Sign-On";
+
+      onclick(button, global.commentoAuth, {"provider": "sso", "id": id});
+
+      append(ssoButton, button);
+      append(ssoButtonContainer, ssoButton);
+      append(loginBox, ssoSubtitle);
+      append(loginBox, ssoButtonContainer);
+
+      if (numOauthConfigured > 0 || configuredOauths["commento"]) {
+        append(loginBox, hr1);
+      }
+    }
 
     if (numOauthConfigured > 0) {
       append(loginBox, oauthSubtitle);
@@ -1301,7 +1329,7 @@
     append(loginLinkContainer, loginLink);
 
     if (numOauthConfigured > 0 && configuredOauths["commento"]) {
-      append(loginBox, hr);
+      append(loginBox, hr2);
     }
 
     if (configuredOauths["commento"]) {

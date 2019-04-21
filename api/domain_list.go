@@ -26,7 +26,10 @@ func domainList(ownerHex string) ([]domain, error) {
 			googleProvider,
 			twitterProvider,
 			githubProvider,
-			gitlabProvider
+			gitlabProvider,
+			ssoProvider,
+			ssoSecret,
+			ssoUrl
 		FROM domains
 		WHERE ownerHex=$1;
 	`
@@ -56,7 +59,10 @@ func domainList(ownerHex string) ([]domain, error) {
 			&d.GoogleProvider,
 			&d.TwitterProvider,
 			&d.GithubProvider,
-			&d.GitlabProvider); err != nil {
+			&d.GitlabProvider,
+			&d.SsoProvider,
+			&d.SsoSecret,
+			&d.SsoUrl); err != nil {
 			logger.Errorf("cannot Scan domain: %v", err)
 			return nil, errorInternal
 		}

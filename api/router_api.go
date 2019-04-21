@@ -15,6 +15,7 @@ func apiRouterInit(router *mux.Router) error {
 	router.HandleFunc("/api/domain/new", domainNewHandler).Methods("POST")
 	router.HandleFunc("/api/domain/delete", domainDeleteHandler).Methods("POST")
 	router.HandleFunc("/api/domain/clear", domainClearHandler).Methods("POST")
+	router.HandleFunc("/api/domain/sso/new", domainSsoNewHandler).Methods("POST")
 	router.HandleFunc("/api/domain/list", domainListHandler).Methods("POST")
 	router.HandleFunc("/api/domain/update", domainUpdateHandler).Methods("POST")
 	router.HandleFunc("/api/domain/moderator/new", domainModeratorNewHandler).Methods("POST")
@@ -45,6 +46,9 @@ func apiRouterInit(router *mux.Router) error {
 
 	router.HandleFunc("/api/oauth/gitlab/redirect", gitlabRedirectHandler).Methods("GET")
 	router.HandleFunc("/api/oauth/gitlab/callback", gitlabCallbackHandler).Methods("GET")
+
+	router.HandleFunc("/api/oauth/sso/redirect", ssoRedirectHandler).Methods("GET")
+	router.HandleFunc("/api/oauth/sso/callback", ssoCallbackHandler).Methods("GET")
 
 	router.HandleFunc("/api/comment/new", commentNewHandler).Methods("POST")
 	router.HandleFunc("/api/comment/list", commentListHandler).Methods("POST")

@@ -367,6 +367,10 @@ body {
       font-size: 13px;
       line-height: 17px;
       text-align: center;
+
+      a {
+        border: none;
+      }
     }
   }
 }
@@ -540,6 +544,11 @@ body {
   .input::placeholder {
     color: $gray-4;
   }
+
+  .monospace {
+    font-family: "Source Code Pro", monospace;
+    font-size: 11px;
+  }
 }
 
 .theme {
@@ -598,7 +607,7 @@ body {
 
 .indent {
   margin-top: 0px;
-  padding-left: 32px;
+  padding-left: 35px;
 }
 
 .stat {

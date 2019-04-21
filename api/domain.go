@@ -22,4 +22,7 @@ type domain struct {
 	TwitterProvider         bool        `json:"twitterProvider"`
 	GithubProvider          bool        `json:"githubProvider"`
 	GitlabProvider          bool        `json:"gitlabProvider"`
+	SsoProvider             bool        `json:"ssoProvider"`
+	SsoSecret               string      `json:"ssoSecret"`
+	SsoUrl                  string      `json:"ssoUrl"`
 }

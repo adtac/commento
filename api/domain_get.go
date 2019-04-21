@@ -24,7 +24,10 @@ func domainGet(dmn string) (domain, error) {
 			googleProvider,
 			twitterProvider,
 			githubProvider,
-			gitlabProvider
+			gitlabProvider,
+			ssoProvider,
+			ssoSecret,
+			ssoUrl
 		FROM domains
 		WHERE domain = $1;
 	`
@@ -48,7 +51,10 @@ func domainGet(dmn string) (domain, error) {
 		&d.GoogleProvider,
 		&d.TwitterProvider,
 		&d.GithubProvider,
-		&d.GitlabProvider); err != nil {
+		&d.GitlabProvider,
+		&d.SsoProvider,
+		&d.SsoSecret,
+		&d.SsoUrl); err != nil {
 		return d, errorNoSuchDomain
 	}
 

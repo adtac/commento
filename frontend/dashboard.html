@@ -292,6 +292,29 @@
                         <label for="gitlab-provider">GitLab login</label>
                       </div>
 
+                      <div class="row no-border commento-round-check">
+                        <input type="checkbox" v-model="domains[cd].ssoProvider" id="sso-provider" @change="window.commento.ssoProviderChangeHandler()">
+                        <label for="sso-provider">Single sign-on</label>
+                      </div>
+
+                      <div class="indent" v-if="domains[cd].ssoProvider">
+                        <div class="row">
+                          <div class="label">HMAC shared secret key</div>
+                          <input class="input gray-input monospace" id="sso-secret" readonly="true" type="text" placeholder="Loading..." v-model="domains[cd].ssoSecret">
+                        </div>
+                        <div class="row">
+                          <div class="label">Redirect URL</div>
+                          <input class="input gray-input" id="sso-url" type="text" :placeholder="domains[cd].ssoUrl" v-model="domains[cd].ssoUrl">
+                        </div>
+                        <div class="normal-text">
+                          <div class="subtext-container">
+                            <div class="subtext">
+                              Read the Commento documentation <a href="https://docs.commento.io/configuration/frontend/sso.html">on single sign-on</a>.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="warning" v-if="!domains[cd].allowAnonymous && !domains[cd].commentoProvider && !domains[cd].googleProvider && !domains[cd].twitterProvider && !domains[cd].githubProvider && !domains[cd].gitlabProvider">
                         You have disabled all authentication options. Your readers will not be able to login, create comments, or vote.
                       </div>

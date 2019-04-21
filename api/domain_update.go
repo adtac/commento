@@ -5,6 +5,10 @@ import (
 )
 
 func domainUpdate(d domain) error {
+	if d.SsoProvider && d.SsoUrl == "" {
+		return errorMissingField
+	}
+
 	statement := `
 		UPDATE domains
 		SET
@@ -19,7 +23,9 @@ func domainUpdate(d domain) error {
 			googleProvider=$10,
 			twitterProvider=$11,
 			githubProvider=$12,
-			gitlabProvider=$13
+			gitlabProvider=$13,
+			ssoProvider=$14,
+			ssoUrl=$15
 		WHERE domain=$1;
 	`
 
@@ -36,7 +42,9 @@ func domainUpdate(d domain) error {
 		d.GoogleProvider,
 		d.TwitterProvider,
 		d.GithubProvider,
-		d.GitlabProvider)
+		d.GitlabProvider,
+		d.SsoProvider,
+		d.SsoUrl)
 	if err != nil {
 		logger.Errorf("cannot update non-moderators: %v", err)
 		return errorInternal
