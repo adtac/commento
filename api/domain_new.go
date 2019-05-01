@@ -2,12 +2,17 @@ package main
 
 import (
 	"net/http"
+	"strings"
 	"time"
 )
 
 func domainNew(ownerHex string, name string, domain string) error {
 	if ownerHex == "" || name == "" || domain == "" {
 		return errorMissingField
+	}
+
+	if strings.Contains(domain, "/") {
+		return errorInvalidDomain
 	}
 
 	statement := `
