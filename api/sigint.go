@@ -7,7 +7,14 @@ import (
 )
 
 func sigintCleanup() int {
-	// TODO: close the database connection and do other cleanup jobs
+	if db != nil {
+		err := db.Close()
+		if err == nil {
+			logger.Errorf("cannot close database connection: %v", err)
+			return 1
+		}
+	}
+
 	return 0
 }
 
