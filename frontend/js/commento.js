@@ -1826,9 +1826,9 @@
         rootCreate(function() {
           commentsRender();
           append(root, footer);
-          nameWidthFix();
           loadHash();
           global.allShow();
+          nameWidthFix();
           call(callback);
         });
       });
