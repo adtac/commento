@@ -64,6 +64,7 @@
   var cdn = "[[[.CdnPrefix]]]";
   var root = null;
   var cssOverride;
+  var noFonts;
   var autoInit;
   var isAuthenticated = false;
   var comments = [];
@@ -1769,6 +1770,8 @@
         if (ID_ROOT === undefined) {
           ID_ROOT = "commento";
         }
+
+        noFonts = attrGet(scripts[i], "data-no-fonts");
       }
     }
   }
@@ -1813,13 +1816,16 @@
     var footer = footerLoad();
     cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
 
+    if (noFonts !== "true") {
+      classAdd(root, "root-font");
+    }
+
     selfGet(function() {
       commentsGet(function() {
         modToolsCreate();
         rootCreate(function() {
           commentsRender();
           append(root, footer);
-          attrSet(root, "style", "");
           nameWidthFix();
           loadHash();
           global.allShow();

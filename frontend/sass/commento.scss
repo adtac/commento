@@ -4,13 +4,20 @@
   min-height: 350px;
 }
 
+.commento-root-font {
+  * {
+    font-family: 'Source Sans Pro', sans-serif !important;
+  }
+}
+
 .commento-root {
   overflow-x: hidden;
   padding: 0px;
   width: 100%;
+  font-family: inherit;
 
   * {
-    font-family: "Source Sans Pro", "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    font-family: inherit;
     font-size: 15px;
     line-height: 1.5;
     color: #50596c;
