@@ -9,7 +9,11 @@ ctrl_c() {
   exit
 }
 
-version=devel
+if [[ "$1" == "" ]]; then
+  version=devel
+else
+  version=$1
+fi
 
 binary_pid=
 if make $version -j$(($(nproc) + 1)); then
