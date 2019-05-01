@@ -12,22 +12,26 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 	}
 
 	statement := `
-    SELECT commentHex, commenterHex, markdown, html, parentHex, score, state, creationDate
+		SELECT
+			commentHex,
+			commenterHex,
+			markdown,
+			html,
+			parentHex,
+			score,
+			state,
+			creationDate
 		FROM comments
 		WHERE
-      comments.domain = $1 AND
-      comments.path = $2
-  `
+			comments.domain = $1 AND
+			comments.path = $2
+	`
 
 	if !includeUnapproved {
 		if commenterHex == "anonymous" {
-			statement += `
-        AND state = 'approved'
-      `
+			statement += `AND state = 'approved'`
 		} else {
-			statement += `
-        AND (state = 'approved' OR commenterHex = $3)
-      `
+			statement += `AND (state = 'approved' OR commenterHex = $3)`
 		}
 	}
 
@@ -54,16 +58,24 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 	comments := []comment{}
 	for rows.Next() {
 		c := comment{}
-		if err = rows.Scan(&c.CommentHex, &c.CommenterHex, &c.Markdown, &c.Html, &c.ParentHex, &c.Score, &c.State, &c.CreationDate); err != nil {
+		if err = rows.Scan(
+			&c.CommentHex,
+			&c.CommenterHex,
+			&c.Markdown,
+			&c.Html,
+			&c.ParentHex,
+			&c.Score,
+			&c.State,
+			&c.CreationDate); err != nil {
 			return nil, nil, errorInternal
 		}
 
 		if commenterHex != "anonymous" {
 			statement = `
-        SELECT direction
-        FROM votes
-        WHERE commentHex=$1 AND commenterHex=$2;
-      `
+				SELECT direction
+				FROM votes
+				WHERE commentHex=$1 AND commenterHex=$2;
+			`
 			row := db.QueryRow(statement, c.CommentHex, commenterHex)
 
 			if err = row.Scan(&c.Direction); err != nil {
