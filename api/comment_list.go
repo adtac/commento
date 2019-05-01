@@ -131,24 +131,31 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	commenterHex := "anonymous"
-	c, err := commenterGetByCommenterToken(*x.CommenterToken)
-	if err != nil {
-		if err == errorNoSuchToken {
-			commenterHex = "anonymous"
-		} else {
-			bodyMarshal(w, response{"success": false, "message": err.Error()})
-			return
-		}
-	} else {
-		commenterHex = c.CommenterHex
-	}
-
 	isModerator := false
 	modList := map[string]bool{}
-	for _, mod := range d.Moderators {
-		modList[mod.Email] = true
-		if mod.Email == c.Email {
-			isModerator = true
+
+	if *x.CommenterToken != "anonymous" {
+		c, err := commenterGetByCommenterToken(*x.CommenterToken)
+		if err != nil {
+			if err == errorNoSuchToken {
+				commenterHex = "anonymous"
+			} else {
+				bodyMarshal(w, response{"success": false, "message": err.Error()})
+				return
+			}
+		} else {
+			commenterHex = c.CommenterHex
+		}
+
+		for _, mod := range d.Moderators {
+			modList[mod.Email] = true
+			if mod.Email == c.Email {
+				isModerator = true
+			}
+		}
+	} else {
+		for _, mod := range d.Moderators {
+			modList[mod.Email] = true
 		}
 	}
 
