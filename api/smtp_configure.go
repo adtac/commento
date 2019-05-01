@@ -13,10 +13,14 @@ func smtpConfigure() error {
 	password := os.Getenv("SMTP_PASSWORD")
 	host := os.Getenv("SMTP_HOST")
 	port := os.Getenv("SMTP_PORT")
-	if username == "" || password == "" || host == "" || port == "" {
+	if host == "" || port == "" {
 		logger.Warningf("smtp not configured, no emails will be sent")
 		smtpConfigured = false
 		return nil
+	}
+
+	if username == "" || password == "" {
+		logger.Warningf("no SMTP username/password set, Commento will assume they aren't required")
 	}
 
 	if os.Getenv("SMTP_FROM_ADDRESS") == "" {
