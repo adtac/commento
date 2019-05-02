@@ -1,7 +1,7 @@
 @import "colors-main.scss";
 @import "source-sans.scss";
 
-html {
+html, input, button, textarea {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
   color: $gray-7;
