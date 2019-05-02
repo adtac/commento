@@ -1369,7 +1369,6 @@
     var numOauthConfigured = 0;
     var oauthProviders = ["google", "twitter", "github", "gitlab"];
     oauthProviders.forEach(function(provider) {
-      console.log(provider);
       if (configuredOauths[provider]) {
         var button = create("button");
 
