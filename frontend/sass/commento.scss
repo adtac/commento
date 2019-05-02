@@ -1,7 +1,7 @@
 @import "source-sans.scss";
 
 .commento-root-min-height {
-  min-height: 350px;
+  min-height: 430px;
 }
 
 .commento-root-font {
@@ -38,7 +38,7 @@
   }
 
   .commento-blurred {
-    filter: blur(4px);
+    opacity: 0.4;
   }
 
   .commento-main-area {
