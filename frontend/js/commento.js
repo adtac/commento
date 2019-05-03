@@ -1805,6 +1805,9 @@
     }
 
     classAdd(root, "root");
+    if (noFonts !== "true") {
+      classAdd(root, "root-font");
+    }
 
     loginBoxCreate();
 
@@ -1814,10 +1817,6 @@
 
     var footer = footerLoad();
     cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
-
-    if (noFonts !== "true") {
-      classAdd(root, "root-font");
-    }
 
     selfGet(function() {
       commentsGet(function() {

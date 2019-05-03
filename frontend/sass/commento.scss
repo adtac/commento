@@ -4,12 +4,6 @@
   min-height: 430px;
 }
 
-.commento-root-font {
-  * {
-    font-family: 'Source Sans Pro', sans-serif !important;
-  }
-}
-
 .commento-root {
   overflow-x: hidden;
   padding: 0px;
@@ -62,5 +56,11 @@
     color: $orange-7;
     font-weight: 700;
     margin-top: 16px;
+  }
+}
+
+.commento-root-font {
+  * {
+    font-family: 'Source Sans Pro', sans-serif;
   }
 }
