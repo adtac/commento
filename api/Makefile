@@ -26,11 +26,11 @@ clean:
 
 devel-go:
 	dep ensure
-	go build -i -v -o $(GO_DEVEL_BUILD_BINARY)
+	go build -v -o $(GO_DEVEL_BUILD_BINARY)
 
 prod-go:
 	dep ensure
-	go build -i -v -o $(GO_PROD_BUILD_BINARY)
+	go build -v -o $(GO_PROD_BUILD_BINARY)
 
 test-go:
 	dep ensure
