@@ -20,8 +20,8 @@ func TestCommentCountBasics(t *testing.T) {
 		return
 	}
 
-	if counts["/path.html"] != 2 {
-		t.Errorf("expected count=2 got count=%d", counts["/path.html"])
+	if counts["/path.html"] != 3 {
+		t.Errorf("expected count=3 got count=%d", counts["/path.html"])
 		return
 	}
 }
