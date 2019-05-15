@@ -68,6 +68,7 @@
   var autoInit;
   var isAuthenticated = false;
   var comments = [];
+  var commentsMap = {};
   var commenters = {};
   var requireIdentification = true;
   var isModerator = false;
@@ -76,6 +77,7 @@
   var isLocked = false;
   var stickyCommentHex = "none";
   var shownReply = {};
+  var shownEdit = {};
   var configuredOauths = {};
   var popupBoxType = "login";
   var oauthButtonsShown = false;
@@ -499,7 +501,7 @@
   }
 
 
-  function textareaCreate(id) {
+  function textareaCreate(id, edit) {
     var textareaSuperContainer = create("div");
     var textareaContainer = create("div");
     var textarea = create("textarea");
@@ -529,11 +531,19 @@
     attrSet(anonymousCheckboxLabel, "for", ID_ANONYMOUS_CHECKBOX + id);
 
     anonymousCheckboxLabel.innerText = "Comment anonymously";
-    submitButton.innerText = "Add Comment";
+    if (edit === true) {
+      submitButton.innerText = "Save Changes";
+    } else {
+      submitButton.innerText = "Add Comment";
+    }
     markdownButton.innerHTML = "<b>M &#8595;</b> &nbsp; Markdown";
 
     textarea.oninput = autoExpander(textarea);
-    onclick(submitButton, submitAccountDecide, id);
+    if (edit === true) {
+      onclick(submitButton, commentEdit, id);
+    } else {
+      onclick(submitButton, submitAccountDecide, id);
+    }
     onclick(markdownButton, markdownHelpShow, id);
 
     append(textareaContainer, textarea);
@@ -541,7 +551,7 @@
     append(anonymousCheckboxContainer, anonymousCheckbox);
     append(anonymousCheckboxContainer, anonymousCheckboxLabel);
     append(textareaSuperContainer, submitButton);
-    if (!requireIdentification) {
+    if (!requireIdentification && edit !== true) {
       append(textareaSuperContainer, anonymousCheckboxContainer);
     }
     append(textareaSuperContainer, markdownButton);
@@ -911,6 +921,7 @@
         }
       }
 
+      onclick(edit, global.editShow, comment.commentHex);
       onclick(collapse, global.commentCollapse, comment.commentHex);
       onclick(approve, global.commentApprove, comment.commentHex);
       onclick(remove, global.commentDelete, comment.commentHex);
@@ -933,11 +944,14 @@
 
       append(options, collapse);
 
-      // append(options, edit); // uncomment when implemented
       append(options, downvote);
       append(options, upvote);
 
-      append(options, reply);
+      if (comment.commenterHex === selfHex) {
+        append(options, edit);
+      } else {
+        append(options, reply);
+      }
 
       if (isModerator && parentHex === "root") {
         append(options, sticky);
@@ -1109,6 +1123,106 @@
   }
 
 
+  function commentEdit(id) {
+    var textarea = $(ID_TEXTAREA + id);
+
+    var markdown = textarea.value;
+
+    if (markdown === "") {
+      classAdd(textarea, "red-border");
+      return;
+    } else {
+      classRemove(textarea, "red-border");
+    }
+
+    var json = {
+      "commenterToken": commenterTokenGet(),
+      "commentHex": id,
+      "markdown": markdown,
+    };
+
+    post(origin + "/api/comment/edit", json, function(resp) {
+      if (!resp.success) {
+        errorShow(resp.message);
+        return;
+      } else {
+        errorHide();
+      }
+
+      commentsMap[id].markdown = markdown;
+      commentsMap[id].html = resp.html;
+
+      var editButton = $(ID_EDIT + id);
+      var textarea = $(ID_SUPER_CONTAINER + id);
+
+      textarea.innerHTML = commentsMap[id].html;
+      textarea.id = ID_TEXT + id;
+      delete shownEdit[id];
+
+      classAdd(editButton, "option-edit");
+      classRemove(editButton, "option-cancel");
+
+      editButton.title = "Edit comment";
+
+      editButton = removeAllEventListeners(editButton);
+      onclick(editButton, global.editShow, id)
+
+      var message = "";
+      if (resp.state === "unapproved") {
+        message = "Your comment is under moderation.";
+      } else if (resp.state === "flagged") {
+        message = "Your comment was flagged as spam and is under moderation.";
+      }
+
+      if (message !== "") {
+        prepend($(ID_SUPER_CONTAINER + id), messageCreate(message));
+      }
+    });
+  }
+
+
+  global.editShow = function(id) {
+    if (id in shownEdit && shownEdit[id]) {
+      return;
+    }
+
+    var text = $(ID_TEXT + id);
+    shownEdit[id] = true;
+    text.replaceWith(textareaCreate(id, true));
+
+    var textarea = $(ID_TEXTAREA + id);
+    textarea.innerText = commentsMap[id].markdown;
+
+    var editButton = $(ID_EDIT + id);
+
+    classRemove(editButton, "option-edit");
+    classAdd(editButton, "option-cancel");
+
+    editButton.title = "Cancel edit";
+
+    editButton = removeAllEventListeners(editButton);
+    onclick(editButton, global.editCollapse, id);
+  };
+
+
+  global.editCollapse = function(id) {
+    var editButton = $(ID_EDIT + id);
+    var textarea = $(ID_SUPER_CONTAINER + id);
+
+    textarea.innerHTML = commentsMap[id].html;
+    textarea.id = ID_TEXT + id;
+    delete shownEdit[id];
+
+    classAdd(editButton, "option-edit");
+    classRemove(editButton, "option-cancel");
+
+    editButton.title = "Edit comment";
+
+    editButton = removeAllEventListeners(editButton);
+    onclick(editButton, global.editShow, id)
+  }
+
+
   global.replyShow = function(id) {
     if (id in shownReply && shownReply[id]) {
       return;
@@ -1135,7 +1249,7 @@
     var el = $(ID_SUPER_CONTAINER + id);
 
     el.remove();
-    shownReply[id] = false;
+    delete shownReply[id];
 
     classAdd(replyButton, "option-reply");
     classRemove(replyButton, "option-cancel");
@@ -1198,6 +1312,10 @@
       comment.creationDate = new Date(comment.creationDate);
 
       parentMap[parentHex].push(comment);
+      commentsMap[comment.commentHex] = {
+        "html": comment.html,
+        "markdown": comment.markdown,
+      };
     });
 
     var cards = commentsRecurse(parentMap, "root");
