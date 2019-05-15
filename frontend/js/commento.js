@@ -231,6 +231,9 @@
 
   global.logout = function() {
     cookieSet("commentoCommenterToken", "anonymous");
+    isAuthenticated = false;
+    isModerator = false;
+    selfHex = undefined;
     refreshAll();
   }
 
