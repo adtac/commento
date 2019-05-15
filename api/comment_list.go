@@ -84,6 +84,10 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 			}
 		}
 
+		if commenterHex != c.CommenterHex {
+			c.Markdown = ""
+		}
+
 		if !includeUnapproved {
 			c.State = ""
 		}
