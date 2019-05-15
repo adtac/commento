@@ -1,7 +1,6 @@
 package main
 
-import (
-)
+import ()
 
 func commentGetByCommentHex(commentHex string) (comment, error) {
 	if commentHex == "" {
