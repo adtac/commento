@@ -936,18 +936,20 @@
 
       append(options, reply);
 
-      if (isModerator) {
-        if (parentHex === "root") {
-          append(options, sticky);
-        }
+      if (isModerator && parentHex === "root") {
+        append(options, sticky);
+      }
+
+      if (isModerator || comment.commenterHex === selfHex) {
         append(options, remove);
-        if (comment.state !== "approved") {
-          append(options, approve);
-        }
-      } else {
-        if (stickyCommentHex === comment.commentHex) {
-          append(options, sticky);
-        }
+      }
+
+      if (isModerator && comment.state !== "approved") {
+        append(options, approve);
+      }
+      
+      if (!isModerator && stickyCommentHex === comment.commentHex) {
+        append(options, sticky);
       }
 
       attrSet(options, "style", "width: " + ((options.childNodes.length+1)*32) + "px;");

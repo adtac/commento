@@ -41,6 +41,12 @@ func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	cm, err := commentGetByCommentHex(*x.CommentHex)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
 	domain, _, err := commentDomainPathGet(*x.CommentHex)
 	if err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
@@ -53,7 +59,7 @@ func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !isModerator {
+	if !isModerator && cm.CommenterHex != c.CommenterHex {
 		bodyMarshal(w, response{"success": false, "message": errorNotModerator.Error()})
 		return
 	}
