@@ -33,6 +33,7 @@ prod-go:
 	GO111MODULE=on go build -mod=vendor -v -o $(GO_PROD_BUILD_BINARY)
 
 test-go:
+	GO111MODULE=on go mod vendor
 	go test -v .
 
 $(shell mkdir -p $(GO_DEVEL_BUILD_DIR) $(GO_PROD_BUILD_DIR))
