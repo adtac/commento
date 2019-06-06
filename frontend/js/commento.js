@@ -24,9 +24,12 @@
   var ID_LOGIN_BOX_EMAIL_BUTTON = "commento-login-box-email-button";
   var ID_LOGIN_BOX_LOGIN_LINK_CONTAINER = "commento-login-box-login-link-container";
   var ID_LOGIN_BOX_LOGIN_LINK = "commento-login-box-login-link";
-  var ID_LOGIN_BOX_HR = "commento-login-box-hr";
+  var ID_LOGIN_BOX_SSO_PRETEXT = "commento-login-box-sso-pretext";
+  var ID_LOGIN_BOX_SSO_BUTTON_CONTAINER = "commento-login-box-sso-buttton-container";
+  var ID_LOGIN_BOX_HR1 = "commento-login-box-hr1";
   var ID_LOGIN_BOX_OAUTH_PRETEXT = "commento-login-box-oauth-pretext";
   var ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER = "commento-login-box-oauth-buttons-container";
+  var ID_LOGIN_BOX_HR2 = "commento-login-box-hr2";
   var ID_MOD_TOOLS = "commento-mod-tools";
   var ID_MOD_TOOLS_LOCK_BUTTON = "commento-mod-tools-lock-button";
   var ID_ERROR = "commento-error";
@@ -1455,9 +1458,12 @@
     emailButton.id = ID_LOGIN_BOX_EMAIL_BUTTON;
     loginLink.id = ID_LOGIN_BOX_LOGIN_LINK;
     loginLinkContainer.id = ID_LOGIN_BOX_LOGIN_LINK_CONTAINER;
-    hr2.id = ID_LOGIN_BOX_HR;
+    ssoButtonContainer.id = ID_LOGIN_BOX_SSO_BUTTON_CONTAINER;
+    ssoSubtitle.id = ID_LOGIN_BOX_SSO_PRETEXT;
+    hr1.id = ID_LOGIN_BOX_HR1;
     oauthSubtitle.id = ID_LOGIN_BOX_OAUTH_PRETEXT;
     oauthButtonsContainer.id = ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER;
+    hr2.id = ID_LOGIN_BOX_HR2;
 
     classAdd(loginBoxContainer, "login-box-container");
     classAdd(loginBox, "login-box");
@@ -1484,7 +1490,7 @@
     ssoSubtitle.innerText = "Proceed with " + parent.location.host + " authentication";
 
     onclick(emailButton, global.passwordAsk, id);
-    onclick(loginLink, global.popupSwitch);
+    onclick(loginLink, global.popupSwitch, id);
     onclick(close, global.loginBoxClose);
 
     attrSet(loginBoxContainer, "style", "display: none; opacity: 0;");
@@ -1563,19 +1569,29 @@
   }
 
 
-  global.popupSwitch = function() {
+  global.popupSwitch = function(id) {
     var emailSubtitle = $(ID_LOGIN_BOX_EMAIL_SUBTITLE);
     var loginLink = $(ID_LOGIN_BOX_LOGIN_LINK);
 
-    if (popupBoxType === "login") {
-      loginLink.innerText = "Already have an account? Log in.";
-      emailSubtitle.innerText = "Create an account";
-      popupBoxType = "signup";
-    } else {
-      loginLink.innerText = "Don't have an account? Sign up.";
-      emailSubtitle.innerText = "Login with your email address";
-      popupBoxType = "login";
+    if (oauthButtonsShown) {
+      remove($(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER));
+      remove($(ID_LOGIN_BOX_OAUTH_PRETEXT));
+      remove($(ID_LOGIN_BOX_HR1));
+      remove($(ID_LOGIN_BOX_HR2));
     }
+
+    if (configuredOauths["sso"]) {
+      remove($(ID_LOGIN_BOX_SSO_BUTTON_CONTAINER));
+      remove($(ID_LOGIN_BOX_SSO_PRETEXT));
+      remove($(ID_LOGIN_BOX_HR1));
+      remove($(ID_LOGIN_BOX_HR2));
+    }
+
+    remove(loginLink);
+    emailSubtitle.innerText = "Create an account";
+    popupBoxType = "signup";
+    global.passwordAsk(id);
+    $(ID_LOGIN_BOX_EMAIL_INPUT).focus();
   }
 
 
@@ -1651,7 +1667,8 @@
     var subtitle = $(ID_LOGIN_BOX_EMAIL_SUBTITLE);
     var emailButton = $(ID_LOGIN_BOX_EMAIL_BUTTON);
     var loginLinkContainer = $(ID_LOGIN_BOX_LOGIN_LINK_CONTAINER);
-    var hr = $(ID_LOGIN_BOX_HR);
+    var hr1 = $(ID_LOGIN_BOX_HR1);
+    var hr2 = $(ID_LOGIN_BOX_HR2);
     var oauthButtonsContainer = $(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER);
     var oauthPretext = $(ID_LOGIN_BOX_OAUTH_PRETEXT);
     
@@ -1659,7 +1676,8 @@
     remove(loginLinkContainer);
     if (oauthButtonsShown) {
       if (configuredOauths.length > 0) {
-        remove(hr);
+        remove(hr1);
+        remove(hr2);
         remove(oauthPretext);
         remove(oauthButtonsContainer);
       }
