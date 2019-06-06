@@ -2,6 +2,6 @@ Hi,
 
 Someone (probably you) recently initiated the procedure to reset your Commento account password. To do this, use the link below:
 
-{{.Origin}}/reset-password?hex={{.ResetHex}}
+{{.Origin}}/reset?hex={{.ResetHex}}
 
 If you did not initiate this request, you can safely ignore this email.

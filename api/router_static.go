@@ -96,7 +96,7 @@ func staticRouterInit(router *mux.Router) error {
 	pages := []string{
 		"/login",
 		"/forgot",
-		"/reset-password",
+		"/reset",
 		"/signup",
 		"/confirm-email",
 		"/unsubscribe",

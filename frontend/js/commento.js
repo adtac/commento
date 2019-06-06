@@ -22,8 +22,8 @@
   var ID_LOGIN_BOX_NAME_INPUT = "commento-login-box-name-input";
   var ID_LOGIN_BOX_WEBSITE_INPUT = "commento-login-box-website-input";
   var ID_LOGIN_BOX_EMAIL_BUTTON = "commento-login-box-email-button";
+  var ID_LOGIN_BOX_FORGOT_LINK_CONTAINER = "commento-login-box-forgot-link-container";
   var ID_LOGIN_BOX_LOGIN_LINK_CONTAINER = "commento-login-box-login-link-container";
-  var ID_LOGIN_BOX_LOGIN_LINK = "commento-login-box-login-link";
   var ID_LOGIN_BOX_SSO_PRETEXT = "commento-login-box-sso-pretext";
   var ID_LOGIN_BOX_SSO_BUTTON_CONTAINER = "commento-login-box-sso-buttton-container";
   var ID_LOGIN_BOX_HR1 = "commento-login-box-hr1";
@@ -1448,6 +1448,8 @@
     var email = create("div");
     var emailInput = create("input");
     var emailButton = create("button");
+    var forgotLinkContainer = create("div");
+    var forgotLink = create("a");
     var loginLinkContainer = create("div");
     var loginLink = create("a");
     var close = create("div");
@@ -1456,7 +1458,7 @@
     emailSubtitle.id = ID_LOGIN_BOX_EMAIL_SUBTITLE;
     emailInput.id = ID_LOGIN_BOX_EMAIL_INPUT;
     emailButton.id = ID_LOGIN_BOX_EMAIL_BUTTON;
-    loginLink.id = ID_LOGIN_BOX_LOGIN_LINK;
+    forgotLinkContainer.id = ID_LOGIN_BOX_FORGOT_LINK_CONTAINER
     loginLinkContainer.id = ID_LOGIN_BOX_LOGIN_LINK_CONTAINER;
     ssoButtonContainer.id = ID_LOGIN_BOX_SSO_BUTTON_CONTAINER;
     ssoSubtitle.id = ID_LOGIN_BOX_SSO_PRETEXT;
@@ -1472,6 +1474,8 @@
     classAdd(email, "email");
     classAdd(emailInput, "input");
     classAdd(emailButton, "email-button");
+    classAdd(forgotLinkContainer, "forgot-link-container");
+    classAdd(forgotLink, "forgot-link");
     classAdd(loginLinkContainer, "login-link-container");
     classAdd(loginLink, "login-link");
     classAdd(ssoSubtitle, "login-box-subtitle");
@@ -1483,6 +1487,7 @@
     classAdd(close, "login-box-close");
     classAdd(root, "root-min-height");
 
+    forgotLink.innerText = "Forgot your password?";
     loginLink.innerText = "Don't have an account? Sign up.";
     emailSubtitle.innerText = "Login with your email address";
     emailButton.innerText = "Continue";
@@ -1490,6 +1495,7 @@
     ssoSubtitle.innerText = "Proceed with " + parent.location.host + " authentication";
 
     onclick(emailButton, global.passwordAsk, id);
+    onclick(forgotLink, global.forgotPassword, id);
     onclick(loginLink, global.popupSwitch, id);
     onclick(close, global.loginBoxClose);
 
@@ -1522,7 +1528,7 @@
       classAdd(button, "button");
       classAdd(button, "sso-button");
 
-      button.innerText = "Login with Single Sign-On";
+      button.innerText = "Single Sign-On";
 
       onclick(button, global.commentoAuth, {"provider": "sso", "id": id});
 
@@ -1549,6 +1555,8 @@
     append(email, emailButton);
     append(emailContainer, email);
 
+    append(forgotLinkContainer, forgotLink);
+
     append(loginLinkContainer, loginLink);
 
     if (numOauthConfigured > 0 && configuredOauths["commento"]) {
@@ -1558,6 +1566,7 @@
     if (configuredOauths["commento"]) {
       append(loginBox, emailSubtitle);
       append(loginBox, emailContainer);
+      append(loginBox, forgotLinkContainer);
       append(loginBox, loginLinkContainer);
     }
 
@@ -1569,9 +1578,15 @@
   }
 
 
+  global.forgotPassword = function() {
+    var popup = window.open("", "_blank");
+    popup.location = origin + "/forgot?commenter=true";
+    global.loginBoxClose();
+  }
+
+
   global.popupSwitch = function(id) {
     var emailSubtitle = $(ID_LOGIN_BOX_EMAIL_SUBTITLE);
-    var loginLink = $(ID_LOGIN_BOX_LOGIN_LINK);
 
     if (oauthButtonsShown) {
       remove($(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER));
@@ -1587,7 +1602,9 @@
       remove($(ID_LOGIN_BOX_HR2));
     }
 
-    remove(loginLink);
+    remove($(ID_LOGIN_BOX_LOGIN_LINK_CONTAINER));
+    remove($(ID_LOGIN_BOX_FORGOT_LINK_CONTAINER));
+
     emailSubtitle.innerText = "Create an account";
     popupBoxType = "signup";
     global.passwordAsk(id);
@@ -1665,21 +1682,16 @@
   global.passwordAsk = function(id) {
     var loginBox = $(ID_LOGIN_BOX);
     var subtitle = $(ID_LOGIN_BOX_EMAIL_SUBTITLE);
-    var emailButton = $(ID_LOGIN_BOX_EMAIL_BUTTON);
-    var loginLinkContainer = $(ID_LOGIN_BOX_LOGIN_LINK_CONTAINER);
-    var hr1 = $(ID_LOGIN_BOX_HR1);
-    var hr2 = $(ID_LOGIN_BOX_HR2);
-    var oauthButtonsContainer = $(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER);
-    var oauthPretext = $(ID_LOGIN_BOX_OAUTH_PRETEXT);
     
-    remove(emailButton);
-    remove(loginLinkContainer);
+    remove($(ID_LOGIN_BOX_EMAIL_BUTTON));
+    remove($(ID_LOGIN_BOX_LOGIN_LINK_CONTAINER));
+    remove($(ID_LOGIN_BOX_FORGOT_LINK_CONTAINER));
     if (oauthButtonsShown) {
       if (configuredOauths.length > 0) {
-        remove(hr1);
-        remove(hr2);
-        remove(oauthPretext);
-        remove(oauthButtonsContainer);
+        remove($(ID_LOGIN_BOX_HR1));
+        remove($(ID_LOGIN_BOX_HR2));
+        remove($(ID_LOGIN_BOX_OAUTH_PRETEXT));
+        remove($(ID_LOGIN_BOX_OAUTH_BUTTONS_CONTAINER));
       }
     }
 

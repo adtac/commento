@@ -24,7 +24,7 @@
     };
 
     global.buttonDisable("#reset-button");
-    global.post(global.origin + "/api/owner/reset-password", json, function(resp) {
+    global.post(global.origin + "/api/reset", json, function(resp) {
       global.buttonEnable("#reset-button");
 
       global.textSet("#err", "");
@@ -33,8 +33,14 @@
         return
       }
 
-      document.location = global.origin + "/login?changed=true";
+      if (resp.entity === "owner") {
+        document.location = global.origin + "/login?changed=true";
+      } else {
+        $("#msg").html("Your password has been reset. You may close this window and try logging in again.");
+      }
     });
   }
+
+  self.close();
 
 } (window.commento, document));

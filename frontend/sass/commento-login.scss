@@ -38,16 +38,24 @@
 
     @import "email-main.scss";
 
+    .commento-forgot-link-container,
     .commento-login-link-container {
       margin: 16px;
       width: calc(100% - 32px);
       text-align: center;
+    }
 
-      .commento-login-link {
-        font-size: 14px;
-        font-weight: bold;
-        border-bottom: none;
-      }
+    .commento-forgot-link,
+    .commento-login-link {
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: none;
+    }
+
+    .commento-forgot-link {
+      font-size: 13px;
+      color: $gray-6;
+      font-weight: normal;
     }
 
     .commento-login-box-close {

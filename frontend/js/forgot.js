@@ -16,12 +16,18 @@
       return;
     }
 
+    var entity = "owner";
+    if (global.paramGet("commenter") === "true") {
+      entity = "commenter";
+    }
+
     var json = {
       "email": $("#email").val(),
+      "entity": entity,
     };
 
     global.buttonDisable("#reset-button");
-    global.post(global.origin + "/api/owner/send-reset-hex", json, function(resp) {
+    global.post(global.origin + "/api/forgot", json, function(resp) {
       global.buttonEnable("#reset-button");
 
       global.textSet("#err", "");
