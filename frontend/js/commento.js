@@ -1395,7 +1395,10 @@
               attrSet(loggedContainer, "style", "");
             }
 
-            remove($(ID_LOGIN));
+            if (commenterTokenGet() !== "anonymous") {
+              remove($(ID_LOGIN));
+            }
+
             if (id !== null) {
               global.commentNew(id, resp.commenterToken, function() {
                 global.loginBoxClose();
