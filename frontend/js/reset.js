@@ -41,6 +41,4 @@
     });
   }
 
-  self.close();
-
 } (window.commento, document));
