@@ -6,6 +6,7 @@ import (
 	"golang.org/x/oauth2"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 func gitlabCallbackHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +25,7 @@ func gitlabCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := http.Get("https://gitlab.com/api/v4/user?access_token=" + token.AccessToken)
+	resp, err := http.Get(os.Getenv("GITLAB_URL") + "/api/v4/user?access_token=" + token.AccessToken)
 	if err != nil {
 		fmt.Fprintf(w, "Error: %s", err.Error())
 		return

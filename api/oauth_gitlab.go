@@ -35,6 +35,8 @@ func gitlabOauthConfigure() error {
 		},
 		Endpoint: gitlab.Endpoint,
 	}
+	gitlabConfig.Endpoint.AuthURL = os.Getenv("GITLAB_URL") + "/oauth/authorize"
+	gitlabConfig.Endpoint.TokenURL = os.Getenv("GITLAB_URL") + "/oauth/token"
 
 	gitlabConfigured = true
 
