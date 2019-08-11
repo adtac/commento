@@ -52,23 +52,32 @@ func googleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	name := user["name"].(string)
+
+	link := "undefined"
+	if user["link"] != nil {
+		link = user["link"].(string)
+	}
+
+	photo := "undefined"
+	if user["picture"] != nil {
+		photo = user["picture"].(string)
+	}
+
 	var commenterHex string
 
-	// TODO: in case of returning users, update the information we have on record?
 	if err == errorNoSuchCommenter {
-		var link string
-		if val, ok := user["link"]; ok {
-			link = val.(string)
-		} else {
-			link = "undefined"
-		}
-
-		commenterHex, err = commenterNew(email, user["name"].(string), link, user["picture"].(string), "google", "")
+		commenterHex, err = commenterNew(email, name, link, photo, "google", "")
 		if err != nil {
 			fmt.Fprintf(w, "Error: %s", err.Error())
 			return
 		}
 	} else {
+		if err = commenterUpdate(c.CommenterHex, email, name, link, photo, "google"); err != nil {
+			logger.Warningf("cannot update commenter: %s", err)
+			// not a serious enough to exit with an error
+		}
+
 		commenterHex = c.CommenterHex
 	}
 

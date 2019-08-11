@@ -88,7 +88,6 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	var commenterHex string
 
-	// TODO: in case of returning users, update the information we have on record?
 	if err == errorNoSuchCommenter {
 		commenterHex, err = commenterNew(email, name, link, photo, "twitter", "")
 		if err != nil {
@@ -96,6 +95,11 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
+		if err = commenterUpdate(c.CommenterHex, email, name, link, photo, "twitter"); err != nil {
+			logger.Warningf("cannot update commenter: %s", err)
+			// not a serious enough to exit with an error
+		}
+
 		commenterHex = c.CommenterHex
 	}
 
