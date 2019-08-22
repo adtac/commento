@@ -128,8 +128,9 @@ func emailNotificationNew(d domain, path string, commenterHex string, commentHex
 	if p.Title == "" {
 		p.Title, err = pageTitleUpdate(d.Domain, path)
 		if err != nil {
-			logger.Errorf("cannot update/get page title to send email notification: %v", err)
-			return
+			// Not being able to update a page title isn't serious enough to skip an
+			// email notification.
+			p.Title = d.Domain
 		}
 	}
 
