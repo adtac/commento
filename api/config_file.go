@@ -41,11 +41,12 @@ func configFileLoad(filepath string) error {
 			continue
 		}
 
-		if os.Getenv(key[9:]) != "" {
+		if os.Getenv(key) != "" {
+			// Config files have lower precedence.
 			continue
 		}
 
-		os.Setenv(key[9:], value)
+		os.Setenv(key, value)
 	}
 
 	return nil

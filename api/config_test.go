@@ -21,6 +21,7 @@ func TestConfigParseBasics(t *testing.T) {
 
 	os.Setenv("COMMENTO_BIND_ADDRESS", "192.168.1.100")
 
+	os.Setenv("COMMENTO_PORT", "")
 	if err := configParse(); err != nil {
 		t.Errorf("unexpected error when parsing config: %v", err)
 		return

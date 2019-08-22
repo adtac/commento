@@ -37,19 +37,19 @@ func TestConfigFileLoadBasics(t *testing.T) {
 		return
 	}
 
-	os.Setenv("PORT", "9000")
+	os.Setenv("COMMENTO_PORT", "9000")
 	if err := configFileLoad(f.Name()); err != nil {
 		t.Errorf("unexpected error loading config file: %v", err)
 		return
 	}
 
-	if os.Getenv("PORT") != "9000" {
-		t.Errorf("expected PORT=9000 got PORT=%s", os.Getenv("PORT"))
+	if os.Getenv("COMMENTO_PORT") != "9000" {
+		t.Errorf("expected COMMENTO_PORT=9000 got COMMENTO_PORT=%s", os.Getenv("COMMENTO_PORT"))
 		return
 	}
 
-	if os.Getenv("GZIP_STATIC") != "true" {
-		t.Errorf("expected GZIP_STATIC=true got GZIP_STATIC=%s", os.Getenv("GZIP_STATIC"))
+	if os.Getenv("COMMENTO_GZIP_STATIC") != "true" {
+		t.Errorf("expected COMMENTO_GZIP_STATIC=true got COMMENTO_GZIP_STATIC=%s", os.Getenv("COMMENTO_GZIP_STATIC"))
 		return
 	}
 }
