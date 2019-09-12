@@ -1,7 +1,6 @@
 package main
 
-import (
-)
+import ()
 
 func commenterUpdate(commenterHex string, email string, name string, link string, photo string, provider string) error {
 	if email == "" || name == "" || link == "" || photo == "" || provider == "" {
