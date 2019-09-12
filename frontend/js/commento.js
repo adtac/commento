@@ -1194,7 +1194,7 @@
     text.replaceWith(textareaCreate(id, true));
 
     var textarea = $(ID_TEXTAREA + id);
-    textarea.innerText = commentsMap[id].markdown;
+    textarea.innerText = commentsMap[id].markdown.replace(" ", "&nbsp;").replace("\n", "<br>");
 
     var editButton = $(ID_EDIT + id);
 
