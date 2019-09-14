@@ -85,48 +85,58 @@ const jsCompileMap = {
   ],
 };
 
-gulp.task("scss-devel", function () {
-  return gulp.src(scssSrc)
+gulp.task("scss-devel", function (done) {
+  let res = gulp.src(scssSrc)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: "expanded"}).on("error", sass.logError))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(develPath + cssDir));
+  done();
+  return res;
 });
 
-gulp.task("scss-prod", function () {
-  return gulp.src(scssSrc)
+gulp.task("scss-prod", function (done) {
+  let res = gulp.src(scssSrc)
     .pipe(sass({outputStyle: "compressed"}).on("error", sass.logError))
     .pipe(cleanCss({compatibility: "ie8", level: 2}))
     .pipe(gulp.dest(prodPath + cssDir));
+  done();
+  return res;
 });
 
-gulp.task("html-devel", function () {
+gulp.task("html-devel", function (done) {
   gulp.src([htmlGlob]).pipe(gulp.dest(develPath));
+  done();
 });
 
-gulp.task("html-prod", function () {
+gulp.task("html-prod", function (done) {
   gulp.src(htmlGlob)
     .pipe(htmlMinifier({collapseWhitespace: true, removeComments: true}))
     .pipe(gulp.dest(prodPath))
+  done();
 });
 
-gulp.task("fonts-devel", function () {
+gulp.task("fonts-devel", function (done) {
   gulp.src([fontsGlob]).pipe(gulp.dest(develPath + fontsDir));
+  done();
 });
 
-gulp.task("fonts-prod", function () {
+gulp.task("fonts-prod", function (done) {
   gulp.src([fontsGlob]).pipe(gulp.dest(prodPath + fontsDir));
+  done();
 });
 
-gulp.task("images-devel", function () {
+gulp.task("images-devel", function (done) {
   gulp.src([imagesGlob]).pipe(gulp.dest(develPath + imagesDir));
+  done();
 });
 
-gulp.task("images-prod", function () {
+gulp.task("images-prod", function (done) {
   gulp.src([imagesGlob]).pipe(gulp.dest(prodPath + imagesDir));
+  done();
 });
 
-gulp.task("js-devel", function () {
+gulp.task("js-devel", function (done) {
   for (let outputFile in jsCompileMap) {
     gulp.src(jsCompileMap[outputFile])
       .pipe(sourcemaps.init())
@@ -135,9 +145,10 @@ gulp.task("js-devel", function () {
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(develPath))
   }
+  done();
 });
 
-gulp.task("js-prod", function () {
+gulp.task("js-prod", function (done) {
   for (let outputFile in jsCompileMap) {
     gulp.src(jsCompileMap[outputFile])
       .pipe(concat(outputFile))
@@ -145,13 +156,16 @@ gulp.task("js-prod", function () {
       .pipe(uglify())
       .pipe(gulp.dest(prodPath))
   }
+  done();
 });
 
-gulp.task("lint", function () {
-  return gulp.src(jsGlob)
+gulp.task("lint", function (done) {
+  let res = gulp.src(jsGlob)
     .pipe(eslint())
-    .pipe(eslint.failAfterError())
+    .pipe(eslint.failAfterError());
+  done();
+  return res;
 });
 
-gulp.task("devel", ["scss-devel", "html-devel", "fonts-devel", "images-devel", "lint", "js-devel"]);
-gulp.task("prod", ["scss-prod", "html-prod", "fonts-prod", "images-prod", "lint", "js-prod"]);
+gulp.task("devel", gulp.parallel("scss-devel", "html-devel", "fonts-devel", "images-devel", "lint", "js-devel"));
+gulp.task("prod", gulp.parallel("scss-prod", "html-prod", "fonts-prod", "images-prod", "lint", "js-prod"));
