@@ -1041,6 +1041,10 @@
 
 
   global.commentDelete = function(commentHex) {
+    if (!confirm("Are you sure you want to delete this comment?")) {
+      return;
+    }
+
     var json = {
       "commenterToken": commenterTokenGet(),
       "commentHex": commentHex,
