@@ -16,4 +16,5 @@ type comment struct {
 	State        string    `json:"state,omitempty"`
 	CreationDate time.Time `json:"creationDate"`
 	Direction    int       `json:"direction"`
+	Deleted      bool      `json:"deleted"`
 }

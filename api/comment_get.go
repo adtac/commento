@@ -16,6 +16,7 @@ func commentGetByCommentHex(commentHex string) (comment, error) {
 			parentHex,
 			score,
 			state,
+			deleted,
 			creationDate
 		FROM comments
 		WHERE comments.commentHex = $1;
@@ -31,6 +32,7 @@ func commentGetByCommentHex(commentHex string) (comment, error) {
 		&c.ParentHex,
 		&c.Score,
 		&c.State,
+		&c.Deleted,
 		&c.CreationDate); err != nil {
 		// TODO: is this the only error?
 		return c, errorNoSuchComment

@@ -764,9 +764,9 @@
     }
 
     cur.sort(function(a, b) {
-      if (a.commentHex === stickyCommentHex) {
+      if (!a.deleted && a.commentHex === stickyCommentHex) {
         return -Infinity;
-      } else if (b.commentHex === stickyCommentHex) {
+      } else if (!b.deleted && b.commentHex === stickyCommentHex) {
         return Infinity;
       }
 
@@ -852,7 +852,11 @@
       timeago.title = comment.creationDate.toString();
 
       card.style["borderLeft"] = "2px solid " + color;
-      name.innerText = commenter.name;
+      if (comment.deleted) {
+        name.innerText = "[deleted]";
+      } else {
+        name.innerText = commenter.name;
+      }
       text.innerHTML = comment.html;
       timeago.innerHTML = timeDifference(curTime, comment.creationDate);
       score.innerText = scorify(comment.score);
@@ -947,20 +951,22 @@
 
       append(options, collapse);
 
-      append(options, downvote);
-      append(options, upvote);
+      if (!comment.deleted) {
+        append(options, downvote);
+        append(options, upvote);
+      }
 
       if (comment.commenterHex === selfHex) {
         append(options, edit);
-      } else {
+      } else if (!comment.deleted) {
         append(options, reply);
       }
 
-      if (isModerator && parentHex === "root") {
+      if (!comment.deleted && (isModerator && parentHex === "root")) {
         append(options, sticky);
       }
 
-      if (isModerator || comment.commenterHex === selfHex) {
+      if (!comment.deleted && (isModerator || comment.commenterHex === selfHex)) {
         append(options, remove);
       }
 
@@ -968,7 +974,7 @@
         append(options, approve);
       }
       
-      if (!isModerator && stickyCommentHex === comment.commentHex) {
+      if (!comment.deleted && (!isModerator && stickyCommentHex === comment.commentHex)) {
         append(options, sticky);
       }
 
@@ -1048,8 +1054,8 @@
         errorHide();
       }
 
-      var card = $(ID_CARD + commentHex);
-      remove(card);
+      var text = $(ID_TEXT + commentHex);
+      text.innerText = "[deleted]";
     });
   }
 

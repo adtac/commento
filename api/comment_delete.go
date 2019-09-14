@@ -10,8 +10,9 @@ func commentDelete(commentHex string) error {
 	}
 
 	statement := `
-		DELETE FROM comments
-		WHERE commentHex=$1;
+		UPDATE comments
+		SET deleted = true, markdown = '[deleted]', html = '[deleted]', commenterHex = 'anonymous'
+		WHERE commentHex = $1;
 	`
 	_, err := db.Exec(statement, commentHex)
 

@@ -20,6 +20,7 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 			parentHex,
 			score,
 			state,
+			deleted,
 			creationDate
 		FROM comments
 		WHERE
@@ -66,6 +67,7 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 			&c.ParentHex,
 			&c.Score,
 			&c.State,
+			&c.Deleted,
 			&c.CreationDate); err != nil {
 			return nil, nil, errorInternal
 		}
