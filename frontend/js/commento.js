@@ -68,6 +68,7 @@
   var root = null;
   var cssOverride;
   var noFonts;
+  var hideDeleted;
   var autoInit;
   var isAuthenticated = false;
   var comments = [];
@@ -1008,8 +1009,18 @@
 
       append(card, header);
       append(card, contents);
+
+      console.log(children);
+      if (comment.deleted && (hideDeleted === "true" || children === null)) {
+        return;
+      }
+
       append(cards, card);
     });
+
+    if (cards.childNodes.length === 0) {
+      return null;
+    }
 
     return cards;
   }
@@ -1937,6 +1948,8 @@
         }
 
         noFonts = attrGet(scripts[i], "data-no-fonts");
+
+        hideDeleted = attrGet(scripts[i], "data-hide-deleted");
       }
     }
   }
