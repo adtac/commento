@@ -665,19 +665,23 @@
         commenterHex = "anonymous";
       }
 
+      var comment = {
+        "commentHex": resp.commentHex,
+        "commenterHex": commenterHex,
+        "markdown": markdown,
+        "html": resp.html,
+        "parentHex": "root",
+        "score": 0,
+        "state": "approved",
+        "direction": 0,
+        "creationDate": new Date(),
+      };
+
       var newCard = commentsRecurse({
-        "root": [{
-          "commentHex": resp.commentHex,
-          "commenterHex": commenterHex,
-          "markdown": markdown,
-          "html": resp.html,
-          "parentHex": "root",
-          "score": 0,
-          "state": "approved",
-          "direction": 0,
-          "creationDate": new Date(),
-        }],
-      }, "root")
+        "root": [comment]
+      }, "root");
+
+      commentsMap[resp.commentHex] = comment;
 
       if (id !== "root") {
         textareaSuperContainer.replaceWith(newCard);
