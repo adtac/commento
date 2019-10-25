@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta name="viewport" content="user-scalable=no,initial-scale=1">
-    <title>You have {{ .Subject }}</title>
     <style type="text/css">
       @media only screen and (max-width:600px) {
           .logo {
@@ -22,21 +21,25 @@
     </style>
   </head>
   <body class="content" style="font-size:14px;background:white;font-family:sans-serif;padding:0px;margin:0px;">
-    <div class="h1" style="font-weight:bold;text-align:center;margin-top:12px;padding:8px;font-size:24px;">You have {{ .Subject }}</div>
+    <div class="h1" style="font-weight:bold;text-align:center;margin-top:12px;padding:8px;font-size:18px;">
+    {{ if eq .Kind "reply" }}
+      Unread Reply: {{ .Title }}
+    {{ end }}
+    {{ if eq .Kind "pending-moderation" }}
+      Pending Moderation: {{ .Title }}
+    {{ end }}
+    </div>
     <div class="comments-container" style="display:flex;justify-content:center;">
       <div class="comments" style="max-width:600px;width:calc(100% - 20px);margin-top:16px;border-top:1px solid #eee;">
-        {{ with .Notifications }}
-          {{ range . }}
-
         <div class="comment" style="border-radius:2px;width:calc(100% - 32px);padding:16px;margin:8px 0px 8px 0px;border-bottom:1px solid #eee;">
           <div class="options" style="float:right;">
-            {{ if eq .Kind "pending-moderation" }}
-                  <a href="{{ $.Origin }}/api/email/moderate?commentHex={{ .CommentHex }}&action=approve&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option green" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#2f9e44;">Approve</a>
-            {{ end }}
-                {{ if ne .Kind "reply" }}
-                  <a href="{{ $.Origin }}/api/email/moderate?commentHex={{ .CommentHex }}&action=delete&unsubscribeSecretHex={{ $.UnsubscribeSecretHex }}" target="_black" class="option red" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#f03e3e;">Delete</a>
-            {{ end }}
-                <a href="http://{{ .Domain }}{{ .Path }}#commento-{{ .CommentHex }}" class="option gray" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#495057;">Context</a>
+          {{ if eq .Kind "pending-moderation" }}
+            <a href="{{ .Origin }}/api/email/moderate?commentHex={{ .CommentHex }}&action=approve&unsubscribeSecretHex={{ .UnsubscribeSecretHex }}" target="_black" class="option green" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#2f9e44;">Approve</a>
+          {{ end }}
+          {{ if ne .Kind "reply" }}
+            <a href="{{ .Origin }}/api/email/moderate?commentHex={{ .CommentHex }}&action=delete&unsubscribeSecretHex={{ .UnsubscribeSecretHex }}" target="_black" class="option red" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#f03e3e;">Delete</a>
+          {{ end }}
+            <a href="http://{{ .Domain }}{{ .Path }}#commento-{{ .CommentHex }}" class="option gray" style="padding-right:5px;text-transform:uppercase;font-size:12px;font-weight:bold;text-decoration:none;color:#495057;">Context</a>
           </div>
           <div class="header" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:10px;">
             <div class="name" style="display:inline;font-size:14px;font-weight:bold;color:#1e2127;">{{ .CommenterName }}</div>
@@ -45,10 +48,8 @@
           </div>
           <div class="text" style="line-height:20px;padding:10px;">
             {{ .Html }}
-              </div>
+          </div>
         </div>
-        {{ end }}
-        {{ end }}
 
         <div class="footer" style="width:100%;margin-top:16px;">
           <a href="https://commento.io" class="logo" style="float:right;font-weight:bold;color:#868e96;font-size:13px;text-decoration:none;">Powered by Commento</a>

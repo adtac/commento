@@ -149,6 +149,6 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 
 	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state, "html": html})
 	if smtpConfigured {
-		go emailNotificationNew(d, path, commenterHex, commentHex, *x.ParentHex, state)
+		go emailNotificationNew(d, path, commenterHex, commentHex, html, *x.ParentHex, state)
 	}
 }

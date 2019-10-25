@@ -9,43 +9,19 @@ import (
 	tt "text/template"
 )
 
-type emailNotificationText struct {
-	emailNotification
-	Html ht.HTML
-}
-
 type emailNotificationPlugs struct {
 	Origin               string
 	Kind                 string
-	Subject              string
 	UnsubscribeSecretHex string
-	Notifications        []emailNotificationText
+	Domain               string
+	Path                 string
+	CommentHex           string
+	CommenterName        string
+	Title                string
+	Html                 ht.HTML
 }
 
-func smtpEmailNotification(to string, toName string, unsubscribeSecretHex string, notifications []emailNotificationText, kind string) error {
-	var subject string
-	if kind == "reply" {
-		var verb string
-		if len(notifications) > 1 {
-			verb = "replies"
-		} else {
-			verb = "reply"
-		}
-		subject = fmt.Sprintf("%d new comment %s", len(notifications), verb)
-	} else {
-		var verb string
-		if len(notifications) > 1 {
-			verb = "comments"
-		} else {
-			verb = "comment"
-		}
-		if kind == "pending-moderation" {
-			subject = fmt.Sprintf("%d new %s pending moderation", len(notifications), verb)
-		} else {
-			subject = fmt.Sprintf("%d new %s on your website", len(notifications), verb)
-		}
-	}
-
+func smtpEmailNotification(to string, toName string, kind string, domain string, path string, commentHex string, commenterName string, title string, html string, unsubscribeSecretHex string) error {
 	h, err := tt.New("header").Parse(`MIME-Version: 1.0
 From: Commento <{{.FromAddress}}>
 To: {{.ToName}} <{{.ToAddress}}>
@@ -53,9 +29,8 @@ Content-Type: text/html; charset=UTF-8
 Subject: {{.Subject}}
 
 `)
-
 	var header bytes.Buffer
-	h.Execute(&header, &headerPlugs{FromAddress: os.Getenv("SMTP_FROM_ADDRESS"), ToAddress: to, ToName: toName, Subject: "[Commento] " + subject})
+	h.Execute(&header, &headerPlugs{FromAddress: os.Getenv("SMTP_FROM_ADDRESS"), ToAddress: to, ToName: toName, Subject: "[Commento] " + title})
 
 	t, err := ht.ParseFiles(fmt.Sprintf("%s/templates/email-notification.txt", os.Getenv("STATIC")))
 	if err != nil {
@@ -67,9 +42,13 @@ Subject: {{.Subject}}
 	err = t.Execute(&body, &emailNotificationPlugs{
 		Origin:               os.Getenv("ORIGIN"),
 		Kind:                 kind,
-		Subject:              subject,
+		Domain:               domain,
+		Path:                 path,
+		CommentHex:           commentHex,
+		CommenterName:        commenterName,
+		Title:                title,
+		Html:                 ht.HTML(html),
 		UnsubscribeSecretHex: unsubscribeSecretHex,
-		Notifications:        notifications,
 	})
 	if err != nil {
 		logger.Errorf("error generating templated HTML for email notification: %v", err)

@@ -2,13 +2,11 @@ package main
 
 import ()
 
-func emailNotificationModerator(d domain, path string, title string, commenterHex string, commentHex string, state string) {
+func emailNotificationModerator(d domain, path string, title string, commenterHex string, commentHex string, html string, state string) {
 	if d.EmailNotificationPolicy == "none" {
 		return
 	}
 
-	// We'll need to check again when we're sending in case the comment was
-	// approved midway anyway.
 	if d.EmailNotificationPolicy == "pending-moderation" && state == "approved" {
 		return
 	}
@@ -39,20 +37,37 @@ func emailNotificationModerator(d domain, path string, title string, commenterHe
 			continue
 		}
 
-		emailNotificationPendingIncrement(m.Email)
-		emailNotificationEnqueue(emailNotification{
-			Email:         m.Email,
-			CommenterName: commenterName,
-			Domain:        d.Domain,
-			Path:          path,
-			Title:         title,
-			CommentHex:    commentHex,
-			Kind:          kind,
-		})
+		e, err := emailGet(m.Email)
+		if err != nil {
+			// No such email.
+			continue
+		}
+
+		if !e.SendModeratorNotifications {
+			continue
+		}
+
+		statement := `
+			SELECT name
+			FROM commenters
+			WHERE email = $1;
+		`
+		row := db.QueryRow(statement, m.Email)
+		var name string
+		if err := row.Scan(&name); err != nil {
+			// The moderator has probably not created a commenter account.
+			// We should only send emails to people who signed up, so skip.
+			continue
+		}
+
+		if err := smtpEmailNotification(m.Email, name, kind, d.Domain, path, commentHex, commenterName, title, html, e.UnsubscribeSecretHex); err != nil {
+			logger.Errorf("error sending email to %s: %v", m.Email)
+			continue
+		}
 	}
 }
 
-func emailNotificationReply(d domain, path string, title string, commenterHex string, commentHex string, parentHex string, state string) {
+func emailNotificationReply(d domain, path string, title string, commenterHex string, commentHex string, html string, parentHex string, state string) {
 	// No reply notifications for root comments.
 	if parentHex == "root" {
 		return
@@ -105,20 +120,20 @@ func emailNotificationReply(d domain, path string, title string, commenterHex st
 		commenterName = c.Name
 	}
 
-	// We'll check if they want to receive reply notifications later at the time
-	// of sending.
-	emailNotificationEnqueue(emailNotification{
-		Email:         pc.Email,
-		CommenterName: commenterName,
-		Domain:        d.Domain,
-		Path:          path,
-		Title:         title,
-		CommentHex:    commentHex,
-		Kind:          "reply",
-	})
+	epc, err := emailGet(pc.Email)
+	if err != nil {
+		// No such email.
+		return
+	}
+
+	if !epc.SendReplyNotifications {
+		return
+	}
+
+	smtpEmailNotification(pc.Email, pc.Name, "reply", d.Domain, path, commentHex, commenterName, title, html, epc.UnsubscribeSecretHex)
 }
 
-func emailNotificationNew(d domain, path string, commenterHex string, commentHex string, parentHex string, state string) {
+func emailNotificationNew(d domain, path string, commenterHex string, commentHex string, html string, parentHex string, state string) {
 	p, err := pageGet(d.Domain, path)
 	if err != nil {
 		logger.Errorf("cannot get page to send email notification: %v", err)
@@ -134,6 +149,6 @@ func emailNotificationNew(d domain, path string, commenterHex string, commentHex
 		}
 	}
 
-	emailNotificationModerator(d, path, p.Title, commenterHex, commentHex, state)
-	emailNotificationReply(d, path, p.Title, commenterHex, commentHex, parentHex, state)
+	emailNotificationModerator(d, path, p.Title, commenterHex, commentHex, html, state)
+	emailNotificationReply(d, path, p.Title, commenterHex, commentHex, html, parentHex, state)
 }

@@ -6,14 +6,14 @@ import (
 
 func emailGet(em string) (email, error) {
 	statement := `
-		SELECT email, unsubscribeSecretHex, lastEmailNotificationDate, pendingEmails, sendReplyNotifications, sendModeratorNotifications
+		SELECT email, unsubscribeSecretHex, lastEmailNotificationDate, sendReplyNotifications, sendModeratorNotifications
 		FROM emails
 		WHERE email = $1;
 	`
 	row := db.QueryRow(statement, em)
 
 	e := email{}
-	if err := row.Scan(&e.Email, &e.UnsubscribeSecretHex, &e.LastEmailNotificationDate, &e.PendingEmails, &e.SendReplyNotifications, &e.SendModeratorNotifications); err != nil {
+	if err := row.Scan(&e.Email, &e.UnsubscribeSecretHex, &e.LastEmailNotificationDate, &e.SendReplyNotifications, &e.SendModeratorNotifications); err != nil {
 		// TODO: is this the only error?
 		return e, errorNoSuchEmail
 	}
@@ -23,14 +23,14 @@ func emailGet(em string) (email, error) {
 
 func emailGetByUnsubscribeSecretHex(unsubscribeSecretHex string) (email, error) {
 	statement := `
-		SELECT email, unsubscribeSecretHex, lastEmailNotificationDate, pendingEmails, sendReplyNotifications, sendModeratorNotifications
+		SELECT email, unsubscribeSecretHex, lastEmailNotificationDate, sendReplyNotifications, sendModeratorNotifications
 		FROM emails
 		WHERE unsubscribeSecretHex = $1;
 	`
 	row := db.QueryRow(statement, unsubscribeSecretHex)
 
 	e := email{}
-	if err := row.Scan(&e.Email, &e.UnsubscribeSecretHex, &e.LastEmailNotificationDate, &e.PendingEmails, &e.SendReplyNotifications, &e.SendModeratorNotifications); err != nil {
+	if err := row.Scan(&e.Email, &e.UnsubscribeSecretHex, &e.LastEmailNotificationDate, &e.SendReplyNotifications, &e.SendModeratorNotifications); err != nil {
 		// TODO: is this the only error?
 		return e, errorNoSuchUnsubscribeSecretHex
 	}

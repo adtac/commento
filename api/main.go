@@ -10,8 +10,6 @@ func main() {
 	exitIfError(smtpTemplatesLoad())
 	exitIfError(oauthConfigure())
 	exitIfError(markdownRendererCreate())
-	exitIfError(emailNotificationPendingResetAll())
-	exitIfError(emailNotificationBegin())
 	exitIfError(sigintCleanupSetup())
 	exitIfError(versionCheckStart())
 	exitIfError(domainExportCleanupBegin())
