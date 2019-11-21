@@ -18,13 +18,13 @@ func emailStrip(email string) string {
 }
 
 var https = regexp.MustCompile(`(https?://)`)
-var trailingSlash = regexp.MustCompile(`(/*$)`)
+var domainTrail = regexp.MustCompile(`(/.*$)`)
 
 func domainStrip(domain string) string {
-	noSlash := trailingSlash.ReplaceAllString(domain, ``)
-	noProtocol := https.ReplaceAllString(noSlash, ``)
+	noProtocol := https.ReplaceAllString(domain, ``)
+	noTrail := domainTrail.ReplaceAllString(noProtocol, ``)
 
-	return noProtocol
+	return noTrail
 }
 
 var pathMatch = regexp.MustCompile(`(https?://[^/]*)`)
