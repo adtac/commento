@@ -19,7 +19,7 @@ func commentVote(commenterHex string, commentHex string, direction int) error {
 
 	var authorHex string
 	if err := row.Scan(&authorHex); err != nil {
-		logger.Errorf("erorr selecting authorHex for vote")
+		logger.Errorf("error selecting authorHex for vote")
 		return errorInternal
 	}
 
