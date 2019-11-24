@@ -50,22 +50,22 @@ func commenterGetByCommenterToken(commenterToken string) (commenter, error) {
 	}
 
 	statement := `
-    SELECT commenterHex
+    SELECT commenters.commenterHex, commenters.email, commenters.name, commenters.link, commenters.photo, commenters.provider, commenters.joinDate
     FROM commenterSessions
+	JOIN commenters ON commenterSessions.commenterHex = commenters.commenterHex
     WHERE commenterToken = $1;
 	`
 	row := db.QueryRow(statement, commenterToken)
 
-	var commenterHex string
-	if err := row.Scan(&commenterHex); err != nil {
-		// TODO: is the only error?
+	c := commenter{}
+	if err := row.Scan(&c.CommenterHex, &c.Email, &c.Name, &c.Link, &c.Photo, &c.Provider, &c.JoinDate); err != nil {
+		// TODO: is this the only error?
 		return commenter{}, errorNoSuchToken
 	}
 
-	if commenterHex == "none" {
+	if c.CommenterHex == "none" {
 		return commenter{}, errorNoSuchToken
 	}
 
-	// TODO: use a join instead of two queries?
-	return commenterGetByHex(commenterHex)
+	return c, nil
 }
