@@ -51,7 +51,7 @@ func commenterUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if c.Provider == "commento" {
+	if c.Provider != "commento" {
 		*x.Link = c.Link
 		*x.Photo = c.Photo
 	}
