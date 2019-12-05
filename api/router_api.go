@@ -27,6 +27,7 @@ func apiRouterInit(router *mux.Router) error {
 	router.HandleFunc("/api/commenter/new", commenterNewHandler).Methods("POST")
 	router.HandleFunc("/api/commenter/login", commenterLoginHandler).Methods("POST")
 	router.HandleFunc("/api/commenter/self", commenterSelfHandler).Methods("POST")
+	router.HandleFunc("/api/commenter/update", commenterUpdateHandler).Methods("POST")
 	router.HandleFunc("/api/commenter/photo", commenterPhotoHandler).Methods("GET")
 
 	router.HandleFunc("/api/forgot", forgotHandler).Methods("POST")

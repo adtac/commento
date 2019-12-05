@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0">
+    <script src="[[[.CdnPrefix]]]/js/jquery.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/profile.js"></script>
+    <link rel="icon" href="[[[.CdnPrefix]]]/images/120x120.png">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/auth.css">
+    <title>Commento: Edit Profile</title>
+  </head>
+
+  <div class="navbar">
+    <a href="[[[.Origin]]]/" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.commento.profilePrefill();
+  };
+  </script>
+
+  <div class="auth-form-container">
+    <div class="auth-form">
+      <div id="loading">
+        Loading...
+      </div>
+      <form onsubmit="window.commento.update(event)" id="form" style="display: none">
+        <div class="form-title">
+          Edit Profile
+        </div>
+
+        <div class="row">
+          <div class="label">Name</div>
+          <input class="input" type="text" name="name" id="name" placeholder="Name">
+        </div>
+
+        <div class="row no-margin-bottom-row">
+          <div class="label">Email Address</div>
+          <input class="input" type="text" name="email" id="email" placeholder="example@example.com" disabled>
+        </div>
+        <div class="small-subtitle">
+          Since your identity is directly tied to your email address, changing your email address is not possible. <a href="" id="unsubscribe">Want to change your notification settings?</a>
+        </div>
+
+        <div id="link-row" class="row" style="display: none">
+          <div class="label">Website</div>
+          <input class="input" type="text" name="link" id="link" placeholder="https://example.com">
+        </div>
+
+        <div id="photo-row" class="row no-margin-bottom-row" style="display: none">
+          <div class="label">Photo</div>
+          <input class="input" type="text" name="photo" id="photo" placeholder="https://i.imgur.com/BCKlYFQ.jpg">
+        </div>
+        <div class="small-subtitle" style="display: none" id="photo-subtitle">
+          Use an external image hosting service such as <a href="https://imgur.com" rel="nofollow">Imgur</a> and enter the direct link to the image here. Changes to your profile photo may take a few hours to reflect.
+        </div>
+
+        <div class="err" id="err"></div>
+        <div class="msg" id="msg"></div>
+
+        <button id="button" class="button" type="submit">Update Profile</button>
+      </form>
+    </div>
+  </div>
+
+  [[[.Footer]]]
+</html>

@@ -246,7 +246,18 @@
     refreshAll();
   }
 
-  function selfLoad(commenter) {
+
+  function profileEdit() {
+    window.open(origin + "/profile?commenterToken=" + commenterTokenGet(), "_blank");
+  }
+
+
+  function notificationSettings(unsubscribeSecretHex) {
+    window.open(origin + "/unsubscribe?unsubscribeSecretHex=" + unsubscribeSecretHex, "_blank");
+  }
+
+
+  function selfLoad(commenter, email) {
     commenters[commenter.commenterHex] = commenter;
     selfHex = commenter.commenterHex;
 
@@ -259,7 +270,9 @@
       name = create("div");
     }
     var avatar;
-    var logout = create("div");
+    var notificationSettingsButton = create("div");
+    var profileEditButton = create("div");
+    var logoutButton = create("div");
     var color = colorGet(commenter.commenterHex + "-" + commenter.name);
 
     loggedContainer.id = ID_LOGGED_CONTAINER;
@@ -267,12 +280,19 @@
     classAdd(loggedContainer, "logged-container");
     classAdd(loggedInAs, "logged-in-as");
     classAdd(name, "name");
-    classAdd(logout, "logout");
+    classAdd(notificationSettingsButton, "profile-button");
+    classAdd(profileEditButton, "profile-button");
+    classAdd(logoutButton, "profile-button");
 
     name.innerText = commenter.name;
-    logout.innerText = "Logout";
+    notificationSettingsButton.innerText = "Notification Settings";
+    profileEditButton.innerText = "Edit Profile";
+    logoutButton.innerText = "Logout";
 
-    onclick(logout, global.logout);
+    onclick(logoutButton, global.logout);
+    console.log(commenter);
+    onclick(notificationSettingsButton, notificationSettings, email.unsubscribeSecretHex);
+    onclick(profileEditButton, profileEdit);
 
     attrSet(loggedContainer, "style", "display: none");
     if (commenter.link !== "undefined") {
@@ -292,7 +312,9 @@
     append(loggedInAs, avatar);
     append(loggedInAs, name);
     append(loggedContainer, loggedInAs);
-    append(loggedContainer, logout);
+    append(loggedContainer, logoutButton);
+    append(loggedContainer, profileEditButton);
+    append(loggedContainer, notificationSettingsButton);
     prepend(root, loggedContainer);
 
     isAuthenticated = true;
@@ -318,7 +340,7 @@
         return;
       }
 
-      selfLoad(resp.commenter);
+      selfLoad(resp.commenter, resp.email);
       global.allShow();
 
       call(callback);
@@ -1087,7 +1109,6 @@
       append(card, header);
       append(card, contents);
 
-      console.log(children);
       if (comment.deleted && (hideDeleted === "true" || children === null)) {
         return;
       }
@@ -1408,7 +1429,6 @@
 
       comment.creationDate = new Date(comment.creationDate);
 
-      console.log(m, parentHex);
       m[parentHex].push(comment);
       commentsMap[comment.commentHex] = {
         "html": comment.html,
@@ -1730,7 +1750,7 @@
 
       cookieSet("commentoCommenterToken", resp.commenterToken);
 
-      selfLoad(resp.commenter);
+      selfLoad(resp.commenter, resp.email);
       global.allShow();
 
       remove($(ID_LOGIN));

@@ -36,11 +36,17 @@ body {
       padding-bottom: 24px;
     }
 
-  .row {
-    padding-left: 8px;
-    padding-right: 8px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid $gray-1;
+    .small-subtitle {
+      font-size: 12px;
+      color: $gray-6;
+      padding: 0px 12px 20px 12px;
+    }
+
+    .row {
+      padding-left: 8px;
+      padding-right: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid $gray-1;
 
       input[type=text],
       input[type=password] {
@@ -72,6 +78,10 @@ body {
         font-size: 12px;
         text-transform: uppercase;
       }
+    }
+
+    .no-margin-bottom-row {
+      margin-bottom: 6px;
     }
 
     .button {

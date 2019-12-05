@@ -83,6 +83,12 @@ const jsCompileMap = {
     "js/http.js",
     "js/unsubscribe.js",
   ],
+  "js/profile.js": [
+    "js/constants.js",
+    "js/utils.js",
+    "js/http.js",
+    "js/profile.js",
+  ],
 };
 
 gulp.task("scss-devel", function (done) {

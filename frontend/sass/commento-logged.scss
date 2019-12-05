@@ -21,12 +21,12 @@
   position: relative;
   height: 38px;
 
-  .commento-logout {
+  .commento-profile-button {
+    float: right;
     cursor: pointer;
-    position: absolute;
-    top: 6px;
-    right: 16px;
-    color: $gray-5;
+    color: $gray-6;
+    margin: 6px 12px;
+    font-size: 13px;
   }
 
   .commento-logged-in-as {

@@ -102,6 +102,7 @@ func staticRouterInit(router *mux.Router) error {
 		"/unsubscribe",
 		"/dashboard",
 		"/logout",
+		"/profile",
 	}
 
 	for _, page := range pages {

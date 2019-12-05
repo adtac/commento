@@ -1,6 +1,8 @@
 package main
 
-import ()
+import (
+	"net/http"
+)
 
 func commenterUpdate(commenterHex string, email string, name string, link string, photo string, provider string) error {
 	if email == "" || name == "" || link == "" || photo == "" || provider == "" {
@@ -26,4 +28,39 @@ func commenterUpdate(commenterHex string, email string, name string, link string
 	}
 
 	return nil
+}
+
+func commenterUpdateHandler(w http.ResponseWriter, r *http.Request) {
+	type request struct {
+		CommenterToken *string `json:"commenterToken"`
+		Name           *string `json:"name"`
+		Email          *string `json:"email"`
+		Link           *string `json:"link"`
+		Photo          *string `json:"photo"`
+	}
+
+	var x request
+	if err := bodyUnmarshal(r, &x); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	c, err := commenterGetByCommenterToken(*x.CommenterToken)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	if c.Provider == "commento" {
+		*x.Link = c.Link
+		*x.Photo = c.Photo
+	}
+	*x.Email = c.Email
+
+	if err = commenterUpdate(c.CommenterHex, *x.Email, *x.Name, *x.Link, *x.Photo, c.Provider); err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	bodyMarshal(w, response{"success": true})
 }
