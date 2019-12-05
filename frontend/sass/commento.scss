@@ -57,6 +57,30 @@
     font-weight: 700;
     margin-top: 16px;
   }
+
+  .commento-sort-policy-buttons-container {
+    padding: 12px 0px;
+    font-weight: 400;
+
+    .commento-sort-policy-buttons {
+      float: right;
+
+      .commento-sort-policy-button {
+        color: $gray-6;
+        font-size: 13px;
+        padding: 0px 7px;
+      }
+
+      .commento-sort-policy-button:hover {
+        cursor: pointer;
+      }
+
+      .commento-sort-policy-button-selected {
+        color: $blue-8;
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 .commento-root-font {

@@ -27,7 +27,8 @@ func domainGet(dmn string) (domain, error) {
 			gitlabProvider,
 			ssoProvider,
 			ssoSecret,
-			ssoUrl
+			ssoUrl,
+			defaultSortPolicy
 		FROM domains
 		WHERE domain = $1;
 	`
@@ -54,7 +55,8 @@ func domainGet(dmn string) (domain, error) {
 		&d.GitlabProvider,
 		&d.SsoProvider,
 		&d.SsoSecret,
-		&d.SsoUrl); err != nil {
+		&d.SsoUrl,
+		&d.DefaultSortPolicy); err != nil {
 		return d, errorNoSuchDomain
 	}
 

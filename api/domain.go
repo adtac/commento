@@ -25,4 +25,5 @@ type domain struct {
 	SsoProvider             bool        `json:"ssoProvider"`
 	SsoSecret               string      `json:"ssoSecret"`
 	SsoUrl                  string      `json:"ssoUrl"`
+	DefaultSortPolicy       string      `json:"defaultSortPolicy"`
 }

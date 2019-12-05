@@ -34,11 +34,13 @@
   var ID_MOD_TOOLS_LOCK_BUTTON = "commento-mod-tools-lock-button";
   var ID_ERROR = "commento-error";
   var ID_LOGGED_CONTAINER = "commento-logged-container";
+  var ID_PRE_COMMENTS_AREA = "commento-pre-comments-area";
   var ID_COMMENTS_AREA = "commento-comments-area";
   var ID_SUPER_CONTAINER = "commento-textarea-super-container-";
   var ID_TEXTAREA_CONTAINER = "commento-textarea-container-";
   var ID_TEXTAREA = "commento-textarea-";
   var ID_ANONYMOUS_CHECKBOX = "commento-anonymous-checkbox-";
+  var ID_SORT_POLICY = "commento-sort-policy-";
   var ID_CARD = "commento-comment-card-";
   var ID_BODY = "commento-comment-body-";
   var ID_TEXT = "commento-comment-text-";
@@ -85,6 +87,7 @@
   var configuredOauths = {};
   var popupBoxType = "login";
   var oauthButtonsShown = false;
+  var sortPolicy = "score-desc";
   var selfHex = undefined;
   var mobileView = null;
 
@@ -388,6 +391,8 @@
       commenters = Object.assign({}, commenters, resp.commenters)
       configuredOauths = resp.configuredOauths;
 
+      sortPolicy = resp.defaultSortPolicy;
+
       call(callback);
     });
   }
@@ -564,13 +569,62 @@
   }
 
 
+  var sortPolicyNames = {
+    "score-desc": "Upvotes",
+    "creationdate-desc": "Newest",
+    "creationdate-asc": "Oldest",
+  };
+
+
+  function sortPolicyApply(policy) {
+    classRemove($(ID_SORT_POLICY + sortPolicy), "sort-policy-button-selected");
+
+    var commentsArea = $(ID_COMMENTS_AREA);
+    commentsArea.innerHTML = "";
+    sortPolicy = policy;
+    var cards = commentsRecurse(parentMap(comments), "root");
+    if (cards) {
+      append(commentsArea, cards);
+    }
+
+    classAdd($(ID_SORT_POLICY + policy), "sort-policy-button-selected");
+  }
+
+
+  function sortPolicyBox() {
+    var sortPolicyButtonsContainer = create("div");
+    var sortPolicyButtons = create("div");
+
+    classAdd(sortPolicyButtonsContainer, "sort-policy-buttons-container");
+    classAdd(sortPolicyButtons, "sort-policy-buttons");
+
+    for (var sp in sortPolicyNames) {
+      var sortPolicyButton = create("a");
+      sortPolicyButton.id = ID_SORT_POLICY + sp;
+      classAdd(sortPolicyButton, "sort-policy-button");
+      if (sp === sortPolicy) {
+        classAdd(sortPolicyButton, "sort-policy-button-selected");
+      }
+      sortPolicyButton.innerText = sortPolicyNames[sp];
+      onclick(sortPolicyButton, sortPolicyApply, sp);
+      append(sortPolicyButtons, sortPolicyButton)
+    }
+
+    append(sortPolicyButtonsContainer, sortPolicyButtons);
+
+    return sortPolicyButtonsContainer
+  }
+
+
   function rootCreate(callback) {
     var login = create("div");
     var loginText = create("div");
     var mainArea = $(ID_MAIN_AREA);
+    var preCommentsArea = create("div");
     var commentsArea = create("div");
 
     login.id = ID_LOGIN;
+    preCommentsArea.id = ID_PRE_COMMENTS_AREA;
     commentsArea.id = ID_COMMENTS_AREA;
 
     classAdd(login, "login");
@@ -600,6 +654,12 @@
       }
       append(mainArea, textareaCreate("root"));
     }
+
+    if (comments.length > 0) {
+      append(mainArea, sortPolicyBox());
+    }
+
+    append(mainArea, preCommentsArea);
 
     append(mainArea, commentsArea);
     append(root, mainArea);
@@ -696,7 +756,7 @@
         onclick(replyButton, global.replyShow, id)
       } else {
         textarea.value = "";
-        insertAfter(textareaSuperContainer, newCard);
+        insertAfter($(ID_PRE_COMMENTS_AREA), newCard);
       }
 
       call(callback);
@@ -762,6 +822,27 @@
   }
 
 
+  var sortPolicyFunctions = {
+    "score-desc": function(a, b) {
+      return b.score - a.score;
+    },
+    "creationdate-desc": function(a, b) {
+      if (a.creationDate < b.creationDate) {
+        return 1;
+      } else {
+        return -1;
+      }
+    },
+    "creationdate-asc": function(a, b) {
+      if (a.creationDate < b.creationDate) {
+        return -1;
+      } else {
+        return 1;
+      }
+    },
+  };
+
+
   function commentsRecurse(parentMap, parentHex) {
     var cur = parentMap[parentHex];
     if (!cur || !cur.length) {
@@ -775,15 +856,7 @@
         return Infinity;
       }
 
-      if (a.score !== b.score) {
-        return b.score - a.score;
-      }
-
-      if (a.creationDate < b.creationDate) {
-        return -1;
-      } else {
-        return 1;
-      }
+      return sortPolicyFunctions[sortPolicy](a, b);
     });
 
     var curTime = (new Date()).getTime();
@@ -1325,28 +1398,31 @@
   }
 
 
-  function commentsRender() {
-    var parentMap = {};
-    var parentHex;
-
-    var commentsArea = $(ID_COMMENTS_AREA);
-
+  function parentMap(comments) {
+    var m = {};
     comments.forEach(function(comment) {
-      parentHex = comment.parentHex;
-      if (!(parentHex in parentMap)) {
-        parentMap[parentHex] = [];
+      var parentHex = comment.parentHex;
+      if (!(parentHex in m)) {
+        m[parentHex] = [];
       }
 
       comment.creationDate = new Date(comment.creationDate);
 
-      parentMap[parentHex].push(comment);
+      console.log(m, parentHex);
+      m[parentHex].push(comment);
       commentsMap[comment.commentHex] = {
         "html": comment.html,
         "markdown": comment.markdown,
       };
     });
 
-    var cards = commentsRecurse(parentMap, "root");
+    return m;
+  }
+
+
+  function commentsRender() {
+    var commentsArea = $(ID_COMMENTS_AREA);
+    var cards = commentsRecurse(parentMap(comments), "root");
     if (cards) {
       append(commentsArea, cards);
     }

@@ -29,7 +29,8 @@ func domainList(ownerHex string) ([]domain, error) {
 			gitlabProvider,
 			ssoProvider,
 			ssoSecret,
-			ssoUrl
+			ssoUrl,
+			defaultSortPolicy
 		FROM domains
 		WHERE ownerHex=$1;
 	`
@@ -62,7 +63,8 @@ func domainList(ownerHex string) ([]domain, error) {
 			&d.GitlabProvider,
 			&d.SsoProvider,
 			&d.SsoSecret,
-			&d.SsoUrl); err != nil {
+			&d.SsoUrl,
+			&d.DefaultSortPolicy); err != nil {
 			logger.Errorf("cannot Scan domain: %v", err)
 			return nil, errorInternal
 		}

@@ -25,7 +25,8 @@ func domainUpdate(d domain) error {
 			githubProvider=$12,
 			gitlabProvider=$13,
 			ssoProvider=$14,
-			ssoUrl=$15
+			ssoUrl=$15,
+			defaultSortPolicy=$16
 		WHERE domain=$1;
 	`
 
@@ -44,7 +45,8 @@ func domainUpdate(d domain) error {
 		d.GithubProvider,
 		d.GitlabProvider,
 		d.SsoProvider,
-		d.SsoUrl)
+		d.SsoUrl,
+		d.DefaultSortPolicy)
 	if err != nil {
 		logger.Errorf("cannot update non-moderators: %v", err)
 		return errorInternal

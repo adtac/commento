@@ -204,6 +204,26 @@
                     </div>
                   </div>
 
+                  <div class="question">
+                    <div class="title">
+                      Comment Sorting
+                    </div>
+                    <div class="answer">
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="defaultSortPolicy-score-desc" value="score-desc" v-model="domains[cd].defaultSortPolicy">
+                        <label for="defaultSortPolicy-score-desc">Most upvoted first</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="defaultSortPolicy-creationdate-desc" value="creationdate-desc" v-model="domains[cd].defaultSortPolicy">
+                        <label for="defaultSortPolicy-creationdate-desc">Newest first</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="defaultSortPolicy-creationdate-asc" value="creationdate-asc" v-model="domains[cd].defaultSortPolicy">
+                        <label for="defaultSortPolicy-creationdate-asc">Oldest first</label>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="center">
                     <button id="save-general-button" onclick="window.commento.generalSaveHandler()" class="button">Save Changes</button>
                   </div>
@@ -316,6 +336,26 @@
 
                       <div class="warning" v-if="!domains[cd].allowAnonymous && !domains[cd].commentoProvider && !domains[cd].googleProvider && !domains[cd].twitterProvider && !domains[cd].githubProvider && !domains[cd].gitlabProvider">
                         You have disabled all authentication options. Your readers will not be able to login, create comments, or vote.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="question">
+                    <div class="title">
+                      Default Comment Sorting
+                    </div>
+                    <div class="answer">
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="defaultSortPolicy-score-desc" value="score-desc" v-model="domains[cd].defaultSortPolicy">
+                        <label for="defaultSortPolicy-score-desc">Most upvoted first</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="defaultSortPolicy-creationdate-desc" value="creationdate-desc" v-model="domains[cd].defaultSortPolicy">
+                        <label for="defaultSortPolicy-creationdate-desc">Newest first</label>
+                      </div>
+                      <div class="row no-border commento-round-check">
+                        <input type="radio" id="defaultSortPolicy-creationdate-asc" value="creationdate-asc" v-model="domains[cd].defaultSortPolicy">
+                        <label for="defaultSortPolicy-creationdate-asc">Oldest first</label>
                       </div>
                     </div>
                   </div>
