@@ -68,6 +68,7 @@
   var origin = "[[[.Origin]]]";
   var cdn = "[[[.CdnPrefix]]]";
   var root = null;
+  var pageId = parent.location.pathname;
   var cssOverride;
   var noFonts;
   var hideDeleted;
@@ -391,7 +392,7 @@
     var json = {
       "commenterToken": commenterTokenGet(),
       "domain": parent.location.host,
-      "path": parent.location.pathname,
+      "path": pageId,
     };
 
     post(origin + "/api/comment/list", json, function(resp) {
@@ -718,7 +719,7 @@
     var json = {
       "commenterToken": commenterToken,
       "domain": parent.location.host,
-      "path": parent.location.pathname,
+      "path": pageId,
       "parentHex": id,
       "markdown": markdown,
     };
@@ -1888,7 +1889,7 @@
     var json = {
       "commenterToken": commenterTokenGet(),
       "domain": parent.location.host,
-      "path": parent.location.pathname,
+      "path": pageId,
       "attributes": attributes,
     };
 
@@ -2038,6 +2039,11 @@
     var scripts = tags("script")
     for (var i = 0; i < scripts.length; i++) {
       if (scripts[i].src.match(/\/js\/commento\.js$/)) {
+        var pid = attrGet(scripts[i], "data-page-id");
+        if (pid !== undefined) {
+          pageId = pid;
+        }
+
         cssOverride = attrGet(scripts[i], "data-css-override");
 
         autoInit = attrGet(scripts[i], "data-auto-init");
