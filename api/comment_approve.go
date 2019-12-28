@@ -11,7 +11,7 @@ func commentApprove(commentHex string) error {
 
 	statement := `
 		UPDATE comments
-    SET state = 'approved'
+		SET state = 'approved'
 		WHERE commentHex = $1;
 	`
 

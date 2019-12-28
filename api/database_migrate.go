@@ -22,9 +22,9 @@ func migrateFromDir(dir string) error {
 	}
 
 	statement := `
-    SELECT filename
-    FROM migrations;
-  `
+		SELECT filename
+		FROM migrations;
+	`
 	rows, err := db.Query(statement)
 	if err != nil {
 		logger.Errorf("cannot query migrations: %v", err)
@@ -63,10 +63,10 @@ func migrateFromDir(dir string) error {
 				}
 
 				statement = `
-          INSERT INTO
-          migrations (filename)
-          VALUES     ($1      );
-        `
+					INSERT INTO
+					migrations (filename)
+					VALUES     ($1      );
+				`
 				_, err = db.Exec(statement, file.Name())
 				if err != nil {
 					logger.Errorf("cannot insert filename into the migrations table: %v", err)

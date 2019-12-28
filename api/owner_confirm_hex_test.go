@@ -11,9 +11,9 @@ func TestOwnerConfirmHexBasics(t *testing.T) {
 	ownerHex, _ := ownerNew("test@example.com", "Test", "hunter2")
 
 	statement := `
-    UPDATE owners
-    SET confirmedEmail=false;
-  `
+		UPDATE owners
+		SET confirmedEmail=false;
+	`
 	_, err := db.Exec(statement)
 	if err != nil {
 		t.Errorf("unexpected error when setting confirmedEmail=false: %v", err)
@@ -23,10 +23,10 @@ func TestOwnerConfirmHexBasics(t *testing.T) {
 	confirmHex, _ := randomHex(32)
 
 	statement = `
-    INSERT INTO
-    ownerConfirmHexes (confirmHex, ownerHex, sendDate)
-    VALUES            ($1,         $2,       $3      );
-  `
+		INSERT INTO
+		ownerConfirmHexes (confirmHex, ownerHex, sendDate)
+		VALUES            ($1,         $2,       $3      );
+	`
 	_, err = db.Exec(statement, confirmHex, ownerHex, time.Now().UTC())
 	if err != nil {
 		t.Errorf("unexpected error creating inserting confirmHex: %v\n", err)
@@ -39,10 +39,10 @@ func TestOwnerConfirmHexBasics(t *testing.T) {
 	}
 
 	statement = `
-    SELECT confirmedEmail
-    FROM owners
-    WHERE ownerHex=$1;
-  `
+		SELECT confirmedEmail
+		FROM owners
+		WHERE ownerHex=$1;
+	`
 	row := db.QueryRow(statement, ownerHex)
 
 	var confirmedHex bool

@@ -8,10 +8,10 @@ func commenterSessionUpdate(commenterToken string, commenterHex string) error {
 	}
 
 	statement := `
-    UPDATE commenterSessions
-    SET commenterHex = $2
-    WHERE commenterToken = $1;
-  `
+		UPDATE commenterSessions
+		SET commenterHex = $2
+		WHERE commenterToken = $1;
+	`
 	_, err := db.Exec(statement, commenterToken, commenterHex)
 	if err != nil {
 		logger.Errorf("error updating commenterHex: %v", err)

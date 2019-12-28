@@ -56,10 +56,10 @@ func ownerNew(email string, name string, password string) (string, error) {
 		}
 
 		statement = `
-      INSERT INTO
-      ownerConfirmHexes (confirmHex, ownerHex, sendDate)
-      VALUES            ($1,         $2,       $3      );
-    `
+			INSERT INTO
+			ownerConfirmHexes (confirmHex, ownerHex, sendDate)
+			VALUES            ($1,         $2,       $3      );
+		`
 		_, err = db.Exec(statement, confirmHex, ownerHex, time.Now().UTC())
 		if err != nil {
 			logger.Errorf("cannot insert confirmHex: %v\n", err)

@@ -39,10 +39,10 @@ func TestCommentNewUpvoted(t *testing.T) {
 	commentHex, _ := commentNew("temp-commenter-hex", "example.com", "/path.html", "root", "**foo**", "approved", time.Now().UTC())
 
 	statement := `
-    SELECT score
-    FROM comments
-    WHERE commentHex = $1;
-  `
+		SELECT score
+		FROM comments
+		WHERE commentHex = $1;
+	`
 	row := db.QueryRow(statement, commentHex)
 
 	var score int

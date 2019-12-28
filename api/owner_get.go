@@ -8,10 +8,10 @@ func ownerGetByEmail(email string) (owner, error) {
 	}
 
 	statement := `
-    SELECT ownerHex, email, name, confirmedEmail, joinDate
-    FROM owners
-    WHERE email=$1;
-  `
+		SELECT ownerHex, email, name, confirmedEmail, joinDate
+		FROM owners
+		WHERE email=$1;
+	`
 	row := db.QueryRow(statement, email)
 
 	var o owner
@@ -29,7 +29,7 @@ func ownerGetByOwnerToken(ownerToken string) (owner, error) {
 	}
 
 	statement := `
-    SELECT ownerHex, email, name, confirmedEmail, joinDate
+		SELECT ownerHex, email, name, confirmedEmail, joinDate
 		FROM owners
 		WHERE ownerHex IN (
 			SELECT ownerHex FROM ownerSessions
@@ -53,7 +53,7 @@ func ownerGetByOwnerHex(ownerHex string) (owner, error) {
 	}
 
 	statement := `
-    SELECT ownerHex, email, name, confirmedEmail, joinDate
+		SELECT ownerHex, email, name, confirmedEmail, joinDate
 		FROM owners
 		WHERE ownerHex = $1;
 	`

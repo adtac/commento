@@ -32,10 +32,10 @@ func dbConnect(retriesLeft int) error {
 	}
 
 	statement := `
-    CREATE TABLE IF NOT EXISTS migrations (
-      filename TEXT NOT NULL UNIQUE
-    );
-  `
+		CREATE TABLE IF NOT EXISTS migrations (
+			filename TEXT NOT NULL UNIQUE
+		);
+	`
 	_, err = db.Exec(statement)
 	if err != nil {
 		logger.Errorf("cannot create migrations table: %v", err)

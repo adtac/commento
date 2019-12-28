@@ -8,7 +8,7 @@ func commentDomainPathGet(commentHex string) (string, string, error) {
 	}
 
 	statement := `
-    SELECT domain, path
+		SELECT domain, path
 		FROM comments
 		WHERE commentHex = $1;
 	`
