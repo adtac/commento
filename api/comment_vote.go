@@ -28,12 +28,12 @@ func commentVote(commenterHex string, commentHex string, direction int) error {
 	}
 
 	statement = `
-    INSERT INTO
-    votes  (commentHex, commenterHex, direction, voteDate)
-    VALUES ($1,         $2,           $3,        $4      )
-    ON CONFLICT (commentHex, commenterHex) DO
-      UPDATE SET direction = $3;
-  `
+		INSERT INTO
+		votes  (commentHex, commenterHex, direction, voteDate)
+		VALUES ($1,         $2,           $3,        $4      )
+		ON CONFLICT (commentHex, commenterHex) DO
+		UPDATE SET direction = $3;
+	`
 	_, err := db.Exec(statement, commentHex, commenterHex, direction, time.Now().UTC())
 	if err != nil {
 		logger.Errorf("error inserting/updating votes: %v", err)
