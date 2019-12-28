@@ -10,27 +10,7 @@ func domainList(ownerHex string) ([]domain, error) {
 	}
 
 	statement := `
-		SELECT
-			domain,
-			ownerHex,
-			name,
-			creationDate,
-			state,
-			importedComments,
-			autoSpamFilter,
-			requireModeration,
-			requireIdentification,
-			moderateAllAnonymous,
-			emailNotificationPolicy,
-			commentoProvider,
-			googleProvider,
-			twitterProvider,
-			githubProvider,
-			gitlabProvider,
-			ssoProvider,
-			ssoSecret,
-			ssoUrl,
-			defaultSortPolicy
+		SELECT ` + domainsRowColumns + `
 		FROM domains
 		WHERE ownerHex=$1;
 	`
@@ -43,28 +23,8 @@ func domainList(ownerHex string) ([]domain, error) {
 
 	domains := []domain{}
 	for rows.Next() {
-		d := domain{}
-		if err = rows.Scan(
-			&d.Domain,
-			&d.OwnerHex,
-			&d.Name,
-			&d.CreationDate,
-			&d.State,
-			&d.ImportedComments,
-			&d.AutoSpamFilter,
-			&d.RequireModeration,
-			&d.RequireIdentification,
-			&d.ModerateAllAnonymous,
-			&d.EmailNotificationPolicy,
-			&d.CommentoProvider,
-			&d.GoogleProvider,
-			&d.TwitterProvider,
-			&d.GithubProvider,
-			&d.GitlabProvider,
-			&d.SsoProvider,
-			&d.SsoSecret,
-			&d.SsoUrl,
-			&d.DefaultSortPolicy); err != nil {
+		var d domain
+		if err = domainsRowScan(rows, &d); err != nil {
 			logger.Errorf("cannot Scan domain: %v", err)
 			return nil, errorInternal
 		}

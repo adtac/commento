@@ -2,41 +2,31 @@ package main
 
 import ()
 
-func domainGet(dmn string) (domain, error) {
-	if dmn == "" {
-		return domain{}, errorMissingField
-	}
+var domainsRowColumns = `
+	domains.domain,
+	domains.ownerHex,
+	domains.name,
+	domains.creationDate,
+	domains.state,
+	domains.importedComments,
+	domains.autoSpamFilter,
+	domains.requireModeration,
+	domains.requireIdentification,
+	domains.moderateAllAnonymous,
+	domains.emailNotificationPolicy,
+	domains.commentoProvider,
+	domains.googleProvider,
+	domains.twitterProvider,
+	domains.githubProvider,
+	domains.gitlabProvider,
+	domains.ssoProvider,
+	domains.ssoSecret,
+	domains.ssoUrl,
+	domains.defaultSortPolicy
+`
 
-	statement := `
-		SELECT
-			domain,
-			ownerHex,
-			name,
-			creationDate,
-			state,
-			importedComments,
-			autoSpamFilter,
-			requireModeration,
-			requireIdentification,
-			moderateAllAnonymous,
-			emailNotificationPolicy,
-			commentoProvider,
-			googleProvider,
-			twitterProvider,
-			githubProvider,
-			gitlabProvider,
-			ssoProvider,
-			ssoSecret,
-			ssoUrl,
-			defaultSortPolicy
-		FROM domains
-		WHERE domain = $1;
-	`
-	row := db.QueryRow(statement, dmn)
-
-	var err error
-	d := domain{}
-	if err = row.Scan(
+func domainsRowScan(s sqlScanner, d *domain) error {
+	return s.Scan(
 		&d.Domain,
 		&d.OwnerHex,
 		&d.Name,
@@ -56,7 +46,25 @@ func domainGet(dmn string) (domain, error) {
 		&d.SsoProvider,
 		&d.SsoSecret,
 		&d.SsoUrl,
-		&d.DefaultSortPolicy); err != nil {
+		&d.DefaultSortPolicy,
+	)
+}
+
+func domainGet(dmn string) (domain, error) {
+	if dmn == "" {
+		return domain{}, errorMissingField
+	}
+
+	statement := `
+		SELECT ` + domainsRowColumns + `
+		FROM domains
+		WHERE domain = $1;
+	`
+	row := db.QueryRow(statement, dmn)
+
+	var err error
+	d := domain{}
+	if err = domainsRowScan(row, &d); err != nil {
 		return d, errorNoSuchDomain
 	}
 
