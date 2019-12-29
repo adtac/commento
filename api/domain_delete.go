@@ -10,8 +10,7 @@ func domainDelete(domain string) error {
 	}
 
 	statement := `
-		DELETE FROM
-		domains
+		DELETE FROM domains
 		WHERE domain = $1;
 	`
 	_, err := db.Exec(statement, domain)
@@ -25,7 +24,7 @@ func domainDelete(domain string) error {
 	`
 	_, err = db.Exec(statement, domain)
 	if err != nil {
-		logger.Errorf("cannot delete views: %v", err)
+		logger.Errorf("cannot delete domain from views: %v", err)
 		return errorInternal
 	}
 
@@ -35,7 +34,17 @@ func domainDelete(domain string) error {
 	`
 	_, err = db.Exec(statement, domain)
 	if err != nil {
-		logger.Errorf("cannot delete domain moderators: %v", err)
+		logger.Errorf("cannot delete domain from moderators: %v", err)
+		return errorInternal
+	}
+
+	statement = `
+		DELETE FROM ssotokens
+		WHERE ssotokens.domain = $1;
+	`
+	_, err = db.Exec(statement, domain)
+	if err != nil {
+		logger.Errorf("cannot delete domain from ssotokens: %v", err)
 		return errorInternal
 	}
 
