@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <script src="[[[.CdnPrefix]]]/js/jquery.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/vue.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/highlight.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/chartist.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/settings.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="icon" href="[[[.CdnPrefix]]]/images/120x120.png">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/chartist.css">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/dashboard.css">
+    <title>Commento: Settings</title>
+  </head>
+
+  <div id="navbar" class="navbar">
+    <a href="[[[.Origin]]]/" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
+    <div class="navbar-item">
+      <a href="[[[.Origin]]]/dashboard" class="navbar-item">Dashboard</a>
+      <a href="[[[.Origin]]]/logout" class="navbar-item">Logout</a>
+      <div class="float-right"><b><div id="owner-name"></div></b></div>
+    </div>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.commento.selfGet(function() {
+      window.commento.vueConstruct(function() {
+        window.commento.settingShow("delete-owner");
+      });
+    });
+  };
+  </script>
+
+  <div class="global-error" id="global-error"></div>
+  <div class="global-ok" id="global-ok"></div>
+
+  <div id="settings" class="dashboard-container">
+    <div class="pane-left">
+      <div class="pane-setting" id="delete-owner" onclick="window.commento.settingShow('delete-owner')">
+        <div class="pane-setting-inside">
+          <div class="setting-title">Delete Account</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane-right pane-right-lefter">
+      <div id="delete-owner-view" class="view hidden">
+        <div class="view-inside">
+          <div class="mid-view">
+            <div class="center center-title">
+              Delete Account
+            </div>
+
+            <div class="action-buttons-container">
+              <div class="action-buttons">
+                <div class="action-button">
+                  <div class="left">
+                    <div class="title">
+                      Delete Account
+                    </div>
+                    <div class="subtitle">
+                      This will permanently delete your account and any data associated with your account. You must first delete all domains in the dashboard before doing this.
+                    </div>
+                  </div>
+                  <div class="right">
+                    <button onclick="document.location.hash='#delete-owner-modal'" class="button big-red-button">Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="delete-owner-modal" class="modal-window">
+    <div class="inside">
+      <a href="#modal-close" title="Close" class="modal-close"></a>
+      <div class="modal-title">Delete Accont</div>
+      <div class="modal-subtitle">
+        Are you absolutely sure you want to delete your account? This is a permanent change; there is no way to recover your account or any data associated with it.
+      </div>
+      <div class="modal-contents center">
+        <button id="delete-owner-button" class="button big-red-button" onclick="window.commento.deleteOwnerHandler()">Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+</html>

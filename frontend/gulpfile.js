@@ -70,6 +70,14 @@ const jsCompileMap = {
     "js/dashboard-danger.js",
     "js/dashboard-export.js",
   ],
+  "js/settings.js": [
+    "js/constants.js",
+    "js/utils.js",
+    "js/http.js",
+    "js/errors.js",
+    "js/self.js",
+    "js/settings.js"
+  ],
   "js/logout.js": [
     "js/constants.js",
     "js/utils.js",

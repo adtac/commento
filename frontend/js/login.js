@@ -33,12 +33,22 @@
     }
   }
 
+  // Shows messages produced from account deletion.
+  function displayDeletedOwner() {
+    var deleted = global.paramGet("deleted");
+
+    if (deleted === "true") {
+      $("#msg").html("Your account has been deleted.")
+    }
+  }
+
 
   // Shows email confirmation and password reset messages, if any.
   global.displayMessages = function() {
     displayConfirmedEmail();
     displayChangedPassword();
     displaySignedUp();
+    displayDeletedOwner();
   };
 
 

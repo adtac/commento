@@ -9,6 +9,7 @@ func apiRouterInit(router *mux.Router) error {
 	router.HandleFunc("/api/owner/confirm-hex", ownerConfirmHexHandler).Methods("GET")
 	router.HandleFunc("/api/owner/login", ownerLoginHandler).Methods("POST")
 	router.HandleFunc("/api/owner/self", ownerSelfHandler).Methods("POST")
+	router.HandleFunc("/api/owner/delete", ownerDeleteHandler).Methods("POST")
 
 	router.HandleFunc("/api/domain/new", domainNewHandler).Methods("POST")
 	router.HandleFunc("/api/domain/delete", domainDeleteHandler).Methods("POST")
