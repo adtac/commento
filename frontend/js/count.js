@@ -38,7 +38,7 @@
     var scripts = tags("script")
     for (var i = 0; i < scripts.length; i++) {
       if (scripts[i].src.match(/\/js\/count\.js$/)) {
-        var customCommentsText = attrGet(scripts[i], "data-custom-text"); 
+        var customCommentsText = attrGet(scripts[i], "data-custom-text");
         if (customCommentsText !== undefined) {
           commentsText = eval(customCommentsText);
         }
@@ -61,12 +61,15 @@
       href = href.replace(/^.*\/\/[^\/]+/, "");
 
       if (href.endsWith("#commento")) {
-        var path = href.substr(0, href.indexOf("#commento"));
-        if (path.startsWith(parent.location.host)) {
-          path = path.substr(parent.location.host.length);
+        var pageId = attrGet(as[i], "data-page-id");
+        if (pageId === undefined) {
+          pageId = href.substr(0, href.indexOf("#commento"));
+          if (pageId.startsWith(parent.location.host)) {
+            pageId = pageId.substr(parent.location.host.length);
+          }
         }
 
-        paths.push(path);
+        paths.push(pageId);
         doms.push(as[i]);
       }
     }
