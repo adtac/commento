@@ -15,9 +15,42 @@
     xmlDoc.send(JSON.stringify(data));
   }
 
+  var commentsText = function(count) {
+    return count + " " + (count === 1 ? "comment" : "comments")
+  }
+
+  function tags(tag) {
+    return document.getElementsByTagName(tag);
+  }
+
+  function attrGet(node, a) {
+    var attr = node.attributes[a];
+
+    if (attr === undefined) {
+      return undefined;
+    }
+    
+    return attr.value;
+  }
+
+
+  function dataTagsLoad() {
+    var scripts = tags("script")
+    for (var i = 0; i < scripts.length; i++) {
+      if (scripts[i].src.match(/\/js\/count\.js$/)) {
+        var customCommentsText = attrGet(scripts[i], "data-custom-text"); 
+        if (customCommentsText !== undefined) {
+          commentsText = eval(customCommentsText);
+        }
+      }
+    }
+  }
+
   function main() {
     var paths = [];
     var doms = [];
+    dataTagsLoad();
+
     var as = document.getElementsByTagName("a");
     for (var i = 0; i < as.length; i++) {
       var href = as[i].href;
@@ -55,13 +88,7 @@
           count = resp.commentCounts[paths[i]];
         }
 
-        var useCustomCommentsText = doms[i].getAttribute("data-custom-comments-text") !== null;
-
-        if(useCustomCommentsText) {
-          doms[i].innerText = eval(doms[i].getAttribute("data-custom-comments-text"))(count);
-        } else {
-          doms[i].innerText = count + " " + (count === 1 ? "comment" : "comments");
-        }
+        doms[i].innerText = commentsText(count);
       }
     });
   }
