@@ -1452,6 +1452,8 @@
 
   function commentsRender() {
     var commentsArea = $(ID_COMMENTS_AREA);
+    commentsArea.innerHTML = ""
+
     var cards = commentsRecurse(parentMap(comments), "root");
     if (cards) {
       append(commentsArea, cards);
@@ -1503,6 +1505,7 @@
   }
 
 
+  // OAuth logic
   global.commentoAuth = function(data) {
     var provider = data.provider;
     var id = data.id;
@@ -1536,9 +1539,11 @@
             if (id !== null) {
               global.commentNew(id, resp.commenterToken, function() {
                 global.loginBoxClose();
+                commentsGet(commentsRender);
               });
             } else {
               global.loginBoxClose();
+              commentsGet(commentsRender);
             }
           });
         }
@@ -1767,9 +1772,11 @@
       if (id !== null) {
         global.commentNew(id, resp.commenterToken, function() {
           global.loginBoxClose();
+          commentsGet(commentsRender);
         });
       } else {
         global.loginBoxClose();
+        commentsGet(commentsRender);
       }
     });
   }
