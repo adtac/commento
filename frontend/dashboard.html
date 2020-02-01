@@ -390,10 +390,11 @@
             <div class="tabs-container">
               <div class="tab">
                 <ul class="tabs">
-                  <li class="tab-link original current" data-tab="install-tab-1">Disqus</li>
+                  <li class="tab-link original current" data-tab="import-tab-1">Disqus</li>
+                  <li class="tab-link" data-tab="import-tab-2">Commento</li>
                 </ul>
 
-                <div id="install-tab-1" class="content original current">
+                <div id="import-tab-1" class="content original current">
                   <div class="normal-text">
                     If you're currently using Disqus, you can import all comments into Commento:
                     <ul>
@@ -433,6 +434,41 @@
                     </ul>
                   </div>
                 </div>
+
+                <div id="import-tab-2" class="content">
+                  <div class="normal-text">
+                    If you've previously exported data from Commento you can restore it:
+                    <ul>
+                      <li>
+                        Upload your data file somewhere in the cloud and generate a shared link for it.
+                      </li>
+
+                      <li>
+                        Copy and paste that link here to start the import process:
+
+                        <br><br>
+
+                        <div class="commento-email-container">
+                          <div class="commento-email">
+                            <input class="commento-input" type="text" id="commento-url" placeholder="https://drive.google.com/uc?export=download&id=...">
+                            <button id="commento-import-button" class="commento-email-button" onclick="window.commento.importCommento()">Import</button>
+                          </div>
+                        </div>
+
+                        <br>
+                      </li>
+
+                      <li>
+                        Commento will automatically download this file, extract it, parse it and import comments into Commento. URL information, comment authors, text formatting, and nested replies will be preserved.
+                      </li>
+                        
+                      <li>
+                        It is strongly recommended you do this only once. Importing multiple times may have unintended effects.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/op/go-logging"
 	"os"
 	"testing"
+
+	"github.com/op/go-logging"
 )
 
 func failTestOnError(t *testing.T, err error) {
