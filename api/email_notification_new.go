@@ -61,7 +61,7 @@ func emailNotificationModerator(d domain, path string, title string, commenterHe
 		}
 
 		if err := smtpEmailNotification(m.Email, name, kind, d.Domain, path, commentHex, commenterName, title, html, e.UnsubscribeSecretHex); err != nil {
-			logger.Errorf("error sending email to %s: %v", m.Email)
+			logger.Errorf("error sending email to %s: %v", m.Email, err)
 			continue
 		}
 	}
