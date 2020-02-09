@@ -19,10 +19,6 @@ func smtpConfigure() error {
 		return nil
 	}
 
-	if username == "" || password == "" {
-		logger.Warningf("no SMTP username/password set, Commento will assume they aren't required")
-	}
-
 	if os.Getenv("SMTP_FROM_ADDRESS") == "" {
 		logger.Errorf("COMMENTO_SMTP_FROM_ADDRESS not set")
 		smtpConfigured = false
@@ -30,7 +26,11 @@ func smtpConfigure() error {
 	}
 
 	logger.Infof("configuring smtp: %s", host)
-	smtpAuth = smtp.PlainAuth("", username, password, host)
+	if username == "" || password == "" {
+		logger.Warningf("no SMTP username/password set, Commento will assume they aren't required")
+	} else {
+		smtpAuth = smtp.PlainAuth("", username, password, host)
+	}
 	smtpConfigured = true
 	return nil
 }
