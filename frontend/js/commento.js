@@ -809,26 +809,35 @@
 
 
   function timeDifference(current, previous) { // thanks stackoverflow
-    var msJustNow = 5000;
-    var msPerMinute = 60000;
-    var msPerHour = 3600000;
-    var msPerDay = 86400000;
-    var msPerMonth = 2592000000;
-    var msPerYear = 946080000000;
+    // Times are defined in milliseconds
+    var msPerSecond = 1000;
+    var msPerMinute = 60 * msPerSecond;
+    var msPerHour = 60 * msPerMinute;
+    var msPerDay = 24 * msPerHour;
+    var msPerMonth = 30 * msPerDay;
+    var msPerYear = 12 * msPerMonth;
+
+    // Time ago thresholds
+    var msJustNow = 5 * msPerSecond; // Up until 5 s
+    var msMinutesAgo = 2 * msPerMinute; // Up until 2 minutes
+    var msHoursAgo = 2 * msPerHour; // Up until 2 hours
+    var msDaysAgo = 2 * msPerDay; // Up until 2 days
+    var msMonthsAgo = 2 * msPerMonth; // Up until 2 months
+    var msYearsAgo = 2 * msPerYear; // Up until 2 years
 
     var elapsed = current - previous;
 
     if (elapsed < msJustNow) {
       return "just now";
-    } else if (elapsed < msPerMinute) {
-      return Math.round(elapsed / 1000) + " seconds ago";
-    } else if (elapsed < msPerHour) {
+    } else if (elapsed < msMinutesAgo) {
+      return Math.round(elapsed / msPerSecond) + " seconds ago";
+    } else if (elapsed < msHoursAgo) {
       return Math.round(elapsed / msPerMinute) + " minutes ago";
-    } else if (elapsed < msPerDay ) {
+    } else if (elapsed < msDaysAgo ) {
       return Math.round(elapsed / msPerHour ) + " hours ago";
-    } else if (elapsed < msPerMonth) {
+    } else if (elapsed < msMonthsAgo) {
       return Math.round(elapsed / msPerDay) + " days ago";
-    } else if (elapsed < msPerYear) {
+    } else if (elapsed < msYearsAgo) {
       return Math.round(elapsed / msPerMonth) + " months ago";
     } else {
       return Math.round(elapsed / msPerYear ) + " years ago";
