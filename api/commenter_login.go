@@ -74,5 +74,11 @@ func commenterLoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bodyMarshal(w, response{"success": true, "commenterToken": commenterToken, "commenter": c})
+	e, err := emailGet(c.Email)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+
+	bodyMarshal(w, response{"success": true, "commenterToken": commenterToken, "commenter": c, "email": e})
 }
