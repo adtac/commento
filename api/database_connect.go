@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"net/url"
 	_ "github.com/lib/pq"
 	"os"
 	"strconv"
@@ -10,9 +11,14 @@ import (
 
 func dbConnect(retriesLeft int) error {
 	con := os.Getenv("POSTGRES")
-	logger.Infof("opening connection to postgres: %s", con)
+	u, err := url.Parse(con)
+	if err != nil {
+		logger.Errorf("invalid postgres connection URI: %v", err)
+		return err
+	}
+	u.User = url.UserPassword(u.User.Username(), "redacted")
+	logger.Infof("opening connection to postgres: %s", u.String())
 
-	var err error
 	db, err = sql.Open("postgres", con)
 	if err != nil {
 		logger.Errorf("cannot open connection to postgres: %v", err)
