@@ -49,3 +49,4 @@ var errorInvalidDomain = errors.New("Invalid domain name. Do not include the URL
 var errorInvalidEntity = errors.New("That entity does not exist.")
 var errorCannotDeleteOwnerWithActiveDomains = errors.New("You cannot delete your account until all domains associated with your account are deleted.")
 var errorNoSuchOwner = errors.New("No such owner.")
+var errorCannotUpdateOauthProfile = errors.New("You cannot update the profile of an external account managed by third-party log in. Please use the appropriate platform to update your details.")

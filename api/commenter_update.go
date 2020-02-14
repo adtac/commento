@@ -54,9 +54,10 @@ func commenterUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if c.Provider != "commento" {
-		*x.Link = c.Link
-		*x.Photo = c.Photo
+		bodyMarshal(w, response{"success": false, "message": errorCannotUpdateOauthProfile.Error()})
+		return
 	}
+
 	*x.Email = c.Email
 
 	if err = commenterUpdate(c.CommenterHex, *x.Email, *x.Name, *x.Link, *x.Photo, c.Provider); err != nil {

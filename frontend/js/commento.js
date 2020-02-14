@@ -314,7 +314,9 @@
     append(loggedInAs, name);
     append(loggedContainer, loggedInAs);
     append(loggedContainer, logoutButton);
-    append(loggedContainer, profileEditButton);
+    if (commenter.provider === "commento") {
+      append(loggedContainer, profileEditButton);
+    }
     append(loggedContainer, notificationSettingsButton);
     prepend(root, loggedContainer);
 
