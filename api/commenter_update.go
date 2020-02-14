@@ -12,7 +12,9 @@ func commenterUpdate(commenterHex string, email string, name string, link string
 	// See utils_sanitise.go's documentation on isHttpsUrl. This is not a URL
 	// validator, just an XSS preventor.
 	// TODO: reject URLs instead of malforming them.
-	if link != "undefined" && !isHttpsUrl(link) {
+	if link == "" {
+		link = "undefined"
+	} else if link != "undefined" && !isHttpsUrl(link) {
 		link = "https://" + link
 	}
 
