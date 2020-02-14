@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"image/jpeg"
 	"io"
 	"net/http"
-	"image/jpeg"
+	"strings"
 
 	"github.com/disintegration/imaging"
 )

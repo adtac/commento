@@ -2,8 +2,8 @@ package main
 
 import (
 	"database/sql"
-	"net/url"
 	_ "github.com/lib/pq"
+	"net/url"
 	"os"
 	"strconv"
 	"time"
