@@ -1,8 +1,13 @@
 package main
 
 import (
+	"fmt"
+	"strings"
 	"io"
 	"net/http"
+	"image/jpeg"
+
+	"github.com/disintegration/imaging"
 )
 
 func commenterPhotoHandler(w http.ResponseWriter, r *http.Request) {
@@ -14,13 +19,17 @@ func commenterPhotoHandler(w http.ResponseWriter, r *http.Request) {
 
 	url := c.Photo
 	if c.Provider == "google" {
-		url += "?sz=50"
+		if strings.HasSuffix(url, "photo.jpg") {
+			url += "?sz=38"
+		} else {
+			url += "=s38"
+		}
 	} else if c.Provider == "github" {
-		url += "&s=50"
+		url += "&s=38"
 	} else if c.Provider == "twitter" {
 		url += "?size=normal"
 	} else if c.Provider == "gitlab" {
-		url += "?width=50"
+		url += "?width=38"
 	}
 
 	resp, err := http.Get(url)
@@ -30,5 +39,23 @@ func commenterPhotoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	io.Copy(w, resp.Body)
+	if c.Provider != "commento" { // Custom URL avatars need to be resized.
+		io.Copy(w, resp.Body)
+		return
+	}
+
+	// Limit the size of the response to 128 KiB to prevent DoS attacks
+	// that exhaust memory.
+	limitedResp := &io.LimitedReader{R: resp.Body, N: 128 * 1024}
+
+	img, err := jpeg.Decode(limitedResp)
+	if err != nil {
+		fmt.Fprintf(w, "JPEG decode failed: %v\n", err)
+		return
+	}
+
+	if err = imaging.Encode(w, imaging.Resize(img, 38, 0, imaging.Lanczos), imaging.JPEG); err != nil {
+		fmt.Fprintf(w, "image encoding failed: %v\n", err)
+		return
+	}
 }

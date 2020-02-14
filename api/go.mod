@@ -5,6 +5,7 @@ go 1.12
 require (
 	cloud.google.com/go v0.26.0 // indirect
 	github.com/adtac/go-akismet v0.0.0-20181220032308-0ca9e1023047
+	github.com/disintegration/imaging v1.6.2
 	github.com/golang/protobuf v1.1.0 // indirect
 	github.com/gomodule/oauth1 v0.0.0-20181215000758-9a59ed3b0a84
 	github.com/gorilla/context v1.1.1 // indirect
