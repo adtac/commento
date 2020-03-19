@@ -335,7 +335,7 @@
                         </div>
                       </div>
 
-                      <div class="warning" v-if="!domains[cd].allowAnonymous && !domains[cd].commentoProvider && !domains[cd].googleProvider && !domains[cd].twitterProvider && !domains[cd].githubProvider && !domains[cd].gitlabProvider">
+                      <div class="warning" v-if="!domains[cd].allowAnonymous && !domains[cd].commentoProvider && (!configuredOauths.google || !domains[cd].googleProvider) && (!configuredOauths.twitter || !domains[cd].twitterProvider) && (!configuredOauths.github || !domains[cd].githubProvider) && (!configuredOauths.gitlab || !domains[cd].gitlabProvider) && !domains[cd].ssoProvider">
                         You have disabled all authentication options. Your readers will not be able to login, create comments, or vote.
                       </div>
                     </div>
