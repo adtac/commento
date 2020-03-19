@@ -86,6 +86,7 @@
   var shownReply = {};
   var shownEdit = {};
   var configuredOauths = {};
+  var anonymousOnly = false;
   var popupBoxType = "login";
   var oauthButtonsShown = false;
   var sortPolicy = "score-desc";
@@ -572,6 +573,11 @@
     }
     markdownButton.innerHTML = "<b>M &#8595;</b> &nbsp; Markdown";
 
+    if (anonymousOnly) {
+      anonymousCheckbox.checked = true;
+      anonymousCheckbox.setAttribute("disabled", true);
+    }
+
     textarea.oninput = autoExpander(textarea);
     if (edit === true) {
       onclick(submitButton, commentEdit, id);
@@ -661,7 +667,17 @@
 
     onclick(loginText, global.loginBoxShow, null);
 
-    append(login, loginText);
+    var numOauthConfigured = 0;
+    Object.keys(configuredOauths).forEach(function(key) {
+      if (configuredOauths[key]) {
+        numOauthConfigured++;
+      }
+    });
+    if (numOauthConfigured > 0) {
+      append(login, loginText);
+    } else if (!requireIdentification) {
+      anonymousOnly = true;
+    }
 
     if (isLocked || isFrozen) {
       if (isAuthenticated || chosenAnonymous) {
