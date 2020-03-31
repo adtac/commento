@@ -1,10 +1,9 @@
 # backend build (api server)
-FROM golang:1.12-alpine AS api-build
+FROM golang:1.14-alpine AS api-build
 RUN apk add --no-cache --update bash dep make git curl g++
 
 COPY ./api /go/src/commento/api/
 WORKDIR /go/src/commento/api
-ENV GO111MODULE=on
 RUN make prod -j$(($(nproc) + 1))
 
 
