@@ -28,6 +28,5 @@ func domainExportDownloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`inline; filename="%s-%v.gz"`, domain, creationDate.Unix()))
-	w.Header().Set("Content-Encoding", "gzip")
 	w.Write(binData)
 }
