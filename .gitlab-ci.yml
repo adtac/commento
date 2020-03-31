@@ -57,7 +57,7 @@ go-test:
 
 go-fmt:
   stage: go-fmt
-  image: golang:1.10.2
+  image: golang:1.14
   except:
     - master
     - tags
