@@ -27,6 +27,6 @@ func domainExportDownloadHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Error: that exportHex does not exist\n")
 	}
 
-	w.Header().Set("Content-Disposition", fmt.Sprintf(`inline; filename="%s-%v.gz"`, domain, creationDate.Unix()))
+	w.Header().Set("Content-Disposition", fmt.Sprintf(`inline; filename="%s-%v.json.gz"`, domain, creationDate.Unix()))
 	w.Write(binData)
 }
