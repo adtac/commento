@@ -26,11 +26,11 @@ clean:
 
 devel-go:
 	GO111MODULE=on go mod vendor
-	GO111MODULE=on go build -mod=vendor -v -o $(GO_DEVEL_BUILD_BINARY)
+	GO111MODULE=on go build -mod=vendor -v -o $(GO_DEVEL_BUILD_BINARY) -ldflags "-X main.version=$(shell git describe --tags)"
 
 prod-go:
 	GO111MODULE=on go mod vendor
-	GO111MODULE=on go build -mod=vendor -v -o $(GO_PROD_BUILD_BINARY)
+	GO111MODULE=on go build -mod=vendor -v -o $(GO_PROD_BUILD_BINARY) -ldflags "-X main.version=$(shell git describe --tags)"
 
 test-go:
 	GO111MODULE=on go mod vendor
