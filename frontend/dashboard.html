@@ -440,7 +440,7 @@
                     If you've previously exported data from Commento you can restore it:
                     <ul>
                       <li>
-                        Upload your data file somewhere in the cloud and generate a shared link for it.
+                        Upload your exported data file somewhere in the cloud and generate a direct link to it. Ensure that the export file is a GZIP archive of a JSON file.
                       </li>
 
                       <li>
@@ -450,7 +450,7 @@
 
                         <div class="commento-email-container">
                           <div class="commento-email">
-                            <input class="commento-input" type="text" id="commento-url" placeholder="https://drive.google.com/uc?export=download&id=...">
+                            <input class="commento-input" type="text" id="commento-url" placeholder="https://example.com/commento.json.gz">
                             <button id="commento-import-button" class="commento-email-button" onclick="window.commento.importCommento()">Import</button>
                           </div>
                         </div>
