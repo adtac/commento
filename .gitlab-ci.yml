@@ -2,7 +2,6 @@ stages:
   - go-fmt
   - go-test
   - build-src
-  - aws-upload-tags
   - build-docker
   - docker-registry-master
   - docker-registry-tags
@@ -21,25 +20,6 @@ build-src:
     - cd /go/src/$CI_PROJECT_NAME
     - make devel
     - make prod
-
-aws-upload-tags:
-  stage: aws-upload-tags
-  image: debian:buster
-  environment: aws-upload-tags
-  variables:
-    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-  only:
-    - tags
-  before_script:
-    - bash $CI_PROJECT_DIR/scripts/gitlab-ci-build-prescript
-  script:
-    - export GOPATH=/go
-    - export PATH=$PATH:/go/bin
-    - cd /go/src/$CI_PROJECT_NAME
-    - make prod
-    - cd build/prod && tar -zcvf /commento-linux-amd64-$(git describe --tags).tar.gz .
-    - aws s3 cp /commento-linux-amd64-$(git describe --tags).tar.gz s3://commento-release/
 
 build-docker:
   stage: build-docker
