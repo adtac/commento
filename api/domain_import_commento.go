@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-type dataImport struct {
+type commentoExportV1 struct {
 	Version    int         `json:"version"`
 	Comments   []comment   `json:"comments"`
 	Commenters []commenter `json:"commenters"`
@@ -44,7 +44,7 @@ func domainImportCommento(domain string, url string) (int, error) {
 		return 0, errorInternal
 	}
 
-	var data dataImport
+	var data commentoExportV1
 	if err := json.Unmarshal(contents, &data); err != nil {
 		logger.Errorf("cannot unmarshal JSON at %s: %v", url, err)
 		return 0, errorInternal

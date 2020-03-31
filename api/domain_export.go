@@ -15,13 +15,7 @@ func domainExportBeginError(email string, toName string, domain string, err erro
 }
 
 func domainExportBegin(email string, toName string, domain string) {
-	type dataExport struct {
-		Version    int         `json:"version"`
-		Comments   []comment   `json:"comments"`
-		Commenters []commenter `json:"commenters"`
-	}
-
-	e := dataExport{Version: 1, Comments: []comment{}, Commenters: []commenter{}}
+	e := commentoExportV1{Version: 1, Comments: []comment{}, Commenters: []commenter{}}
 
 	statement := `
 		SELECT commentHex, domain, path, commenterHex, markdown, parentHex, score, state, creationDate

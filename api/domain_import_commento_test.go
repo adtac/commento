@@ -14,7 +14,7 @@ func TestImportCommento(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
 	// Create JSON data
-	data := dataImport{
+	data := commentoExportV1{
 		Version: 1,
 		Comments: []comment{
 			{
