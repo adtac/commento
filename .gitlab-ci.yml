@@ -34,7 +34,7 @@ build-docker:
 
 go-test:
   stage: go-test
-  image: golang:1.12
+  image: golang:1.14
   services:
     - postgres:latest
   variables:
@@ -49,7 +49,6 @@ go-test:
     - mkdir -p /go/src /go/bin /go/pkg
     - export GOPATH=/go
     - export PATH=$PATH:/go/bin
-    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
     - ln -s $CI_PROJECT_DIR /go/src/$CI_PROJECT_NAME
   script:
     - cd /go/src/$CI_PROJECT_NAME
