@@ -292,7 +292,6 @@
     logoutButton.innerText = "Logout";
 
     onclick(logoutButton, global.logout);
-    console.log(commenter);
     onclick(notificationSettingsButton, notificationSettings, email.unsubscribeSecretHex);
     onclick(profileEditButton, profileEdit);
 
