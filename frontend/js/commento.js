@@ -174,6 +174,13 @@
   }
 
 
+  function onload(node, f, arg) {
+    node.addEventListener("load", function() {
+      f(arg);
+    });
+  }
+
+
   function attrSet(node, a, value) {
     node.setAttribute(a, value);
   }
@@ -344,21 +351,21 @@
       }
 
       selfLoad(resp.commenter, resp.email);
-      global.allShow();
+      allShow();
 
       call(callback);
     });
   }
 
 
-  function cssLoad(file, onload) {
+  function cssLoad(file, f) {
     var link = create("link");
     var head = document.getElementsByTagName("head")[0];
 
     link.type = "text/css";
     attrSet(link, "href", file);
     attrSet(link, "rel", "stylesheet");
-    attrSet(link, "onload", onload);
+    onload(link, f);
 
     append(head, link);
   }
@@ -1783,7 +1790,7 @@
       cookieSet("commentoCommenterToken", resp.commenterToken);
 
       selfLoad(resp.commenter, resp.email);
-      global.allShow();
+      allShow();
 
       remove($(ID_LOGIN));
       if (id !== null) {
@@ -2015,16 +2022,16 @@
   }
 
 
-  global.loadCssOverride = function() {
+  function loadCssOverride() {
     if (cssOverride === undefined) {
-      global.allShow();
+      allShow();
     } else {
-      cssLoad(cssOverride, "window.commento.allShow()");
+      cssLoad(cssOverride, allShow);
     }
   }
 
 
-  global.allShow = function() {
+  function allShow() {
     var mainArea = $(ID_MAIN_AREA);
     var modTools = $(ID_MOD_TOOLS);
     var loggedContainer = $(ID_LOGGED_CONTAINER);
@@ -2134,7 +2141,7 @@
     mainAreaCreate();
 
     var footer = footerLoad();
-    cssLoad(cdn + "/css/commento.css", "window.commento.loadCssOverride()");
+    cssLoad(cdn + "/css/commento.css", loadCssOverride);
 
     selfGet(function() {
       commentsGet(function() {
@@ -2143,7 +2150,7 @@
           commentsRender();
           append(root, footer);
           loadHash();
-          global.allShow();
+          allShow();
           nameWidthFix();
           call(callback);
         });
