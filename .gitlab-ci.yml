@@ -36,7 +36,7 @@ go-test:
   stage: go-test
   image: golang:1.14
   services:
-    - postgres:latest
+    - postgres:9.6
   variables:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres
