@@ -314,6 +314,7 @@
     } else {
       avatar = create("img");
       attrSet(avatar, "src", cdn + "/api/commenter/photo?commenterHex=" + commenter.commenterHex);
+      attrSet(avatar, "loading", "lazy");
       classAdd(avatar, "avatar-img");
     }
 
