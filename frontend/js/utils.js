@@ -75,7 +75,7 @@
     expires = "; expires=" + date.toUTCString();
 
     var cookieString = name + "=" + value + expires + "; path=/";
-    if (/^https:\/\//i.test(origin)) {
+    if (/^https:\/\//i.test(global.origin)) {
       cookieString += "; secure";
     }
 
