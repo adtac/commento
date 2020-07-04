@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"strconv"
 
 	"github.com/disintegration/imaging"
 )
@@ -44,9 +45,16 @@ func commenterPhotoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Limit the size of the response to 128 KiB to prevent DoS attacks
-	// that exhaust memory.
-	limitedResp := &io.LimitedReader{R: resp.Body, N: 128 * 1024}
+	// Limit the size of the response to 128 KiB or configured size
+	// to prevent DoS attacks that exhaust memory.
+	var limit int
+	limitString := os.Getenv("IMAGE_SIZE_LIMIT")
+	if (limitString == "") {
+		limit = 128 * 1024
+	} else {
+		limit = strconv.Atoi(limitString)
+	}
+	limitedResp := &io.LimitedReader{R: resp.Body, N: limit}
 
 	img, err := jpeg.Decode(limitedResp)
 	if err != nil {
