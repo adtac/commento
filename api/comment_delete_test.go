@@ -8,7 +8,7 @@ import (
 func TestCommentDeleteBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	commenterHex = "temp-commenter-hex"
+	commenterHex := "temp-commenter-hex"
 	commentHex, _ := commentNew(commenterHex, "example.com", "/path.html", "root", "**foo**", "approved", time.Now().UTC())
 	commentNew(commenterHex, "example.com", "/path.html", commentHex, "**bar**", "approved", time.Now().UTC())
 

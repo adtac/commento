@@ -2107,6 +2107,7 @@
       if (window.location.hash.startsWith("#commento-")) {
         var el = $(ID_CARD + window.location.hash.split("-")[1]);
         if (el === null) {
+          errorShow("The comment you're looking for no longer exists. Perhaps it was deleted by the commenter or a moderator?");
           return;
         }
 
