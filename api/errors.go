@@ -52,3 +52,4 @@ var errorCannotDeleteOwnerWithActiveDomains = errors.New("You cannot delete your
 var errorNoSuchOwner = errors.New("No such owner.")
 var errorCannotUpdateOauthProfile = errors.New("You cannot update the profile of an external account managed by third-party log in. Please use the appropriate platform to update your details.")
 var errorUnsupportedCommentoImportVersion = errors.New("Unsupported Commento import format version.")
+var errorInvalidAction = errors.New("Invalid action.")

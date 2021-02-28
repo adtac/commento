@@ -2,19 +2,26 @@ package main
 
 import (
 	"net/http"
+	"time"
 )
 
-func commentDelete(commentHex string) error {
-	if commentHex == "" {
+func commentDelete(commentHex string, deleterHex string) error {
+	if commentHex == "" || deleterHex == "" {
 		return errorMissingField
 	}
 
 	statement := `
 		UPDATE comments
-		SET deleted = true, markdown = '[deleted]', html = '[deleted]', commenterHex = 'anonymous'
+		SET
+			deleted = true,
+			markdown = '[deleted]',
+			html = '[deleted]',
+			commenterHex = 'anonymous',
+			deleterHex = $2,
+			deletionDate = $3
 		WHERE commentHex = $1;
 	`
-	_, err := db.Exec(statement, commentHex)
+	_, err := db.Exec(statement, commentHex, deleterHex, time.Now().UTC())
 
 	if err != nil {
 		// TODO: make sure this is the error is actually non-existant commentHex
@@ -65,7 +72,7 @@ func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = commentDelete(*x.CommentHex); err != nil {
+	if err = commentDelete(*x.CommentHex, c.CommenterHex); err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return
 	}
