@@ -2105,9 +2105,13 @@
   function loadHash() {
     if (window.location.hash) {
       if (window.location.hash.startsWith("#commento-")) {
-        var el = $(ID_CARD + window.location.hash.split("-")[1]);
+        var id = window.location.hash.split("-")[1];
+        var el = $(ID_CARD + id);
         if (el === null) {
-          errorShow("The comment you're looking for no longer exists. Perhaps it was deleted by the commenter or a moderator?");
+          if (id.length === 64) {
+            // A hack to make sure it's a valid ID before showing the user a message.
+            errorShow("The comment you're looking for no longer exists or was deleted.");
+          }
           return;
         }
 
