@@ -82,60 +82,36 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// logic: (empty column indicates the value doesn't matter)
-	// | anonymous | moderator | requireIdentification | requireModeration | moderateAllAnonymous | approved? |
-	// |-----------+-----------+-----------------------+-------------------+----------------------+-----------|
-	// |       yes |           |                       |                   |                   no |       yes |
-	// |       yes |           |                       |                   |                  yes |        no |
-	// |        no |       yes |                       |                   |                      |       yes |
-	// |        no |        no |                       |               yes |                      |       yes |
-	// |        no |        no |                       |                no |                      |        no |
-
-	var commenterHex string
-	var state string
-
+	var commenterHex, commenterName, commenterEmail, commenterLink string
+	var isModerator bool
 	if *x.CommenterToken == "anonymous" {
-		commenterHex = "anonymous"
-		if isSpam(*x.Domain, getIp(r), getUserAgent(r), "Anonymous", "", "", *x.Markdown) {
-			state = "flagged"
-		} else {
-			if d.ModerateAllAnonymous || d.RequireModeration {
-				state = "unapproved"
-			} else {
-				state = "approved"
-			}
-		}
+		commenterHex, commenterName, commenterEmail, commenterLink = "anonymous", "Anonymous", "", ""
 	} else {
 		c, err := commenterGetByCommenterToken(*x.CommenterToken)
 		if err != nil {
 			bodyMarshal(w, response{"success": false, "message": err.Error()})
 			return
 		}
-
-		// cheaper than a SQL query as we already have this information
-		isModerator := false
+		commenterHex, commenterName, commenterEmail, commenterLink = c.CommenterHex, c.Name, c.Email, c.Link
 		for _, mod := range d.Moderators {
 			if mod.Email == c.Email {
 				isModerator = true
 				break
 			}
 		}
+	}
 
-		commenterHex = c.CommenterHex
-
-		if isModerator {
-			state = "approved"
-		} else {
-			if isSpam(*x.Domain, getIp(r), getUserAgent(r), c.Name, c.Email, c.Link, *x.Markdown) {
-				state = "flagged"
-			} else {
-				if d.RequireModeration {
-					state = "unapproved"
-				} else {
-					state = "approved"
-				}
-			}
-		}
+	var state string
+	if isModerator {
+		state = "approved"
+	} else if d.RequireModeration {
+		state = "unapproved"
+	} else if commenterHex == "anonymous" && d.ModerateAllAnonymous {
+		state = "unapproved"
+	} else if d.AutoSpamFilter && isSpam(*x.Domain, getIp(r), getUserAgent(r), commenterName, commenterEmail, commenterLink, *x.Markdown) {
+		state = "flagged"
+	} else {
+		state = "approved"
 	}
 
 	commentHex, err := commentNew(commenterHex, domain, path, *x.ParentHex, *x.Markdown, state, time.Now().UTC())
