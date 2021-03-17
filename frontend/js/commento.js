@@ -2164,6 +2164,28 @@
     });
   }
 
+  // Allows single page applications to reuse the current script
+  // by calling reInit with updated options
+  // pageId: string
+  // idRoot: string
+  // noFonts: boolean string, eg: "true" or "false"
+  // hideDeleted: boolean string, eg: "true" or "false"
+  // cssOverride: string or null (to reset to undefined)
+  global.reInit = function(options) {
+    pageId = options.pageId || pageId;
+    ID_ROOT = options.idRoot || ID_ROOT;
+    noFonts = options.noFonts || noFonts;
+    hideDeleted = options.hideDeleted || hideDeleted;
+    cssOverride = options.cssOverride || cssOverride;
+
+    // Allow resetting to undefined of original data-css-override value by providing null
+    if (options.cssOverride === null) {
+      cssOverride = undefined;
+    }
+
+    refreshAll()
+  }
+
 
   var initted = false;
 
