@@ -47,7 +47,7 @@ COPY --from=frontend-build /commento/frontend/build/${RELEASE}/*.html /commento/
 COPY --from=templates-db-build /commento/templates/build/${RELEASE}/templates /commento/templates/
 COPY --from=templates-db-build /commento/db/build/${RELEASE}/db /commento/db/
 
-EXPOSE 8080
+EXPOSE ${COMMENTO_PORT:-$PORT}
 WORKDIR /commento/
 ENV COMMENTO_BIND_ADDRESS="0.0.0.0"
-ENTRYPOINT ["/commento/commento"]
+ENTRYPOINT "COMMENTO_PORT=${COMMENTO_PORT:-$PORT} COMMENTO_POSTGRES=${COMMENTO_POSTGRES:-$DATABASE_URL} /commento/commento"
