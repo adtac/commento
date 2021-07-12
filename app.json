@@ -1,0 +1,24 @@
+{
+  "name": "Commento",
+  "description": "A fast, privacy-focused commenting platform.",
+  "repository": "https://gitlab.com/commento/commento",
+  "logo": "https://cdn.commento.io/images/logo.svg",
+  "website": "https://commento.io",
+  "keywords": ["goalang", "commento", "privacy"],
+  "stack": "container",
+  "addons": [
+    {
+      "plan": "heroku-postgresql"
+    }
+  ],
+  "success_url": "/login",
+  "env": {
+    "COMMENTO_ORIGIN": {
+      "description": "This should be set to the subdomain or the IP address hosting Commento. All API requests will go to this server. This may include subdirectories if Commento is hosted behind a reverse proxy, for example. Include the protocol in the value to use HTTP/HTTPS."
+    },
+    "COMMENTO_FORBID_NEW_OWNERS": {
+      "description": "Used to disable new dashboard registrations. Useful if you are the only person using Commento on your server. Does not impact the creation of accounts for your readers. Defaults to false.",
+      "value": "false"
+    }
+  }
+}

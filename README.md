@@ -16,6 +16,8 @@ For starters, your readers value their privacy. Not caring about them is disresp
 
 Read the [documentation to get started](https://docs.commento.io/installation/).
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/adtac/commento)
+
 #### Contributing
 
 If this is your first contribution to Commento, please go through the [contribution guidelines](https://docs.commento.io/contributing/) before you begin. If you have any questions, join [#commento on Freenode](http://webchat.freenode.net/?channels=%23commento).
