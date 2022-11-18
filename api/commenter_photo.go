@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/disintegration/imaging"
 	"image/jpeg"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/disintegration/imaging"
 )
@@ -18,7 +20,15 @@ func commenterPhotoHandler(w http.ResponseWriter, r *http.Request) {
 
 	url := c.Photo
 
-	if c.Provider == "github" {
+	if c.Provider == "google" {
+		if strings.HasSuffix(url, "photo.jpg") {
+			url += "?sz=38"
+		} else if strings.HasSuffix(url, "=s96-c") {
+			url = url[:len(url)-len("=s96-c")] + "=s38"
+		} else {
+			url += "=s38"
+		}
+	} else if c.Provider == "github" {
 		url += "&s=38"
 	} else if c.Provider == "gitlab" {
 		url += "?width=38"
