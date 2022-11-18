@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ func domainImportCommento(domain string, url string) (int, error) {
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		logger.Errorf("cannot read body: %v", err)
 		return 0, errorCannotDownloadCommento
@@ -38,7 +38,7 @@ func domainImportCommento(domain string, url string) (int, error) {
 		return 0, errorInternal
 	}
 
-	contents, err := ioutil.ReadAll(zr)
+	contents, err := io.ReadAll(zr)
 	if err != nil {
 		logger.Errorf("cannot read gzip contents uncompressed: %v", err)
 		return 0, errorInternal

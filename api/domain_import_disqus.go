@@ -4,7 +4,7 @@ import (
 	"compress/gzip"
 	"encoding/xml"
 	"github.com/lunny/html2md"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
@@ -76,7 +76,7 @@ func domainImportDisqus(domain string, url string) (int, error) {
 		return 0, errorInternal
 	}
 
-	contents, err := ioutil.ReadAll(zr)
+	contents, err := io.ReadAll(zr)
 	if err != nil {
 		logger.Errorf("cannot read gzip contents uncompressed: %v", err)
 		return 0, errorInternal
