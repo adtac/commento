@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	"net/smtp"
+	// "net/smtp"
 	"os"
 )
 
@@ -18,7 +18,8 @@ func smtpOwnerConfirmHex(to string, toName string, confirmHex string) error {
 	var body bytes.Buffer
 	templates["confirm-hex"].Execute(&body, &ownerConfirmHexPlugs{Origin: os.Getenv("ORIGIN"), ConfirmHex: confirmHex})
 
-	err := smtp.SendMail(os.Getenv("SMTP_HOST")+":"+os.Getenv("SMTP_PORT"), smtpAuth, os.Getenv("SMTP_FROM_ADDRESS"), []string{to}, concat(header, body))
+	// err := smtp.SendMail(os.Getenv("SMTP_HOST")+":"+os.Getenv("SMTP_PORT"), smtpAuth, os.Getenv("SMTP_FROM_ADDRESS"), []string{to}, concat(header, body))
+	err := SendSMTPMail(to, concat(header, body))
 	if err != nil {
 		logger.Errorf("cannot send confirmation email: %v", err)
 		return errorCannotSendEmail

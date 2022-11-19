@@ -2,7 +2,7 @@ package main
 
 import (
 	"bytes"
-	"net/smtp"
+	// "net/smtp"
 	"os"
 )
 
@@ -18,7 +18,8 @@ func smtpResetHex(to string, toName string, resetHex string) error {
 	var body bytes.Buffer
 	templates["reset-hex"].Execute(&body, &resetHexPlugs{Origin: os.Getenv("ORIGIN"), ResetHex: resetHex})
 
-	err := smtp.SendMail(os.Getenv("SMTP_HOST")+":"+os.Getenv("SMTP_PORT"), smtpAuth, os.Getenv("SMTP_FROM_ADDRESS"), []string{to}, concat(header, body))
+	// err := smtp.SendMail(os.Getenv("SMTP_HOST")+":"+os.Getenv("SMTP_PORT"), smtpAuth, os.Getenv("SMTP_FROM_ADDRESS"), []string{to}, concat(header, body))
+	err := SendSMTPMail(to, concat(header, body))
 	if err != nil {
 		logger.Errorf("cannot send reset email: %v", err)
 		return errorCannotSendEmail

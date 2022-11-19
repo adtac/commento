@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/disintegration/imaging"
+	// "github.com/disintegration/imaging"
 	"image/jpeg"
 	"io"
 	"net/http"

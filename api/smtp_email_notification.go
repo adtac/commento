@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	ht "html/template"
-	"net/smtp"
+	// "net/smtp"
 	"os"
 	tt "text/template"
 )
@@ -55,7 +55,8 @@ Subject: {{.Subject}}
 		return err
 	}
 
-	err = smtp.SendMail(os.Getenv("SMTP_HOST")+":"+os.Getenv("SMTP_PORT"), smtpAuth, os.Getenv("SMTP_FROM_ADDRESS"), []string{to}, concat(header, body))
+	// err = smtp.SendMail(os.Getenv("SMTP_HOST")+":"+os.Getenv("SMTP_PORT"), smtpAuth, os.Getenv("SMTP_FROM_ADDRESS"), []string{to}, concat(header, body))
+	err = SendSMTPMail(to, concat(header, body))
 	if err != nil {
 		logger.Errorf("cannot send email notification: %v", err)
 		return errorCannotSendEmail
