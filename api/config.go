@@ -46,18 +46,21 @@ func configParse() error {
 
 		"AKISMET_KEY": "",
 
-		"GOOGLE_KEY":    "",
-		"GOOGLE_SECRET": "",
+		"GOOGLE_KEY":     "",
+		"GOOGLE_SECRET":  "",
 
-		"GITHUB_KEY":    "",
-		"GITHUB_SECRET": "",
+		"GITHUB_KEY":     "",
+		"GITHUB_SECRET":  "",
 
 		"TWITTER_KEY":    "",
 		"TWITTER_SECRET": "",
 
-		"GITLAB_KEY":    "",
-		"GITLAB_SECRET": "",
-		"GITLAB_URL":    "https://gitlab.com",
+		"FACEBOOK_KEY":    "",
+		"FACEBOOK_SECRET": "",
+
+		"GITLAB_KEY":      "",
+		"GITLAB_SECRET":   "",
+		"GITLAB_URL":      "https://gitlab.com",
 	}
 
 	if os.Getenv("COMMENTO_CONFIG_FILE") != "" {

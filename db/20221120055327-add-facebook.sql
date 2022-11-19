@@ -1,0 +1,1 @@
+ALTER TABLE domains ADD facebookprovider bool DEFAULT true;

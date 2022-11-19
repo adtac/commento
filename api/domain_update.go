@@ -22,11 +22,12 @@ func domainUpdate(d domain) error {
 			commentoProvider=$9,
 			googleProvider=$10,
 			twitterProvider=$11,
-			githubProvider=$12,
-			gitlabProvider=$13,
-			ssoProvider=$14,
-			ssoUrl=$15,
-			defaultSortPolicy=$16
+			facebookProvider=$12,
+			githubProvider=$13,
+			gitlabProvider=$14,
+			ssoProvider=$15,
+			ssoUrl=$16,
+			defaultSortPolicy=$17
 		WHERE domain=$1;
 	`
 
@@ -42,6 +43,7 @@ func domainUpdate(d domain) error {
 		d.CommentoProvider,
 		d.GoogleProvider,
 		d.TwitterProvider,
+		d.FacebookProvider,
 		d.GithubProvider,
 		d.GitlabProvider,
 		d.SsoProvider,

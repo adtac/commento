@@ -20,6 +20,7 @@ type domain struct {
 	CommentoProvider        bool        `json:"commentoProvider"`
 	GoogleProvider          bool        `json:"googleProvider"`
 	TwitterProvider         bool        `json:"twitterProvider"`
+	FacebookProvider        bool        `json:"facebookProvider"`
 	GithubProvider          bool        `json:"githubProvider"`
 	GitlabProvider          bool        `json:"gitlabProvider"`
 	SsoProvider             bool        `json:"ssoProvider"`

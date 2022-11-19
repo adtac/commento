@@ -1666,7 +1666,7 @@
     attrSet(emailInput, "type", "text");
 
     var numOauthConfigured = 0;
-    var oauthProviders = ["google", "twitter", "github", "gitlab"];
+    var oauthProviders = ["google", "facebook", "twitter", "github", "gitlab"];
     oauthProviders.forEach(function(provider) {
       if (configuredOauths[provider]) {
         var button = create("button");

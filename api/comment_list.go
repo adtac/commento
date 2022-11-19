@@ -197,6 +197,7 @@ func commentListHandler(w http.ResponseWriter, r *http.Request) {
 			"commento": d.CommentoProvider,
 			"google":   googleConfigured && d.GoogleProvider,
 			"twitter":  twitterConfigured && d.TwitterProvider,
+			"facebook": facebookConfigured && d.FacebookProvider,
 			"github":   githubConfigured && d.GithubProvider,
 			"gitlab":   gitlabConfigured && d.GitlabProvider,
 			"sso":      d.SsoProvider,
