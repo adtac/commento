@@ -36,7 +36,13 @@ func SendSMTPMail(to string, msg []byte) error {
 	}
 	defer c.Close()
 
-	localName := os.Getenv("SMTP_HELO")
+	localName := os.Getenv("SMTP_HELO_FQDN")
+	if localName == "" {
+		localName, err = os.Hostname()
+		if err != nil {
+			localName = "localhost"
+		}
+	}
 	if err := c.Hello(localName); err != nil {
 		return err
 	}
