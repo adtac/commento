@@ -52,7 +52,7 @@ func SendSMTPMail(to string, msg []byte) error {
 		if testHookStartTLS != nil {
 			testHookStartTLS(config)
 		}
-		if err = c.StartTLS(config); err != nil {
+		if err := c.StartTLS(config); err != nil {
 			return err
 		}
 	}
@@ -61,16 +61,16 @@ func SendSMTPMail(to string, msg []byte) error {
 		if ok, _ := c.Extension("AUTH"); !ok {
 			return errors.New("smtp: server doesn't support AUTH")
 		}
-		if err = c.Auth(smtpAuth); err != nil {
+		if err := c.Auth(smtpAuth); err != nil {
 			return err
 		}
 	}
 
-	if err = c.Mail(from); err != nil {
+	if err := c.Mail(from); err != nil {
 		return err
 	}
 
-	if err = c.Rcpt(to); err != nil {
+	if err := c.Rcpt(to); err != nil {
 		return err
 	}
 
