@@ -297,6 +297,11 @@
                         <label for="google-provider">Google login</label>
                       </div>
 
+                      <div class="row no-border commento-round-check" v-if="configuredOauths.google">
+                        <input type="checkbox" v-model="domains[cd].facebookProvider" id="facebook-provider">
+                        <label for="facebook-provider">Facebook login</label>
+                      </div>
+
                       <div class="row no-border commento-round-check" v-if="configuredOauths.twitter">
                         <input type="checkbox" v-model="domains[cd].twitterProvider" id="twitter-provider">
                         <label for="twitter-provider">Twitter login</label>
