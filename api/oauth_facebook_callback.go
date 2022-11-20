@@ -10,8 +10,6 @@ import (
 
 const fbVersion = "v15.0"
 
-const fbGetMe = "https://graph.facebook.com/me?field=id,name,email,picture,link"
-
 func facebookCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	commenterToken := r.FormValue("state")
