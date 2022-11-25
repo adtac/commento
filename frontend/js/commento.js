@@ -36,7 +36,6 @@
   var ID_LOGGED_CONTAINER = "commento-logged-container";
   var ID_PRE_COMMENTS_AREA = "commento-pre-comments-area";
   var ID_COMMENTS_AREA = "commento-comments-area";
-  var ID_COMMENTO_LAZY_LOAD_AREA = "commento-lazy-load-area"
   var ID_SUPER_CONTAINER = "commento-textarea-super-container-";
   var ID_TEXTAREA_CONTAINER = "commento-textarea-container-";
   var ID_TEXTAREA = "commento-textarea-";
@@ -76,10 +75,6 @@
   var autoInit;
   var isAuthenticated = false;
   var comments = [];
-  var slicedComments = [];
-  var sliceByAmount = 100;
-  var slicedCommentsCount = 0;
-  var currentSlice = 0;
   var commentsMap = {};
   var commenters = {};
   var requireIdentification = true;
@@ -188,13 +183,6 @@
 
   function attrSet(node, a, value) {
     node.setAttribute(a, value);
-  }
-
-
-  function onscroll(node, f) {
-    window.addEventListener("scroll", function() {
-      f();
-    });
   }
 
 
@@ -384,13 +372,6 @@
   }
 
 
-  function lazyLoaderContainer() {
-    var lazyLoader = create("div");
-    lazyLoader.id = ID_FOOTER + "-lazy-load";
-    append(root, lazyLoader);
-  }
-
-
   function footerLoad() {
     var footer = create("div");
     var aContainer = create("div");
@@ -406,7 +387,6 @@
 
     attrSet(a, "href", "https://commento.io");
     attrSet(a, "target", "_blank");
-    attrSet(a, "rel", "nofollow");
 
     text.innerText = "Commento";
 
@@ -415,15 +395,6 @@
     append(footer, aContainer);
 
     return footer;
-  }
-
-
-  function sliceComments() {
-    var i = 0, n = comments.length;
-    while (i < n) {
-      slicedComments.push(comments.slice(i, i += sliceByAmount));
-    }
-    slicedCommentsCount = slicedComments.length;
   }
 
 
@@ -450,8 +421,6 @@
       stickyCommentHex = resp.attributes.stickyCommentHex;
 
       comments = resp.comments;
-      sliceComments(comments);
-      
       commenters = Object.assign({}, commenters, resp.commenters)
       configuredOauths = resp.configuredOauths;
 
@@ -691,21 +660,17 @@
     var mainArea = $(ID_MAIN_AREA);
     var preCommentsArea = create("div");
     var commentsArea = create("div");
-    var lazyLoadArea = create("div");
 
     login.id = ID_LOGIN;
     preCommentsArea.id = ID_PRE_COMMENTS_AREA;
     commentsArea.id = ID_COMMENTS_AREA;
-    lazyLoadArea.id = ID_COMMENTO_LAZY_LOAD_AREA;
 
     classAdd(login, "login");
     classAdd(loginText, "login-text");
     classAdd(commentsArea, "comments");
-    classAdd(lazyLoadArea, "lazy-load");
 
     loginText.innerText = "Login";
     commentsArea.innerHTML = "";
-    lazyLoadArea.innerHTML = ""
 
     onclick(loginText, global.loginBoxShow, null);
 
@@ -745,7 +710,6 @@
     append(mainArea, preCommentsArea);
 
     append(mainArea, commentsArea);
-    append(mainArea, lazyLoadArea);
     append(root, mainArea);
 
     call(callback);
@@ -1511,36 +1475,14 @@
   }
 
 
-  function isScrolledIntoView(elem) {
-    var bounding = elem.getBoundingClientRect();
-    return (
-      bounding.top >= 0 &&
-      bounding.left >= 0 &&
-      bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  }
-
-
-  function lazyLoadComments() {
-    var elem = document.getElementById(ID_COMMENTO_LAZY_LOAD_AREA);
-    if ( (currentSlice < slicedCommentsCount ) && isScrolledIntoView(elem) ) {
-      commentsRender();
-    }
-  }
-
-
   function commentsRender() {
     var commentsArea = $(ID_COMMENTS_AREA);
-    if (currentSlice === 0) {
-      commentsArea.innerHTML = "";
-    }
+    commentsArea.innerHTML = ""
 
-    var cards = commentsRecurse(parentMap(slicedComments[currentSlice]), "root");
+    var cards = commentsRecurse(parentMap(comments), "root");
     if (cards) {
       append(commentsArea, cards);
     }
-    currentSlice++;
   }
 
 
@@ -2163,8 +2105,13 @@
   function loadHash() {
     if (window.location.hash) {
       if (window.location.hash.startsWith("#commento-")) {
-        var el = $(ID_CARD + window.location.hash.split("-")[1]);
+        var id = window.location.hash.split("-")[1];
+        var el = $(ID_CARD + id);
         if (el === null) {
+          if (id.length === 64) {
+            // A hack to make sure it's a valid ID before showing the user a message.
+            errorShow("The comment you're looking for no longer exists or was deleted.");
+          }
           return;
         }
 
@@ -2199,8 +2146,6 @@
 
     mainAreaCreate();
 
-    lazyLoaderContainer();
-
     var footer = footerLoad();
     cssLoad(cdn + "/css/commento.css", loadCssOverride);
 
@@ -2218,6 +2163,7 @@
       });
     });
   }
+
 
   // Allows single page applications to reuse the current script
   // by calling reInit with updated options
@@ -2241,7 +2187,9 @@
     refreshAll()
   }
 
+
   var initted = false;
+
 
   function init() {
     if (initted) {

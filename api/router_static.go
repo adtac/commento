@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	"io"
 	"mime"
 	"net/http"
 	"os"
@@ -26,7 +25,7 @@ var footer string
 var compress bool
 
 func fileDetemplate(f string) ([]byte, error) {
-	contents, err := io.ReadFile(f)
+	contents, err := os.ReadFile(f)
 	if err != nil {
 		logger.Errorf("cannot read file %s: %v", f, err)
 		return []byte{}, err
@@ -77,7 +76,7 @@ func staticRouterInit(router *mux.Router) error {
 	}
 
 	for _, dir := range []string{"/js", "/css", "/images", "/fonts"} {
-		files, err := io.ReadDir(os.Getenv("STATIC") + dir)
+		files, err := os.ReadDir(os.Getenv("STATIC") + dir)
 		if err != nil {
 			logger.Errorf("cannot read directory %s%s: %v", os.Getenv("STATIC"), dir, err)
 			return err
