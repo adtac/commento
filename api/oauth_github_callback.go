@@ -10,7 +10,7 @@ import (
 
 func githubGetPrimaryEmail(accessToken string) (string, error) {
 	req, _ := http.NewRequest("GET", "https://api.github.com/user/emails", nil)
-	req.Header.Set("Authorization", "Bearer "+accessToken)
+	req.Header.Set("Authorization", "Bearer " + accessToken)
 	client := new(http.Client)
 	resp, err := client.Do(req)
 	defer resp.Body.Close()
@@ -60,7 +60,7 @@ func githubCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req, _ := http.NewRequest("GET", "https://api.github.com/user", nil)
-	req.Header.Set("Authorization", "Bearer "+token.AccessToken)
+	req.Header.Set("Authorization", "Bearer " + token.AccessToken)
 	client := new(http.Client)
 	resp, err := client.Do(req)
 	if err != nil {

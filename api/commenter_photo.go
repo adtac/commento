@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	// "github.com/disintegration/imaging"
-	"image/jpeg"
+	"image"
 	"io"
 	"net/http"
 	"strings"
@@ -50,9 +50,9 @@ func commenterPhotoHandler(w http.ResponseWriter, r *http.Request) {
 	// that exhaust memory.
 	limitedResp := &io.LimitedReader{R: resp.Body, N: 128 * 1024}
 
-	img, err := jpeg.Decode(limitedResp)
+	img, _, err := image.Decode(limitedResp)
 	if err != nil {
-		fmt.Fprintf(w, "JPEG decode failed: %v\n", err)
+		fmt.Fprintf(w, "Image decode failed: %v\n", err)
 		return
 	}
 
