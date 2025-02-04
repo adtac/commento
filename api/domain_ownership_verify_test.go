@@ -7,7 +7,10 @@ import (
 func TestDomainVerifyOwnershipBasics(t *testing.T) {
 	failTestOnError(t, setupTestEnv())
 
-	ownerHex, _ := ownerNew("test@example.com", "Test", "hunter2")
+	ownerHex, err := ownerNew("test@example.com", "Test", "hunter2")
+	if err != nil {
+		t.Errorf("error creating owner: %v", err)
+	}
 	ownerLogin("test@example.com", "hunter2")
 
 	domainNew(ownerHex, "Example", "example.com")

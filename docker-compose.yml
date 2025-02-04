@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   server:
@@ -11,6 +11,16 @@ services:
       COMMENTO_POSTGRES: postgres://postgres:postgres@db:5432/commento?sslmode=disable
     depends_on:
       - db
+    networks:
+      - db_network
+  db_test:
+    ports:
+      - 5432:5432
+    image: postgres
+    environment:
+      POSTGRES_DB: commento_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     networks:
       - db_network
   db:

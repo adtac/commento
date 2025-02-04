@@ -1,6 +1,6 @@
 # backend build (api server)
-FROM golang:1.15-alpine AS api-build
-RUN apk add --no-cache --update bash dep make git curl g++
+FROM golang:1.23.2-alpine AS api-build
+RUN apk add --no-cache --update bash make git curl g++
 
 ARG RELEASE=prod
 COPY ./api /go/src/commento/api/

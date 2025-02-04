@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: commento
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - db_network
+    volumes:
+      - postgres_data_volume:/var/lib/postgresql/data
+
+networks:
+  db_network:
+
+volumes:
+  postgres_data_volume:

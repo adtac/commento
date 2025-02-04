@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/lib/pq"
 	"net/http"
 )
 
@@ -21,7 +20,7 @@ func commentCount(domain string, paths []string) (map[string]int, error) {
 		FROM pages
 		WHERE domain = $1 AND path = ANY($2);
 	`
-	rows, err := db.Query(statement, domain, pq.Array(paths))
+	rows, err := db.Query(statement, domain, paths)
 	if err != nil {
 		logger.Errorf("cannot get comments: %v", err)
 		return nil, errorInternal

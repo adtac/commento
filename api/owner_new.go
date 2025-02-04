@@ -1,10 +1,13 @@
 package main
 
 import (
-	"golang.org/x/crypto/bcrypt"
+	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func ownerNew(email string, name string, password string) (string, error) {
@@ -41,10 +44,11 @@ func ownerNew(email string, name string, password string) (string, error) {
 		owners (ownerHex, email, name, passwordHash, joinDate, confirmedEmail)
 		VALUES ($1,       $2,    $3,   $4,           $5,       $6            );
 	`
-	_, err = db.Exec(statement, ownerHex, email, name, string(passwordHash), time.Now().UTC(), !smtpConfigured)
+	_, err = db.Exec(statement, ownerHex, email, name, string(passwordHash), time.Now().UTC(), strconv.FormatBool(!smtpConfigured))
 	if err != nil {
 		// TODO: Make sure `err` is actually about conflicting UNIQUE, and not some
 		// other error. If it is something else, we should probably return `errorInternal`.
+		fmt.Println(err)
 		return "", errorEmailAlreadyExists
 	}
 

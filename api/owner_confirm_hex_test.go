@@ -27,7 +27,7 @@ func TestOwnerConfirmHexBasics(t *testing.T) {
 		ownerConfirmHexes (confirmHex, ownerHex, sendDate)
 		VALUES            ($1,         $2,       $3      );
 	`
-	_, err = db.Exec(statement, confirmHex, ownerHex, time.Now().UTC())
+	_, err = db.Exec(statement, confirmHex, ownerHex, time.Now().UTC().Format(time.RFC3339))
 	if err != nil {
 		t.Errorf("unexpected error creating inserting confirmHex: %v\n", err)
 		return
