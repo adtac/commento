@@ -10,7 +10,6 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 	if commenterHex == "" || domain == "" {
 		return nil, nil, errorMissingField
 	}
-
 	statement := `
 		SELECT
 			commentHex,
@@ -21,7 +20,8 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 			score,
 			state,
 			deleted,
-			creationDate
+			creationDate,
+			spoiler
 		FROM comments
 		WHERE
 			comments.domain = $1 AND
@@ -55,7 +55,6 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 
 	commenters := make(map[string]commenter)
 	commenters["anonymous"] = commenter{CommenterHex: "anonymous", Email: "undefined", Name: "Anonymous", Link: "undefined", Photo: "undefined", Provider: "undefined"}
-
 	comments := []comment{}
 	for rows.Next() {
 		c := comment{}
@@ -68,8 +67,28 @@ func commentList(commenterHex string, domain string, path string, includeUnappro
 			&c.Score,
 			&c.State,
 			&c.Deleted,
-			&c.CreationDate); err != nil {
+			&c.CreationDate,
+			&c.Spoiler); err != nil {
 			return nil, nil, errorInternal
+		}
+
+		// Get downvote count
+		statement = `
+			SELECT COUNT(*)
+			FROM votes
+			WHERE commentHex=$1 AND direction=-1;
+		`
+		row := db.QueryRow(statement, c.CommentHex)
+		if err = row.Scan(&c.DownvoteCount); err != nil {
+			logger.Errorf("cannot get downvote count: %v", err)
+			c.DownvoteCount = 0
+		}
+
+		// Get reactions
+		c.Reactions, err = commentReactionsGet(c.CommentHex)
+		if err != nil {
+			logger.Errorf("cannot get reactions: %v", err)
+			c.Reactions = make(map[string]int)
 		}
 
 		if commenterHex != "anonymous" {

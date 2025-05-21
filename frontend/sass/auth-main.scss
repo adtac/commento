@@ -1,4 +1,6 @@
-@import "common-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "common-main" as common;
 
 body {
   min-height: 100%;
@@ -34,11 +36,9 @@ body {
       text-align: center;
       padding: 12px;
       padding-bottom: 24px;
-    }
-
-    .small-subtitle {
+    }    .small-subtitle {
       font-size: 12px;
-      color: $gray-6;
+      color: colors.$gray-6;
       padding: 0px 12px 20px 12px;
     }
 
@@ -46,7 +46,7 @@ body {
       padding-left: 8px;
       padding-right: 8px;
       margin-bottom: 20px;
-      border-bottom: 1px solid $gray-1;
+      border-bottom: 1px solid colors.$gray-1;
 
       input[type=text],
       input[type=password] {
@@ -55,25 +55,23 @@ body {
         margin: 0;
         padding: 0;
         color: #32325d;
-        border-bottom: 1px solid $gray-1;
+        border-bottom: 1px solid colors.$gray-1;
         margin-right: 20px;
-        background: $gray-0;
+        background: colors.$gray-0;
         width: 100%;
         color: #32325d;
         border: none;
         outline: none;
         line-height: 28px;
-        background: $white;
-      }
-
-      input[type=text]::placeholder,
+        background: colors.$white;
+      }      input[type=text]::placeholder,
       input[type=password]::placeholder {
-        color: $gray-3;
+        color: colors.$gray-3;
       }
 
       .label {
         display: inline-block;
-        color: $gray-5;
+        color: colors.$gray-5;
         width: 100%;
         font-size: 12px;
         text-transform: uppercase;
@@ -82,14 +80,12 @@ body {
 
     .no-margin-bottom-row {
       margin-bottom: 6px;
-    }
-
-    .button {
+    }    .button {
       @extend .shadow;
-      border: 1px solid $blue-6;
+      border: 1px solid colors.$blue-6;
       border-radius: 3px;
       line-height: 32px;
-      background: $blue-6;
+      background: colors.$blue-6;
       color: white;
       font-weight: bold;
       width: 100%;
@@ -98,13 +94,13 @@ body {
     }
 
     .button:hover {
-      background: $blue-5;
-      border: 1px solid $blue-5;
+      background: colors.$blue-5;
+      border: 1px solid colors.$blue-5;
     }
 
     .button:disabled {
-      background: $blue-4;
-      border: 1px solid $blue-4;
+      background: colors.$blue-4;
+      border: 1px solid colors.$blue-4;
       cursor: unset;
     }
 
@@ -115,24 +111,22 @@ body {
       margin-bottom: 12px;
       font-size: 14px;
       font-weight: bold;
-    }
-
-    .link {
+    }    .link {
       font-weight: normal;
-      color: $blue-6;
+      color: colors.$blue-6;
       transition: all 0.3s;
     }
 
     .link:hover {
-      color: $blue-6;
+      color: colors.$blue-6;
     }
 
     .err {
-      color: $red-6;
+      color: colors.$red-6;
     }
 
     .msg {
-      color: $green-6;
+      color: colors.$green-6;
     }
   }
 
@@ -145,13 +139,13 @@ body {
 
 .cent {
   font-size: 12px;
-  color: $gray-5;
+  color: colors.$gray-5;
   text-align: center;
 
   .gray {
-    color: $gray-5;
+    color: colors.$gray-5;
     padding-left: 2px;
     padding-right: 2px;
-    border-bottom: 1px solid $gray-3;
+    border-bottom: 1px solid colors.$gray-3;
   }
 }

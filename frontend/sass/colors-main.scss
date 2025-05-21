@@ -1,3 +1,5 @@
+@use "sass:map";
+
 $white:         #ffffff;
 $black:         #000000;
 
@@ -14,16 +16,16 @@ $gray-list: (
   "9": #212529
 );
 
-$gray-0: map-get($gray-list, "0");
-$gray-1: map-get($gray-list, "1");
-$gray-2: map-get($gray-list, "2");
-$gray-3: map-get($gray-list, "3");
-$gray-4: map-get($gray-list, "4");
-$gray-5: map-get($gray-list, "5");
-$gray-6: map-get($gray-list, "6");
-$gray-7: map-get($gray-list, "7");
-$gray-8: map-get($gray-list, "8");
-$gray-9: map-get($gray-list, "9");
+$gray-0: map.get($gray-list, "0");
+$gray-1: map.get($gray-list, "1");
+$gray-2: map.get($gray-list, "2");
+$gray-3: map.get($gray-list, "3");
+$gray-4: map.get($gray-list, "4");
+$gray-5: map.get($gray-list, "5");
+$gray-6: map.get($gray-list, "6");
+$gray-7: map.get($gray-list, "7");
+$gray-8: map.get($gray-list, "8");
+$gray-9: map.get($gray-list, "9");
 
 $red-list: (
   "0": #fff5f5,
@@ -38,16 +40,16 @@ $red-list: (
   "9": #c92a2a
 );
 
-$red-0: map-get($red-list, "0");
-$red-1: map-get($red-list, "1");
-$red-2: map-get($red-list, "2");
-$red-3: map-get($red-list, "3");
-$red-4: map-get($red-list, "4");
-$red-5: map-get($red-list, "5");
-$red-6: map-get($red-list, "6");
-$red-7: map-get($red-list, "7");
-$red-8: map-get($red-list, "8");
-$red-9: map-get($red-list, "9");
+$red-0: map.get($red-list, "0");
+$red-1: map.get($red-list, "1");
+$red-2: map.get($red-list, "2");
+$red-3: map.get($red-list, "3");
+$red-4: map.get($red-list, "4");
+$red-5: map.get($red-list, "5");
+$red-6: map.get($red-list, "6");
+$red-7: map.get($red-list, "7");
+$red-8: map.get($red-list, "8");
+$red-9: map.get($red-list, "9");
 
 $pink-list: (
   "0": #fff0f6,
@@ -62,16 +64,16 @@ $pink-list: (
   "9": #a61e4d
 );
 
-$pink-0: map-get($pink-list, "0");
-$pink-1: map-get($pink-list, "1");
-$pink-2: map-get($pink-list, "2");
-$pink-3: map-get($pink-list, "3");
-$pink-4: map-get($pink-list, "4");
-$pink-5: map-get($pink-list, "5");
-$pink-6: map-get($pink-list, "6");
-$pink-7: map-get($pink-list, "7");
-$pink-8: map-get($pink-list, "8");
-$pink-9: map-get($pink-list, "9");
+$pink-0: map.get($pink-list, "0");
+$pink-1: map.get($pink-list, "1");
+$pink-2: map.get($pink-list, "2");
+$pink-3: map.get($pink-list, "3");
+$pink-4: map.get($pink-list, "4");
+$pink-5: map.get($pink-list, "5");
+$pink-6: map.get($pink-list, "6");
+$pink-7: map.get($pink-list, "7");
+$pink-8: map.get($pink-list, "8");
+$pink-9: map.get($pink-list, "9");
 
 $grape-list: (
   "0": #f8f0fc,
@@ -86,16 +88,16 @@ $grape-list: (
   "9": #862e9c
 );
 
-$grape-0: map-get($grape-list, "0");
-$grape-1: map-get($grape-list, "1");
-$grape-2: map-get($grape-list, "2");
-$grape-3: map-get($grape-list, "3");
-$grape-4: map-get($grape-list, "4");
-$grape-5: map-get($grape-list, "5");
-$grape-6: map-get($grape-list, "6");
-$grape-7: map-get($grape-list, "7");
-$grape-8: map-get($grape-list, "8");
-$grape-9: map-get($grape-list, "9");
+$grape-0: map.get($grape-list, "0");
+$grape-1: map.get($grape-list, "1");
+$grape-2: map.get($grape-list, "2");
+$grape-3: map.get($grape-list, "3");
+$grape-4: map.get($grape-list, "4");
+$grape-5: map.get($grape-list, "5");
+$grape-6: map.get($grape-list, "6");
+$grape-7: map.get($grape-list, "7");
+$grape-8: map.get($grape-list, "8");
+$grape-9: map.get($grape-list, "9");
 
 $violet-list: (
   "0": #f3f0ff,
@@ -110,16 +112,16 @@ $violet-list: (
   "9": #5f3dc4
 );
 
-$violet-0: map-get($violet-list, "0");
-$violet-1: map-get($violet-list, "1");
-$violet-2: map-get($violet-list, "2");
-$violet-3: map-get($violet-list, "3");
-$violet-4: map-get($violet-list, "4");
-$violet-5: map-get($violet-list, "5");
-$violet-6: map-get($violet-list, "6");
-$violet-7: map-get($violet-list, "7");
-$violet-8: map-get($violet-list, "8");
-$violet-9: map-get($violet-list, "9");
+$violet-0: map.get($violet-list, "0");
+$violet-1: map.get($violet-list, "1");
+$violet-2: map.get($violet-list, "2");
+$violet-3: map.get($violet-list, "3");
+$violet-4: map.get($violet-list, "4");
+$violet-5: map.get($violet-list, "5");
+$violet-6: map.get($violet-list, "6");
+$violet-7: map.get($violet-list, "7");
+$violet-8: map.get($violet-list, "8");
+$violet-9: map.get($violet-list, "9");
 
 $indigo-list: (
   "0": #edf2ff,
@@ -134,16 +136,16 @@ $indigo-list: (
   "9": #364fc7
 );
 
-$indigo-0: map-get($indigo-list, "0");
-$indigo-1: map-get($indigo-list, "1");
-$indigo-2: map-get($indigo-list, "2");
-$indigo-3: map-get($indigo-list, "3");
-$indigo-4: map-get($indigo-list, "4");
-$indigo-5: map-get($indigo-list, "5");
-$indigo-6: map-get($indigo-list, "6");
-$indigo-7: map-get($indigo-list, "7");
-$indigo-8: map-get($indigo-list, "8");
-$indigo-9: map-get($indigo-list, "9");
+$indigo-0: map.get($indigo-list, "0");
+$indigo-1: map.get($indigo-list, "1");
+$indigo-2: map.get($indigo-list, "2");
+$indigo-3: map.get($indigo-list, "3");
+$indigo-4: map.get($indigo-list, "4");
+$indigo-5: map.get($indigo-list, "5");
+$indigo-6: map.get($indigo-list, "6");
+$indigo-7: map.get($indigo-list, "7");
+$indigo-8: map.get($indigo-list, "8");
+$indigo-9: map.get($indigo-list, "9");
 
 $blue-list: (
   "0": #e7f5ff,
@@ -158,16 +160,16 @@ $blue-list: (
   "9": #1864ab
 );
 
-$blue-0: map-get($blue-list, "0");
-$blue-1: map-get($blue-list, "1");
-$blue-2: map-get($blue-list, "2");
-$blue-3: map-get($blue-list, "3");
-$blue-4: map-get($blue-list, "4");
-$blue-5: map-get($blue-list, "5");
-$blue-6: map-get($blue-list, "6");
-$blue-7: map-get($blue-list, "7");
-$blue-8: map-get($blue-list, "8");
-$blue-9: map-get($blue-list, "9");
+$blue-0: map.get($blue-list, "0");
+$blue-1: map.get($blue-list, "1");
+$blue-2: map.get($blue-list, "2");
+$blue-3: map.get($blue-list, "3");
+$blue-4: map.get($blue-list, "4");
+$blue-5: map.get($blue-list, "5");
+$blue-6: map.get($blue-list, "6");
+$blue-7: map.get($blue-list, "7");
+$blue-8: map.get($blue-list, "8");
+$blue-9: map.get($blue-list, "9");
 
 $cyan-list: (
   "0": #e3fafc,
@@ -182,16 +184,16 @@ $cyan-list: (
   "9": #0b7285
 );
 
-$cyan-0: map-get($cyan-list, "0");
-$cyan-1: map-get($cyan-list, "1");
-$cyan-2: map-get($cyan-list, "2");
-$cyan-3: map-get($cyan-list, "3");
-$cyan-4: map-get($cyan-list, "4");
-$cyan-5: map-get($cyan-list, "5");
-$cyan-6: map-get($cyan-list, "6");
-$cyan-7: map-get($cyan-list, "7");
-$cyan-8: map-get($cyan-list, "8");
-$cyan-9: map-get($cyan-list, "9");
+$cyan-0: map.get($cyan-list, "0");
+$cyan-1: map.get($cyan-list, "1");
+$cyan-2: map.get($cyan-list, "2");
+$cyan-3: map.get($cyan-list, "3");
+$cyan-4: map.get($cyan-list, "4");
+$cyan-5: map.get($cyan-list, "5");
+$cyan-6: map.get($cyan-list, "6");
+$cyan-7: map.get($cyan-list, "7");
+$cyan-8: map.get($cyan-list, "8");
+$cyan-9: map.get($cyan-list, "9");
 
 $teal-list: (
   "0": #e6fcf5,
@@ -206,16 +208,16 @@ $teal-list: (
   "9": #087f5b
 );
 
-$teal-0: map-get($teal-list, "0");
-$teal-1: map-get($teal-list, "1");
-$teal-2: map-get($teal-list, "2");
-$teal-3: map-get($teal-list, "3");
-$teal-4: map-get($teal-list, "4");
-$teal-5: map-get($teal-list, "5");
-$teal-6: map-get($teal-list, "6");
-$teal-7: map-get($teal-list, "7");
-$teal-8: map-get($teal-list, "8");
-$teal-9: map-get($teal-list, "9");
+$teal-0: map.get($teal-list, "0");
+$teal-1: map.get($teal-list, "1");
+$teal-2: map.get($teal-list, "2");
+$teal-3: map.get($teal-list, "3");
+$teal-4: map.get($teal-list, "4");
+$teal-5: map.get($teal-list, "5");
+$teal-6: map.get($teal-list, "6");
+$teal-7: map.get($teal-list, "7");
+$teal-8: map.get($teal-list, "8");
+$teal-9: map.get($teal-list, "9");
 
 $green-list: (
   "0": #ebfbee,
@@ -230,16 +232,16 @@ $green-list: (
   "9": #2b8a3e
 );
 
-$green-0: map-get($green-list, "0");
-$green-1: map-get($green-list, "1");
-$green-2: map-get($green-list, "2");
-$green-3: map-get($green-list, "3");
-$green-4: map-get($green-list, "4");
-$green-5: map-get($green-list, "5");
-$green-6: map-get($green-list, "6");
-$green-7: map-get($green-list, "7");
-$green-8: map-get($green-list, "8");
-$green-9: map-get($green-list, "9");
+$green-0: map.get($green-list, "0");
+$green-1: map.get($green-list, "1");
+$green-2: map.get($green-list, "2");
+$green-3: map.get($green-list, "3");
+$green-4: map.get($green-list, "4");
+$green-5: map.get($green-list, "5");
+$green-6: map.get($green-list, "6");
+$green-7: map.get($green-list, "7");
+$green-8: map.get($green-list, "8");
+$green-9: map.get($green-list, "9");
 
 $lime-list: (
   "0": #f4fce3,
@@ -254,16 +256,16 @@ $lime-list: (
   "9": #5c940d
 );
 
-$lime-0: map-get($lime-list, "0");
-$lime-1: map-get($lime-list, "1");
-$lime-2: map-get($lime-list, "2");
-$lime-3: map-get($lime-list, "3");
-$lime-4: map-get($lime-list, "4");
-$lime-5: map-get($lime-list, "5");
-$lime-6: map-get($lime-list, "6");
-$lime-7: map-get($lime-list, "7");
-$lime-8: map-get($lime-list, "8");
-$lime-9: map-get($lime-list, "9");
+$lime-0: map.get($lime-list, "0");
+$lime-1: map.get($lime-list, "1");
+$lime-2: map.get($lime-list, "2");
+$lime-3: map.get($lime-list, "3");
+$lime-4: map.get($lime-list, "4");
+$lime-5: map.get($lime-list, "5");
+$lime-6: map.get($lime-list, "6");
+$lime-7: map.get($lime-list, "7");
+$lime-8: map.get($lime-list, "8");
+$lime-9: map.get($lime-list, "9");
 
 $yellow-list: (
   "0": #fff9db,
@@ -278,16 +280,16 @@ $yellow-list: (
   "9": #e67700
 );
 
-$yellow-0: map-get($yellow-list, "0");
-$yellow-1: map-get($yellow-list, "1");
-$yellow-2: map-get($yellow-list, "2");
-$yellow-3: map-get($yellow-list, "3");
-$yellow-4: map-get($yellow-list, "4");
-$yellow-5: map-get($yellow-list, "5");
-$yellow-6: map-get($yellow-list, "6");
-$yellow-7: map-get($yellow-list, "7");
-$yellow-8: map-get($yellow-list, "8");
-$yellow-9: map-get($yellow-list, "9");
+$yellow-0: map.get($yellow-list, "0");
+$yellow-1: map.get($yellow-list, "1");
+$yellow-2: map.get($yellow-list, "2");
+$yellow-3: map.get($yellow-list, "3");
+$yellow-4: map.get($yellow-list, "4");
+$yellow-5: map.get($yellow-list, "5");
+$yellow-6: map.get($yellow-list, "6");
+$yellow-7: map.get($yellow-list, "7");
+$yellow-8: map.get($yellow-list, "8");
+$yellow-9: map.get($yellow-list, "9");
 
 $orange-list: (
   "0": #fff4e6,
@@ -302,13 +304,13 @@ $orange-list: (
   "9": #d9480f
 );
 
-$orange-0: map-get($orange-list, "0");
-$orange-1: map-get($orange-list, "1");
-$orange-2: map-get($orange-list, "2");
-$orange-3: map-get($orange-list, "3");
-$orange-4: map-get($orange-list, "4");
-$orange-5: map-get($orange-list, "5");
-$orange-6: map-get($orange-list, "6");
-$orange-7: map-get($orange-list, "7");
-$orange-8: map-get($orange-list, "8");
-$orange-9: map-get($orange-list, "9");
+$orange-0: map.get($orange-list, "0");
+$orange-1: map.get($orange-list, "1");
+$orange-2: map.get($orange-list, "2");
+$orange-3: map.get($orange-list, "3");
+$orange-4: map.get($orange-list, "4");
+$orange-5: map.get($orange-list, "5");
+$orange-6: map.get($orange-list, "6");
+$orange-7: map.get($orange-list, "7");
+$orange-8: map.get($orange-list, "8");
+$orange-9: map.get($orange-list, "9");

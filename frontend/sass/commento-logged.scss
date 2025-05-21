@@ -1,4 +1,5 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
 
 .commento-login {
   width: 100%;
@@ -7,7 +8,7 @@
     text-align: right;
     margin-right: 16px;
     height: 38px;
-    color: $gray-6;
+    color: colors.$gray-6;
     font-weight: bold;
     cursor: pointer;
     display: block;
@@ -24,7 +25,7 @@
   .commento-profile-button {
     float: right;
     cursor: pointer;
-    color: $gray-6;
+    color: colors.$gray-6;
     margin: 6px 12px;
     font-size: 13px;
   }
@@ -33,7 +34,7 @@
     position: relative;
 
     .commento-name {
-      color: $gray-8;
+      color: colors.$gray-8;
       border: none;
       font-weight: bold;
       position: absolute;

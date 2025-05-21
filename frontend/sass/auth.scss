@@ -1,3 +1,4 @@
-@import "common-main.scss";
-@import "navbar-main.scss";
-@import "auth-main.scss";
+@use "sass:map";
+@use "common-main" as common;
+@use "navbar-main" as navbar;
+@use "auth-main" as auth;

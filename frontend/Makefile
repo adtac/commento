@@ -2,12 +2,12 @@ BUILD_DIR              = build
 GULP                   = node_modules/.bin/gulp
 
 devel:
-	yarn install
-	$(GULP) devel
+	npm install
+	npm run dev
 
 prod:
-	yarn install
-	$(GULP) prod
+	npm install
+	npm run prod
 
 clean:
 	-rm -rf $(BUILD_DIR);

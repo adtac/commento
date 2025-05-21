@@ -1,4 +1,5 @@
-@import "common-main.scss";
-@import "navbar-main.scss";
-@import "dashboard-main.scss";
-@import "tomorrow.scss";
+@use "sass:map";
+@use "common-main" as common;
+@use "navbar-main" as navbar;
+@use "dashboard-main" as dashboard;
+@use "tomorrow";

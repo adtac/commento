@@ -1,4 +1,5 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
 
 .commento-round-check {
   input[type="radio"],
@@ -26,30 +27,28 @@
   input[type="radio"] + label:before,
   input[type="checkbox"] + label:before {
     content: '';
-    display: block;
-    width: 13px;
+    display: block;    width: 13px;
     height: 13px;
     margin-top: 2px;
-    background: $gray-0;
-    border: 1px solid $gray-3;
+    background: colors.$gray-0;
+    border: 1px solid colors.$gray-3;
     border-radius: 3px;
     position: absolute;
     left: 0;
     top: 0;
     transition: all .15s;
   }
-
   input[type="radio"]:disabled + label:before,
   input[type="checkbox"]:disabled + label:before {
-    background: $gray-0;
-    border: 1px solid $gray-4;
+    background: colors.$gray-0;
+    border: 1px solid colors.$gray-4;
     opacity: 0.4;
   }
 
   input[type="radio"]:checked + label:before,
   input[type="checkbox"]:checked + label:before {
-    background: $blue-6;
-    border: 1px solid $blue-6;
+    background: colors.$blue-6;
+    border: 1px solid colors.$blue-6;
   }
 
   input[type="radio"] + label:after,
@@ -73,10 +72,9 @@
     border: solid transparent;
     border-width: 0 2px 2px 0;
   }
-
   input[type="radio"]:checked + label:after,
   input[type="checkbox"]:checked + label:after {
-    border: solid $gray-0;
+    border: solid colors.$gray-0;
     border-width: 0 2px 2px 0;
   }
 

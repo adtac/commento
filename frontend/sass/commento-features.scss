@@ -1,0 +1,77 @@
+/* Spoiler styling */
+.commento-spoiler {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
+.commento-spoiler:hover {
+  filter: blur(0);
+}
+
+/* Reaction buttons styling */
+.commento-reactions-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  gap: 8px;
+}
+
+.commento-option-reaction {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.commento-option-reaction:hover {
+  background-color: #ebebeb;
+}
+
+.commento-active-reaction {
+  background-color: #e2f0ff;
+  border-color: #b8daff;
+  font-weight: bold;
+}
+
+/* Downvote count styling */
+.commento-downvote-count {
+  color: #ff4136;
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+/* Filter by username styling */
+.commento-filter-container {
+  margin-top: 10px;
+  padding: 5px 0;
+}
+
+.commento-filter-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.commento-filter-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Timestamp links */
+.timestamp-link {
+  color: #0366d6;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.timestamp-link:hover {
+  text-decoration: none;
+}

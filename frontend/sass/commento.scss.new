@@ -1,0 +1,90 @@
+@use "sass:map";
+@use "source-sans";
+@use "colors-main" as colors;
+@use "commento-common" as common;
+@use "commento-logged" as logged;
+@use "commento-mod-tools" as mod;
+@use "commento-input" as input;
+@use "commento-card" as card;
+@use "commento-login" as login;
+@use "commento-footer" as footer;
+
+.commento-root-min-height {
+  min-height: 430px;
+}
+
+.commento-root {
+  overflow-x: hidden;
+  padding: 0px;
+  width: 100%;
+  font-family: inherit;
+
+  * {
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #50596c;
+    text-rendering: optimizeLegibility;
+  }
+
+  .commento-hidden {
+    display: none;
+  }
+
+  .commento-blurred {
+    opacity: 0.4;
+  }
+
+  .commento-main-area {
+    transition: filter 0.2s;
+  }
+
+  .commento-error-box {
+    width: 100%;
+    border-radius: 4px;
+    height: 32px;
+    text-align: center;
+    color: colors.$red-7;
+    font-weight: 700;
+  }
+
+  .commento-moderation-notice {
+    width: 100%;
+    border-radius: 4px;
+    height: 32px;
+    text-align: center;
+    color: colors.$orange-7;
+    font-weight: 700;
+    margin-top: 16px;
+  }
+
+  .commento-sort-policy-buttons-container {
+    padding: 12px 0px;
+    font-weight: 400;
+
+    .commento-sort-policy-buttons {
+      float: right;
+
+      .commento-sort-policy-button {
+        color: colors.$gray-6;
+        font-size: 13px;
+        padding: 0px 7px;
+      }
+
+      .commento-sort-policy-button:hover {
+        cursor: pointer;
+      }
+
+      .commento-sort-policy-button-selected {
+        color: colors.$blue-8;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.commento-root-font {
+  * {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+}

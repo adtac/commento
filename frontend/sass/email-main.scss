@@ -1,5 +1,6 @@
-@import "colors-main.scss";
-@import "common-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "common-main" as common;
 
 .commento-email-container {
   display: flex;
@@ -10,51 +11,45 @@
   .commento-email {
     @extend .shadow;
     border-radius: 4px;
-    background: $white;
+    background: colors.$white;
     width: 100%;
-    max-width: 400px;
-
-    .commento-input {
+    max-width: 400px;    .commento-input {
       display: inline;
       height: 40px;
-      background: $white;
+      background: colors.$white;
       border: none;
       outline: none;
       padding: 5px;
       padding-left: 10px;
       width: calc(100% - 150px);
-    }
-
-    .commento-input::placeholder {
-      color: $gray-5;
+    }    .commento-input::placeholder {
+      color: colors.$gray-5;
     }
 
     .commento-email-button {
       height: 40px;
       min-width: 110px;
       float: right;
-      background: $white;
+      background: colors.$white;
       border: none;
       outline: none;
       padding: 0px 10px 0px 10px;
-      border-left: 1px solid $gray-1;
+      border-left: 1px solid colors.$gray-1;
       font-size: 12px;
       text-transform: uppercase;
       text-align: center;
       font-weight: bold;
-      color: $blue-7;
+      color: colors.$blue-7;
       cursor: pointer;
       transition: all 0.2s;
       width: unset;
-    }
-
-    .commento-email-button:hover {
-      color: $blue-6;
+    }    .commento-email-button:hover {
+      color: colors.$blue-6;
     }
 
     .commento-email-button:disabled {
       cursor: default;
-      color: $gray-6;
+      color: colors.$gray-6;
     }
   }
 }

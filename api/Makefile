@@ -25,12 +25,14 @@ clean:
 # later down the line).
 
 devel-go:
-	GO111MODULE=on go mod vendor
-	GO111MODULE=on go build -mod=vendor -v -o $(GO_DEVEL_BUILD_BINARY) -ldflags "-X main.version=$(shell git describe --tags)"
+	# Skip tidy as we've pinned dependencies in go.mod
+	GO111MODULE=on go mod vendor || (sleep 2 && go mod vendor)
+	GO111MODULE=on go build -mod=vendor -v -o $(GO_DEVEL_BUILD_BINARY) -ldflags "-X main.version=$(shell git describe --tags || echo dev)"
 
 prod-go:
-	GO111MODULE=on go mod vendor
-	GO111MODULE=on go build -mod=vendor -v -o $(GO_PROD_BUILD_BINARY) -ldflags "-X main.version=$(shell git describe --tags)"
+	# Skip tidy as we've pinned dependencies in go.mod
+	GO111MODULE=on go mod vendor || (sleep 2 && go mod vendor)
+	GO111MODULE=on go build -mod=vendor -v -o $(GO_PROD_BUILD_BINARY) -ldflags "-X main.version=$(shell git describe --tags || echo prod)"
 
 test-go:
 	GO111MODULE=on go mod vendor

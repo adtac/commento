@@ -1,4 +1,13 @@
-@import "source-sans.scss";
+@use "sass:map";
+@use "source-sans";
+@use "colors-main" as colors;
+@use "commento-common" as common;
+@use "commento-logged";
+@use "commento-mod-tools";
+@use "commento-input";
+@use "commento-card";
+@use "commento-login";
+@use "commento-footer";
 
 .commento-root-min-height {
   min-height: 430px;
@@ -18,15 +27,6 @@
     text-rendering: optimizeLegibility;
   }
 
-  @import "colors-main.scss";
-  @import "commento-common.scss";
-  @import "commento-logged.scss";     // Logged in as <name>
-  @import "commento-mod-tools.scss";  // Moderator tools and buttons
-  @import "commento-input.scss";      // Textarea, anonymous checkbox, submit button
-  @import "commento-card.scss";       // Each comment card
-  @import "commento-login.scss";      // Popup box when logging in
-  @import "commento-footer.scss";     // Powered by Commento
-
   .commento-hidden {
     display: none;
   }
@@ -44,7 +44,7 @@
     border-radius: 4px;
     height: 32px;
     text-align: center;
-    color: $red-7;
+    color: colors.$red-7;
     font-weight: 700;
   }
 
@@ -53,7 +53,7 @@
     border-radius: 4px;
     height: 32px;
     text-align: center;
-    color: $orange-7;
+    color: colors.$orange-7;
     font-weight: 700;
     margin-top: 16px;
   }
@@ -66,7 +66,7 @@
       float: right;
 
       .commento-sort-policy-button {
-        color: $gray-6;
+        color: colors.$gray-6;
         font-size: 13px;
         padding: 0px 7px;
       }
@@ -76,7 +76,7 @@
       }
 
       .commento-sort-policy-button-selected {
-        color: $blue-8;
+        color: colors.$blue-8;
         font-weight: bold;
       }
     }

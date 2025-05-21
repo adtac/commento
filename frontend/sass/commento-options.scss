@@ -1,4 +1,5 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
 
 @mixin mask-image($image) {
   -webkit-mask-image: url($image);
@@ -13,7 +14,7 @@
   position: absolute;
   top: 0px;
   z-index: 3;
-  background: $gray-4;
+  background: colors.$gray-4;
 }
 
 .commento-option-reply {
@@ -28,7 +29,7 @@
   width: 13px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 129 129" version="1.1" viewBox="0 0 129 129" xmlns="http://www.w3.org/2000/svg"><path d="m7.6 121.4c0.8 0.8 1.8 1.2 2.9 1.2s2.1-0.4 2.9-1.2l51.1-51.1 51.1 51.1c0.8 0.8 1.8 1.2 2.9 1.2 1 0 2.1-0.4 2.9-1.2 1.6-1.6 1.6-4.2 0-5.8l-51.1-51.1 51.1-51.1c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8 0l-51.1 51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8 0s-1.6 4.2 0 5.8l51.1 51.1-51.1 51.1c-1.6 1.6-1.6 4.2 0 5.8z" fill="%23abbac4"/></svg>');
   margin: 12px 6px 12px 6px;
-  background: $gray-5;
+  background: colors.$gray-5;
 }
 
 .commento-option-collapse {
@@ -36,7 +37,7 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 42 42" version="1.1" viewBox="0 0 42 42" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><polygon points="42 20 0 20 0 22 20 22 22 22 42 22" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  background: $gray-7;
+  background: colors.$gray-7;
 }
 
 .commento-option-uncollapse {
@@ -44,7 +45,7 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 42 42" version="1.1" viewBox="0 0 42 42" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><polygon points="42 20 22 20 22 0 20 0 20 20 0 20 0 22 20 22 20 42 22 42 22 22 42 22" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  background: $gray-7;
+  background: colors.$gray-7;
 }
 
 .commento-option-upvote,
@@ -60,11 +61,11 @@
 }
 
 .commento-upvoted {
-  background: $orange-7;
+  background: colors.$orange-7;
 }
 
 .commento-downvoted {
-  background: $indigo-6;
+  background: colors.$indigo-6;
 }
 
 .commento-option-edit {
@@ -72,7 +73,7 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 528.899 528.899" version="1.1" viewBox="0 0 528.899 528.899" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m328.88 89.125l107.59 107.59-272.34 272.34-107.53-107.59 272.28-272.34zm189.23-25.948l-47.981-47.981c-18.543-18.543-48.653-18.543-67.259 0l-45.961 45.961 107.59 107.59 53.611-53.611c14.382-14.383 14.382-37.577 0-51.959zm-517.81 449.51c-1.958 8.812 5.998 16.708 14.811 14.565l119.89-29.069-107.53-107.59-27.173 122.09z"/></svg>');
   margin: 12px 6px 12px 6px;
-  background: $gray-5;
+  background: colors.$gray-5;
 }
 
 .commento-option-remove {
@@ -80,7 +81,7 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 59 59" version="1.1" viewBox="0 0 59 59" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g fill="%231e2127"><path d="m29.5 51c0.552 0 1-0.447 1-1v-33c0-0.553-0.448-1-1-1s-1 0.447-1 1v33c0 0.553 0.448 1 1 1z"/><path d="m19.5 51c0.552 0 1-0.447 1-1v-33c0-0.553-0.448-1-1-1s-1 0.447-1 1v33c0 0.553 0.448 1 1 1z"/><path d="m39.5 51c0.552 0 1-0.447 1-1v-33c0-0.553-0.448-1-1-1s-1 0.447-1 1v33c0 0.553 0.448 1 1 1z"/><path d="M52.5,6H38.456c-0.11-1.25-0.495-3.358-1.813-4.711C35.809,0.434,34.751,0,33.499,0H23.5c-1.252,0-2.31,0.434-3.144,1.289 C19.038,2.642,18.653,4.75,18.543,6H6.5c-0.552,0-1,0.447-1,1s0.448,1,1,1h2.041l1.915,46.021C10.493,55.743,11.565,59,15.364,59 h28.272c3.799,0,4.871-3.257,4.907-4.958L50.459,8H52.5c0.552,0,1-0.447,1-1S53.052,6,52.5,6z M21.792,2.681 C22.24,2.223,22.799,2,23.5,2h9.999c0.701,0,1.26,0.223,1.708,0.681c0.805,0.823,1.128,2.271,1.24,3.319H20.553 C20.665,4.952,20.988,3.504,21.792,2.681z M46.544,53.979C46.538,54.288,46.4,57,43.636,57H15.364 c-2.734,0-2.898-2.717-2.909-3.042L10.542,8h37.915L46.544,53.979z"/></g></svg>');
   margin: 12px 6px 12px 6px;
-  background: $red-8;
+  background: colors.$red-8;
 }
 
 .commento-option-approve {
@@ -88,7 +89,7 @@
   width: 14px;
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 26 26" version="1.1" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="m0.3 14c-0.2-0.2-0.3-0.5-0.3-0.7s0.1-0.5 0.3-0.7l1.4-1.4c0.4-0.4 1-0.4 1.4 0l0.1 0.1 5.5 5.9c0.2 0.2 0.5 0.2 0.7 0l13.4-13.9h0.1v-8.8818e-16c0.4-0.4 1-0.4 1.4 0l1.4 1.4c0.4 0.4 0.4 1 0 1.4l-16 16.6c-0.2 0.2-0.4 0.3-0.7 0.3s-0.5-0.1-0.7-0.3l-7.8-8.4-0.2-0.3z" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  background: $green-7;
+  background: colors.$green-7;
 }
 
 .commento-option-sticky,
@@ -97,12 +98,12 @@
   width: 14px;
 @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg enable-background="new 0 0 487.222 487.222" version="1.1" viewBox="0 0 487.22 487.22" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m486.55 186.81c-1.6-4.9-5.8-8.4-10.9-9.2l-152-21.6-68.4-137.5c-2.3-4.6-7-7.5-12.1-7.5s-9.8 2.9-12.1 7.6l-67.5 137.9-152 22.6c-5.1 0.8-9.3 4.3-10.9 9.2s-0.2 10.3 3.5 13.8l110.3 106.9-25.5 151.4c-0.9 5.1 1.2 10.2 5.4 13.2 2.3 1.7 5.1 2.6 7.9 2.6 2.2 0 4.3-0.5 6.3-1.6l135.7-71.9 136.1 71.1c2 1 4.1 1.5 6.2 1.5 7.4 0 13.5-6.1 13.5-13.5 0-1.1-0.1-2.1-0.4-3.1l-26.3-150.5 109.6-107.5c3.9-3.6 5.2-9 3.6-13.9zm-137 107.1c-3.2 3.1-4.6 7.6-3.8 12l22.9 131.3-118.2-61.7c-3.9-2.1-8.6-2-12.6 0l-117.8 62.4 22.1-131.5c0.7-4.4-0.7-8.8-3.9-11.9l-95.6-92.8 131.9-19.6c4.4-0.7 8.2-3.4 10.1-7.4l58.6-119.7 59.4 119.4c2 4 5.8 6.7 10.2 7.4l132 18.8-95.3 93.3z" fill="%231e2127"/></svg>');
   margin: 12px 6px 12px 6px;
-  background: $gray-5;
+  background: colors.$gray-5;
 }
 
 .commento-option-unsticky {
   @include mask-image('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg viewBox="0 0 487.22 487.22" xmlns="http://www.w3.org/2000/svg"><g><title>background</title><rect x="-1" y="-1" fill="none"/></g><g><title>Layer 1</title><path d="m486.55 186.81c-1.6-4.9-5.8-8.4-10.9-9.2l-152-21.6-68.4-137.5c-2.3-4.6-7-7.5-12.1-7.5s-9.8 2.9-12.1 7.6l-67.5 137.9-152 22.6c-5.1 0.8-9.3 4.3-10.9 9.2s-0.2 10.3 3.5 13.8l110.3 106.9-25.5 151.4c-0.9 5.1 1.2 10.2 5.4 13.2 2.3 1.7 5.1 2.6 7.9 2.6 2.2 0 4.3-0.5 6.3-1.6l135.7-71.9 136.1 71.1c2 1 4.1 1.5 6.2 1.5 7.4 0 13.5-6.1 13.5-13.5 0-1.1-0.1-2.1-0.4-3.1l-26.3-150.5 109.6-107.5c3.9-3.6 5.2-9 3.6-13.9z" fill="%231e2127"/></g></svg>');
-  background: $yellow-7;
+  background: colors.$yellow-7;
 }
 
 .commento-option-button:focus {

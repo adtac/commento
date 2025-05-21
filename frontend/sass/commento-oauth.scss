@@ -1,4 +1,5 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
 
 .commento-oauth-buttons-container {
   display: flex;

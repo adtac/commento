@@ -1,8 +1,8 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "commento-options" as options;
 
 .commento-card {
-  @import "commento-options.scss"; // SVG buttons to the right of each comment
-
   padding: 12px 0px 0px 12px;
   margin-top: 16px;
   border-top: 1px solid #f0f0f0;
@@ -35,7 +35,7 @@
     content: "Flagged";
     text-transform: uppercase;
     font-size: 10px;
-    background: $red-7;
+    background: colors.$red-7;
     color: white;
     margin-left: 8px;
     padding: 2px 6px 2px 6px;
@@ -47,7 +47,7 @@
     content: "Moderator";
     text-transform: uppercase;
     font-size: 10px;
-    background: $green-7;
+    background: colors.$green-7;
     color: white;
     margin-left: 8px;
     padding: 2px 6px 2px 6px;
@@ -109,11 +109,11 @@
 }
 
 .commento-dark-card {
-  background: $red-0;
+  background: colors.$red-0;
 }
 
 .commento-highlighted-card {
-  background: $yellow-0;
+  background: colors.$yellow-0;
 }
 
 // do not place this inside .commento-card as this is used by logged-container

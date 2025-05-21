@@ -6,6 +6,11 @@
   "author": "Adhityaa <c.adhityaa@gmail.com> Anton Linevych anton@linevich.net",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "dev": "gulp devel",
+    "prod": "gulp prod",
+    "lint": "gulp lint"
+  },
   "devDependencies": {
     "chartist": "0.11.0",
     "fixmyjs": "2.0.0",
@@ -13,20 +18,19 @@
     "gulp-clean-css": "3.9.4",
     "gulp-concat": "2.6.1",
     "gulp-eslint": "5.0.0",
-    "gulp-html-minifier": "0.1.8",
-    "gulp-rename": "1.3.0",
-    "gulp-sass": "4.0.1",
+    "gulp-html-minifier": "0.1.8",    "gulp-rename": "1.3.0",
+    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "2.6.4",
     "gulp-uglify": "3.0.0",
     "highlightjs": "9.10.0",
-    "html-minifier": "3.5.7",
-    "jquery": "3.2.1",
+    "html-minifier": "4.0.0",
+    "jquery": "^3.7.1",
     "normalize-scss": "7.0.1",
-    "sass": "1.5.1",
-    "uglify-js": "3.4.1",
-    "vue": "2.5.16"
+    "sass": "^1.69.5",
+    "uglify-js": "3.17.4",
+    "vue": "^2.7.15"
   },
   "dependencies": {
-    "eslint": "^5.10.0"
+    "eslint": "^8.56.0"
   }
 }

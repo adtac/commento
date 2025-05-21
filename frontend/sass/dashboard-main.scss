@@ -1,7 +1,9 @@
-@import "colors-main.scss";
-@import "common-main.scss";
-@import "checkbox.scss";
-@import "button.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "common-main" as common;
+@use "checkbox";
+@use "button";
+@use "email-main" as email;
 
 .global-error, .global-ok {
   position: absolute;
@@ -9,16 +11,16 @@
   left: 0px;
   margin: 30px;
   padding: 5px;
-  border: 1px solid $red-6;
-  background: $red-6;
+  border: 1px solid colors.$red-6;
+  background: colors.$red-6;
   color: white;
   display: none;
   z-index: 80000;
 }
 
 .global-ok {
-  border: 1px solid $green-7;
-  background: $green-7;
+  border: 1px solid colors.$green-7;
+  background: colors.$green-7;
 }
 
 body {
@@ -30,11 +32,11 @@ body {
     margin: 0px;
     padding: 0px;
     list-style: none;
-    border-bottom: 1px solid $gray-1;
+    border-bottom: 1px solid colors.$gray-1;
 
     li {
       font-weight: bold;
-      color: $gray-7;
+      color: colors.$gray-7;
       font-size: 14px;
       background: none;
       display: inline-block;
@@ -46,13 +48,13 @@ body {
 
     li.current {
       transition: all 0.1s;
-      background: $gray-1;
-      color: $blue-7;
+      background: colors.$gray-1;
+      color: colors.$blue-7;
     }
 
     li.current:hover {
-      background: $gray-1;
-      color: $blue-7;
+      background: colors.$gray-1;
+      color: colors.$blue-7;
     }
   }
 
@@ -61,12 +63,12 @@ body {
     padding: 12px;
 
     .pitch {
-      color: $gray-6;
+      color: colors.$gray-6;
       margin-bottom: 24px;
       line-height: 22px;
       
-      a       { color: $blue-6; }
-      a:hover { color: $blue-6; }
+      a       { color: colors.$blue-6; }
+      a:hover { color: colors.$blue-6; }
     }
   }
 
@@ -76,11 +78,10 @@ body {
 }
 
 .action-buttons-container {
-  .action-buttons {
-    .action-button {
+  .action-buttons {    .action-button {
       padding: 8px 16px 8px 16px;
       display: flex;
-      border: 1px solid $gray-2;
+      border: 1px solid colors.$gray-2;
       margin: 8px;
 
       .left {
@@ -88,12 +89,12 @@ body {
 
         .title {
           font-weight: bold;
-          color: $gray-7;
+          color: colors.$gray-7;
           font-size: 14px;
         }
 
         .subtitle {
-          color: $gray-6;
+          color: colors.$gray-6;
           font-size: 14px;
         }
       }
@@ -102,11 +103,8 @@ body {
         float: right;
         margin: auto;
       }
-    }
-  }
+    }  }
 }
-
-@import "email-main.scss";
 
 .mod-emails-container {
   display: flex;
@@ -117,14 +115,12 @@ body {
   .content {
     display: block;
     padding: 0px;
-    border: 1px solid $gray-2;
+    border: 1px solid colors.$gray-2;
     border-top: 0px solid transparent;
-    min-width: 550px;
-
-    .mod-email {
+    min-width: 550px;    .mod-email {
       display: block;
       height: 42px;
-      border-top: 1px solid $gray-2;
+      border-top: 1px solid colors.$gray-2;
 
       .date,
       .delete,
@@ -141,17 +137,15 @@ body {
 
       .date {
         float: right;
-        color: $gray-4;
+        color: colors.$gray-4;
       }
 
       .delete {
         float: right;
-        color: $red-6;
+        color: colors.$red-6;
         cursor: pointer;
-      }
-
-      .delete:hover {
-        color: $red-7;
+      }      .delete:hover {
+        color: colors.$red-7;
       }
     }
   }
@@ -162,12 +156,11 @@ body {
   top: 72px;
   width: 100%;
   height: calc(100% - 94px);
-
   .pane-left {
     padding-top: 20px;
     position: absolute;
     left: 0px;
-    border-right: 1px solid $gray-1;
+    border-right: 1px solid colors.$gray-1;
     width: 240px;
     height: 100%;
 
@@ -185,12 +178,11 @@ body {
       }
     }
   }
-
   .pane-middle {
     padding-top: 20px;
     position: absolute;
     left: 240px;
-    border-right: 1px solid $gray-1;
+    border-right: 1px solid colors.$gray-1;
     width: 280px;
     height: 100%;
     padding-left: 1px;
@@ -253,11 +245,10 @@ body {
       text-align: center;
     }
   }
-
   .select-a-domain {
     padding: 20px;
     text-align: center;
-    color: $gray-5;
+    color: colors.$gray-5;
   }
 
   .pane-setting {
@@ -267,9 +258,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: $gray-7;
+    cursor: pointer;    transition: all 0.2s;
+    color: colors.$gray-7;
 
     .setting-title, .setting-subtitle {
       display: block;
@@ -280,7 +270,7 @@ body {
     }
 
     .setting-subtitle {
-      color: $gray-6;
+      color: colors.$gray-6;
     }
 
     .super-setting {
@@ -302,32 +292,31 @@ body {
       }
     }
   }
-
   .pane-setting:hover {
-    color: $gray-6;
-    background: $gray-1;
+    color: colors.$gray-6;
+    background: colors.$gray-1;
   }
 
   .selected {
-    color: $blue-7;
-    background: $gray-2;
+    color: colors.$blue-7;
+    background: colors.$gray-2;
   }
 
   .selected:hover {
-    color: $blue-7;
-    background: $gray-2;
+    color: colors.$blue-7;
+    background: colors.$gray-2;
   }
 }
 
 .normal-text {
   font-size: 15px;
-  color: $gray-7;
+  color: colors.$gray-7;
   line-height: 22px;
   margin-bottom: 8px;
 
   a {
-    color: $blue-6;
-    border-bottom: 1px solid $blue-6;
+    color: colors.$blue-6;
+    border-bottom: 1px solid colors.$blue-6;
   }
 
   ul {
@@ -338,13 +327,12 @@ body {
     position: relative;
     margin-bottom: 5px;
   }
-
   li::before {
     content: '';
     display: inline-block;
     width: 4px;
     height: 4px;
-    border: solid $gray-7;
+    border: solid colors.$gray-7;
     border-width: 0 2px 2px 0;
     transform: rotate(-45deg);
     margin-left: 12px;
@@ -379,10 +367,9 @@ body {
   margin: 8px 0px 8px 0px;
   display: flex;
   width: 100%;
-
   .title {
     font-weight: bold;
-    color: $gray-7;
+    color: colors.$gray-7;
     font-size: 14px;
     width: 35%;
     padding-top: 12px;
@@ -395,7 +382,7 @@ body {
 }
 
 .warning {
-  color: $orange-8;
+  color: colors.$orange-8;
   font-weight: bold;
 }
 
@@ -421,16 +408,15 @@ body {
   .inside {
     border: 1px solid white;
     border-radius: 6px;
-    width: 500px;
-    position: relative;
+    width: 500px;    position: relative;
     margin: 10% auto;
-    background: $gray-0;
+    background: colors.$gray-0;
     color: #444;
   }
 
   .modal-error-box {
     width: 100%;
-    color: $red-6;
+    color: colors.$red-6;
     text-align: center;
     margin-bottom: 30px;
     font-weight: bold;
@@ -442,10 +428,9 @@ body {
     text-align: center;
     font-size: 20px;
   }
-
   .modal-subtitle {
     text-align: center;
-    color: $gray-6;
+    color: colors.$gray-6;
     padding: 16px;
   }
 
@@ -483,31 +468,29 @@ body {
     padding-top: 0px;
     font-size: 19px;
   }
-  
-  .box-subtitle {
+    .box-subtitle {
     font-size: 14px;
     padding: 6px;
-    color: $gray-6;
+    color: colors.$gray-6;
     margin-bottom: 20px;
   }
 
   .gray {
     position: absolute;
     bottom: 0px;
-    color: $gray-6;
+    color: colors.$gray-6;
     opacity: 0.8;
 
-    a       { color: $gray-6; border: none; }
-    a:hover { color: $gray-6; border: none; }
+    a       { color: colors.$gray-6; border: none; }
+    a:hover { color: colors.$gray-6; border: none; }
   }
 
   .gray:hover {
     opacity: 1;
   }
-
   .row {
     .gray-input {
-      background: $gray-0;
+      background: colors.$gray-0;
     }
   }
 }
@@ -517,11 +500,11 @@ body {
   padding-right: 8px;
   margin-top: 12px;
   margin-bottom: 12px;
-  border-bottom: 1px solid $gray-2;
+  border-bottom: 1px solid colors.$gray-2;
 
   .label {
     display: inline-block;
-    color: $gray-5;
+    color: colors.$gray-5;
     width: 100%;
     font-size: 12px;
     text-transform: uppercase;
@@ -537,11 +520,11 @@ body {
     border: none;
     outline: none;
     line-height: 28px;
-    background: $gray-0;
+    background: colors.$gray-0;
   }
 
   .input::placeholder {
-    color: $gray-4;
+    color: colors.$gray-4;
   }
 
   .monospace {
@@ -580,20 +563,18 @@ body {
       display: table-cell;
       font-size: 48px;
       font-weight: 200;
-    }
-
-    .gray-digits {
-      color: $gray-3;
+    }    .gray-digits {
+      color: colors.$gray-3;
     }
 
     .gray-7-digits {
-      color: $gray-7;
+      color: colors.$gray-7;
     }
   }
 
   .text {
     text-transform: uppercase;
-    color: $gray-6;
+    color: colors.$gray-6;
   }
 }
 
@@ -608,7 +589,7 @@ body {
 }
 
 .text {
-  color: $gray-6;
+  color: colors.$gray-6;
   line-height: 25px;
 }
 
@@ -618,7 +599,7 @@ foreignObject {
 
 .all-done {
   margin-top: 40px;
-  color: $gray-5;
+  color: colors.$gray-5;
   font-size :15px;
   font-weight: 400;
 }
@@ -626,7 +607,7 @@ foreignObject {
 .mod-button {
   width: fit-content;
   line-height: 24px;
-  color: $gray-6;
+  color: colors.$gray-6;
   background: white;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -638,40 +619,40 @@ foreignObject {
 }
 
 .red-button {
-  color: $red-8;
+  color: colors.$red-8;
 }
 
 .red-button:hover {
-  color: $red-7;
+  color: colors.$red-7;
 }
 
 .green-button {
-  color: $green-7;
+  color: colors.$green-7;
 }
 
 .green-button:hover {
-  color: $green-7;
+  color: colors.$green-7;
 }
 
 .green-button:disabled {
-  color: $gray-6;
+  color: colors.$gray-6;
 }
 
 .orange-button {
-  color: $orange-8;
+  color: colors.$orange-8;
 }
 
 .orange-button:hover {
-  color: $orange-7;
+  color: colors.$orange-7;
 }
 
 .big-red-button {
-  background: $red-6;
+  background: colors.$red-6;
   color: white;
 }
 
 .big-red-button:hover {
-  background: $red-5;
+  background: colors.$red-5;
   color: white;
 }
 
@@ -696,12 +677,12 @@ foreignObject {
     .title {
       font-weight: 300;
       font-size: 18px;
-      color: $gray-5;
+      color: colors.$gray-5;
       margin-bottom: 18px;
       line-height: 28px;
 
       .postlink {
-        color: $gray-5;
+        color: colors.$gray-5;
       }
     }
 
@@ -724,13 +705,13 @@ foreignObject {
 
         .name {
           a {
-            color: $gray-7;
+            color: colors.$gray-7;
             font-weight: bold;
           }
         }
         
         .time {
-          color: $gray-4;
+          color: colors.$gray-4;
         }
       }
     }
@@ -753,12 +734,12 @@ foreignObject {
   margin-top: 16px;
   height: 300px;
   .ct-series-a .ct-line {
-    stroke: $gray-7;
+    stroke: colors.$gray-7;
     stroke-width: 1px;
   }
 
   .ct-series-a .ct-area {
-    fill: $gray-7;
+    fill: colors.$gray-7;
   }
 }
 

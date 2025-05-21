@@ -1,5 +1,6 @@
-@import "colors-main.scss";
-@import "checkbox.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "checkbox";
 
 textarea,
 input[type=text] {
@@ -14,7 +15,7 @@ input[type=text]::placeholder {
 }
 
 textarea::placeholder {
-  color: $gray-6;
+  color: colors.$gray-6;
   font-size: 20px;
   display: flex;
   line-height: 110px;
@@ -34,7 +35,7 @@ textarea {
 }
 
 .commento-red-border {
-  border: 1px solid $red-7;
+  border: 1px solid colors.$red-7;
 }
 
 .commento-textarea-container {
@@ -60,7 +61,7 @@ textarea {
 
 .commento-submit-button {
   float: right;
-  background: $blue-8;
+  background: colors.$blue-8;
   text-transform: uppercase;
   font-size: 12px;
   margin-top: 10px;
@@ -79,7 +80,7 @@ textarea {
     font-size: 12px;
     text-transform: uppercase;
     font-weight: bold;
-    color: $gray-7;
+    color: colors.$gray-7;
   }
 
   input[type="checkbox"] + label:before {
@@ -92,7 +93,7 @@ textarea {
 }
 
 .commento-markdown-button {
-  color: $gray-6;
+  color: colors.$gray-6;
   margin: 0px 16px;
   font-size: 12px;
   text-transform: uppercase;
@@ -107,7 +108,7 @@ textarea {
 }
 
 .commento-markdown-help {
-  border: 1px solid $gray-3;
+  border: 1px solid colors.$gray-3;
   padding: 8px;
 
   tr {

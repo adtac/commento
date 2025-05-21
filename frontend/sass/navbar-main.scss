@@ -1,4 +1,5 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
 
 .navbar {
   position: absolute;
@@ -17,15 +18,14 @@
   align-items: center;
   padding-left: 12px;
   padding-right: 12px;
-  font-size: 16px;
-  color: $gray-5;
-  background: $gray-0;
+  font-size: 16px;  color: colors.$gray-5;
+  background: colors.$gray-0;
 }
 
 .navbar-logo-text {
   font-size: 16px;
   margin-left: 56px;
-  color: $gray-9;
+  color: colors.$gray-9;
 }
 
 .navbar-logo {
@@ -54,5 +54,5 @@
 }
 
 .navbar-hamburger {
-  color: $gray-9;
+  color: colors.$gray-9;
 }

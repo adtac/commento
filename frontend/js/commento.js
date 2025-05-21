@@ -10,7 +10,6 @@
   //     the user may have their own window.post defined. We don't want to
   //     override that.
 
-
   var ID_ROOT = "commento";
   var ID_MAIN_AREA = "commento-main-area";
   var ID_LOGIN = "commento-login";
@@ -56,6 +55,7 @@
   var ID_APPROVE = "commento-comment-approve-";
   var ID_REMOVE = "commento-comment-remove-";
   var ID_STICKY = "commento-comment-sticky-";
+  var ID_SPOILER = "commento-comment-spoiler-";
   var ID_CHILDREN = "commento-comment-children-";
   var ID_CONTENTS = "commento-comment-contents-";
   var ID_NAME = "commento-comment-name-";
@@ -63,6 +63,13 @@
   var ID_MARKDOWN_BUTTON = "commento-markdown-button-";
   var ID_MARKDOWN_HELP = "commento-markdown-help-";
   var ID_FOOTER = "commento-footer";
+  var ID_REACTION_FUNNY = "commento-reaction-funny-";
+  var ID_REACTION_INTERESTING = "commento-reaction-interesting-";
+  var ID_REACTION_UPSETTING = "commento-reaction-upsetting-";
+  var ID_REACTION_SAD = "commento-reaction-sad-";
+  var ID_DOWNVOTE_COUNT = "commento-downvote-count-";
+  var ID_FILTER = "commento-filter-";
+  var ID_REACTION_COUNT = "commento-reaction-count-";
 
 
   var origin = "[[[.Origin]]]";
@@ -607,10 +614,24 @@
   }
 
 
+  // Sort policies
+  var SORT_POLICY_SCORE_DESC = "score-desc";
+  var SORT_POLICY_CREATION_DATE_DESC = "creationdate-desc";
+  var SORT_POLICY_CREATION_DATE_ASC = "creationdate-asc";
+  var SORT_POLICY_REACTION_FUNNY_DESC = "reaction-funny-desc";
+  var SORT_POLICY_REACTION_INTERESTING_DESC = "reaction-interesting-desc";
+  var SORT_POLICY_REACTION_UPSETTING_DESC = "reaction-upsetting-desc";
+  var SORT_POLICY_REACTION_SAD_DESC = "reaction-sad-desc";
+
+
   var sortPolicyNames = {
     "score-desc": "Upvotes",
     "creationdate-desc": "Newest",
     "creationdate-asc": "Oldest",
+    "reaction-funny-desc": "Funniest",
+    "reaction-interesting-desc": "Most Interesting",
+    "reaction-upsetting-desc": "Most Upsetting",
+    "reaction-sad-desc": "Saddest",
   };
 
 
@@ -628,10 +649,10 @@
     classAdd($(ID_SORT_POLICY + policy), "sort-policy-button-selected");
   }
 
-
   function sortPolicyBox() {
     var sortPolicyButtonsContainer = create("div");
     var sortPolicyButtons = create("div");
+    var filterContainer = usernameFilterCreate();
 
     classAdd(sortPolicyButtonsContainer, "sort-policy-buttons-container");
     classAdd(sortPolicyButtons, "sort-policy-buttons");
@@ -645,12 +666,13 @@
       }
       sortPolicyButton.innerText = sortPolicyNames[sp];
       onclick(sortPolicyButton, sortPolicyApply, sp);
-      append(sortPolicyButtons, sortPolicyButton)
+      append(sortPolicyButtons, sortPolicyButton);
     }
 
     append(sortPolicyButtonsContainer, sortPolicyButtons);
+    append(sortPolicyButtonsContainer, filterContainer);
 
-    return sortPolicyButtonsContainer
+    return sortPolicyButtonsContainer;
   }
 
 
@@ -878,7 +900,6 @@
     }
   }
 
-
   var sortPolicyFunctions = {
     "score-desc": function(a, b) {
       return b.score - a.score;
@@ -896,6 +917,18 @@
       } else {
         return 1;
       }
+    },
+    "reaction-funny": function(a, b) {
+      return (b.reactions["funny"] || 0) - (a.reactions["funny"] || 0);
+    },
+    "reaction-interesting": function(a, b) {
+      return (b.reactions["interesting"] || 0) - (a.reactions["interesting"] || 0);
+    },
+    "reaction-upsetting": function(a, b) {
+      return (b.reactions["upsetting"] || 0) - (a.reactions["upsetting"] || 0);
+    },
+    "reaction-sad": function(a, b) {
+      return (b.reactions["sad"] || 0) - (a.reactions["sad"] || 0);
     },
   };
 
@@ -933,10 +966,15 @@
       var reply = create("button");
       var collapse = create("button");
       var upvote = create("button");
-      var downvote = create("button");
-      var approve = create("button");
+      var downvote = create("button");      var approve = create("button");
       var remove = create("button");
       var sticky = create("button");
+      var spoiler = create("button");
+      var reactionFunny = create("button");
+      var reactionInteresting = create("button");
+      var reactionUpsetting = create("button");
+      var reactionSad = create("button");
+      var downvoteCount = create("div");
       var children = commentsRecurse(parentMap, comment.commentHex);
       var contents = create("div");
       var color = colorGet(comment.commenterHex + "-" + commenter.name);
@@ -958,10 +996,15 @@
       reply.id = ID_REPLY + comment.commentHex;
       collapse.id = ID_COLLAPSE + comment.commentHex;
       upvote.id = ID_UPVOTE + comment.commentHex;
-      downvote.id = ID_DOWNVOTE + comment.commentHex;
-      approve.id = ID_APPROVE + comment.commentHex;
+      downvote.id = ID_DOWNVOTE + comment.commentHex;      approve.id = ID_APPROVE + comment.commentHex;
       remove.id = ID_REMOVE + comment.commentHex;
       sticky.id = ID_STICKY + comment.commentHex;
+      spoiler.id = ID_SPOILER + comment.commentHex;
+      reactionFunny.id = ID_REACTION_FUNNY + comment.commentHex;
+      reactionInteresting.id = ID_REACTION_INTERESTING + comment.commentHex;
+      reactionUpsetting.id = ID_REACTION_UPSETTING + comment.commentHex;
+      reactionSad.id = ID_REACTION_SAD + comment.commentHex;
+      downvoteCount.id = ID_DOWNVOTE_COUNT + comment.commentHex;
       if (children) {
         children.id = ID_CHILDREN + comment.commentHex;
       }
@@ -972,9 +1015,13 @@
       upvote.title = "Upvote";
       downvote.title = "Downvote";
       edit.title = "Edit";
-      reply.title = "Reply";
-      approve.title = "Approve";
+      reply.title = "Reply";      approve.title = "Approve";
       remove.title = "Remove";
+      spoiler.title = comment.spoiler ? "Remove spoiler tag" : "Mark as spoiler";
+      reactionFunny.title = "Funny";
+      reactionInteresting.title = "Interesting";
+      reactionUpsetting.title = "Upsetting";
+      reactionSad.title = "Sad";
       if (stickyCommentHex === comment.commentHex) {
         if (isModerator) {
           sticky.title = "Unsticky";
@@ -1041,14 +1088,33 @@
       classAdd(collapse, "option-button");
       classAdd(collapse, "option-collapse");
       classAdd(upvote, "option-button");
-      classAdd(upvote, "option-upvote");
-      classAdd(downvote, "option-button");
+      classAdd(upvote, "option-upvote");      classAdd(downvote, "option-button");
       classAdd(downvote, "option-downvote");
       classAdd(approve, "option-button");
       classAdd(approve, "option-approve");
       classAdd(remove, "option-button");
       classAdd(remove, "option-remove");
       classAdd(sticky, "option-button");
+      classAdd(spoiler, "option-button");
+      classAdd(spoiler, "option-spoiler");
+      classAdd(reactionFunny, "option-button");
+      classAdd(reactionFunny, "option-reaction");
+      classAdd(reactionFunny, "option-reaction-funny");
+      classAdd(reactionInteresting, "option-button");
+      classAdd(reactionInteresting, "option-reaction");
+      classAdd(reactionInteresting, "option-reaction-interesting");
+      classAdd(reactionUpsetting, "option-button");
+      classAdd(reactionUpsetting, "option-reaction");
+      classAdd(reactionUpsetting, "option-reaction-upsetting");
+      classAdd(reactionSad, "option-button");
+      classAdd(reactionSad, "option-reaction");
+      classAdd(reactionSad, "option-reaction-sad");
+      classAdd(downvoteCount, "downvote-count");
+      
+      if (comment.spoiler) {
+        classAdd(text, "spoiler");
+      }
+      
       if (stickyCommentHex === comment.commentHex) {
         classAdd(sticky, "option-unsticky");
       } else {
@@ -1061,13 +1127,33 @@
         } else if (comment.direction < 0) {
           classAdd(downvote, "downvoted");
         }
-      }
-
-      onclick(edit, global.editShow, comment.commentHex);
+      }      onclick(edit, global.editShow, comment.commentHex);
       onclick(collapse, global.commentCollapse, comment.commentHex);
       onclick(approve, global.commentApprove, comment.commentHex);
       onclick(remove, global.commentDelete, comment.commentHex);
       onclick(sticky, global.commentSticky, comment.commentHex);
+      onclick(spoiler, global.commentSpoiler, comment.commentHex);
+      onclick(reactionFunny, global.commentReaction, [comment.commentHex, "funny"]);
+      onclick(reactionInteresting, global.commentReaction, [comment.commentHex, "interesting"]);
+      onclick(reactionUpsetting, global.commentReaction, [comment.commentHex, "upsetting"]);
+      onclick(reactionSad, global.commentReaction, [comment.commentHex, "sad"]);
+
+      // Configure reaction buttons with counts
+      reactionFunny.innerHTML = "😄 " + (comment.reactions["funny"] || 0);
+      reactionInteresting.innerHTML = "🤔 " + (comment.reactions["interesting"] || 0);
+      reactionUpsetting.innerHTML = "😠 " + (comment.reactions["upsetting"] || 0);
+      reactionSad.innerHTML = "😢 " + (comment.reactions["sad"] || 0);
+      
+      // Add downvote count
+      downvoteCount.innerHTML = "↓ " + (comment.downvoteCount || 0);
+
+      // Configure timestamp links
+      var timestampRegex = /(\d{1,2}):(\d{2})/g;
+      if (!comment.deleted) {
+        text.innerHTML = text.innerHTML.replace(timestampRegex, function(match) {
+          return '<a href="#" class="timestamp-link" data-time="' + match + '">' + match + '</a>';
+        });
+      }
 
       if (isAuthenticated) {
         var upDown = upDownOnclickSet(upvote, downvote, comment.commentHex, comment.direction);
@@ -1103,14 +1189,31 @@
 
       if (!comment.deleted && (isModerator || comment.commenterHex === selfHex)) {
         append(options, remove);
-      }
-
-      if (isModerator && comment.state !== "approved") {
+      }      if (isModerator && comment.state !== "approved") {
         append(options, approve);
       }
       
       if (!comment.deleted && (!isModerator && stickyCommentHex === comment.commentHex)) {
         append(options, sticky);
+      }
+
+      // Add spoiler button for comment owners and moderators
+      if (!comment.deleted && (isModerator || comment.commenterHex === selfHex)) {
+        append(options, spoiler);
+      }
+      
+      // Add reaction buttons
+      if (!comment.deleted) {
+        var reactionsContainer = create("div");
+        classAdd(reactionsContainer, "reactions-container");
+        append(reactionsContainer, reactionFunny);
+        append(reactionsContainer, reactionInteresting);
+        append(reactionsContainer, reactionUpsetting);
+        append(reactionsContainer, reactionSad);
+        append(body, reactionsContainer);
+        
+        // Add downvote count next to score
+        append(subtitle, downvoteCount);
       }
 
       attrSet(options, "style", "width: " + ((options.childNodes.length+1)*32) + "px;");
@@ -1470,6 +1573,30 @@
         "markdown": comment.markdown,
       };
     });
+    
+    // Sort comments based on the selected sort policy
+    for (var parentHex in m) {
+      if (sortPolicy === SORT_POLICY_SCORE_DESC) {
+        m[parentHex].sort(function(a, b) {
+          return b.score - a.score;
+        });
+      } else if (sortPolicy === SORT_POLICY_CREATION_DATE_DESC) {
+        m[parentHex].sort(function(a, b) {
+          return b.creationDate - a.creationDate;
+        });
+      } else if (sortPolicy === SORT_POLICY_CREATION_DATE_ASC) {
+        m[parentHex].sort(function(a, b) {
+          return a.creationDate - b.creationDate;
+        });
+      } else if (sortPolicy.startsWith("reaction-")) {
+        var reactionType = sortPolicy.substring(9, sortPolicy.lastIndexOf("-"));
+        m[parentHex].sort(function(a, b) {
+          var aCount = (a.reactions && a.reactions[reactionType]) ? a.reactions[reactionType] : 0;
+          var bCount = (b.reactions && b.reactions[reactionType]) ? b.reactions[reactionType] : 0;
+          return bCount - aCount;
+        });
+      }
+    }
 
     return m;
   }

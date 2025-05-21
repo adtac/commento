@@ -1,4 +1,7 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "email-main" as email;
+@use "commento-oauth" as oauth;
 
 .commento-login-box-container {
   display: flex;
@@ -12,31 +15,26 @@
     width: 90%;
     max-width: 500px;
     min-height: 100px;
-    background: $gray-1;
+    background: colors.$gray-1;
     z-index: 100;
     position: absolute;
     top: 8px;
-    padding: 16px;
-    opacity: 1;
+    padding: 16px;    opacity: 1;
     transition: opacity 0.2s;
-
-    @import "commento-oauth.scss";
 
     hr {
       border: none;
-      background: $gray-2;
+      background: colors.$gray-2;
       height: 1px;
       margin: 24px 0px;
     }
 
     .commento-login-box-subtitle {
-      color: $gray-6;
+      color: colors.$gray-6;
       text-align: center;
       margin: 12px 0px;
       font-size: 15px;
     }
-
-    @import "email-main.scss";
 
     .commento-forgot-link-container,
     .commento-login-link-container {
@@ -54,7 +52,7 @@
 
     .commento-forgot-link {
       font-size: 13px;
-      color: $gray-6;
+      color: colors.$gray-6;
       font-weight: normal;
     }
 
@@ -78,7 +76,7 @@
       content: ' ';
       height: 17px;
       width: 2px;
-      background-color: $gray-7;
+      background-color: colors.$gray-7;
     }
 
     .commento-login-box-close:before {

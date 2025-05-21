@@ -1,5 +1,7 @@
-@import "checkbox.scss";
-@import "button.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "checkbox";
+@use "button";
 
 .unsubscribe-container {
   margin-top: 72px;
@@ -17,13 +19,13 @@
     }
 
     .err {
-      color: $red-6;
+      color: colors.$red-6;
       text-align: center;
       font-weight: bold;
     }
 
     .msg {
-      color: $green-6;
+      color: colors.$green-6;
       font-weight: bold;
       margin-bottom: 12px;
       height: 20px;

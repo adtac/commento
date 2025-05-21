@@ -1,5 +1,5 @@
-@import "colors-main.scss";
-@import "source-sans.scss";
+@use "colors-main" as colors;
+@use "source-sans";
 
 html, input, button, textarea {
   font-family: 'Source Sans Pro', sans-serif;
@@ -7,8 +7,8 @@ html, input, button, textarea {
 
 html {
   font-size: 14px;
-  color: $gray-7;
-  background: $gray-0;
+  color: colors.$gray-7;
+  background: colors.$gray-0;
 }
 
 body {
@@ -32,18 +32,17 @@ a:hover {
   bottom: 0px;
   width: 100%;
   margin-top: 72px;
-
   .copyright {
     align-items: none;
-    color: $gray-3;
-    background: $white;
+    color: colors.$gray-3;
+    background: colors.$white;
     text-align: center;
     padding: 12px;
   }
 
   .footer-inner {
     width: 100%;
-    background: $white;
+    background: colors.$white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,13 +54,11 @@ a:hover {
     }
 
     .link-group {
-      margin: 40px;
-
-      .header {
+      margin: 40px;      .header {
         text-transform: uppercase;
         font-weight: 700;
         font-size: 12px;
-        color: $gray-5;
+        color: colors.$gray-5;
       }
     }
 
@@ -69,12 +66,12 @@ a:hover {
       margin-top: 12px;
       margin-bottom: 12px;
       display: block;
-      color: $gray-5;
+      color: colors.$gray-5;
       transition: all 0.2s;
     }
 
     .link:hover {
-      color: $gray-7;
+      color: colors.$gray-7;
     }
 
     @media only screen and (max-width: 1000px) {

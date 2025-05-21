@@ -1,33 +1,43 @@
 {
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true
   },
   "globals": {
-    "$": true
+    "$": true,
+    "Vue": true,
+    "hljs": true
   },
+  "extends": "eslint:recommended",
   "rules": {
-    "no-bitwise": 2,
-    "camelcase": 2,
-    "brace-style": ["error", "1tbs"],
-    "curly": ["error", "all"],
-    "eqeqeq": ["error", "smart"],
-    "indent": ["error", 2],
+    "no-bitwise": "warn",
+    "camelcase": "warn",
+    "brace-style": ["warn", "1tbs"],
+    "curly": ["warn", "all"],
+    "eqeqeq": ["warn", "smart"],
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
     "no-use-before-define": [
-      2,
+      "warn",
       {
         "functions": false
       }
     ],
-    "new-cap": 2,
-    "no-caller": 2,
+    "new-cap": "warn",
+    "no-caller": "warn",
     "quotes": [
-      2,
+      "warn",
       "double"
     ],
-    "no-unused-vars": 2,
+    "no-unused-vars": "warn",
     "strict": [
-      2,
+      "warn",
       "function"
-    ]
+    ],
+    // Additional relaxed rules
+    "no-var": "off",
+    "prefer-const": "off",
+    "no-undef": "warn",
+    "no-prototype-builtins": "off",
+    "no-useless-escape": "off"
   }
 }

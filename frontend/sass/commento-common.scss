@@ -1,4 +1,5 @@
-@import "colors-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
 
 code {
   font-family: monospace;
@@ -7,7 +8,7 @@ code {
 }
 
 a {
-  color: $blue-6;
+  color: colors.$blue-6;
   outline: none;
   text-decoration: none;
 }
@@ -15,8 +16,8 @@ a {
 blockquote {
   margin: 0 0 0 8px;
   padding: 0 0 0 5px;
-  border-left: 2px solid $gray-5;
-  color: $gray-6;
+  border-left: 2px solid colors.$gray-5;
+  color: colors.$gray-6;
 }
 
 .commento-button {

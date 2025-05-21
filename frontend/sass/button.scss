@@ -1,30 +1,30 @@
-@import "colors-main.scss";
-@import "common-main.scss";
+@use "sass:map";
+@use "colors-main" as colors;
+@use "common-main" as common;
 
 .button {
-  @extend .shadow;
+  box-shadow: 0 1px 3px rgba(50,50,93,.15), 0 1px 0 rgba(0,0,0,.02);
   height: 40px;
   min-width: 110px;
-  background: $white;
+  background: colors.$white;
   border: none;
   outline: none;
   padding: 0px 10px 0px 10px;
-  font-size: 12px;
-  text-transform: uppercase;
+  font-size: 12px;  text-transform: uppercase;
   text-align: center;
   font-weight: bold;
-  color: $blue-7;
+  color: colors.$blue-7;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .button:hover {
-  color: $blue-6;
+  color: colors.$blue-6;
 }
 
 .button:disabled {
   cursor: default;
-  color: $gray-6;
+  color: colors.$gray-6;
 }
 
 .short-button {
