@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <link rel="icon" href="[[[.CdnPrefix]]]/images/120x120.png">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/dashboard.css">
+    <title>Commento: Pricing</title>
+    <style>
+      .pricing-header { text-align: center; padding: 60px 20px 20px; }
+      .pricing-header h1 { font-size: 36px; margin-bottom: 10px; }
+      .pricing-header p { font-size: 18px; color: #666; }
+      .pricing-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
+      .pricing-card { flex: 1; min-width: 260px; max-width: 300px; border: 1px solid #ddd; border-radius: 8px; padding: 30px; text-align: center; }
+      .pricing-card.featured { border-color: #4285f4; box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2); }
+      .pricing-card h2 { font-size: 24px; margin-bottom: 10px; }
+      .pricing-card .price { font-size: 36px; font-weight: bold; margin: 20px 0; }
+      .pricing-card .price span { font-size: 16px; color: #666; font-weight: normal; }
+      .pricing-card ul { list-style: none; padding: 0; margin: 20px 0; text-align: left; }
+      .pricing-card ul li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+      .pricing-card ul li:before { content: "\2713 "; color: #4285f4; font-weight: bold; }
+      .pricing-card .cta { display: inline-block; padding: 12px 30px; background: #4285f4; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 20px; }
+      .pricing-card .cta:hover { background: #3367d6; }
+      .pricing-card .cta.outline { background: transparent; color: #4285f4; border: 2px solid #4285f4; }
+      .footer-section { text-align: center; padding: 40px 20px; color: #999; border-top: 1px solid #eee; margin-top: 40px; }
+    </style>
+  </head>
+
+  <div id="navbar" class="navbar">
+    <a href="[[[.Origin]]]/landing" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
+    <div class="navbar-item">
+      <a href="[[[.Origin]]]/pricing" class="navbar-item">Pricing</a>
+      <a href="[[[.Origin]]]/login" class="navbar-item">Login</a>
+      <a href="[[[.Origin]]]/signup" class="navbar-item">Sign Up</a>
+    </div>
+  </div>
+
+  <div class="pricing-header">
+    <h1>Simple, transparent pricing</h1>
+    <p>Start free, upgrade when you need more</p>
+  </div>
+
+  <div class="pricing-cards">
+
+    <div class="pricing-card">
+      <h2>Free</h2>
+      <div class="price">$0 <span>/ month</span></div>
+      <ul>
+        <li>1 domain</li>
+        <li>500 comments / month</li>
+        <li>10,000 page views / month</li>
+        <li>All auth providers</li>
+        <li>Spam filtering</li>
+        <li>Moderation tools</li>
+      </ul>
+      <a href="[[[.Origin]]]/signup" class="cta outline">Get Started</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <h2>Starter</h2>
+      <div class="price">Contact us <span></span></div>
+      <ul>
+        <li>5 domains</li>
+        <li>5,000 comments / month</li>
+        <li>100,000 page views / month</li>
+        <li>All auth providers</li>
+        <li>Spam filtering</li>
+        <li>Moderation tools</li>
+        <li>Data export</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="[[[.Origin]]]/signup" class="cta">Get Started</a>
+    </div>
+
+    <div class="pricing-card">
+      <h2>Business</h2>
+      <div class="price">Contact us <span></span></div>
+      <ul>
+        <li>50 domains</li>
+        <li>50,000 comments / month</li>
+        <li>1,000,000 page views / month</li>
+        <li>All auth providers</li>
+        <li>Spam filtering</li>
+        <li>Moderation tools</li>
+        <li>Data export</li>
+        <li>SSO integration</li>
+        <li>Webhooks</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="[[[.Origin]]]/signup" class="cta outline">Get Started</a>
+    </div>
+
+  </div>
+
+  <div class="footer-section">
+    <p>[[[.Footer]]]</p>
+  </div>
+
+</html>

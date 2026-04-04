@@ -64,5 +64,9 @@ func commentApproveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	go webhookFire(domain, "comment.approved", map[string]interface{}{
+		"commentHex": *x.CommentHex,
+	})
+
 	bodyMarshal(w, response{"success": true})
 }

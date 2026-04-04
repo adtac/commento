@@ -77,6 +77,17 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check comment limit for domain owner's plan
+	withinLimit, err := usageCheckLimit(d.OwnerHex, "commentCount")
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+	if !withinLimit {
+		bodyMarshal(w, response{"success": false, "message": errorPlanLimitComments.Error()})
+		return
+	}
+
 	if d.RequireIdentification && *x.CommenterToken == "anonymous" {
 		bodyMarshal(w, response{"success": false, "message": errorNotAuthorised.Error()})
 		return
@@ -120,10 +131,18 @@ func commentNewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Increment comment usage for domain owner
+	_ = usageIncrement(d.OwnerHex, "commentCount")
+
 	// TODO: reuse html in commentNew and do only one markdown to HTML conversion?
 	html := markdownToHtml(*x.Markdown)
 
 	bodyMarshal(w, response{"success": true, "commentHex": commentHex, "state": state, "html": html})
+
+	go webhookFire(domain, "comment.new", map[string]interface{}{
+		"commentHex": commentHex, "commenterHex": commenterHex, "path": path, "state": state,
+	})
+
 	if smtpConfigured {
 		go emailNotificationNew(d, path, commenterHex, commentHex, html, *x.ParentHex, state)
 	}

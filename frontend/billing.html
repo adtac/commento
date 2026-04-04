@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <script src="[[[.CdnPrefix]]]/js/jquery.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/vue.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/billing.js"></script>
+    <link rel="icon" href="[[[.CdnPrefix]]]/images/120x120.png">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/dashboard.css">
+    <title>Commento: Plan & Usage</title>
+  </head>
+
+  <div id="navbar" class="navbar">
+    <a href="[[[.Origin]]]/" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
+    <div class="navbar-item">
+      <a href="[[[.Origin]]]/dashboard" class="navbar-item">Dashboard</a>
+      <a href="[[[.Origin]]]/billing" class="navbar-item">Plan & Usage</a>
+      <a href="[[[.Origin]]]/settings" class="navbar-item">Settings</a>
+      <a href="[[[.Origin]]]/logout" class="navbar-item">Logout</a>
+      <div class="float-right"><b><div id="owner-name"></div></b></div>
+    </div>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.commento.selfGet(function() {
+      window.commento.billingVueConstruct(function() {
+        $("#owner-name").text(window.commento.owner.name);
+        window.commento.billingLoad();
+      });
+    });
+  };
+  </script>
+
+  <div class="global-error" id="global-error"></div>
+  <div class="global-ok" id="global-ok"></div>
+
+  <div id="billing" class="dashboard-container">
+    <div class="pane-right pane-right-lefter" style="margin: 0 auto; max-width: 800px;">
+      <div class="view" v-if="loaded">
+        <div class="view-inside">
+          <div class="mid-view center">
+            <div class="center center-title">
+              Current Plan
+            </div>
+
+            <div class="stat">
+              <div class="number">
+                <div class="digits">{{plan.name}}</div>
+              </div>
+              <div class="text">
+                Your current subscription plan
+              </div>
+            </div>
+
+            <div class="center center-title" style="margin-top: 40px;">
+              Usage This Month
+            </div>
+
+            <div class="stat">
+              <div class="number">
+                <div class="digits">{{domainCount}}</div>
+                <div class="digits dark-gray-digits"> / {{plan.maxDomains}}</div>
+              </div>
+              <div class="text">domains</div>
+            </div>
+
+            <div class="stat">
+              <div class="number">
+                <div class="digits">{{usage.commentCount || 0}}</div>
+                <div class="digits dark-gray-digits"> / {{plan.maxCommentsPerMonth}}</div>
+              </div>
+              <div class="text">comments this month</div>
+            </div>
+
+            <div class="stat">
+              <div class="number">
+                <div class="digits">{{usage.pageViewCount || 0}}</div>
+                <div class="digits dark-gray-digits"> / {{plan.maxPageViewsPerMonth}}</div>
+              </div>
+              <div class="text">page views this month</div>
+            </div>
+
+            <div class="center center-title" style="margin-top: 40px;">
+              Available Plans
+            </div>
+
+            <div v-for="p in plans" style="border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 4px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 18px; font-weight: bold;">{{p.name}}</div>
+                  <div style="color: #666; margin-top: 5px;">
+                    {{p.maxDomains}} domains &middot;
+                    {{p.maxCommentsPerMonth}} comments/mo &middot;
+                    {{p.maxPageViewsPerMonth}} views/mo
+                  </div>
+                </div>
+                <div>
+                  <button v-if="p.planId !== subscription.planId"
+                          v-on:click="window.commento.planUpgrade(p.planId)"
+                          class="button">
+                    Switch to {{p.name}}
+                  </button>
+                  <span v-if="p.planId === subscription.planId" style="color: green; font-weight: bold;">
+                    Current Plan
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</html>

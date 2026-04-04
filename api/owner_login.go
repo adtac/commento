@@ -40,12 +40,15 @@ func ownerLogin(email string, password string) (string, error) {
 		return "", errorInternal
 	}
 
+	now := time.Now().UTC()
+	expiresAt := now.AddDate(0, 0, 30)
+
 	statement = `
 		INSERT INTO
-		ownerSessions (ownerToken, ownerHex, loginDate)
-		VALUES        ($1,         $2,       $3       );
+		ownerSessions (ownerToken, ownerHex, loginDate, expiresAt, lastSeenDate)
+		VALUES        ($1,         $2,       $3,        $4,        $3          );
 	`
-	_, err = db.Exec(statement, ownerToken, ownerHex, time.Now().UTC())
+	_, err = db.Exec(statement, ownerToken, ownerHex, now, expiresAt)
 	if err != nil {
 		logger.Errorf("cannot insert ownerSession: %v\n", err)
 		return "", errorInternal

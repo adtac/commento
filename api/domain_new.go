@@ -50,6 +50,22 @@ func domainNewHandler(w http.ResponseWriter, r *http.Request) {
 
 	domain := domainStrip(*x.Domain)
 
+	// Check plan limit for domains
+	p, err := planGetForOwner(o.OwnerHex)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+	domainCount, err := domainCountForOwner(o.OwnerHex)
+	if err != nil {
+		bodyMarshal(w, response{"success": false, "message": err.Error()})
+		return
+	}
+	if domainCount >= p.MaxDomains {
+		bodyMarshal(w, response{"success": false, "message": errorPlanLimitDomains.Error()})
+		return
+	}
+
 	if err = domainNew(o.OwnerHex, *x.Name, domain); err != nil {
 		bodyMarshal(w, response{"success": false, "message": err.Error()})
 		return

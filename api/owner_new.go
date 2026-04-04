@@ -48,6 +48,11 @@ func ownerNew(email string, name string, password string) (string, error) {
 		return "", errorEmailAlreadyExists
 	}
 
+	if err := subscriptionNew(ownerHex, os.Getenv("DEFAULT_PLAN")); err != nil {
+		logger.Errorf("cannot create default subscription: %v", err)
+		return "", errorInternal
+	}
+
 	if smtpConfigured {
 		confirmHex, err := randomHex(32)
 		if err != nil {

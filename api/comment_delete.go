@@ -77,5 +77,9 @@ func commentDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	go webhookFire(domain, "comment.deleted", map[string]interface{}{
+		"commentHex": *x.CommentHex,
+	})
+
 	bodyMarshal(w, response{"success": true})
 }

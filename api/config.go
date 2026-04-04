@@ -57,6 +57,10 @@ func configParse() error {
 		"GITLAB_KEY":    "",
 		"GITLAB_SECRET": "",
 		"GITLAB_URL":    "https://gitlab.com",
+
+		"SUPER_ADMIN_EMAIL": "",
+		"DEFAULT_PLAN":      "free",
+		"EMAIL_PROVIDER":    "smtp",
 	}
 
 	if os.Getenv("COMMENTO_CONFIG_FILE") != "" {

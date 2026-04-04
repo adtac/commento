@@ -9,6 +9,9 @@ services:
       COMMENTO_ORIGIN: http://commento.example.com:8080
       COMMENTO_PORT: 8080
       COMMENTO_POSTGRES: postgres://postgres:postgres@db:5432/commento?sslmode=disable
+      COMMENTO_SUPER_ADMIN_EMAIL: ""
+      COMMENTO_DEFAULT_PLAN: "free"
+      COMMENTO_EMAIL_PROVIDER: "smtp"
     depends_on:
       - db
     networks:

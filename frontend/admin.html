@@ -1,0 +1,177 @@
+<html>
+  <head>
+    <script src="[[[.CdnPrefix]]]/js/jquery.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/vue.js"></script>
+    <script src="[[[.CdnPrefix]]]/js/admin.js"></script>
+    <link rel="icon" href="[[[.CdnPrefix]]]/images/120x120.png">
+    <link rel="stylesheet" href="[[[.CdnPrefix]]]/css/dashboard.css">
+    <title>Commento: Admin Panel</title>
+  </head>
+
+  <div id="navbar" class="navbar">
+    <a href="[[[.Origin]]]/" class="navbar-item navbar-logo-text"><img src="[[[.CdnPrefix]]]/images/logo.svg" class="navbar-logo">Commento</a>
+    <div class="navbar-item">
+      <a href="[[[.Origin]]]/dashboard" class="navbar-item">Dashboard</a>
+      <a href="[[[.Origin]]]/admin" class="navbar-item">Admin</a>
+      <a href="[[[.Origin]]]/logout" class="navbar-item">Logout</a>
+      <div class="float-right"><b><div id="owner-name"></div></b></div>
+    </div>
+  </div>
+
+  <script>
+  window.onload = function() {
+    window.commento.selfGet(function() {
+      if (!window.commento.owner.isSuperAdmin) {
+        document.location = window.commento.origin + "/dashboard";
+        return;
+      }
+      window.commento.adminVueConstruct(function() {
+        $("#owner-name").text(window.commento.owner.name);
+        window.commento.adminLoadStats();
+      });
+    });
+  };
+  </script>
+
+  <div class="global-error" id="global-error"></div>
+  <div class="global-ok" id="global-ok"></div>
+
+  <div id="admin" class="dashboard-container">
+    <div class="pane-left">
+      <div class="pane-setting" v-on:click="window.commento.adminShowStats()" v-bind:class="{selected: view === 'stats'}">
+        <div class="pane-setting-inside">
+          <div class="setting-title">Platform Stats</div>
+          <div class="setting-subtitle">Overview of the platform</div>
+        </div>
+      </div>
+      <div class="pane-setting" v-on:click="window.commento.adminLoadUsers()" v-bind:class="{selected: view === 'users' || view === 'user-detail'}">
+        <div class="pane-setting-inside">
+          <div class="setting-title">Users</div>
+          <div class="setting-subtitle">Manage all users</div>
+        </div>
+      </div>
+      <div class="pane-setting" v-on:click="window.commento.adminLoadDomains()" v-bind:class="{selected: view === 'domains'}">
+        <div class="pane-setting-inside">
+          <div class="setting-title">Domains</div>
+          <div class="setting-subtitle">All registered domains</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane-right pane-right-lefter">
+
+      <!-- Stats View -->
+      <div class="view" v-if="view === 'stats' && loaded">
+        <div class="view-inside">
+          <div class="mid-view center">
+            <div class="center center-title">Platform Statistics</div>
+
+            <div class="stat">
+              <div class="number"><div class="digits">{{stats.totalOwners}}</div></div>
+              <div class="text">total users</div>
+            </div>
+            <div class="stat">
+              <div class="number"><div class="digits">{{stats.totalDomains}}</div></div>
+              <div class="text">total domains</div>
+            </div>
+            <div class="stat">
+              <div class="number"><div class="digits">{{stats.totalComments}}</div></div>
+              <div class="text">total comments</div>
+            </div>
+            <div class="stat">
+              <div class="number"><div class="digits">{{stats.totalCommenters}}</div></div>
+              <div class="text">total commenters</div>
+            </div>
+
+            <div class="center center-title" style="margin-top: 40px;">Plan Distribution</div>
+            <div v-for="pd in stats.planDistribution" style="padding: 10px 0;">
+              <strong>{{pd.planId}}</strong>: {{pd.count}} users
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users List View -->
+      <div class="view" v-if="view === 'users'">
+        <div class="view-inside">
+          <div class="mid-view">
+            <div class="center center-title">All Users</div>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="border-bottom: 2px solid #ddd;">
+                <th style="text-align: left; padding: 10px;">Name</th>
+                <th style="text-align: left; padding: 10px;">Email</th>
+                <th style="text-align: left; padding: 10px;">Joined</th>
+                <th style="text-align: left; padding: 10px;">Actions</th>
+              </tr>
+              <tr v-for="o in owners" style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px;">{{o.name}}</td>
+                <td style="padding: 10px;">{{o.email}}</td>
+                <td style="padding: 10px;">{{new Date(o.joinDate).toLocaleDateString()}}</td>
+                <td style="padding: 10px;">
+                  <a href="#" v-on:click.prevent="window.commento.adminViewUser(o.ownerHex)" style="color: #4285f4;">View</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Detail View -->
+      <div class="view" v-if="view === 'user-detail' && selectedOwnerDetails">
+        <div class="view-inside">
+          <div class="mid-view">
+            <div class="center center-title">User Details</div>
+
+            <div style="padding: 20px 0;">
+              <div><strong>Name:</strong> {{selectedOwnerDetails.owner.name}}</div>
+              <div><strong>Email:</strong> {{selectedOwnerDetails.owner.email}}</div>
+              <div><strong>Joined:</strong> {{new Date(selectedOwnerDetails.owner.joinDate).toLocaleDateString()}}</div>
+              <div><strong>Plan:</strong> {{selectedOwnerDetails.subscription.planId}}</div>
+              <div><strong>Domains:</strong> {{selectedOwnerDetails.domainCount}}</div>
+              <div><strong>Comments this month:</strong> {{selectedOwnerDetails.usage.commentCount || 0}}</div>
+              <div><strong>Page views this month:</strong> {{selectedOwnerDetails.usage.pageViewCount || 0}}</div>
+            </div>
+
+            <div class="center center-title" style="margin-top: 20px;">Change Plan</div>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+              <button class="button" v-on:click="window.commento.adminChangePlan(selectedOwnerDetails.owner.ownerHex, 'free')">Free</button>
+              <button class="button" v-on:click="window.commento.adminChangePlan(selectedOwnerDetails.owner.ownerHex, 'starter')">Starter</button>
+              <button class="button" v-on:click="window.commento.adminChangePlan(selectedOwnerDetails.owner.ownerHex, 'business')">Business</button>
+            </div>
+
+            <div style="margin-top: 20px; text-align: center;">
+              <a href="#" v-on:click.prevent="window.commento.adminLoadUsers()" style="color: #4285f4;">&larr; Back to Users</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domains List View -->
+      <div class="view" v-if="view === 'domains'">
+        <div class="view-inside">
+          <div class="mid-view">
+            <div class="center center-title">All Domains</div>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="border-bottom: 2px solid #ddd;">
+                <th style="text-align: left; padding: 10px;">Domain</th>
+                <th style="text-align: left; padding: 10px;">Name</th>
+                <th style="text-align: left; padding: 10px;">Owner</th>
+                <th style="text-align: left; padding: 10px;">State</th>
+              </tr>
+              <tr v-for="d in domains" style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px;">{{d.domain}}</td>
+                <td style="padding: 10px;">{{d.name}}</td>
+                <td style="padding: 10px;">
+                  <a href="#" v-on:click.prevent="window.commento.adminViewUser(d.ownerHex)" style="color: #4285f4;">{{d.ownerHex.substring(0, 8)}}...</a>
+                </td>
+                <td style="padding: 10px;">{{d.state}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</html>

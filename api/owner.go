@@ -10,4 +10,5 @@ type owner struct {
 	Name           string    `json:"name"`
 	ConfirmedEmail bool      `json:"confirmedEmail"`
 	JoinDate       time.Time `json:"joinDate"`
+	IsSuperAdmin   bool      `json:"isSuperAdmin"`
 }

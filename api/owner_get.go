@@ -7,7 +7,8 @@ var ownersRowColumns string = `
 	owners.email,
 	owners.name,
 	owners.confirmedEmail,
-	owners.joinDate
+	owners.joinDate,
+	owners.isSuperAdmin
 `
 
 func ownersRowScan(s sqlScanner, o *owner) error {
@@ -17,6 +18,7 @@ func ownersRowScan(s sqlScanner, o *owner) error {
 		&o.Name,
 		&o.ConfirmedEmail,
 		&o.JoinDate,
+		&o.IsSuperAdmin,
 	)
 }
 
@@ -52,15 +54,20 @@ func ownerGetByOwnerToken(ownerToken string) (owner, error) {
 		WHERE owners.ownerHex IN (
 			SELECT ownerSessions.ownerHex FROM ownerSessions
 			WHERE ownerSessions.ownerToken = $1
+			AND ownerSessions.expiresAt > NOW()
 		);
 	`
 	row := db.QueryRow(statement, ownerToken)
 
 	var o owner
 	if err := ownersRowScan(row, &o); err != nil {
-		logger.Errorf("cannot scan owner: %v\n", err)
-		return owner{}, errorInternal
+		return owner{}, errorNoSuchToken
 	}
+
+	// Update lastSeenDate in the background
+	go func() {
+		_, _ = db.Exec(`UPDATE ownerSessions SET lastSeenDate = NOW() WHERE ownerToken = $1;`, ownerToken)
+	}()
 
 	return o, nil
 }
